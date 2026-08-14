@@ -1,32 +1,30 @@
 # 🦴 AnatomiLingo
 
-Anatomiyani **Duolingo uslubida** o'rganish uchun mobil (PWA) ilova. Birinchi kurs — **Columna vertebralis** (umurtqa pog'onasi), `Columna-vertebralis.pdf` prezentatsiyasi asosida tuzilgan.
+Anatomiyani interaktiv o'rganish uchun professional mobil (PWA) ilova. Birinchi kurs — **Columna vertebralis** (umurtqa pog'onasi), `Columna-vertebralis.pdf` prezentatsiyasi asosida tuzilgan.
 
-## Xususiyatlar
+## Bo'limlar
 
-- 🎮 **To'liq gamifikatsiya** — XP, ❤️ yuraklar (har 30 daqiqada tiklanadi), 🔥 kunlik streak
-- 📚 **4 bo'lim, 12 dars, 110+ mashq**:
-  1. Umurtqa pog'onasi (bo'limlar, tuzilish, o'simtalar)
-  2. Bo'yin umurtqalari (tipik, Atlas, Axis, C3–C7)
-  3. Ko'krak va bel umurtqalari
-  4. Dumg'aza (Os sacrum) va dum suyagi (Os coccygis)
-- 🧩 **5 xil mashq turi**: test, rasm bo'yicha savol, juftlarni moslashtirish, atama yig'ish, to'g'ri/noto'g'ri
-- 🖼️ PDF'dan olingan **haqiqiy anatomik rasmlar** bilan mashqlar
-- 💪 **Xatolar ustida ishlash** — noto'g'ri javob berilgan savollar saqlanadi va takrorlanadi (spaced repetition); xato savol dars ichida ham qayta so'raladi
-- 📱 **PWA** — telefonga o'rnatish mumkin ("Bosh ekranga qo'shish"), offline ishlaydi
-- 🇺🇿 Interfeys o'zbekcha, atamalar lotincha + o'zbekcha tarjimalari
+| Bo'lim | Tavsif |
+|---|---|
+| 📖 **O'rganish** | 4 modul, 12 dars, 110+ mashq — ketma-ket ochiladi, progress kuzatiladi |
+| 🧠 **Atlas** | Nazariy material: atamalar jadvali (lotin + o'zbek), PDF rasmlari va **11 ta interaktiv 3D model** (Sketchfab, ochiq ta'lim manbalari: Univ. of Michigan BlueLink, Elon Univ., Leiden UMC) |
+| 🎓 **Imtihon** | Yakuniy imtihon (20 savol, 10 daqiqa taymer, 70% o'tish balli), aqlli takrorlash, tezkor mashq |
+| 👤 **Profil** | Statistika: XP, streak, o'zlashtirilgan savollar, imtihon rekordi |
+
+## O'quv metodikasi
+
+- **Aqlli takrorlash (spaced repetition)** — har bir savol bo'yicha daraja saqlanadi (0→5), interval: 0/1/3/7/16/35 kun. Unutish arafasidagi savollar avtomatik navbatga chiqadi
+- **Xato savollar** dars ichida qayta so'raladi va takrorlash bazasiga qo'shiladi
+- **5 xil mashq turi**: test, rasm bo'yicha aniqlash, moslashtirish, atama yig'ish, to'g'ri/noto'g'ri
+- **Gamifikatsiya**: XP, yuraklar (30 daqiqada tiklanadi), kunlik streak. Imtihon va tezkor mashq yuraklarsiz ishlaydi
 
 ## Ishga tushirish
 
-Oddiy statik server yetarli:
-
 ```bash
 python3 -m http.server 8000
-# yoki
-npx serve .
 ```
 
-Brauzerda `http://localhost:8000` oching.
+Brauzerda `http://localhost:8000` oching. PWA sifatida telefonga o'rnatish mumkin, asosiy kontent offline ishlaydi (3D modellarga internet kerak).
 
 ## Tuzilishi
 
@@ -34,21 +32,18 @@ Brauzerda `http://localhost:8000` oching.
 index.html            — kirish nuqtasi
 manifest.webmanifest  — PWA manifest
 sw.js                 — service worker (offline kesh)
-css/style.css         — Duolingo uslubidagi dizayn
-js/data.js            — kurs ma'lumotlari (darslar, mashqlar)
-js/app.js             — ilova logikasi (progress localStorage'da)
+css/style.css         — dizayn (Inter shrifti, professional tibbiy uslub)
+js/data.js            — COURSE (darslar), ATLAS (nazariya + 3D), EXAM (sozlamalar)
+js/app.js             — ilova logikasi, SRS, imtihon taymeri (progress localStorage'da)
 assets/img/           — PDF'dan olingan dars rasmlari
 assets/icons/         — ilova ikonkalari
+assets/fonts/         — Inter (lokal, offline)
 ```
 
-## Yangi dars qo'shish
+## Yangi mavzu qo'shish
 
-`js/data.js` faylida `COURSE.units[].lessons[]` massiviga yangi dars qo'shing. Mashq turlari:
+1. **Darslar**: `js/data.js` → `COURSE.units[]` ga yangi modul/darslar qo'shing
+2. **Nazariya**: `ATLAS[]` ga mavzu qo'shing (`sections[].terms` — atamalar, `m3d[].uid` — Sketchfab model ID)
+3. Yangi PDF'dan rasm olish: `pymupdf` bilan eng katta rasmlarni `assets/img/` ga eksport qiling
 
-| Turi | Maydonlar | Tavsif |
-|---|---|---|
-| `quiz` | `q, opts, a, hint?` | 4 variantli savol |
-| `img` | `q, img, opts, a, hint?` | Rasm bilan savol |
-| `match` | `pairs: [[lotin, o'zbek], ...]` | Juftlarni moslashtirish |
-| `build` | `q, answer, extra` | So'zlardan atama yig'ish |
-| `tf` | `q, a, why?` | To'g'ri/Noto'g'ri |
+Mashq turlari: `quiz` (q, opts, a, hint?), `img` (+img), `match` (pairs), `build` (q, answer, extra), `tf` (q, a, why?).

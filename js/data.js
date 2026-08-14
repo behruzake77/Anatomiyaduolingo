@@ -240,3 +240,219 @@ const COURSE = {
     }
   ]
 };
+
+// ================== ATLAS — nazariy bo'lim (PDF asosida) ==================
+// m3d: Sketchfab ochiq ta'lim modellari (AnatomyTOOL.org orqali:
+//      Leiden University MC, University of Michigan BlueLink, Elon University)
+const ATLAS = [
+  {
+    id: "a1",
+    title: "Columna vertebralis",
+    subtitle: "Umurtqa pog'onasi — umumiy ko'rinish",
+    icon: "🦴",
+    color: "#0d9488",
+    lead: "Umurtqa pog'onasi (columna vertebralis) — tananing o'q skeleti bo'lib, 33–34 umurtqadan tashkil topadi: 7 bo'yin, 12 ko'krak, 5 bel, 5 dumg'aza (qo'shilib os sacrum hosil qiladi) va 3–5 dum umurtqasi. U orqa miyani himoya qiladi, tanani tik tutadi va harakatni ta'minlaydi.",
+    sections: [
+      {
+        h: "Bo'limlari", tag: "PDF · 2-bet",
+        terms: [
+          ["Vertebrae cervicales (C1–C7)", "Bo'yin umurtqalari — 7 ta"],
+          ["Vertebrae thoracicae (Th1–Th12)", "Ko'krak umurtqalari — 12 ta"],
+          ["Vertebrae lumbales (L1–L5)", "Bel umurtqalari — 5 ta"],
+          ["Os sacrum", "Dumg'aza suyagi — 5 ta qo'shilgan umurtqa"],
+          ["Os coccygis", "Dum suyagi — 3–5 rudimentar umurtqa"]
+        ]
+      },
+      {
+        h: "Umurtqaning umumiy tuzilishi", tag: "PDF · 3–11-bet",
+        img: "assets/img/vertebra_labeled.jpg",
+        cap: "Umurtqa tanasi va yashil rangda — processus transversus",
+        terms: [
+          ["Corpus vertebrae", "Umurtqa tanasi — oldingi, yuk ko'taruvchi qism"],
+          ["Arcus vertebrae", "Umurtqa ravog'i (pediculus + lamina)"],
+          ["Foramen vertebrale", "Umurtqa teshigi — orqa miya joylashadi"],
+          ["Foramen intervertebrale", "Umurtqalararo teshik — spinal nervlar chiqadi"],
+          ["Processus spinosus", "Qirrali o'simta"],
+          ["Processus transversus", "Ko'ndalang o'simta"],
+          ["Processus articularis sup./inf.", "Yuqorigi/pastki bo'g'im o'simtalari"]
+        ]
+      }
+    ],
+    m3d: [
+      { t: "Bel umurtqasi — aylantirib ko'ring", uid: "f151db6d5b374e6ab2fbdef4a56f8170", src: "Elon University" }
+    ]
+  },
+  {
+    id: "a2",
+    title: "Vertebrae cervicales",
+    subtitle: "Bo'yin umurtqalari · Atlas · Axis",
+    icon: "🔵",
+    color: "#0284c7",
+    lead: "Bo'yin umurtqalari 7 ta. Tuzilishiga ko'ra tipik (C3–C7) va atipik (C1 atlas, C2 axis) turlarga bo'linadi. Asosiy farqlovchi belgi — processus transversus'dagi foramen transversarium, undan a. vertebralis o'tadi.",
+    sections: [
+      {
+        h: "Tipik bo'yin umurtqasi", tag: "PDF · 12–18-bet",
+        img: "assets/img/cervical_overview.jpg",
+        cap: "Bo'yin umurtqalari: C1 (yashil), C2 (ko'k), C7 (sariq)",
+        terms: [
+          ["Foramen transversarium", "Ko'ndalang o'simta teshigi — a. vertebralis o'tadi"],
+          ["Tuberculum anterius", "Oldingi do'mboqcha"],
+          ["Tuberculum posterius", "Orqa do'mboqcha"],
+          ["Processus spinosus bifidus", "Uchi ikkiga ayrilgan qirrali o'simta (C2–C6)"]
+        ]
+      },
+      {
+        h: "Atlas (C1) — birinchi bo'yin umurtqasi", tag: "PDF · 19–22-bet",
+        img: "assets/img/atlas_labeled.jpg",
+        cap: "Atlas: arcus anterior/posterior, massae laterales",
+        terms: [
+          ["Arcus anterior / posterior", "Oldingi / orqa ravoq"],
+          ["Massae laterales", "Yon massalar"],
+          ["Fovea dentis", "Tish chuqurchasi (dens axis bilan bo'g'im)"],
+          ["Fovea articularis superior", "Bosh suyagi kondilusi bilan bo'g'im yuzasi"],
+          ["Sulcus arteriae vertebralis", "Umurtqa arteriyasi egati"],
+          ["— Atlasda YO'Q:", "corpus, processus spinosus, processus articularis"]
+        ]
+      },
+      {
+        h: "Axis (C2) — ikkinchi bo'yin umurtqasi", tag: "PDF · 23–27-bet",
+        img: "assets/img/axis_labeled.jpg",
+        cap: "Axis va uning densi",
+        terms: [
+          ["Dens axis", "Tish — atlas bilan aylanish o'qi"],
+          ["Apex dentis", "Tish uchi"],
+          ["Collum dentis", "Tish bo'yni"],
+          ["Facies articularis anterior", "Fovea dentis bilan bo'g'im yuzasi"],
+          ["Facies articularis posterior", "Lig. transversum atlantis bilan bo'g'im"]
+        ]
+      },
+      {
+        h: "C6 va C7 — klinik muhim belgilar", tag: "PDF · 28–29-bet",
+        img: "assets/img/cervical_labeled.jpg",
+        cap: "C6 — tuberculum caroticum, C7 — vertebra prominens",
+        terms: [
+          ["Tuberculum caroticum (C6)", "Uyqu do'mboqchasi — a. carotis communis'ni bosish nuqtasi (qon to'xtatish)"],
+          ["Vertebra prominens (C7)", "Uzun proc. spinosus teridan bo'rtib turadi — umurtqalarni sanash orientiri"]
+        ]
+      }
+    ],
+    m3d: [
+      { t: "Atlas va Axis birga (izohli)", uid: "101d81bcb3d549a99eee6ef922088b01", src: "Dr. P. Valchanov" },
+      { t: "Atlas (C1) — yorliqlar bilan", uid: "5cdab117bb594b9cba827fccb7100195", src: "UMich BlueLink" },
+      { t: "Axis (C2) — izohli model", uid: "34eda94dbc264baab7757eb34e1f9b04", src: "Elon University" },
+      { t: "Tipik bo'yin umurtqasi (C3)", uid: "effd0c826e5e4f2f991bab9898fd6cb6", src: "UMich BlueLink" },
+      { t: "C6 — yorliqlar bilan", uid: "d16456b21737469a985bc19f728cc794", src: "UMich BlueLink" }
+    ]
+  },
+  {
+    id: "a3",
+    title: "Vertebrae thoracicae",
+    subtitle: "Ko'krak umurtqalari",
+    icon: "🟠",
+    color: "#d97706",
+    lead: "Ko'krak umurtqalari 12 ta. Asosiy belgisi — qovurg'alar bilan bo'g'im hosil qiluvchi chuqurchalar (foveae costales). Processus spinosus'lari uzun va pastga qiya (cherepitsasimon) yo'nalgan.",
+    sections: [
+      {
+        h: "Farqlovchi tuzilmalar", tag: "PDF · 30–37-bet",
+        img: "assets/img/thoracic_fovea.jpg",
+        cap: "Qovurg'a chuqurchalari — fovea costalis superior va inferior",
+        terms: [
+          ["Fovea costalis superior", "Yuqorigi qovurg'a chuqurchasi (caput costae)"],
+          ["Fovea costalis inferior", "Pastki qovurg'a chuqurchasi"],
+          ["Fovea costalis transversalis", "Ko'ndalang o'simtadagi chuqurcha (tuberculum costae)"],
+          ["Incisura vertebralis sup./inf.", "Yuqorigi/pastki umurtqa o'ymalari"]
+        ]
+      }
+    ],
+    m3d: [
+      { t: "Ko'krak umurtqasi T4 — yorliqli", uid: "90c03fac7a6f463aab9cf57cf0b3c91e", src: "UMich BlueLink" },
+      { t: "Ko'krak umurtqasi T7 — yorliqli", uid: "7613f3b326e544c6bf23bcbac5163f01", src: "UMich BlueLink" }
+    ]
+  },
+  {
+    id: "a4",
+    title: "Vertebrae lumbales",
+    subtitle: "Bel umurtqalari",
+    icon: "🟡",
+    color: "#ca8a04",
+    lead: "Bel umurtqalari 5 ta — eng katta va massiv umurtqalar. Qovurg'a rudimenti processus costarius deb ataladi. Processus spinosus keng, yassi va gorizontal yo'nalgan.",
+    sections: [
+      {
+        h: "O'simtalari", tag: "PDF · 38–44-bet",
+        img: "assets/img/lumbar_labeled.jpg",
+        cap: "Bel umurtqasining tuzilmalari",
+        terms: [
+          ["Processus costarius", "Qovurg'a o'simtasi (qovurg'a rudimenti)"],
+          ["Processus accessorius", "Qo'shimcha o'simta"],
+          ["Processus mamillaris", "So'rg'ichsimon o'simta"],
+          ["Pediculus / Lamina arcus", "Ravoq oyoqchasi / plastinkasi"]
+        ]
+      }
+    ],
+    m3d: [
+      { t: "Bel umurtqasi — 3D", uid: "f151db6d5b374e6ab2fbdef4a56f8170", src: "Elon University" }
+    ]
+  },
+  {
+    id: "a5",
+    title: "Os sacrum · Os coccygis",
+    subtitle: "Dumg'aza va dum suyagi",
+    icon: "🟣",
+    color: "#7c3aed",
+    lead: "Os sacrum 5 ta dumg'aza umurtqasining qo'shilishidan hosil bo'lgan uchburchaksimon suyak. Yuqori keng qismi — basis, pastki tor uchi — apex. Os coccygis — 3–5 rudimentar umurtqadan iborat dum suyagi.",
+    sections: [
+      {
+        h: "Os sacrum — asosiy qismlar", tag: "PDF · 45–48-bet",
+        img: "assets/img/sacrum_labeled.jpg",
+        cap: "Facies pelvina: basis, promontorium, foramina sacralia pelvina",
+        terms: [
+          ["Basis ossis sacri", "Asosi (yuqorida, L5 bilan birikadi)"],
+          ["Apex ossis sacri", "Uchi (pastda, os coccygis bilan)"],
+          ["Promontorium", "Oldinga bo'rtib chiqqan burtiq"],
+          ["Ala ossis sacri", "Qanotlari"],
+          ["Facies pelvina / dorsalis", "Chanoq / orqa yuzasi"],
+          ["Lineae transversae", "Ko'ndalang chiziqlar (qo'shilish izlari)"],
+          ["Foramina sacralia pelvina/dorsalia", "Oldingi/orqa dumg'aza teshiklari"]
+        ]
+      },
+      {
+        h: "Qirralar, kanal va bo'g'im yuzalari", tag: "PDF · 49–52-bet",
+        img: "assets/img/sacrum_foramina.jpg",
+        cap: "Facies dorsalis: qirralar va foramina sacralia dorsalia",
+        terms: [
+          ["Crista sacralis mediana", "O'rta qirra (proc. spinosus'lardan)"],
+          ["Crista sacralis intermedia", "Oraliq qirra (proc. articularis'lardan)"],
+          ["Crista sacralis lateralis", "Yon qirra (proc. transversus'lardan)"],
+          ["Canalis sacralis", "Dumg'aza kanali"],
+          ["Hiatus sacralis", "Kanalning pastki ochilishi (epidural anesteziya nuqtasi)"],
+          ["Cornua sacralia", "Dumg'aza shoxchalari"],
+          ["Facies auricularis", "Quloqsimon yuza — os ilium bilan bo'g'im"],
+          ["Tuberositas sacralis", "Dumg'aza g'adir-budirligi"]
+        ]
+      },
+      {
+        h: "Os coccygis", tag: "PDF · 53–54-bet",
+        img: "assets/img/coccyx_green.jpg",
+        cap: "Dum suyagi va cornua coccygea",
+        terms: [
+          ["Corpus ossis coccygis", "Tanasi"],
+          ["Cornua coccygea", "Shoxchalari (cornua sacralia bilan birikadi)"],
+          ["Processus transversi", "Ko'ndalang o'simtalar rudimenti"]
+        ]
+      }
+    ],
+    m3d: [
+      { t: "Sacrum — yorliqlar bilan", uid: "64b2bbe85aff4154847c5b6e27849911", src: "UMich BlueLink" },
+      { t: "Sacrum va Coccyx birga", uid: "49aafdac520046ab97afc33a26d47d0c", src: "Elon University" }
+    ]
+  }
+];
+
+// ================== IMTIHON REJIMI ==================
+const EXAM = {
+  title: "Yakuniy imtihon",
+  desc: "Barcha mavzulardan 20 ta tasodifiy savol. Vaqt — 10 daqiqa. O'tish balli — 70%. Yuraklar ishlatilmaydi, lekin natija profilga yoziladi.",
+  count: 20,
+  minutes: 10,
+  passPct: 70
+};
