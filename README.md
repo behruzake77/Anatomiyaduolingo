@@ -1,34 +1,38 @@
 # 🦴 AnatomiLingo
 
-Anatomiyani interaktiv o'rganish uchun professional mobil (PWA) ilova. Darslik — **A. Ahmedov va boshq. «Anatomiya I jild» (Toshkent, 2018)**. Hozirgi kurs **Osteologiya (suyaklar haqidagi ilm)** — butun odam skeleti.
+Anatomiyani **Duolingo uslubida** interaktiv o'rganish uchun mobil (PWA) ilova. Darslik — **A. Ahmedov va boshq. «Anatomiya I jild» (Toshkent, 2018)**.
+
+> Dizayn: och mavzu, binafsha `#6C5CE7`, **Poppins** shrifti — "Anatomiyani o'rgan. Hayotni boshqar."
 
 ## Bo'limlar
 
 | Bo'lim | Tavsif |
 |---|---|
-| 📖 **O'rganish** | 9 modul, 25 dars, 278 mashq — ketma-ket ochiladi, progress kuzatiladi |
-| 🧠 **Atlas** | 10 ta nazariy mavzu: atamalar jadvali (lotin + o'zbek), PDF rasmlari va interaktiv 3D modellar (Sketchfab, ochiq ta'lim manbalari) |
-| 🎓 **Imtihon** | Yakuniy imtihon (30 savol, 15 daqiqa taymer, 70% o'tish balli), aqlli takrorlash, tezkor mashq |
-| 👤 **Profil** | Statistika: XP, streak, o'zlashtirilgan savollar, imtihon rekordi |
+| 🏠 **Bosh sahifa** | Dashboard: kunlik maqsad, streak, daraja, "Davom etish", tezkor mavzular, mavzular to'plami |
+| 🧠 **Atlas** | 14 ta nazariy mavzu: atamalar jadvali (lotin + o'zbek), PDF rasmlari, 3D modellar |
+| 🎓 **Imtihon** | Yakuniy imtihon (30 savol, 15 daqiqa, 70% o'tish), aqlli takrorlash, tezkor mashq |
+| 👤 **Profil** | Daraja, aniqlik, yutuqlar (badges), statistika, sozlamalar, "Ilova haqida" |
 
-## Kurs modullari (Osteologiya)
+## Kurs tarkibi — 13 modul, 35 dars, 390 mashq
 
-1. Umurtqa pog'onasi
-2. Bo'yin umurtqalari
-3. Ko'krak va bel
-4. Dumg'aza va dum
-5. Ko'krak qafasi suyaklari (qovurg'alar + to'sh suyagi)
-6. Qo'l skeleti
-7. Oyoq skeleti
-8. Kalla — miya qismi (neurocranium)
-9. Kalla — yuz qismi (viscerocranium)
+**Osteologiya (suyaklar)**
+1. Umurtqa pog'onasi · 2. Bo'yin umurtqalari · 3. Ko'krak va bel · 4. Dumg'aza va dum · 5. Ko'krak qafasi suyaklari · 6. Qo'l skeleti · 7. Oyoq skeleti · 8. Kalla — miya qismi · 9. Kalla — yuz qismi
 
-## O'quv metodikasi
+**Artrologiya · Miologiya · Ichki a'zolar**
+10. Suyaklarning birlashuvi (bo'g'imlar) · 11. Mushaklar tizimi · 12. Hazm tizimi · 13. Nafas tizimi
 
-- **Aqlli takrorlash (spaced repetition)** — har bir savol bo'yicha daraja saqlanadi (0→5), interval: 0/1/3/7/16/35 kun. Unutish arafasidagi savollar avtomatik navbatga chiqadi
-- **Xato savollar** dars ichida qayta so'raladi va takrorlash bazasiga qo'shiladi
-- **5 xil mashq turi**: test, rasm bo'yicha aniqlash, moslashtirish, atama yig'ish, to'g'ri/noto'g'ri
-- **Gamifikatsiya**: XP, yuraklar (30 daqiqada tiklanadi), kunlik streak. Imtihon va tezkor mashq yuraklarsiz ishlaydi
+**Tez kunda (II jild):** Asab tizimi, Qon aylanish tizimi
+
+## Funksiyalar
+
+- 🎯 **Kunlik maqsad** — har kuni XP to'plash (sozlash mumkin: 30/50/100 XP)
+- ⭐ **Daraja tizimi** — XP asosida (Boshlang'ich → O'rta → Yuksak)
+- 🏅 **Yutuqlar (badges)** — 12 ta: streak, darslar, XP, aniqlik, to'g'ri javoblar
+- 🔁 **Aqlli takrorlash (spaced repetition)** — interval: 0/1/3/7/16/35 kun
+- ❤️ **Yuraklar** (30 daqiqada tiklanadi), 🔥 **streak**, ⚡ **XP**
+- ⚡ **Tezkor mavzular** — Suyaklar / Mushaklar / A'zolar bo'yicha tezkor mashq
+- 🎨 **5 xil mashq turi**: test, rasm, moslashtirish, atama yig'ish, to'g'ri/noto'g'ri
+- 🔊 Ovozli signallar, ⚙️ Sozlamalar, ℹ️ "Ilova haqida"
 
 ## Ishga tushirish
 
@@ -36,7 +40,7 @@ Anatomiyani interaktiv o'rganish uchun professional mobil (PWA) ilova. Darslik �
 python3 -m http.server 8000
 ```
 
-Brauzerda `http://localhost:8000` oching. PWA sifatida telefonga o'rnatish mumkin, asosiy kontent offline ishlaydi (3D modellarga internet kerak).
+Brauzerda `http://localhost:8000` oching. PWA sifatida telefonga o'rnatish mumkin (3D modellarga internet kerak).
 
 ## Tuzilishi
 
@@ -44,28 +48,28 @@ Brauzerda `http://localhost:8000` oching. PWA sifatida telefonga o'rnatish mumki
 index.html            — kirish nuqtasi
 manifest.webmanifest  — PWA manifest
 sw.js                 — service worker (offline kesh)
-css/style.css         — dizayn (Inter shrifti, professional tibbiy uslub)
-js/data.js            — COURSE (darslar), ATLAS (nazariya + 3D), EXAM (sozlamalar)
-js/app.js             — ilova logikasi, SRS, imtihon taymeri (progress localStorage'da)
+css/style.css         — dizayn (Poppins, och mavzu, binafsha aksent)
+js/data.js            — COURSE (modullar), ATLAS (nazariya), QUICK, EXAM
+js/app.js             — ilova logikasi, SRS, daraja, yutuqlar, sozlamalar
 assets/img/           — PDF'dan olingan dars rasmlari
+assets/fonts/         — Poppins (lokal, offline)
 assets/icons/         — ilova ikonkalari
-assets/fonts/         — Inter (lokal, offline)
 ```
 
 ## Yangi mavzu qo'shish
 
 1. **Darslar**: `js/data.js` → `COURSE.units[]` ga yangi modul/darslar qo'shing
-2. **Nazariya**: `ATLAS[]` ga mavzu qo'shing (`sections[].terms` — atamalar, `m3d[].uid` — Sketchfab model ID)
-3. Yangi PDF'dan rasm olish: `pymupdf` bilan eng katta rasmlarni `assets/img/` ga eksport qiling
+2. **Nazariya**: `ATLAS[]` ga mavzu qo'shing (`sections[].terms` — atamalar)
+3. **Tezkor mavzular**: `QUICK[]` — mavzu va tegishli `units[]` ro'yxati
 
 Mashq turlari: `quiz` (q, opts, a, hint?), `img` (+img), `match` (pairs), `build` (q, answer, extra), `tf` (q, a, why?).
 
 ## Reja (bosqichma-bosqich kengaytirish)
 
-Darslikning qolgan bo'limlari navbatdagi bosqichlarda qo'shiladi:
-
-- [x] **Osteologiya** — suyaklar (joriy kurs)
-- [ ] **Artrologiya** — suyaklarning o'zaro qo'shilishi (bo'g'imlar)
-- [ ] **Miologiya** — mushaklar haqidagi ilm
-- [ ] **Splanxnologiya** — ichki a'zolar: hazm a'zolari tizimi
-- [ ] **Nafas a'zolari tizimi** — burun, hiqildoq, kekirdak, o'pka
+- [x] **Osteologiya** — suyaklar
+- [x] **Artrologiya** — bo'g'imlar
+- [x] **Miologiya** — mushaklar
+- [x] **Hazm a'zolari** — sistema digestorium
+- [x] **Nafas a'zolari** — sistema respiratorium
+- [ ] **Asab tizimi** — II jild (kelgusi bosqich)
+- [ ] **Qon aylanish tizimi** — II jild (kelgusi bosqich)

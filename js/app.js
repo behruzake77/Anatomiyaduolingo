@@ -1,4 +1,4 @@
-// AnatomiLingo Pro — asosiy ilova
+// AnatomiLingo — asosiy ilova (Duolingo uslubi)
 (function () {
   const $app = document.getElementById("app");
 
@@ -13,6 +13,13 @@
     mistakes: {},    // "lessonId:exIndex" -> count
     examBest: null,  // {pct, at}
     srs: {},         // "key" -> {due, level}  (spaced repetition)
+    dailyGoal: 50,   // kunlik XP maqsadi
+    dailyXP: 0,      // bugungi to'plangan XP
+    dailyDate: null, // qaysi kunga tegishli
+    answered: 0,     // jami javob berilgan savollar
+    correct: 0,      // jami to'g'ri javoblar
+    achievements: {},// id -> timestamp
+    sound: true,
   };
   let S = load();
   function load() {
@@ -20,6 +27,12 @@
     catch { return { ...DEFAULT_STATE }; }
   }
   function save() { localStorage.setItem("anatomilingo", JSON.stringify(S)); }
+
+  // Kunlik maqsad: yangi kun bo'lsa, bugungi XP ni nollash
+  function resetDailyIfNeeded() {
+    const today = new Date().toDateString();
+    if (S.dailyDate !== today) { S.dailyXP = 0; S.dailyDate = today; save(); }
+  }
 
   // Yuraklar: har 30 daqiqada +1
   function regenHearts() {
@@ -42,6 +55,10 @@
     save();
     return true;
   }
+
+  // ---------- Daraja ----------
+  function levelFromXP(xp) { return Math.min(99, 1 + Math.floor(xp / 100)); }
+  function levelName(lv) { return lv <= 3 ? "Boshlang'ich" : lv <= 6 ? "O'rta" : "Yuksak"; }
 
   // ---------- Spaced repetition (SM-2 soddalashtirilgan) ----------
   const SRS_STEPS = [0, 1, 3, 7, 16, 35]; // kunlar
@@ -79,22 +96,68 @@
   }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
   function exCountLabel(n) { return n + " ta mashq"; }
+  function greet() {
+    const h = new Date().getHours();
+    if (h < 5) return "Xayrli tun";
+    if (h < 12) return "Xayrli tong";
+    if (h < 18) return "Xayrli kun";
+    return "Xayrli kech";
+  }
 
   const KIND_LABEL = {
     quiz: "Savol", img: "Rasmni aniqlang", match: "Moslashtiring",
     build: "Atamani tuzing", tf: "To'g'ri / noto'g'ri",
   };
 
-  // Ovoz
+  // ---------- Yutuqlar ----------
+  const ACHIEVEMENTS = [
+    { id: "first_lesson", icon: "🌱", t: "Ilk qadam", d: "Birinchi darsni tugating", test: s => Object.keys(s.done).length >= 1 },
+    { id: "five_lessons", icon: "📚", t: "O'quvchi", d: "5 ta darsni tugating", test: s => Object.keys(s.done).length >= 5 },
+    { id: "half_course", icon: "🔥", t: "Yarim yo'l", d: "Kursning yarmini tugating", test: s => Object.keys(s.done).length >= Math.ceil(flatLessons.length / 2) },
+    { id: "all_lessons", icon: "🏆", t: "Bilimdon", d: "Barcha darslarni tugating", test: s => Object.keys(s.done).length >= flatLessons.length },
+    { id: "streak_3", icon: "⚡", t: "Seriya", d: "3 kunlik streak", test: s => s.streak >= 3 },
+    { id: "streak_7", icon: "🔥", t: "Hafta jangchisi", d: "7 kunlik streak", test: s => s.streak >= 7 },
+    { id: "xp_500", icon: "⭐", t: "Faol", d: "500 XP to'plang", test: s => s.xp >= 500 },
+    { id: "xp_1000", icon: "💎", t: "Yulduz", d: "1000 XP to'plang", test: s => s.xp >= 1000 },
+    { id: "acc_90", icon: "🎯", t: "Mutaxassis", d: "Imtihonda 90%+ natija", test: s => !!(s.examBest && s.examBest.pct >= 90) },
+    { id: "acc_100", icon: "🎓", t: "Mukammal", d: "Imtihonda 100% natija", test: s => !!(s.examBest && s.examBest.pct >= 100) },
+    { id: "answers_100", icon: "🧠", t: "Quiz ustasi", d: "100 ta to'g'ri javob", test: s => s.correct >= 100 },
+    { id: "level_5", icon: "🚀", t: "5-daraja", d: "5-darajaga chiqing", test: s => levelFromXP(s.xp) >= 5 },
+  ];
+  function checkAchievements() {
+    const unlocked = [];
+    for (const a of ACHIEVEMENTS) {
+      if (!S.achievements[a.id] && a.test(S)) {
+        S.achievements[a.id] = Date.now();
+        unlocked.push(a);
+      }
+    }
+    if (unlocked.length) save();
+    return unlocked;
+  }
+  function showToast(icon, title, sub) {
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.innerHTML = `<span class="t-ico">${icon}</span><div><div class="t-t">${esc(title)}</div><div class="t-s">${esc(sub)}</div></div>`;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.transition = "opacity .3s"; t.style.opacity = "0"; }, 2600);
+    setTimeout(() => t.remove(), 3000);
+  }
+  function showAchievements(list) {
+    list.forEach((a, i) => setTimeout(() => showToast(a.icon, "Yutuq: " + a.t, a.d), i * 2200));
+  }
+
+  // ---------- Ovoz ----------
   let audioCtx;
   function beep(good) {
+    if (!S.sound) return;
     try {
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
       const notes = good ? [587.33, 880] : [220, 174.61];
       notes.forEach((f, i) => {
         const o = audioCtx.createOscillator(), g = audioCtx.createGain();
         o.type = "sine"; o.frequency.value = f;
-        g.gain.setValueAtTime(0.09, audioCtx.currentTime + i * 0.08);
+        g.gain.setValueAtTime(0.08, audioCtx.currentTime + i * 0.08);
         g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.08 + 0.22);
         o.connect(g); g.connect(audioCtx.destination);
         o.start(audioCtx.currentTime + i * 0.08); o.stop(audioCtx.currentTime + i * 0.08 + 0.26);
@@ -105,7 +168,7 @@
   function confetti() {
     const box = document.createElement("div");
     box.className = "confetti";
-    const colors = ["#0d9488", "#0284c7", "#f59e0b", "#7c3aed", "#e11d48"];
+    const colors = ["#6C5CE7", "#A298FE", "#00B894", "#FD79A8", "#F59E0B"];
     for (let i = 0; i < 60; i++) {
       const p = document.createElement("i");
       p.style.left = Math.random() * 100 + "%";
@@ -132,7 +195,7 @@
 
   function bottomnav(active) {
     const items = [
-      ["home", "📖", "O'rganish"],
+      ["home", "🏠", "Bosh sahifa"],
       ["atlas", "🧠", "Atlas"],
       ["exam", "🎓", "Imtihon"],
       ["profile", "👤", "Profil"],
@@ -151,67 +214,154 @@
     }));
   }
 
-  // ---------- O'rganish (bosh sahifa) ----------
+  // ---------- Bosh sahifa (Dashboard) ----------
+  const COMING_SYSTEMS = [
+    { title: "Asab tizimi", icon: "🧠", color: "#3B82F6" },
+    { title: "Qon aylanish", icon: "🫀", color: "#E5484D" },
+  ];
+
   function renderHome() {
     regenHearts();
+    resetDailyIfNeeded();
     const doneCount = Object.keys(S.done).length;
     const pct = Math.round((doneCount / flatLessons.length) * 100);
     const due = srsDueKeys().length;
     const mistakes = Object.keys(S.mistakes).length;
+    const lv = levelFromXP(S.xp);
+    const goalPct = Math.min(100, Math.round((S.dailyXP / S.dailyGoal) * 100));
 
     let html = topbar() + `<div class="home">
-      <div class="progress-hero">
-        <h1>${COURSE.title}</h1>
-        <div class="sub">${COURSE.subtitle} · ${flatLessons.length} dars</div>
-        <div class="ph-bar"><div style="width:${pct}%"></div></div>
-        <div class="ph-meta"><span>${doneCount}/${flatLessons.length} dars tugallandi</span><span>${pct}%</span></div>
+      <div class="hero">
+        <div class="greet">${greet()} 👋 Qaytib kelganingizdan xursandmiz!</div>
+        <h1>Bugun o'rganishga tayyormisiz?</h1>
+        <div class="tagline">Anatomiyani o'rgan. Hayotni boshqar. 🦴</div>
+        <div class="hero-chips">
+          <span class="hero-chip">🔥 ${S.streak} kunlik seriya</span>
+          <span class="hero-chip">⭐ ${lv}-daraja · ${levelName(lv)}</span>
+          <span class="hero-chip">⚡ ${S.xp} XP</span>
+        </div>
+        <div class="hero-goal">
+          <div class="goal-ring" style="--p:${goalPct * 3.6}deg"><div>${goalPct}%</div></div>
+          <div class="goal-text"><b>Kunlik maqsad:</b> ${S.dailyXP}/${S.dailyGoal} XP<br>${goalPct >= 100 ? "Bajarildi, barakalla! 🎉" : "Davom eting, oz qoldi!"}</div>
+        </div>
       </div>`;
 
+    // Continue Learning
+    const cur = currentLessonId();
+    if (cur) {
+      const cl = flatLessons[lessonIndex(cur)];
+      html += `<button class="continue-btn" id="btn-continue">
+        <div class="c-ico">▶</div>
+        <div>
+          <div class="c-t">${esc(cl.title)}</div>
+          <div class="c-s">${esc(cl.unit.title)} · davom etish</div>
+        </div>
+        <div class="l-go">›</div>
+      </button>`;
+    }
+
+    // Takrorlash
     if (due || mistakes) {
-      html += `<div class="card mode-card" style="align-items:center">
-        <div class="m-ico" style="background:var(--blue-bg);color:var(--blue)">🔁</div>
+      html += `<div class="card mode-card">
+        <div class="m-ico" style="background:var(--primary-bg);color:var(--primary)">🔁</div>
         <div style="flex:1">
           <h3>Takrorlash vaqti keldi</h3>
-          <p style="margin-bottom:10px">${due ? `${due} ta savol takrorlash uchun tayyor (interval usuli).` : `${mistakes} ta xato savolingiz bor.`}</p>
+          <p>${due ? `${due} ta savol takrorlash uchun tayyor (interval usuli).` : `${mistakes} ta xato savolingiz bor.`}</p>
           <button class="btn ghost" id="btn-srs" style="padding:9px 16px;font-size:13px">Takrorlashni boshlash</button>
         </div>
       </div>`;
     }
 
-    const cur = currentLessonId();
-    COURSE.units.forEach((u, ui) => {
+    // Quick Topics
+    html += `<div class="section-title">Tezkor mavzular</div>
+      <div class="quick-row">${QUICK.map(q =>
+        `<button class="quick-chip ${q.soon ? "soon" : ""}" data-quick="${q.id}">
+          <div class="q-ico" style="background:${q.color}1a">${q.icon}</div>
+          <div><div class="q-t">${esc(q.label)}</div><div class="q-s">${q.soon ? "Tez kunda" : "Tezkor mashq"}</div></div>
+        </button>`).join("")}
+      </div>`;
+
+    // Topics (tizimlar)
+    html += `<div class="section-title">Mavzular <span class="see">${doneCount}/${flatLessons.length} dars</span></div>
+      <div class="topics-grid">`;
+    COURSE.units.forEach((u) => {
       const uDone = u.lessons.filter(l => S.done[l.id]).length;
-      html += `<div class="card unit-card">
-        <div class="unit-head">
-          <div class="unit-num" style="background:${u.color}">${ui + 1}</div>
+      const up = Math.round((uDone / u.lessons.length) * 100);
+      html += `<button class="topic-card" data-unit="${u.id}">
+        <div class="tp-top">
+          <div class="tp-ico" style="background:${u.color}1a">${u.icon}</div>
           <div>
-            <div class="u-title">${esc(u.title)}</div>
-            <div class="u-meta">${u.lessons.length} dars · ${u.lessons.reduce((s, l) => s + l.ex.length, 0)} mashq</div>
+            <div class="tp-title">${esc(u.title)}</div>
+            <div class="tp-count">${uDone}/${u.lessons.length} dars</div>
           </div>
-          <div class="unit-progress">${uDone}/${u.lessons.length}</div>
-        </div>`;
-      for (const l of u.lessons) {
-        const unlocked = isUnlocked(l.id);
-        const done = S.done[l.id];
-        const isCur = l.id === cur;
-        html += `<button class="lesson-row" data-lesson="${l.id}" ${unlocked ? "" : "disabled"}>
-          <div class="l-state ${done ? "done" : isCur ? "cur" : ""}">${done ? "✓" : isCur ? "▶" : unlocked ? "" : "🔒"}</div>
-          <div>
-            <div class="l-title">${esc(l.title)}</div>
-            <div class="l-sub">${exCountLabel(l.ex.length)} · ${l.xp} XP</div>
-          </div>
-          ${done ? `<div class="l-acc">${done.acc}%</div>` : `<div class="l-go">›</div>`}
-        </button>`;
-      }
-      html += `</div>`;
+        </div>
+        <div class="tp-bar"><div style="width:${up}%;background:${u.color}"></div></div>
+      </button>`;
     });
+    COMING_SYSTEMS.forEach(c => {
+      html += `<div class="topic-card soon">
+        <span class="soon-tag">Tez kunda</span>
+        <div class="tp-top">
+          <div class="tp-ico" style="background:${c.color}1a">${c.icon}</div>
+          <div>
+            <div class="tp-title">${esc(c.title)}</div>
+            <div class="tp-count">II jildda</div>
+          </div>
+        </div>
+        <div class="tp-bar"><div style="width:0%;background:${c.color}"></div></div>
+      </div>`;
+    });
+    html += `</div>`;
 
     html += `</div>` + bottomnav("home");
     $app.innerHTML = html;
-    $app.querySelectorAll("[data-lesson]").forEach(b =>
-      b.addEventListener("click", () => startLesson(b.dataset.lesson)));
+
+    const cb = document.getElementById("btn-continue");
+    if (cb) cb.addEventListener("click", () => startLesson(cur));
     const srsBtn = document.getElementById("btn-srs");
     if (srsBtn) srsBtn.addEventListener("click", startReview);
+    $app.querySelectorAll("[data-unit]").forEach(b =>
+      b.addEventListener("click", () => renderUnit(b.dataset.unit)));
+    $app.querySelectorAll("[data-quick]").forEach(b =>
+      b.addEventListener("click", () => startQuickTopic(b.dataset.quick)));
+    bindNav();
+    window.scrollTo(0, 0);
+  }
+
+  // ---------- Modul detail (darslar) ----------
+  function renderUnit(id) {
+    const u = COURSE.units.find(x => x.id === id);
+    if (!u) return renderHome();
+    const uDone = u.lessons.filter(l => S.done[l.id]).length;
+    const up = Math.round((uDone / u.lessons.length) * 100);
+    const cur = currentLessonId();
+
+    let html = `<div class="detail-top">
+      <button class="btn-back" id="back">‹</button>
+      <h2>${esc(u.title)}</h2>
+    </div>
+    <div class="page" style="padding-top:10px">
+      <div class="page-desc" style="margin-bottom:12px">${uDone}/${u.lessons.length} dars tugallandi · ${up}%</div>
+      <div style="margin:0 18px 14px"><div class="tp-bar" style="height:9px"><div style="width:${up}%;background:${u.color};height:100%;border-radius:6px"></div></div></div>
+      <div style="margin:0 18px 18px;display:flex;flex-direction:column;gap:2px">`;
+    for (const l of u.lessons) {
+      const unlocked = isUnlocked(l.id);
+      const done = S.done[l.id];
+      const isCur = l.id === cur;
+      html += `<button class="lesson-row" data-lesson="${l.id}" ${unlocked ? "" : "disabled"}>
+        <div class="l-state ${done ? "done" : isCur ? "cur" : ""}">${done ? "✓" : isCur ? "▶" : unlocked ? "" : "🔒"}</div>
+        <div>
+          <div class="l-title">${esc(l.title)}</div>
+          <div class="l-sub">${exCountLabel(l.ex.length)} · ${l.xp} XP</div>
+        </div>
+        ${done ? `<div class="l-acc">${done.acc}%</div>` : `<div class="l-go">›</div>`}
+      </button>`;
+    }
+    html += `</div></div>` + bottomnav("home");
+    $app.innerHTML = html;
+    document.getElementById("back").addEventListener("click", renderHome);
+    $app.querySelectorAll("[data-lesson]").forEach(b =>
+      b.addEventListener("click", () => startLesson(b.dataset.lesson)));
     bindNav();
     window.scrollTo(0, 0);
   }
@@ -221,13 +371,13 @@
     regenHearts();
     let html = topbar() + `<div class="page">
       <div class="page-title">Atlas</div>
-      <div class="page-desc">Nazariy material — PDF prezentatsiya asosida. Har bir mavzuda atamalar jadvali va interaktiv 3D modellar (aylantirish, kattalashtirish mumkin).</div>`;
+      <div class="page-desc">Nazariy material — darslik asosida. Har bir mavzuda atamalar jadvali va interaktiv 3D modellar (aylantirish, kattalashtirish mumkin).</div>`;
     for (const a of ATLAS) {
       html += `<button class="card atlas-item" data-atlas="${a.id}">
-        <div class="a-ico" style="background:${a.color}">${a.icon}</div>
+        <div class="a-ico" style="background:${a.color}1a">${a.icon}</div>
         <div>
           <div class="a-t">${esc(a.title)}</div>
-          <div class="a-s">${esc(a.subtitle)} · ${a.sections.length} bo'lim · ${a.m3d.length} ta 3D model</div>
+          <div class="a-s">${esc(a.subtitle)} · ${a.sections.length} bo'lim${a.m3d && a.m3d.length ? " · " + a.m3d.length + " ta 3D" : ""}</div>
         </div>
         <div class="l-go">›</div>
       </button>`;
@@ -242,6 +392,7 @@
 
   function renderAtlasDetail(id) {
     const a = ATLAS.find(x => x.id === id);
+    if (!a) return renderAtlas();
     let html = `<div class="detail-top">
       <button class="btn-back" id="back">‹</button>
       <h2>${esc(a.title)}</h2>
@@ -279,7 +430,6 @@
     html += `</div>` + bottomnav("atlas");
     $app.innerHTML = html;
     document.getElementById("back").addEventListener("click", renderAtlas);
-    // 3D lazy-load: bosilganda iframe qo'yiladi (trafik tejash)
     $app.querySelectorAll(".m3d").forEach(card => {
       const btn = card.querySelector(".m3d-load");
       btn.addEventListener("click", () => {
@@ -299,6 +449,7 @@
     const best = S.examBest;
     const due = srsDueKeys().length;
     const mistakes = Object.keys(S.mistakes).length;
+    const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
     $app.innerHTML = topbar() + `<div class="page">
       <div class="page-title">Sinov rejimlari</div>
       <div class="page-desc">Bilimingizni turli usullarda mustahkamlang va tekshiring.</div>
@@ -331,6 +482,7 @@
         <div style="flex:1">
           <h3>Tezkor mashq</h3>
           <p>Barcha mavzulardan 10 ta tasodifiy savol — bilimni tez tekshirish uchun. Yurak talab qilinmaydi.</p>
+          <div class="meta"><span>🎯 Umumiy aniqlik: ${acc}%</span></div>
           <button class="btn full ghost" id="btn-quick">Boshlash</button>
         </div>
       </div>
@@ -348,35 +500,117 @@
     const mistakes = Object.keys(S.mistakes).length;
     const srsTotal = Object.keys(S.srs).length;
     const mastered = Object.values(S.srs).filter(x => x.level >= 4).length;
+    const lv = levelFromXP(S.xp);
+    const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
+    const unlockedAch = Object.keys(S.achievements).length;
+    resetDailyIfNeeded();
+
     $app.innerHTML = topbar() + `<div class="page profile">
-      <div class="page-title">Profil</div>
+      <div class="profile-hero">
+        <div class="avatar">🧑‍⚕️</div>
+        <div class="pname">Anatomiya o'quvchisi</div>
+        <div class="plevel">${lv}-daraja · ${levelName(lv)}</div>
+        <div class="pstats">
+          <div class="ps"><div class="v">🔥 ${S.streak}</div><div class="l">Seriya</div></div>
+          <div class="ps"><div class="v">⚡ ${S.xp}</div><div class="l">Jami XP</div></div>
+          <div class="ps"><div class="v">🎯 ${acc}%</div><div class="l">Aniqlik</div></div>
+        </div>
+      </div>
+
       <div class="pgrid">
-        <div class="card pcard"><div class="ico">🔥</div><div><div class="val">${S.streak} kun</div><div class="lbl">Streak</div></div></div>
-        <div class="card pcard"><div class="ico">⚡</div><div><div class="val">${S.xp}</div><div class="lbl">Jami XP</div></div></div>
         <div class="card pcard"><div class="ico">📚</div><div><div class="val">${doneCount}/${flatLessons.length}</div><div class="lbl">Darslar</div></div></div>
         <div class="card pcard"><div class="ico">❤️</div><div><div class="val">${S.hearts}/5</div><div class="lbl">Yuraklar</div></div></div>
         <div class="card pcard"><div class="ico">🧠</div><div><div class="val">${mastered}/${srsTotal || 0}</div><div class="lbl">O'zlashtirilgan</div></div></div>
-        <div class="card pcard"><div class="ico">🎓</div><div><div class="val">${S.examBest ? S.examBest.pct + "%" : "—"}</div><div class="lbl">Imtihon rekordi</div></div></div>
+        <div class="card pcard"><div class="ico">🎓</div><div><div class="val">${S.examBest ? S.examBest.pct + "%" : "—"}</div><div class="lbl">Imtihon</div></div></div>
+        <div class="card pcard"><div class="ico">📅</div><div><div class="val">${S.dailyXP}/${S.dailyGoal}</div><div class="lbl">Bugungi XP</div></div></div>
+        <div class="card pcard"><div class="ico">🏅</div><div><div class="val">${unlockedAch}/${ACHIEVEMENTS.length}</div><div class="lbl">Yutuqlar</div></div></div>
       </div>
+
+      <div class="section-title">Yutuqlar</div>
+      <div class="ach-grid">${ACHIEVEMENTS.map(a => {
+        const on = !!S.achievements[a.id];
+        return `<div class="ach ${on ? "" : "locked"}"><div class="ach-ico">${a.icon}</div><div class="ach-t">${esc(a.t)}</div><div class="ach-d">${esc(a.d)}</div></div>`;
+      }).join("")}
+      </div>
+
       <div class="card review-box">
         <h3>Xatolar ustida ishlash</h3>
         <p>${mistakes ? `${mistakes} ta qiyin savol bor. Interval usulida takrorlab mustahkamlang.` : "Faol xatolar yo'q — ajoyib natija."}</p>
         ${mistakes ? `<button class="btn full ghost" id="btn-review">Takrorlashni boshlash</button>` : ""}
       </div>
-      <div class="card review-box">
-        <h3>Progressni tiklash</h3>
-        <p>Barcha yutuqlar, XP va statistika o'chiriladi. Bu amalni ortga qaytarib bo'lmaydi.</p>
-        <button class="btn full danger" id="btn-reset">Progressni o'chirish</button>
+
+      <div class="card review-box" style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn ghost full" id="btn-settings">⚙️ Sozlamalar</button>
+        <button class="btn ghost full" id="btn-about">ℹ️ Ilova haqida</button>
       </div>
     </div>` + bottomnav("profile");
     bindNav();
     const rb = document.getElementById("btn-review");
     if (rb) rb.addEventListener("click", startReview);
+    document.getElementById("btn-settings").addEventListener("click", renderSettings);
+    document.getElementById("btn-about").addEventListener("click", renderAbout);
+  }
+
+  // ---------- Sozlamalar ----------
+  function renderSettings() {
+    let html = `<div class="detail-top">
+      <button class="btn-back" id="back">‹</button>
+      <h2>Sozlamalar</h2>
+    </div>
+    <div class="page" style="padding-top:10px">
+      <div style="margin:0 18px;display:flex;flex-direction:column;gap:2px">
+        <div class="set-row">
+          <span class="s-ico">🔊</span>
+          <div><div class="s-t">Ovozli signallar</div><div class="s-s">To'g'ri/noto'g'ri javobda signal</div></div>
+          <label class="switch"><input type="checkbox" id="sw-sound" ${S.sound ? "checked" : ""}><span class="sl"></span></label>
+        </div>
+        <div class="set-row">
+          <span class="s-ico">🎯</span>
+          <div style="flex:1"><div class="s-t">Kunlik maqsad</div><div class="s-s">Har kuni to'planadigan XP</div></div>
+          <select id="sel-goal" style="padding:8px 10px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-weight:700;color:var(--ink)">
+            ${[30, 50, 100].map(g => `<option value="${g}" ${S.dailyGoal === g ? "selected" : ""}>${g} XP</option>`).join("")}
+          </select>
+        </div>
+        <div class="set-row">
+          <span class="s-ico">🗑️</span>
+          <div style="flex:1"><div class="s-t">Progressni tiklash</div><div class="s-s">Barcha yutuqlar, XP va statistika o'chiriladi</div></div>
+          <button class="btn danger" id="btn-reset" style="padding:9px 14px;font-size:12.5px">O'chirish</button>
+        </div>
+      </div>
+    </div>` + bottomnav("profile");
+    $app.innerHTML = html;
+    document.getElementById("back").addEventListener("click", renderProfile);
+    document.getElementById("sw-sound").addEventListener("change", e => { S.sound = e.target.checked; save(); });
+    document.getElementById("sel-goal").addEventListener("change", e => { S.dailyGoal = +e.target.value; save(); });
     document.getElementById("btn-reset").addEventListener("click", () => {
       if (confirm("Rostdan ham barcha progress o'chirilsinmi?")) {
         S = JSON.parse(JSON.stringify(DEFAULT_STATE)); save(); renderHome();
       }
     });
+    bindNav();
+  }
+
+  // ---------- Ilova haqida ----------
+  function renderAbout() {
+    const lv = levelFromXP(S.xp);
+    $app.innerHTML = `<div class="detail-top">
+      <button class="btn-back" id="back">‹</button>
+      <h2>Ilova haqida</h2>
+    </div>
+    <div class="page" style="padding-top:10px">
+      <div class="card about-box" style="margin:0 18px">
+        <div class="logo-big">🦴</div>
+        <h2>AnatomiLingo</h2>
+        <div class="ver">Versiya 2.0 · ${levelName(lv)} daraja</div>
+        <p><b>«Anatomiyani o'rgan. Hayotni boshqar.»</b><br>Anatomiyani Duolingo uslubida o'rganish uchun interaktiv mobil ilova. ${COURSE.units.length} ta mavzu, ${flatLessons.length} ta dars va ${allExercises.length}+ mashq.</p>
+        <p><b>Manba:</b> A. Ahmedov va boshq. «Anatomiya I jild» (Toshkent, 2018) darsligi asosida tuzilgan.</p>
+        <p><b>3D modellar:</b> Sketchfab ochiq ta'lim manbalari — Univ. of Michigan BlueLink, Elon University, Leiden University MC, Dr. P. Valchanov.</p>
+        <p style="margin-bottom:0"><b>Kurs tarkibi:</b> suyaklar (osteologiya), bo'g'imlar (artrologiya), mushaklar (miologiya), hazm va nafas a'zolari.</p>
+      </div>
+    </div>` + bottomnav("profile");
+    $app.innerHTML = html;
+    document.getElementById("back").addEventListener("click", renderProfile);
+    bindNav();
   }
 
   // ---------- Sessiyalar ----------
@@ -400,7 +634,7 @@
     if (S.hearts <= 0) return renderNoHearts();
     let keys = srsDueKeys();
     if (!keys.length) keys = Object.keys(S.mistakes);
-    if (!keys.length) { alert("Takrorlash uchun savollar yo'q. Avval darslarni ishlang."); return; }
+    if (!keys.length) { showToast("ℹ️", "Takrorlash uchun savollar yo'q", "Avval darslarni ishlang"); return; }
     const exs = [];
     for (const k of shuffle(keys).slice(0, 10)) {
       const [lid, i] = k.split(":");
@@ -423,8 +657,24 @@
     renderExercise();
   }
 
+  function startQuickTopic(catId) {
+    const q = QUICK.find(x => x.id === catId);
+    if (!q || q.soon) { showToast("ℹ️", q.label + " — tez kunda", "II jild qo'shilgach ochiladi"); return; }
+    const pool = [];
+    q.units.forEach(uid => {
+      const u = COURSE.units.find(x => x.id === uid);
+      if (u) u.lessons.forEach(l => l.ex.forEach(e => pool.push({ ...e, _key: null })));
+    });
+    const exs = shuffle(pool).slice(0, 8);
+    if (!exs.length) return;
+    session = {
+      kind: "quick", lessonId: null, title: q.label,
+      queue: exs, idx: 0, correct: 0, xpBase: 8, useHearts: false, startedAt: Date.now(),
+    };
+    renderExercise();
+  }
+
   function startExam() {
-    // faqat javob tanlanadigan turlar tezroq baholanadi — hammasini olamiz
     const exs = shuffle(allExercises).slice(0, EXAM.count).map(e => ({ ...e }));
     session = {
       kind: "exam", lessonId: null, title: EXAM.title,
@@ -658,6 +908,8 @@
   // ----- Qadam yakuni -----
   function finishStep(ex, good, subText) {
     beep(good);
+    S.answered++;
+    if (good) S.correct++;
     if (ex._key) srsUpdate(ex._key, good);
     if (good) {
       session.correct++;
@@ -668,12 +920,10 @@
         if (!S.heartsLostAt) S.heartsLostAt = Date.now();
       }
       if (ex._key) S.mistakes[ex._key] = (S.mistakes[ex._key] || 0) + 1;
-      // imtihonda qayta so'ralmaydi, boshqa rejimlarda so'raladi
       if (session.kind !== "exam" && !ex._requeued) session.queue.push({ ...ex, _requeued: true });
     }
     save();
 
-    // imtihonda darhol keyingisiga o'tish (feedback qisqa)
     const fb = document.createElement("div");
     fb.className = "feedback " + (good ? "good" : "bad");
     fb.innerHTML = `<div class="fb-title">${good ? "✓ To'g'ri" : "✕ Noto'g'ri"}</div>
@@ -694,6 +944,7 @@
   // ----- Natija -----
   function renderResult(timeUp) {
     clearInterval(examTimer);
+    resetDailyIfNeeded();
     const total = session.queue.length;
     const acc = total ? Math.round((session.correct / total) * 100) : 0;
     const isExam = session.kind === "exam";
@@ -704,10 +955,12 @@
     const timeStr = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
 
     S.xp += gained;
+    S.dailyXP += gained;
     if (session.lessonId) S.done[session.lessonId] = { acc, at: Date.now() };
     if (isExam && (!S.examBest || acc > S.examBest.pct)) S.examBest = { pct: acc, at: Date.now() };
     const newStreak = touchStreak();
     save();
+    const newAch = checkAchievements();
 
     let h1, sub, emoji;
     if (isExam) {
@@ -716,7 +969,7 @@
       sub = passed ? `Natija: ${acc}% (o'tish balli ${EXAM.passPct}%)` : `Natija: ${acc}%. Yana tayyorlanib qayta topshiring.`;
     } else {
       emoji = acc === 100 ? "🏆" : acc >= 70 ? "✅" : "💪";
-      h1 = session.kind === "review" ? "Takrorlash yakunlandi" : session.kind === "quick" ? "Tezkor mashq yakunlandi" : "Dars yakunlandi";
+      h1 = session.kind === "review" ? "Takrorlash yakunlandi" : session.kind === "quick" ? "Mashq yakunlandi" : "Dars yakunlandi";
       sub = acc === 100 ? "Mukammal — barcha javoblar to'g'ri." : "Xatolar avtomatik takrorlash navbatiga qo'shildi.";
     }
 
@@ -733,6 +986,7 @@
     </div>`;
     beep(passed && acc >= 70);
     if (passed && acc >= 70) confetti();
+    if (newAch.length) showAchievements(newAch);
     const wasExam = isExam;
     session = null;
     document.getElementById("continue").addEventListener("click", () => {
@@ -754,5 +1008,6 @@
 
   // ---------- Boshlash ----------
   regenHearts();
+  resetDailyIfNeeded();
   renderHome();
 })();

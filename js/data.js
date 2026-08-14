@@ -7,8 +7,8 @@
 //  tf    — to'g'ri / noto'g'ri
 
 const COURSE = {
-  title: "Odam skeleti (Osteologiya)",
-  subtitle: "Anatomiya I jild · Suyaklar haqidagi ilm",
+  title: "Odam anatomiyasi",
+  subtitle: "Anatomiya I jild · Suyaklar, bo'g'imlar, mushaklar, ichki a'zolar",
   units: [
     {
       id: "u1",
@@ -534,6 +534,220 @@ const COURSE = {
           ]
         }
       ]
+    },
+    {
+      id: "u10",
+      title: "Suyaklarning birlashuvi",
+      color: "#06b6d4",
+      icon: "🔗",
+      lessons: [
+        {
+          id: "l26",
+          title: "Bo'g'imlar haqida tushuncha",
+          xp: 20,
+          ex: [
+            { t: "quiz", q: "Bo'g'im lotinchada qanday ataladi?", opts: ["Articulatio", "Sutura", "Symphysis", "Synchondrosis"], a: 0 },
+            { t: "quiz", q: "Suyaklarning qo'shilishini o'rganuvchi bo'lim?", opts: ["Osteologiya", "Artrologiya", "Miologiya", "Splanxnologiya"], a: 1, hint: "Arthron — bo'g'im" },
+            { t: "quiz", q: "Sinovial (chin) bo'g'imning asosiy elementlariga qaysilar kiradi?", opts: ["Facies articularis, capsula, cavitas, ligamentum", "Sutura, synchondrosis", "Corpus, arcus, foramen", "Venter, tendo, fascia"], a: 0 },
+            { t: "quiz", q: "Bo'g'im xaltasi qanday ataladi?", opts: ["Capsula articularis", "Cavitas articularis", "Ligamentum", "Cartilago"], a: 0 },
+            { t: "quiz", q: "Bo'g'im bo'shlig'i qanday ataladi?", opts: ["Cavitas articularis", "Capsula articularis", "Foramen", "Sinus"], a: 0 },
+            { t: "match", pairs: [["Capsula articularis", "Bo'g'im xaltasi"], ["Cavitas articularis", "Bo'g'im bo'shlig'i"], ["Ligamentum", "Bog'lam"], ["Cartilago articularis", "Bo'g'im tog'ayi"]] },
+            { t: "build", q: "«Bo'g'im bo'shlig'i» atamasini yig'ing", answer: "Cavitas articularis", extra: ["capsula", "ligamentum"] },
+            { t: "quiz", q: "Kalla suyaklarini biriktiruvchi harakatsiz chok?", opts: ["Sutura", "Articulatio", "Symphysis", "Syndesmosis"], a: 0 },
+            { t: "quiz", q: "Qov suyaklari orasidagi yarimharakatchan birikish (tog'ay orqali)?", opts: ["Symphysis", "Sutura", "Articulatio", "Synostosis"], a: 0, hint: "Symphysis pubica" },
+            { t: "tf", q: "Ligamentlar bo'g'imni mustahkamlaydi.", a: true },
+            { t: "quiz", q: "Bo'g'im yuzalarini qoplovchi silliq tog'ay?", opts: ["Cartilago articularis", "Discus articularis", "Meniscus", "Labrum"], a: 0 }
+          ]
+        },
+        {
+          id: "l27",
+          title: "Asosiy bo'g'imlar",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Yelka bo'g'imi lotinchada qanday ataladi?", opts: ["Articulatio humeri", "Articulatio cubiti", "Articulatio coxae", "Articulatio genus"], a: 0 },
+            { t: "quiz", q: "Tirsak bo'g'imi lotinchada qanday ataladi?", opts: ["Articulatio cubiti", "Articulatio humeri", "Articulatio genus", "Articulatio radiocarpea"], a: 0 },
+            { t: "quiz", q: "Tizza bo'g'imi lotinchada qanday ataladi?", opts: ["Articulatio genus", "Articulatio coxae", "Articulatio cubiti", "Articulatio talocruralis"], a: 0 },
+            { t: "quiz", q: "Chanoq-son bo'g'imi lotinchada qanday ataladi?", opts: ["Articulatio coxae", "Articulatio genus", "Articulatio humeri", "Symphysis pubica"], a: 0 },
+            { t: "quiz", q: "Son suyagining boshi qaysi bo'g'imda ishtirok etadi?", opts: ["Articulatio coxae", "Articulatio genus", "Articulatio humeri", "Articulatio cubiti"], a: 0 },
+            { t: "quiz", q: "Qaysi bo'g'im eng harakatchan (sharsimon)?", opts: ["Yelka bo'g'imi", "Tirsak bo'g'imi", "Tizza bo'g'imi", "To'piq bo'g'imi"], a: 0 },
+            { t: "match", pairs: [["Articulatio humeri", "Yelka bo'g'imi"], ["Articulatio cubiti", "Tirsak bo'g'imi"], ["Articulatio coxae", "Chanoq-son bo'g'imi"], ["Articulatio genus", "Tizza bo'g'imi"]] },
+            { t: "build", q: "«Tizza bo'g'imi» atamasini yig'ing", answer: "Articulatio genus", extra: ["coxae", "cubiti"] },
+            { t: "quiz", q: "Tizza bo'g'imidagi yarimoysimon tog'ay plastinkalar?", opts: ["Meniscus", "Discus", "Labrum", "Cartilago"], a: 0, hint: "Menisk" },
+            { t: "quiz", q: "Chakka-pastki jag' bo'g'imi qanday ataladi?", opts: ["Articulatio temporomandibularis", "Articulatio sternoclavicularis", "Symphysis", "Articulatio atlantoaxialis"], a: 0 },
+            { t: "tf", q: "Articulatio humeri — yelka bo'g'imi, eng harakatchan bo'g'imlardan biri.", a: true },
+            { t: "quiz", q: "Bo'g'im ichida suyaklarni biriktiruvchi, «soat bog'lamlari» kabi tuzilmalar?", opts: ["Ligamenta", "Fasciae", "Tendines", "Aponeuroses"], a: 0 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u11",
+      title: "Mushaklar tizimi",
+      color: "#ec4899",
+      icon: "💪",
+      lessons: [
+        {
+          id: "l28",
+          title: "Mushak haqida tushuncha",
+          xp: 20,
+          ex: [
+            { t: "quiz", q: "Mushak lotinchada qanday ataladi?", opts: ["Musculus", "Articulatio", "Os", "Nervus"], a: 0 },
+            { t: "quiz", q: "Mushaklar haqidagi fan qanday ataladi?", opts: ["Miologiya", "Osteologiya", "Artrologiya", "Splanxnologiya"], a: 0, hint: "Mys — mushak" },
+            { t: "quiz", q: "Mushaklarning nechta asosiy turi bor?", opts: ["3", "2", "4", "5"], a: 0, hint: "Silliq, ko'ndalang-targ'il (skelet), yurak" },
+            { t: "quiz", q: "Skelet mushagining qisqaruvchi o'rta qismi qanday ataladi?", opts: ["Venter (qorin)", "Tendo (pay)", "Fascia", "Aponeurosis"], a: 0 },
+            { t: "quiz", q: "Mushakning suyakka birikuvchi qismi qanday ataladi?", opts: ["Tendo (pay)", "Venter", "Caput", "Cauda"], a: 0 },
+            { t: "match", pairs: [["Venter", "Mushak qorni"], ["Tendo", "Pay"], ["Fascia", "Mushak pardasi"], ["Aponeurosis", "Keng pay"]] },
+            { t: "build", q: "«Mushak payi» atamasini yig'ing", answer: "Tendo", extra: ["venter", "fascia"] },
+            { t: "quiz", q: "Mushaklarni tashqaridan o'rab turuvchi parda?", opts: ["Fascia", "Tendo", "Capsula", "Peritoneum"], a: 0 },
+            { t: "quiz", q: "Mushakning asosiy fiziologik xossalari qaysilar?", opts: ["Qo'zg'aluvchanlik va qisqaruvchanlik", "Sekretsiya va so'rilish", "O'tkazuvchanlik va tayanch", "Qayishqoqlik va qattiqlik"], a: 0 },
+            { t: "tf", q: "Mushak qisqarishi natijasida harakat hosil bo'ladi.", a: true },
+            { t: "quiz", q: "Ichki a'zolar devoridagi ixtiyorsiz mushak turi?", opts: ["Silliq mushak", "Skelet mushagi", "Yurak mushagi", "Ko'ndalang-targ'il mushak"], a: 0 }
+          ]
+        },
+        {
+          id: "l29",
+          title: "Tana mushaklari",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Orqaning eng keng (yuzaki) mushagi?", opts: ["Musculus latissimus dorsi", "Musculus trapezius", "Musculus pectoralis major", "Diaphragma"], a: 0 },
+            { t: "quiz", q: "Trapetsiyasimon mushak qanday ataladi?", opts: ["Musculus trapezius", "Musculus latissimus dorsi", "Musculus deltoideus", "Musculus rectus abdominis"], a: 0 },
+            { t: "quiz", q: "Asosiy nafas olish mushagi qaysi?", opts: ["Diaphragma", "Intercostales", "Pectoralis major", "Trapezius"], a: 0, hint: "Ko'krak va qorin bo'shliqlari chegarasida" },
+            { t: "quiz", q: "Qorin old devorining to'g'ri mushagi?", opts: ["Musculus rectus abdominis", "Musculus obliquus externus", "Musculus transversus abdominis", "Musculus latissimus"], a: 0 },
+            { t: "quiz", q: "Ko'krakning katta mushagi?", opts: ["Musculus pectoralis major", "Musculus serratus anterior", "Musculus trapezius", "Diaphragma"], a: 0 },
+            { t: "match", pairs: [["Latissimus dorsi", "Orqaning keng mushagi"], ["Trapezius", "Trapetsiyasimon mushak"], ["Rectus abdominis", "Qorin to'g'ri mushagi"], ["Diaphragma", "Nafas mushagi"]] },
+            { t: "build", q: "«Nafas mushagi» atamasini yig'ing", answer: "Diaphragma", extra: ["trapezius", "pectoralis"] },
+            { t: "quiz", q: "Diafragma qayerda joylashgan?", opts: ["Ko'krak va qorin bo'shliqlari chegarasida", "Bo'yinda", "Chanoqda", "Kallada"], a: 0 },
+            { t: "quiz", q: "Qorin qiya mushaklari lotinchada qanday ataladi?", opts: ["Musculus obliquus", "Musculus rectus", "Musculus transversus", "Musculus quadratus"], a: 0, hint: "Obliquus — qiya" },
+            { t: "tf", q: "Diafragma qisqarganda nafas olinadi.", a: true },
+            { t: "quiz", q: "Qovurg'alararo muskullar qanday ataladi?", opts: ["Musculi intercostales", "Musculi obliqui", "Musculi pectorales", "Musculi dorsi"], a: 0 }
+          ]
+        },
+        {
+          id: "l30",
+          title: "Qo'l va oyoq mushaklari",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Yelkaning ikki boshli mushagi?", opts: ["Musculus biceps brachii", "Musculus triceps brachii", "Musculus deltoideus", "Musculus brachialis"], a: 0 },
+            { t: "quiz", q: "Yelkaning uch boshli mushagi?", opts: ["Musculus triceps brachii", "Musculus biceps brachii", "Musculus deltoideus", "Musculus coracobrachialis"], a: 0 },
+            { t: "quiz", q: "Yelkani yumaloqlab turuvchi delta mushak?", opts: ["Musculus deltoideus", "Musculus trapezius", "Musculus biceps", "Musculus triceps"], a: 0 },
+            { t: "quiz", q: "Sonning oldingi to'rt boshli mushagi?", opts: ["Musculus quadriceps femoris", "Musculus biceps femoris", "Musculus sartorius", "Musculus gastrocnemius"], a: 0 },
+            { t: "quiz", q: "Boldirning orqa yuzasidagi mushak (Axill payini hosil qiladi)?", opts: ["Musculus triceps surae", "Musculus tibialis anterior", "Musculus quadriceps", "Musculus soleus"], a: 0 },
+            { t: "quiz", q: "Sonning orqa guruh muskullari (boldirni bukuvchi)?", opts: ["Musculus biceps femoris", "Musculus quadriceps femoris", "Musculus rectus femoris", "Musculus tibialis anterior"], a: 0 },
+            { t: "match", pairs: [["Biceps brachii", "Ikki boshli yelka mushagi"], ["Triceps brachii", "Uch boshli yelka mushagi"], ["Deltoideus", "Delta mushak"], ["Quadriceps femoris", "To'rt boshli son mushagi"]] },
+            { t: "build", q: "«Ikki boshli yelka mushagi» atamasini yig'ing", answer: "Biceps brachii", extra: ["triceps", "deltoideus"] },
+            { t: "quiz", q: "Mushak qaysi tuzilma orqali suyakka birikadi?", opts: ["Pay (tendo)", "Fassiya", "Bog'lam", "Tog'ay"], a: 0 },
+            { t: "quiz", q: "Biceps brachii qanday harakatni bajaradi?", opts: ["Bilakni bukadi", "Bilakni yozadi", "Yelkani buradi", "Barmoqlarni ochadi"], a: 0 },
+            { t: "tf", q: "Triceps brachii bilakni yozadi (to'g'rilaydi).", a: true }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u12",
+      title: "Hazm tizimi",
+      color: "#f97316",
+      icon: "🫁",
+      lessons: [
+        {
+          id: "l31",
+          title: "Og'iz bo'shlig'i va tishlar",
+          xp: 20,
+          ex: [
+            { t: "quiz", q: "Hazm a'zolari tizimi lotinchada qanday ataladi?", opts: ["Systema digestorium", "Systema respiratorium", "Systema nervosum", "Systema cardiovasculare"], a: 0 },
+            { t: "quiz", q: "Og'iz bo'shlig'i qanday ataladi?", opts: ["Cavitas oris", "Cavitas nasi", "Pharynx", "Larynx"], a: 0 },
+            { t: "quiz", q: "Tish lotinchada qanday ataladi?", opts: ["Dens", "Lingua", "Gingiva", "Palatum"], a: 0 },
+            { t: "quiz", q: "Til lotinchada qanday ataladi?", opts: ["Lingua", "Dens", "Labium", "Gingiva"], a: 0 },
+            { t: "quiz", q: "Katta yoshli odamda nechta doimiy tish bor?", opts: ["32", "28", "20", "36"], a: 0 },
+            { t: "quiz", q: "Sut tishlari nechta?", opts: ["20", "24", "28", "32"], a: 0 },
+            { t: "quiz", q: "So'lak bezlari lotinchada qanday ataladi?", opts: ["Glandulae salivariae", "Glandulae endocrinae", "Glandulae sebaceae", "Glandulae sudoriferae"], a: 0 },
+            { t: "match", pairs: [["Cavitas oris", "Og'iz bo'shlig'i"], ["Dens", "Tish"], ["Lingua", "Til"], ["Glandulae salivariae", "So'lak bezlari"]] },
+            { t: "build", q: "«Til» atamasini yig'ing", answer: "Lingua", extra: ["dens", "labium"] },
+            { t: "quiz", q: "Kesuvchi tishlar lotinchada qanday ataladi?", opts: ["Dentes incisivi", "Dentes canini", "Dentes premolares", "Dentes molares"], a: 0 },
+            { t: "tf", q: "So'lak ovqat hazm bo'lishida ishtirok etadi.", a: true }
+          ]
+        },
+        {
+          id: "l32",
+          title: "Halqum, qizilo'ngach, oshqozon",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Halqum lotinchada qanday ataladi?", opts: ["Pharynx", "Larynx", "Trachea", "Oesophagus"], a: 0 },
+            { t: "quiz", q: "Qizilo'ngach lotinchada qanday ataladi?", opts: ["Oesophagus", "Pharynx", "Gaster", "Duodenum"], a: 0 },
+            { t: "quiz", q: "Oshqozon lotinchada qanday ataladi?", opts: ["Gaster", "Hepar", "Pancreas", "Ventriculus cordis"], a: 0, hint: "Yunoncha gaster — qorin" },
+            { t: "quiz", q: "Oshqozonning kirish qismi qanday ataladi?", opts: ["Cardia", "Fundus", "Corpus", "Pylorus"], a: 0 },
+            { t: "quiz", q: "Oshqozonning chiqish (pastki) qismi qanday ataladi?", opts: ["Pylorus", "Cardia", "Fundus", "Corpus"], a: 0 },
+            { t: "quiz", q: "Oshqozon gumbazi qanday ataladi?", opts: ["Fundus gastricus", "Cardia", "Pylorus", "Antrum"], a: 0 },
+            { t: "match", pairs: [["Pharynx", "Halqum"], ["Oesophagus", "Qizilo'ngach"], ["Gaster", "Oshqozon"], ["Pylorus", "Oshqozon chiqishi"]] },
+            { t: "build", q: "«Qizilo'ngach» atamasini yig'ing", answer: "Oesophagus", extra: ["pharynx", "gaster"] },
+            { t: "quiz", q: "Oshqozonda qanday kislotali shira ajraladi?", opts: ["Me'da shirasi (xlorid kislota bilan)", "Safro", "So'lak", "Me'da shirasi yo'q"], a: 0 },
+            { t: "tf", q: "Qizilo'ngach ovqatni og'izdan oshqozonga o'tkazadi.", a: true },
+            { t: "quiz", q: "Oshqozon shirasi tarkibida oqsillarni parchalovchi ferment?", opts: ["Pepsin", "Amilaza", "Lipaza", "Tripsin"], a: 0 }
+          ]
+        },
+        {
+          id: "l33",
+          title: "Ichaklar, jigar va bezlar",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Ingichka ichak lotinchada qanday ataladi?", opts: ["Intestinum tenue", "Intestinum crassum", "Colon", "Rectum"], a: 0 },
+            { t: "quiz", q: "Yo'g'on ichak lotinchada qanday ataladi?", opts: ["Intestinum crassum", "Intestinum tenue", "Duodenum", "Ileum"], a: 0 },
+            { t: "quiz", q: "O'n ikki barmoqli ichak qanday ataladi?", opts: ["Duodenum", "Jejunum", "Ileum", "Caecum"], a: 0 },
+            { t: "quiz", q: "Jigar lotinchada qanday ataladi?", opts: ["Hepar", "Pancreas", "Lien", "Ren"], a: 0 },
+            { t: "quiz", q: "O't pufagi lotinchada qanday ataladi?", opts: ["Vesica biliaris", "Vesica urinaria", "Gaster", "Hepar"], a: 0 },
+            { t: "quiz", q: "Oshqozon osti bezi lotinchada qanday ataladi?", opts: ["Pancreas", "Hepar", "Lien", "Glandula"], a: 0 },
+            { t: "quiz", q: "Qorin bo'shlig'ini ichdan qoplovchi parda?", opts: ["Peritoneum", "Pleura", "Pericardium", "Fascia"], a: 0 },
+            { t: "match", pairs: [["Duodenum", "O'n ikki barmoqli ichak"], ["Hepar", "Jigar"], ["Vesica biliaris", "O't pufagi"], ["Pancreas", "Oshqozon osti bezi"]] },
+            { t: "build", q: "«Jigar» atamasini yig'ing", answer: "Hepar", extra: ["pancreas", "lien"] },
+            { t: "quiz", q: "Safro (o't) qayerda to'planadi?", opts: ["O't pufagida", "Oshqozonda", "Jigarda", "Ichakda"], a: 0 },
+            { t: "quiz", q: "Ingichka ichak qismlari qaysilar?", opts: ["Duodenum, jejunum, ileum", "Caecum, colon, rectum", "Cardia, fundus, pylorus", "Corpus, antrum"], a: 0 },
+            { t: "tf", q: "Jigar organizmning eng katta bezi hisoblanadi.", a: true }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u13",
+      title: "Nafas tizimi",
+      color: "#0ea5e9",
+      icon: "🌬️",
+      lessons: [
+        {
+          id: "l34",
+          title: "Burun va hiqildoq",
+          xp: 20,
+          ex: [
+            { t: "quiz", q: "Nafas a'zolari tizimi lotinchada qanday ataladi?", opts: ["Systema respiratorium", "Systema digestorium", "Systema nervosum", "Systema urinarium"], a: 0 },
+            { t: "quiz", q: "Burun bo'shlig'i qanday ataladi?", opts: ["Cavitas nasi", "Cavitas oris", "Sinus", "Pharynx"], a: 0 },
+            { t: "quiz", q: "Hiqildoq lotinchada qanday ataladi?", opts: ["Larynx", "Pharynx", "Trachea", "Pulmo"], a: 0 },
+            { t: "quiz", q: "Ovoz boylamlari qaysi a'zoda joylashgan?", opts: ["Hiqildoqda", "Kekirdakda", "O'pkada", "Burunda"], a: 0 },
+            { t: "quiz", q: "Hiqildoqning eng katta tog'ayi?", opts: ["Cartilago thyroidea", "Cartilago cricoidea", "Epiglottis", "Cartilago arytenoidea"], a: 0, hint: "Qalqonsimon tog'ay" },
+            { t: "quiz", q: "Yutish paytida hiqildoq kirishini berkitadigan tog'ay?", opts: ["Epiglottis", "Thyroidea", "Cricoidea", "Arytenoidea"], a: 0 },
+            { t: "match", pairs: [["Cavitas nasi", "Burun bo'shlig'i"], ["Larynx", "Hiqildoq"], ["Trachea", "Kekirdak"], ["Pulmo", "O'pka"]] },
+            { t: "build", q: "«Hiqildoq» atamasini yig'ing", answer: "Larynx", extra: ["pharynx", "trachea"] },
+            { t: "quiz", q: "Qalqonsimon tog'ay lotinchada qanday ataladi?", opts: ["Cartilago thyroidea", "Cartilago cricoidea", "Epiglottis", "Os hyoideum"], a: 0 },
+            { t: "tf", q: "Ovoz boylamlari hiqildoqda joylashgan.", a: true },
+            { t: "quiz", q: "Hiqildoqning halqasimon tog'ayi?", opts: ["Cartilago cricoidea", "Cartilago thyroidea", "Epiglottis", "Cartilago arytenoidea"], a: 0 }
+          ]
+        },
+        {
+          id: "l35",
+          title: "Kekirdak, o'pka va plevra",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Kekirdak lotinchada qanday ataladi?", opts: ["Trachea", "Larynx", "Bronchus", "Pulmo"], a: 0 },
+            { t: "quiz", q: "Kekirdak nechta asosiy bronxga bo'linadi?", opts: ["2", "3", "4", "1"], a: 0 },
+            { t: "quiz", q: "O'pka lotinchada qanday ataladi?", opts: ["Pulmo", "Trachea", "Pleura", "Bronchus"], a: 0 },
+            { t: "quiz", q: "O'ng o'pka nechta bo'lakdan iborat?", opts: ["3", "2", "4", "5"], a: 0 },
+            { t: "quiz", q: "Chap o'pka nechta bo'lakdan iborat?", opts: ["2", "3", "4", "1"], a: 0 },
+            { t: "quiz", q: "O'pkani tashqaridan o'rab turuvchi parda?", opts: ["Pleura", "Peritoneum", "Pericardium", "Fascia"], a: 0 },
+            { t: "quiz", q: "Gaz almashinuvi (kislorod/CO₂) qayerda sodir bo'ladi?", opts: ["Alveolalarda", "Bronxlarda", "Kekirdakda", "Hiqildoqda"], a: 0 },
+            { t: "match", pairs: [["Trachea", "Kekirdak"], ["Pulmo", "O'pka"], ["Pleura", "O'pka pardasi"], ["Alveoli", "Alveolalar"]] },
+            { t: "build", q: "«O'pka» atamasini yig'ing", answer: "Pulmo", extra: ["trachea", "pleura"] },
+            { t: "quiz", q: "Asosiy bronxlar qaysi a'zodan boshlanadi?", opts: ["Kekirdakdan", "Hiqildoqdan", "O'pkadan", "Burundan"], a: 0 },
+            { t: "tf", q: "O'ng o'pka chap o'pkadan kattaroq (3 bo'lak).", a: true }
+          ]
+        }
+      ]
     }
   ]
 };
@@ -944,7 +1158,157 @@ const ATLAS = [
         ]
       }
     ]
+  },
+  {
+    id: "a11",
+    title: "Arthrologia",
+    subtitle: "Suyaklarning o'zaro qo'shilishi",
+    icon: "🔗",
+    color: "#0891b2",
+    lead: "Suyaklarning qo'shilishi (artrologiya) uzluksiz (choklar, tog'ay, suyak orqali) va bo'g'imli (sinovial) turlarga bo'linadi. Sinovial bo'g'im — harakatlanuvchi bo'g'im bo'lib, bo'g'im yuzalari, xalta, bo'shliq va bog'lamlardan tashkil topgan.",
+    sections: [
+      {
+        h: "Bo'g'im tuzilishi", tag: "PDF · 149–159-bet",
+        terms: [
+          ["Facies articularis", "Bo'g'im yuzasi"],
+          ["Cartilago articularis", "Bo'g'im tog'ayi — sirpanchiq qoplama"],
+          ["Capsula articularis", "Bo'g'im xaltasi"],
+          ["Cavitas articularis", "Bo'g'im bo'shlig'i — sinovial suyuqlik bilan"],
+          ["Ligamentum", "Bog'lam — bo'g'imni mustahkamlaydi"],
+          ["Discus / Meniscus", "Bo'g'im diski / yarimoysimon tog'ay"],
+          ["Sutura", "Chok — kalla suyaklari birikishi"],
+          ["Symphysis", "Tog'ay orqali yarimharakatchan birikish"]
+        ]
+      },
+      {
+        h: "Asosiy bo'g'imlar", tag: "PDF · 160–210-bet",
+        terms: [
+          ["Articulatio humeri", "Yelka bo'g'imi — sharsimon, eng harakatchan"],
+          ["Articulatio cubiti", "Tirsak bo'g'imi"],
+          ["Articulatio coxae", "Chanoq-son bo'g'imi"],
+          ["Articulatio genus", "Tizza bo'g'imi — meniskli"],
+          ["Articulatio talocruralis", "To'piq bo'g'imi"],
+          ["Articulatio temporomandibularis", "Chakka-pastki jag' bo'g'imi"]
+        ]
+      }
+    ]
+  },
+  {
+    id: "a12",
+    title: "Myologia",
+    subtitle: "Mushaklar haqidagi ilm",
+    icon: "💪",
+    color: "#db2777",
+    lead: "Mushaklar (musculi) tayanch-harakat tizimining faol qismi. Uch turga bo'linadi: silliq (ichki a'zolar), ko'ndalang-targ'il skelet mushaklari va yurak mushagi. Skelet mushagi qorin (venter) va pay (tendo)dan iborat.",
+    sections: [
+      {
+        h: "Mushak tuzilishi", tag: "PDF · 211–218-bet",
+        terms: [
+          ["Musculus", "Mushak"],
+          ["Venter", "Mushak qorni — qisqaruvchi qism"],
+          ["Tendo", "Pay — suyakka birikuvchi qism"],
+          ["Fascia", "Mushakni o'rab turuvchi parda"],
+          ["Aponeurosis", "Keng (yassi) pay"],
+          ["Caput", "Mushak boshi (birikish nuqtasi)"],
+          ["Contractio", "Qisqarish — mushak ishining asosi"]
+        ]
+      },
+      {
+        h: "Asosiy mushaklar", tag: "PDF · 219–312-bet",
+        terms: [
+          ["M. trapezius", "Trapetsiyasimon mushak — orqa yuza"],
+          ["M. latissimus dorsi", "Orqaning keng mushagi"],
+          ["M. pectoralis major", "Ko'krakning katta mushagi"],
+          ["M. rectus abdominis", "Qorin to'g'ri mushagi"],
+          ["Diaphragma", "Asosiy nafas olish mushagi"],
+          ["M. biceps / triceps brachii", "Ikki / uch boshli yelka mushaklari"],
+          ["M. deltoideus", "Delta mushak"],
+          ["M. quadriceps femoris", "To'rt boshli son mushagi"],
+          ["M. triceps surae", "Boldir orqa mushagi (Axill payi)"]
+        ]
+      }
+    ]
+  },
+  {
+    id: "a13",
+    title: "Systema digestorium",
+    subtitle: "Hazm a'zolari tizimi",
+    icon: "🫁",
+    color: "#ea580c",
+    lead: "Hazm tizimi og'iz bo'shlig'idan boshlanib, halqum, qizilo'ngach, oshqozon, ingichka va yo'g'on ichaklar orqali davom etadi. Yordamchi bezlar: so'lak bezlari, jigar, o't pufagi va oshqozon osti bezi.",
+    sections: [
+      {
+        h: "Og'iz bo'shlig'i va halqum", tag: "PDF · 313–344-bet",
+        terms: [
+          ["Cavitas oris", "Og'iz bo'shlig'i"],
+          ["Dens / Dentes", "Tish / tishlar (32 ta doimiy)"],
+          ["Lingua", "Til"],
+          ["Glandulae salivariae", "So'lak bezlari"],
+          ["Pharynx", "Halqum"],
+          ["Oesophagus", "Qizilo'ngach"]
+        ]
+      },
+      {
+        h: "Oshqozon va ichaklar", tag: "PDF · 345–371-bet",
+        terms: [
+          ["Gaster", "Oshqozon"],
+          ["Cardia / Pylorus", "Oshqozon kirishi / chiqishi"],
+          ["Fundus gastricus", "Oshqozon gumbazi"],
+          ["Intestinum tenue", "Ingichka ichak (duodenum, jejunum, ileum)"],
+          ["Duodenum", "O'n ikki barmoqli ichak"],
+          ["Intestinum crassum", "Yo'g'on ichak (caecum, colon, rectum)"]
+        ]
+      },
+      {
+        h: "Bezlar", tag: "PDF · 372–391-bet",
+        terms: [
+          ["Hepar", "Jigar — eng katta bez"],
+          ["Vesica biliaris", "O't pufagi"],
+          ["Pancreas", "Oshqozon osti bezi"],
+          ["Peritoneum", "Qorinparda — qorin bo'shlig'i pardasi"]
+        ]
+      }
+    ]
+  },
+  {
+    id: "a14",
+    title: "Systema respiratorium",
+    subtitle: "Nafas a'zolari tizimi",
+    icon: "🌬️",
+    color: "#0284c7",
+    lead: "Nafas tizimi havo o'tkazuvchi yo'llar (burun bo'shlig'i, hiqildoq, kekirdak, bronxlar) va gaz almashinuvi a'zosi — o'pkadan iborat. Gaz almashinuvi alveolalarda sodir bo'ladi.",
+    sections: [
+      {
+        h: "Havo yo'llari", tag: "PDF · 392–415-bet",
+        terms: [
+          ["Cavitas nasi", "Burun bo'shlig'i"],
+          ["Larynx", "Hiqildoq — ovoz boylamlari joylashadi"],
+          ["Cartilago thyroidea", "Qalqonsimon tog'ay"],
+          ["Epiglottis", "Hiqildoq qopqog'i"],
+          ["Trachea", "Kekirdak"],
+          ["Bronchi", "Bronxlar — kekirdakning shoxlari"]
+        ]
+      },
+      {
+        h: "O'pka va plevra", tag: "PDF · 416–424-bet",
+        terms: [
+          ["Pulmo", "O'pka"],
+          ["Pulmo dexter / sinister", "O'ng (3 bo'lak) / chap (2 bo'lak) o'pka"],
+          ["Alveoli", "Alveolalar — gaz almashinuvi joyi"],
+          ["Pleura", "O'pka pardasi"],
+          ["Cavitas pleuralis", "Plevra bo'shlig'i"]
+        ]
+      }
+    ]
   }
+];
+
+// ================== QUICK TOPICS (tezkor mavzular) ==================
+const QUICK = [
+  { id: "bones", label: "Suyaklar", icon: "🦴", color: "#6C5CE7", units: ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10"] },
+  { id: "muscles", label: "Mushaklar", icon: "💪", color: "#FD79A8", units: ["u11"] },
+  { id: "organs", label: "A'zolar", icon: "🫁", color: "#00B894", units: ["u12", "u13"] },
+  { id: "nerves", label: "Asab tizimi", icon: "🧠", color: "#3B82F6", units: [], soon: true }
 ];
 
 // ================== IMTIHON REJIMI ==================
