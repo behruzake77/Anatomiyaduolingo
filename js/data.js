@@ -748,6 +748,269 @@ const COURSE = {
           ]
         }
       ]
+    },
+    {
+      id: "u14",
+      title: "Siydik tizimi",
+      color: "#22C55E",
+      icon: "droplet",
+      lessons: [
+        {
+          id: "l36",
+          title: "Buyrak (Ren)",
+          xp: 25,
+          source: { book: "p2", page: "7–19" },
+          slides: [
+            { title: "Buyrak — Ren", text: "Buyrak loviyasimon juft a'zo bo'lib, qorin bo'shlig'ining orqa devorida joylashgan. U qonni filtrlash orqali siydik hosil qiladi.", img: "assets/img/illu/kidney.svg" },
+            { title: "Buyrak tuzilishi", text: "Buyrak po'stloq (cortex) va mag'iz (medulla) moddalardan tashkil topgan. Siydik buyrak jomiga (pelvis renalis) yig'iladi.", cap: "Manba: Anatomiya II jild, 7–19-bet" }
+          ],
+          ex: [
+            { t: "quiz", q: "Buyrak lotinchada qanday ataladi?", opts: ["Ren", "Hepar", "Lien", "Pulmo"], a: 0, explanation: "Buyrak — ren (lot.) / kidney (ingl.)" },
+            { t: "quiz", q: "Buyraklar soni nechta?", opts: ["1", "2", "3", "4"], a: 1, explanation: "Buyrak juft a'zo." },
+            { t: "quiz", q: "Buyrakning asosiy vazifasi?", opts: ["Siydik hosil qilish (qonni filtrlash)", "Safro ajratish", "Gormon ishlab chiqarish", "Ovqat hazm qilish"], a: 0 },
+            { t: "quiz", q: "Buyrakning tashqi tola qobig'i qanday ataladi?", opts: ["Capsula fibrosa", "Peritoneum", "Pleura", "Pericardium"], a: 0 },
+            { t: "match", pairs: [["Ren", "Buyrak"], ["Ureter", "Siydik nayi"], ["Vesica urinaria", "Siydik qopi"], ["Urethra", "Siydik chiqarish nayi"]] },
+            { t: "build", q: "«Siydik qopi» atamasini yig'ing", answer: "Vesica urinaria", extra: ["ureter", "urethra"] },
+            { t: "tf", q: "Buyrak juft a'zo bo'lib, qonni filtrlab siydik hosil qiladi.", a: true },
+            { t: "quiz", q: "Buyrakning po'stloq moddasi lotinchada qanday ataladi?", opts: ["Cortex renalis", "Medulla renalis", "Pelvis renalis", "Capsula"], a: 0 },
+            { t: "func", q: "Buyrakning vazifasi nima?", opts: ["Qonni tozalash va suv-tuz muvozanatini saqlash", "Kislorod tashish", "Ovqat hazm qilish", "Harakatni boshqarish"], a: 0 }
+          ]
+        },
+        {
+          id: "l37",
+          title: "Siydik yo'llari",
+          xp: 20,
+          source: { book: "p2", page: "20–26" },
+          ex: [
+            { t: "quiz", q: "Siydik nayi lotinchada qanday ataladi?", opts: ["Ureter", "Urethra", "Uterus", "Uvula"], a: 0 },
+            { t: "quiz", q: "Siydik qopi (qovuq) lotinchada qanday ataladi?", opts: ["Vesica urinaria", "Vesica biliaris", "Vesica seminalis", "Ureter"], a: 0 },
+            { t: "quiz", q: "Siydik chiqarish nayi lotinchada qanday ataladi?", opts: ["Urethra", "Ureter", "Uterus", "Uvula"], a: 0 },
+            { t: "quiz", q: "Siydik nayi (ureter) qayerdan boshlanadi?", opts: ["Buyrak jomidan (pelvis renalis)", "Qovuqdan", "Buyrak po'stlog'idan", "Siydik chiqarish nayidan"], a: 0 },
+            { t: "quiz", q: "Qovuqning vazifasi?", opts: ["Siydikni to'plash", "Qonni filtrlash", "Gormon ajratish", "Ovqat hazm qilish"], a: 0 },
+            { t: "match", pairs: [["Pelvis renalis", "Buyrak jomi"], ["Ureter", "Siydik nayi"], ["Vesica urinaria", "Qovuq"], ["Urethra", "Siydik chiqarish nayi"]] },
+            { t: "build", q: "«Buyrak jomi» atamasini yig'ing", answer: "Pelvis renalis", extra: ["ureter", "vesica"] },
+            { t: "tf", q: "Qovuq siydikni vaqtincha to'playdi.", a: true },
+            { t: "order", q: "Siydik yo'lini buyrakdan tashqariga tartiblang", items: ["Pelvis renalis", "Ureter", "Vesica urinaria", "Urethra"], explanation: "Jom → siydik nayi → qovuq → siydik chiqarish nayi." }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u15",
+      title: "Jinsiy tizim",
+      color: "#F472B6",
+      icon: "users",
+      lessons: [
+        {
+          id: "l38",
+          title: "Jinsiy a'zolar asoslari",
+          xp: 25,
+          source: { book: "p2", page: "27–60" },
+          ex: [
+            { t: "quiz", q: "Jinsiy a'zolar tizimi lotinchada qanday ataladi?", opts: ["Systema genitale", "Systema urinarium", "Systema digestorium", "Systema endocrinum"], a: 0 },
+            { t: "quiz", q: "Erkak jinsiy bezi qanday ataladi?", opts: ["Moyak (testis)", "Tuxumdon", "Prostata", "Epididymis"], a: 0 },
+            { t: "quiz", q: "Ayol jinsiy bezi qanday ataladi?", opts: ["Tuxumdon (ovarium)", "Bachadon", "Tuba uterina", "Qin"], a: 0 },
+            { t: "quiz", q: "Bachadon lotinchada qanday ataladi?", opts: ["Uterus", "Ovarium", "Tuba", "Vagina"], a: 0 },
+            { t: "quiz", q: "Bachadon nayi lotinchada qanday ataladi?", opts: ["Tuba uterina", "Uterus", "Ovarium", "Vagina"], a: 0 },
+            { t: "quiz", q: "Prostata qaysi jinsda uchraydi?", opts: ["Erkaklarda", "Ayollarda", "Ikkalasida", "Hech birida"], a: 0 },
+            { t: "match", pairs: [["Testis", "Moyak"], ["Ovarium", "Tuxumdon"], ["Uterus", "Bachadon"], ["Prostata", "Erkak bezi"]] },
+            { t: "build", q: "«Bachadon» atamasini yig'ing", answer: "Uterus", extra: ["ovarium", "testis"] },
+            { t: "tf", q: "Tuxumdon (ovarium) — ayol jinsiy bezidir.", a: true },
+            { t: "func", q: "Tuxumdonning vazifasi?", opts: ["Jinsiy hujayra va gormonlar ishlab chiqarish", "Siydik hosil qilish", "Safro ajratish", "Qon aylantirish"], a: 0 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u16",
+      title: "Endokrin bezlar",
+      color: "#F59E0B",
+      icon: "activity",
+      lessons: [
+        {
+          id: "l39",
+          title: "Ichki sekretsiya bezlari",
+          xp: 25,
+          source: { book: "p2", page: "62–72" },
+          ex: [
+            { t: "quiz", q: "Endokrin bezlar qon oqimiga nima ajratadi?", opts: ["Gormonlar", "Safro", "So'lak", "Fermentlar"], a: 0 },
+            { t: "quiz", q: "Qalqonsimon bez lotinchada qanday ataladi?", opts: ["Glandula thyroidea", "Glandula parathyroidea", "Glandula suprarenalis", "Hypophysis"], a: 0 },
+            { t: "quiz", q: "Qalqon oldi bezi lotinchada qanday ataladi?", opts: ["Glandula parathyroidea", "Glandula thyroidea", "Thymus", "Pancreas"], a: 0 },
+            { t: "quiz", q: "Buyrak usti bezi lotinchada qanday ataladi?", opts: ["Glandula suprarenalis", "Glandula thyroidea", "Hypophysis", "Thymus"], a: 0 },
+            { t: "quiz", q: "Gipofiz qayerda joylashgan?", opts: ["Ponasimon suyakning sella turcica'sida", "Bo'yinda", "Qorin bo'shlig'ida", "Ko'krakda"], a: 0 },
+            { t: "quiz", q: "Oshqozon osti bezining endokrin qismi qanday ataladi?", opts: ["Orolchalar (insulin ajratadi)", "So'lak bezlari", "Teri bezlari", "Limfa tugunlari"], a: 0 },
+            { t: "match", pairs: [["Glandula thyroidea", "Qalqonsimon bez"], ["Glandula parathyroidea", "Qalqon oldi bezi"], ["Glandula suprarenalis", "Buyrak usti bezi"], ["Hypophysis", "Gipofiz"]] },
+            { t: "build", q: "«Qalqonsimon bez» atamasini yig'ing", answer: "Glandula thyroidea", extra: ["parathyroidea", "suprarenalis"] },
+            { t: "tf", q: "Endokrin bezlar gormonlar ishlab chiqaradi.", a: true },
+            { t: "fill", q: "Gipofiz — ____ suyagining sella turcica'sida joylashgan.", answer: "ponasimon", extra: ["chakka", "ensa", "peshona"], explanation: "Gipofiz ponasimon suyakning turk egari ichida." },
+            { t: "quiz", q: "G'urrasimon bez (timus) lotinchada qanday ataladi?", opts: ["Thymus", "Thyroidea", "Hypophysis", "Thyreoglossus"], a: 0 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u17",
+      title: "Yurak va tomirlar",
+      color: "#EF4444",
+      icon: "heart",
+      lessons: [
+        {
+          id: "l40",
+          title: "Yurak (Cor)",
+          xp: 30,
+          source: { book: "p2", page: "77–92" },
+          slides: [
+            { title: "Yurak — Cor", text: "Yurak muskuldan tuzilgan a'zo bo'lib, ko'krak qafasida joylashgan. U butun organizmga qon yetkazib beradi — qon aylanish tizimining markaziy a'zosi.", img: "assets/img/illu/heart.jpg" },
+            { title: "Yurak kameralari", text: "Yurak 4 kameradan iborat: 2 bo'lmacha (atrium) va 2 qorincha (ventriculus).", cap: "Manba: Anatomiya II jild, 77–92-bet" }
+          ],
+          ex: [
+            { t: "quiz", q: "Yurak lotinchada qanday ataladi?", opts: ["Cor", "Hepar", "Pulmo", "Lien"], a: 0 },
+            { t: "quiz", q: "Yurak nechta kameradan iborat?", opts: ["4", "2", "3", "5"], a: 0, explanation: "2 bo'lmacha + 2 qorincha." },
+            { t: "quiz", q: "Bo'lmacha lotinchada qanday ataladi?", opts: ["Atrium", "Ventriculus", "Valva", "Septum"], a: 0 },
+            { t: "quiz", q: "Qorincha lotinchada qanday ataladi?", opts: ["Ventriculus", "Atrium", "Auricula", "Sinus"], a: 0 },
+            { t: "quiz", q: "Yurakni tashqaridan o'rab turuvchi xalta qanday ataladi?", opts: ["Pericardium", "Pleura", "Peritoneum", "Capsula"], a: 0 },
+            { t: "quiz", q: "Kichik qon aylanish doirasi qayerga boradi?", opts: ["O'pkaga", "Jigarga", "Buyrakka", "Boshga"], a: 0 },
+            { t: "quiz", q: "Katta qon aylanish doirasi qaysi tomirdan boshlanadi?", opts: ["Aorta", "V. cava", "A. pulmonalis", "V. jugularis"], a: 0 },
+            { t: "match", pairs: [["Cor", "Yurak"], ["Atrium", "Bo'lmacha"], ["Ventriculus", "Qorincha"], ["Pericardium", "Yurak xaltasi"]] },
+            { t: "build", q: "«Yurak xaltasi» atamasini yig'ing", answer: "Pericardium", extra: ["pleura", "peritoneum"] },
+            { t: "tf", q: "Yurak qon aylanish tizimining markaziy a'zosidir.", a: true },
+            { t: "quiz", q: "O'rta yoshli odamning yuragi 1 daqiqada o'rtacha necha marta qisqaradi?", opts: ["70–75", "30–40", "100–120", "150–180"], a: 0, explanation: "Atlas ma'lumoti: 1 daqiqada 70–75 marta." },
+            { t: "func", q: "Yurakning asosiy vazifasi?", opts: ["Qonni butun organizmga haydash", "Safro ajratish", "Kislorod yutish", "Ovqat hazm qilish"], a: 0 }
+          ]
+        },
+        {
+          id: "l41",
+          title: "Qon tomirlar (Angiologiya)",
+          xp: 30,
+          source: { book: "p2", page: "93–183" },
+          ex: [
+            { t: "quiz", q: "Tomirlar haqidagi ta'limot qanday ataladi?", opts: ["Angiologiya", "Nevrologiya", "Osteologiya", "Miologiya"], a: 0 },
+            { t: "quiz", q: "Organizmdagi eng katta arteriya?", opts: ["Aorta", "A. carotis", "A. femoralis", "A. pulmonalis"], a: 0 },
+            { t: "quiz", q: "Arteriyalar qonni qayerga olib boradi?", opts: ["Yurakdan a'zolarga", "A'zolardan yurakka", "O'pkadan jigarga", "Yuragdan yurakka"], a: 0 },
+            { t: "quiz", q: "Venalar qonni qayerga olib boradi?", opts: ["A'zolardan yurakka", "Yurakdan a'zolarga", "Jigardan o'pkaga", "Buyrakdan qovuqqa"], a: 0 },
+            { t: "quiz", q: "Kapillarlar qanday vazifa bajaradi?", opts: ["Qon va to'qimalar orasida moddalar almashinuvi", "Qonni haydash", "Siydik hosil qilish", "Nerv impulslarini o'tkazish"], a: 0 },
+            { t: "quiz", q: "Yuqori kavak vena qanday ataladi?", opts: ["V. cava superior", "V. cava inferior", "V. jugularis", "V. portae"], a: 0 },
+            { t: "match", pairs: [["Aorta", "Eng katta arteriya"], ["V. cava superior", "Yuqori kavak vena"], ["V. cava inferior", "Pastki kavak vena"], ["Capillares", "Kapillarlar"]] },
+            { t: "build", q: "«Eng katta arteriya» atamasini yig'ing", answer: "Aorta", extra: ["cava", "carotis"] },
+            { t: "tf", q: "Venalar qonni yurakka olib boradi.", a: true },
+            { t: "order", q: "Katta qon aylanish doirasi yo'lini tartiblang", items: ["Aorta", "Arteriyalar", "Kapillarlar", "Venalar", "Yurak"], explanation: "Aorta → arteriyalar → kapillarlar → venalar → yurak." },
+            { t: "func", q: "Kapillarlarning vazifasi?", opts: ["Moddalar almashinuvini ta'minlash", "Qonni haydash", "Gormon ajratish", "Suyak hosil qilish"], a: 0 }
+          ]
+        },
+        {
+          id: "l42",
+          title: "Limfa tizimi va taloq",
+          xp: 25,
+          source: { book: "p2", page: "185–212" },
+          ex: [
+            { t: "quiz", q: "Limfa tizimi nimani qaytaradi?", opts: ["To'qima suyuqligini (limfa)", "Qonni", "Safro", "Siydik"], a: 0 },
+            { t: "quiz", q: "Taloq lotinchada qanday ataladi?", opts: ["Lien", "Hepar", "Ren", "Thymus"], a: 0 },
+            { t: "quiz", q: "Ayrisimon bez (timus) lotinchada qanday ataladi?", opts: ["Thymus", "Thyroidea", "Hypophysis", "Lien"], a: 0 },
+            { t: "quiz", q: "Immun tizimining markaziy a'zolari qaysilar?", opts: ["Timus va ko'mik (suyak iligi)", "Taloq va limfa tugunlari", "Jigar va buyrak", "Yurak va o'pka"], a: 0 },
+            { t: "quiz", q: "Limfa tugunining vazifasi?", opts: ["Limfani filtrlash", "Qonni haydash", "Safro ajratish", "Nafas olish"], a: 0 },
+            { t: "match", pairs: [["Lien", "Taloq"], ["Thymus", "Ayrisimon bez"], ["Nodus lymphaticus", "Limfa tuguni"], ["Lympha", "Limfa"]] },
+            { t: "build", q: "«Taloq» atamasini yig'ing", answer: "Lien", extra: ["thymus", "hepar"] },
+            { t: "tf", q: "Taloq immun tizimining periferik a'zosi hisoblanadi.", a: true },
+            { t: "func", q: "Taloqning vazifasi?", opts: ["Immun nazorat va eskirgan qon hujayralarini parchalash", "Siydik hosil qilish", "Kislorod tashish", "Ovoz chiqarish"], a: 0 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u18",
+      title: "Nerv tizimi",
+      color: "#8B6CFF",
+      icon: "brain",
+      lessons: [
+        {
+          id: "l43",
+          title: "Markaziy nerv tizimi",
+          xp: 30,
+          source: { book: "p2", page: "213–301" },
+          slides: [
+            { title: "Nerv tizimi — Nevrologiya", text: "Nerv tizimi organizm faoliyatini boshqaradi va muvofiqlashtiradi. U markaziy (bosh va orqa miya) va periferik qismlarga bo'linadi.", img: "assets/img/illu/brain.jpg" },
+            { title: "Bosh miya", text: "Bosh miya (encephalon) katta yarim pallalar, miyacha va miya so'g'onidan iborat. Miyacha muvozanat va harakat muvofiqlashtirishni boshqaradi.", cap: "Manba: Anatomiya II jild, 213–301-bet" }
+          ],
+          ex: [
+            { t: "quiz", q: "Nerv tizimi haqidagi fan qanday ataladi?", opts: ["Nevrologiya", "Angiologiya", "Osteologiya", "Splanxnologiya"], a: 0 },
+            { t: "quiz", q: "Markaziy nerv tizimi nimalardan iborat?", opts: ["Bosh va orqa miya", "Nervlar va chigallar", "Yurak va tomirlar", "Mushaklar"], a: 0 },
+            { t: "quiz", q: "Orqa miya lotinchada qanday ataladi?", opts: ["Medulla spinalis", "Medulla oblongata", "Encephalon", "Cerebellum"], a: 0 },
+            { t: "quiz", q: "Bosh miya lotinchada qanday ataladi?", opts: ["Encephalon", "Cerebellum", "Medulla spinalis", "Cortex"], a: 0 },
+            { t: "quiz", q: "Miyacha lotinchada qanday ataladi?", opts: ["Cerebellum", "Cerebrum", "Thalamus", "Pons"], a: 0 },
+            { t: "quiz", q: "Miyachaning vazifasi?", opts: ["Muvozanat va harakat muvofiqlashtirish", "Ko'rish", "Eshitish", "Hid bilish"], a: 0 },
+            { t: "match", pairs: [["Medulla spinalis", "Orqa miya"], ["Encephalon", "Bosh miya"], ["Cerebellum", "Miyacha"], ["Medulla oblongata", "Uzunchoq miya"]] },
+            { t: "build", q: "«Miyacha» atamasini yig'ing", answer: "Cerebellum", extra: ["cerebrum", "pons"] },
+            { t: "tf", q: "Orqa miya umurtqa kanalida joylashgan.", a: true },
+            { t: "quiz", q: "Orqa miya pardalari lotinchada qanday ataladi?", opts: ["Meninges", "Membrana", "Capsula", "Fascia"], a: 0 },
+            { t: "quiz", q: "Bosh miya po'stlog'i lotinchada qanday ataladi?", opts: ["Cortex cerebri", "Medulla", "Cerebellum", "Thalamus"], a: 0 },
+            { t: "func", q: "Nerv tizimining asosiy vazifasi?", opts: ["Organizm faoliyatini boshqarish va muvofiqlashtirish", "Qonni haydash", "Safro ajratish", "Suyak hosil qilish"], a: 0 }
+          ]
+        },
+        {
+          id: "l44",
+          title: "Periferik va avtonom nerv tizimi",
+          xp: 25,
+          source: { book: "p2", page: "302–371" },
+          ex: [
+            { t: "quiz", q: "Periferik nerv tizimi nimalardan iborat?", opts: ["Nervlar va chigallar", "Bosh va orqa miya", "Yurak va tomirlar", "Suyaklar"], a: 0 },
+            { t: "quiz", q: "Orqa miya nervlari nechta juft?", opts: ["31", "12", "24", "40"], a: 0 },
+            { t: "quiz", q: "Bosh miya nervlari nechta juft?", opts: ["12", "31", "24", "8"], a: 0 },
+            { t: "quiz", q: "Avtonom nerv tizimi nimani boshqaradi?", opts: ["Ichki a'zolarni (ixtiyorsiz)", "Skelet mushaklarini (ixtiyoriy)", "Faqat yurakni", "Faqat miyani"], a: 0 },
+            { t: "quiz", q: "Avtonom nerv tizimining qismlari?", opts: ["Simpatik va parasimpatik", "Markaziy va periferik", "Afferent va efferent", "Somak va visceral"], a: 0 },
+            { t: "quiz", q: "Yelka chigali lotinchada qanday ataladi?", opts: ["Plexus brachialis", "Plexus lumbalis", "Plexus sacralis", "Plexus cervicalis"], a: 0 },
+            { t: "match", pairs: [["Plexus brachialis", "Yelka chigali"], ["Plexus lumbalis", "Bel chigali"], ["Nervus vagus", "Adashgan nerv"], ["Nervus trigeminus", "Uch shoxli nerv"]] },
+            { t: "build", q: "«Adashgan nerv» atamasini yig'ing", answer: "Nervus vagus", extra: ["trigeminus", "ischiadicus"] },
+            { t: "tf", q: "Avtonom nerv tizimi ixtiyorsiz ishlaydi.", a: true },
+            { t: "func", q: "Adashgan nerv (n. vagus) nimani innervatsiya qiladi?", opts: ["Ichki a'zolarni", "Yuz mushaklarini", "Ko'zni", "Tilni"], a: 0 },
+            { t: "quiz", q: "Simpatik poya lotinchada qanday ataladi?", opts: ["Truncus sympathicus", "Nervus vagus", "Plexus", "Ganglion"], a: 0 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u19",
+      title: "Sezuv a'zolari",
+      color: "#20D9C5",
+      icon: "sparkles",
+      lessons: [
+        {
+          id: "l45",
+          title: "Ko'rish va eshitish a'zolari",
+          xp: 30,
+          source: { book: "p2", page: "372–405" },
+          ex: [
+            { t: "quiz", q: "Ko'z lotinchada qanday ataladi?", opts: ["Oculus", "Auris", "Nasus", "Cutis"], a: 0 },
+            { t: "quiz", q: "Ko'z gavhari lotinchada qanday ataladi?", opts: ["Lens", "Cornea", "Retina", "Sclera"], a: 0 },
+            { t: "quiz", q: "Ko'zning nur sindiruvchi apparatiga nimalar kiradi?", opts: ["Shox parda, gavhar, shishasimon tana", "To'r parda, oq parda", "Qovog'lar, kipriklar", "Yosh bezlari"], a: 0 },
+            { t: "quiz", q: "Eshitish va muvozanat a'zosi lotinchada qanday ataladi?", opts: ["Organum vestibulocochleare", "Oculus", "Organum olfactus", "Cutis"], a: 0 },
+            { t: "quiz", q: "Quloq nechta qismdan iborat?", opts: ["3", "2", "4", "5"], a: 0, explanation: "Tashqi, o'rta va ichki quloq." },
+            { t: "quiz", q: "Ichki quloqda nima joylashgan?", opts: ["Chig'anoq va dahliz", "Quloq suprasi", "Nog'ora parda", "Eshituv nayi"], a: 0 },
+            { t: "match", pairs: [["Oculus", "Ko'z"], ["Lens", "Gavhar"], ["Cochlea", "Chig'anoq"], ["Vestibulum", "Dahliz"]] },
+            { t: "build", q: "«Ko'z gavhari» atamasini yig'ing", answer: "Lens", extra: ["cornea", "retina"] },
+            { t: "tf", q: "Ko'z — ko'rish a'zosi, quloq — eshitish va muvozanat a'zosi.", a: true },
+            { t: "func", q: "Ko'zning asosiy vazifasi?", opts: ["Yorug'likni qabul qilib ko'rish", "Ovozni eshitish", "Hid bilish", "Ta'm bilish"], a: 0 },
+            { t: "quiz", q: "Ko'z olmasining tashqi oq pardasi qanday ataladi?", opts: ["Sclera", "Cornea", "Retina", "Iris"], a: 0 }
+          ]
+        },
+        {
+          id: "l46",
+          title: "Teri, hid va ta'm",
+          xp: 20,
+          source: { book: "p2", page: "406–409" },
+          ex: [
+            { t: "quiz", q: "Teri lotinchada qanday ataladi?", opts: ["Cutis", "Derma", "Epidermis", "Pilis"], a: 0 },
+            { t: "quiz", q: "Terining hosilalariga nimalar kiradi?", opts: ["Soch, tirnoq va bezlar", "Suyaklar", "Mushaklar", "Tomirlar"], a: 0 },
+            { t: "quiz", q: "Hid sezuv a'zosi qayerda joylashgan?", opts: ["Burun bo'shlig'ida", "Tilda", "Quloqda", "Ko'zda"], a: 0 },
+            { t: "quiz", q: "Ta'm sezuv a'zosi qayerda joylashgan?", opts: ["Tilda", "Burunda", "Quloqda", "Terida"], a: 0 },
+            { t: "quiz", q: "Terining vazifasi?", opts: ["Himoya, issiqlik boshqaruvi va sezish", "Qonni haydash", "Safro ajratish", "Ovoz chiqarish"], a: 0 },
+            { t: "match", pairs: [["Cutis", "Teri"], ["Pilus", "Soch"], ["Unguis", "Tirnoq"], ["Glandulae sudoriferae", "Ter bezlari"]] },
+            { t: "build", q: "«Teri» atamasini yig'ing", answer: "Cutis", extra: ["pilus", "unguis"] },
+            { t: "tf", q: "Teri tanani tashqi ta'sirlardan himoya qiladi.", a: true },
+            { t: "func", q: "Ter bezlarining vazifasi?", opts: ["Ter ajratish (issiqlik boshqaruvi)", "Safro ajratish", "Gormon ajratish", "Qon filtrlash"], a: 0 },
+            { t: "quiz", q: "Teri hosilalari qaysi qatorda to'g'ri?", opts: ["Soch, tirnoq, ter bezlari", "Suyak, mushak, pay", "Tomir, nerv, limfa", "Tish, til, tanglay"], a: 0 }
+          ]
+        }
+      ]
     }
   ]
 };
@@ -1316,19 +1579,21 @@ const UNIT_META = {
   u1: { icon: "bone" }, u2: { icon: "bone" }, u3: { icon: "bone" }, u4: { icon: "bone" },
   u5: { icon: "bone" }, u6: { icon: "bone" }, u7: { icon: "bone" }, u8: { icon: "bone" },
   u9: { icon: "bone" }, u10: { icon: "link" }, u11: { icon: "activity" },
-  u12: { icon: "apple" }, u13: { icon: "wind" }
+  u12: { icon: "apple" }, u13: { icon: "wind" }, u14: { icon: "droplet" },
+  u15: { icon: "users" }, u16: { icon: "activity" }, u17: { icon: "heart" },
+  u18: { icon: "brain" }, u19: { icon: "sparkles" }
 };
 
 // ================== TIZIMLAR (8 kategoriya) ==================
 const SYSTEMS = [
-  { id: "skeletal", num: "01", title: "Suyaklar tizimi", latin: "Systema skeletale", icon: "bone", color: "#6C5CE7", img: "assets/img/illu/skeleton.jpg", units: ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10"] },
-  { id: "muscular", num: "02", title: "Mushaklar tizimi", latin: "Systema musculare", icon: "activity", color: "#F472B6", img: "assets/img/illu/muscles.jpg", units: ["u11"] },
-  { id: "cardiovascular", num: "03", title: "Yurak-qon tomir tizimi", latin: "Systema cardiovasculare", icon: "heart", color: "#EF4444", img: "assets/img/illu/heart.jpg", units: [], soon: true },
-  { id: "respiratory", num: "04", title: "Nafas tizimi", latin: "Systema respiratorium", icon: "wind", color: "#20D9C5", img: "assets/img/illu/lungs.jpg", units: ["u13"] },
-  { id: "nervous", num: "05", title: "Asab tizimi", latin: "Systema nervosum", icon: "brain", color: "#8B6CFF", img: "assets/img/illu/brain.jpg", units: [], soon: true },
-  { id: "digestive", num: "06", title: "Hazm tizimi", latin: "Systema digestorium", icon: "apple", color: "#F59E0B", img: "assets/img/illu/stomach.jpg", units: ["u12"] },
-  { id: "urinary", num: "07", title: "Siydik tizimi", latin: "Systema urinarium", icon: "droplet", color: "#22C55E", img: "assets/img/illu/kidney.svg", units: [], soon: true },
-  { id: "reproductive", num: "08", title: "Jinsiy tizim", latin: "Systema genitale", icon: "users", color: "#F472B6", img: null, units: [], soon: true }
+  { id: "skeletal", num: "01", title: "Suyaklar tizimi", latin: "Systema skeletale", en: "Skeletal System", icon: "bone", color: "#6C5CE7", img: "assets/img/illu/skeleton.jpg", units: ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10"] },
+  { id: "muscular", num: "02", title: "Mushaklar tizimi", latin: "Systema musculare", en: "Muscular System", icon: "activity", color: "#F472B6", img: "assets/img/illu/muscles.jpg", units: ["u11"] },
+  { id: "cardiovascular", num: "03", title: "Yurak-qon tomir tizimi", latin: "Systema cardiovasculare", en: "Cardiovascular System", icon: "heart", color: "#EF4444", img: "assets/img/illu/heart.jpg", units: ["u17"] },
+  { id: "respiratory", num: "04", title: "Nafas tizimi", latin: "Systema respiratorium", en: "Respiratory System", icon: "wind", color: "#20D9C5", img: "assets/img/illu/lungs.jpg", units: ["u13"] },
+  { id: "nervous", num: "05", title: "Asab tizimi", latin: "Systema nervosum", en: "Nervous System", icon: "brain", color: "#8B6CFF", img: "assets/img/illu/brain.jpg", units: ["u18"] },
+  { id: "digestive", num: "06", title: "Hazm tizimi", latin: "Systema digestorium", en: "Digestive System", icon: "apple", color: "#F59E0B", img: "assets/img/illu/stomach.jpg", units: ["u12"] },
+  { id: "urinary", num: "07", title: "Siydik tizimi", latin: "Systema urinarium", en: "Urinary System", icon: "droplet", color: "#22C55E", img: "assets/img/illu/kidney.svg", units: ["u14"] },
+  { id: "reproductive", num: "08", title: "Jinsiy tizim", latin: "Systema genitale", en: "Reproductive System", icon: "users", color: "#F472B6", img: null, units: ["u15"] }
 ];
 
 // ================== ANATOMIYA ATLASI (ob'yektlar) ==================
@@ -1336,43 +1601,43 @@ const ATLAS_CATS = [
   {
     id: "skeleton", title: "Skelet", icon: "bone", color: "#6C5CE7",
     items: [
-      { name: "Bosh suyagi", latin: "Cranium", img: "assets/img/illu/skull.jpg", desc: "Bosh miyani himoya qiluvchi va yuz tuzilishini hosil qiluvchi suyaklar majmui.", func: "Miyani himoyalash va chaynash harakatlari", lessons: ["Kalla — miya qismi", "Kalla — yuz qismi"] },
-      { name: "Qovurg'alar", latin: "Costae", img: "assets/img/illu/ribs.jpg", desc: "Ko'krak qafasini hosil qiluvchi 12 juft egilgan suyaklar.", func: "Ko'krak a'zolarini himoyalash va nafas olishda ishtirok", lessons: ["Qovurg'alar (Costae)", "To'sh suyagi (Sternum)"] },
-      { name: "Chanoq", latin: "Pelvis", img: "assets/img/illu/pelvis.jpg", desc: "Yonbosh, quymich va qov suyaklarining qo'shilishidan hosil bo'lgan halqa.", func: "Tana vaznini oyoqlarga o'tkazish va a'zolarni himoyalash", lessons: ["Chanoq kamari (Os coxae)"] },
-      { name: "Son suyagi", latin: "Femur", img: "assets/img/illu/femur.jpg", desc: "Odam tanasidagi eng uzun va mustahkam suyak.", func: "Tana vaznini ko'tarish va yurish harakati", lessons: ["Son va boldir suyaklari"] }
+      { name: "Bosh suyagi", latin: "Cranium", en: "Skull", img: "assets/img/illu/skull.jpg", desc: "Bosh miyani himoya qiluvchi va yuz tuzilishini hosil qiluvchi suyaklar majmui.", func: "Miyani himoyalash va chaynash harakatlari", lessons: ["Kalla — miya qismi", "Kalla — yuz qismi"], quiz: "u8" },
+      { name: "Qovurg'alar", latin: "Costae", en: "Ribs", img: "assets/img/illu/ribs.jpg", desc: "Ko'krak qafasini hosil qiluvchi 12 juft egilgan suyaklar.", func: "Ko'krak a'zolarini himoyalash va nafas olishda ishtirok", lessons: ["Qovurg'alar (Costae)", "To'sh suyagi (Sternum)"], quiz: "u5" },
+      { name: "Chanoq", latin: "Pelvis", en: "Pelvis", img: "assets/img/illu/pelvis.jpg", desc: "Yonbosh, quymich va qov suyaklarining qo'shilishidan hosil bo'lgan halqa.", func: "Tana vaznini oyoqlarga o'tkazish va a'zolarni himoyalash", lessons: ["Chanoq kamari (Os coxae)"], quiz: "u7" },
+      { name: "Son suyagi", latin: "Femur", en: "Femur", img: "assets/img/illu/femur.jpg", desc: "Odam tanasidagi eng uzun va mustahkam suyak.", func: "Tana vaznini ko'tarish va yurish harakati", lessons: ["Son va boldir suyaklari"], quiz: "u7" }
     ]
   },
   {
     id: "muscles", title: "Mushaklar", icon: "activity", color: "#F472B6",
     items: [
-      { name: "Skelet mushaklari", latin: "Musculi skeleti", img: "assets/img/illu/muscles.jpg", desc: "Tayanch-harakat tizimining faol qismi — ixtiyoriy qisqaruvchi ko'ndalang-targ'il mushaklar.", func: "Harakat, tana holatini saqlash, issiqlik ishlab chiqarish", lessons: ["Mushak haqida tushuncha", "Tana mushaklari"] },
-      { name: "Diafragma", latin: "Diaphragma", img: "assets/img/illu/muscles.jpg", desc: "Ko'krak va qorin bo'shliqlarini ajratib turuvchi gumbazsimon asosiy nafas mushagi.", func: "Nafas olish va chiqarish", lessons: ["Tana mushaklari"] }
+      { name: "Skelet mushaklari", latin: "Musculi skeleti", en: "Skeletal muscles", img: "assets/img/illu/muscles.jpg", desc: "Tayanch-harakat tizimining faol qismi — ixtiyoriy qisqaruvchi ko'ndalang-targ'il mushaklar.", func: "Harakat, tana holatini saqlash, issiqlik ishlab chiqarish", lessons: ["Mushak haqida tushuncha", "Tana mushaklari"], quiz: "u11" },
+      { name: "Diafragma", latin: "Diaphragma", en: "Diaphragm", img: "assets/img/illu/muscles.jpg", desc: "Ko'krak va qorin bo'shliqlarini ajratib turuvchi gumbazsimon asosiy nafas mushagi.", func: "Nafas olish va chiqarish", lessons: ["Tana mushaklari"], quiz: "u11" }
     ]
   },
   {
     id: "organs", title: "A'zolar", icon: "apple", color: "#F59E0B",
     items: [
-      { name: "Oshqozon", latin: "Gaster", img: "assets/img/illu/stomach.jpg", desc: "Ovqat hazm qilish yo'lining kengaygan qismi bo'lib, ovqatni kimyoviy va mexanik qayta ishlaydi.", func: "Oqsillarni parchalash va ovqatni aralashtirish", lessons: ["Halqum, qizilo'ngach, oshqozon"] },
-      { name: "Jigar", latin: "Hepar", img: "assets/img/illu/liver.svg", desc: "Organizmdagi eng katta bez — 500 dan ortiq biokimyoviy vazifani bajaradi.", func: "Moddalar almashinuvi, zaharli moddalarni zararsizlantirish", lessons: ["Ichaklar, jigar va bezlar"] },
-      { name: "Buyrak", latin: "Ren", img: "assets/img/illu/kidney.svg", desc: "Juft loviyasimon a'zo — qonni filtrlab, siydik hosil qiladi.", func: "Qonni tozalash va suv-tuz muvozanatini saqlash", lessons: [] }
+      { name: "Oshqozon", latin: "Gaster", en: "Stomach", img: "assets/img/illu/stomach.jpg", desc: "Ovqat hazm qilish yo'lining kengaygan qismi bo'lib, ovqatni kimyoviy va mexanik qayta ishlaydi.", func: "Oqsillarni parchalash va ovqatni aralashtirish", lessons: ["Halqum, qizilo'ngach, oshqozon"], quiz: "u12" },
+      { name: "Jigar", latin: "Hepar", en: "Liver", img: "assets/img/illu/liver.svg", desc: "Organizmdagi eng katta bez — 500 dan ortiq biokimyoviy vazifani bajaradi.", func: "Moddalar almashinuvi, zaharli moddalarni zararsizlantirish", lessons: ["Ichaklar, jigar va bezlar"], quiz: "u12" },
+      { name: "Buyrak", latin: "Ren", en: "Kidney", img: "assets/img/illu/kidney.svg", desc: "Juft loviyasimon a'zo — qonni filtrlab, siydik hosil qiladi.", func: "Qonni tozalash va suv-tuz muvozanatini saqlash", lessons: ["Buyrak (Ren)"], quiz: "u14" }
     ]
   },
   {
     id: "nervous", title: "Asab tizimi", icon: "brain", color: "#8B6CFF",
     items: [
-      { name: "Bosh miya", latin: "Encephalon", img: "assets/img/illu/brain.jpg", desc: "Asab tizimining markaziy qismi — fikrlash, xotira va barcha a'zolarni boshqarish markazi.", func: "Axborotni qayta ishlash va organizmni boshqarish", lessons: [] }
+      { name: "Bosh miya", latin: "Encephalon", en: "Brain", img: "assets/img/illu/brain.jpg", desc: "Asab tizimining markaziy qismi — fikrlash, xotira va barcha a'zolarni boshqarish markazi.", func: "Axborotni qayta ishlash va organizmni boshqarish", lessons: ["Markaziy nerv tizimi"], quiz: "u18" }
     ]
   },
   {
     id: "cardiovascular", title: "Yurak-qon tomir", icon: "heart", color: "#EF4444",
     items: [
-      { name: "Yurak", latin: "Cor", img: "assets/img/illu/heart.jpg", desc: "Qonni butun tana bo'ylab haydaydigan muskul a'zo.", func: "Qon aylanishini ta'minlash", lessons: [] }
+      { name: "Yurak", latin: "Cor", en: "Heart", img: "assets/img/illu/heart.jpg", desc: "Qonni butun tana bo'ylab haydaydigan muskul a'zo.", func: "Qon aylanishini ta'minlash", lessons: ["Yurak (Cor)", "Qon tomirlar"], quiz: "u17" }
     ]
   },
   {
     id: "respiratory", title: "Nafas", icon: "wind", color: "#20D9C5",
     items: [
-      { name: "O'pka", latin: "Pulmo", img: "assets/img/illu/lungs.jpg", desc: "Kislorod va karbonat angidrid almashinuvini ta'minlovchi juft nafas a'zosi.", func: "Gaz almashinuvi (alveolalarda)", lessons: ["Kekirdak, o'pka va plevra"] }
+      { name: "O'pka", latin: "Pulmo", en: "Lungs", img: "assets/img/illu/lungs.jpg", desc: "Kislorod va karbonat angidrid almashinuvini ta'minlovchi juft nafas a'zosi.", func: "Gaz almashinuvi (alveolalarda)", lessons: ["Kekirdak, o'pka va plevra"], quiz: "u13" }
     ]
   }
 ];

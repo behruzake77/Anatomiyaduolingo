@@ -1,43 +1,68 @@
 # 🦴 AnatomiLingo
 
-Anatomiyani **Duolingo uslubida** o'rganish uchun premium, mobile-first (PWA) ilova.
-Manba: **A. Ahmedov va boshq. «Anatomiya I jild» (Toshkent, 2018)**.
+Anatomiyani **Duolingo uslubida** o'rganish uchun premium, mobile-first (PWA) o'quv platformasi.
 
 > "Anatomiyani o'rgan. Hayotni boshqar."
 
-## Dizayn tizimi
+## Asosiy kontent manbalari
 
-- **Dark navy** fon (`#090D18` / `#0D1324` / `#111827`), nozik glassmorphism
-- Aksentlar (≤5): binafsha `#6C5CE7`, feruza `#20D9C5`, yashil `#22C55E`, sariq `#F59E0B`, qizil `#EF4444`, pushti `#F472B6`
-- Shriftlar: **Poppins** (sarlavhalar) + **Inter** (matn/raqamlar)
-- **Lucide** ikonkalari (inline SVG, `js/icons.js`)
-- Markazlashgan **dizayn tokenlari** (`css/style.css` → `:root`): ranglar, radius, soyalar, harakat vaqtlari, breakpointlar
-- Maxsus **logo**: chap yarmi bosh suyagi, o'ng yarmi mushak/teri (SVG)
+Ilova to'rtta hujjatga tayangan holda qurilgan (ixtiro qilingan mazmun emas):
 
-## Bo'limlar
-
-| Bo'lim | Tavsif |
+| Manba | Mazmun |
 |---|---|
-| 🏠 **Bosh sahifa** | "Bugun o'rganishga tayyormisan?", kunlik maqsad (progress + streak), joriy kurs kartasi, **o'rganish yo'li** (path), tavsiya etilgan dars |
-| 📖 **O'rganish** | Tezkor mavzular + 8 ta tana tizimi (progress, darslar, XP, %) |
-| 🗺️ **Atlas** | Anatomiya ob'yektlari: rasmi, nomi, lotincha atamasi, vazifasi, bog'liq darslar |
-| 🎓 **Sinov** | Imtihon (30 savol/15 daqiqa), aqlli takrorlash, tezkor mashq, progress, yutuqlar |
-| 👤 **Profil** | Daraja, seriya, aniqlik, yutuqlar, xatcho'plar, sozlamalar, "Haqida" |
+| **Anatomiya I jild** (A. Ahmedov va boshq., 2018) | Osteologiya, artrologiya, miologiya, hazm va nafas a'zolari |
+| **Anatomiya II jild** (A. Ahmedov va boshq., 2018) | Siydik-tanosil, endokrin, yurak-tomir, nerv, sezgi a'zolari |
+| **Odam anatomiyasi — Atlas I/II jild** (N.K. Ahmedov, 2004–2005) | Vizual anatomik manba |
+| Sketchfab ochiq ta'lim 3D modellari | Interaktiv 3D anatomiya |
 
-## Kurs — 13 modul, 35 dars, 390 mashq
+## Kontent quvuri (pipeline)
 
-Suyaklar (osteologiya) → bo'g'imlar (artrologiya) → mushaklar (miologiya) → hazm → nafas tizimi.
-Asab, yurak-qon tomir, siydik va jinsiy tizimlar — "Tez kunda" (II jild).
+```
+KITOB → BOB → MAVZU → DARS → ANATOMIK TUZILMA → TUSHUNTIRISH → SAVOLLAR → QUIZ → PROGRESS
+  │                                                          ▲
+  └────────────── ATLAS (vizual manba) ──────────────────────┘
+```
+
+- **`js/content.js`** — kitoblar ro'yxati (`BOOKS`) va to'liq **o'quv dasturi xaritasi** (`CURRICULUM`): har bir bo'lim/mavzu uchun manba sahifasi.
+- **`js/data.js`** — darslar, savollar, tizimlar, atlas ob'yektlari. Har bir dars `source: {book, page}` manba havolasiga ega.
+
+## O'quv tuzilmasi — 19 modul, 46 dars, 505 mashq
+
+**I jild:** Suyaklar (u1–u9) · Bo'g'imlar (u10) · Mushaklar (u11) · Hazm (u12) · Nafas (u13)
+**II jild:** Siydik (u14) · Jinsiy (u15) · Endokrin (u16) · Yurak-tomir (u17) · Nerv (u18) · Sezgi a'zolari (u19)
+
+### 8 xil savol turi
+
+`quiz` (test) · `img` (rasmni aniqlash) · `match` (moslashtirish) · `build` (atama yig'ish) · `tf` (to'g'ri/noto'g'ri) · `order` (tartiblash) · `fill` (bo'sh joyni to'ldirish) · `func` (tuzilma → vazifa)
+
+Har bir savol: `explanation` (izoh), manba bo'limi va mavzu. Savollar kitob mazmunidan olinadi.
+
+### Dars o'rganish oqimi
+
+```
+SLAYDLAR (kirish → vizual → tushuntirish → manba)
+   ↓
+SAVOLLAR (interaktiv)
+   ↓
+NATIJA (XP, aniqlik, qayta ishlash)
+```
 
 ## Funksiyalar
 
-- 🎯 Kunlik maqsad, ⭐ daraja tizimi, 🔥 streak, ❤️ yuraklar
-- 🏅 12 ta yutuq (badges) — qulflanganlari xira ko'rsatiladi
-- 🔁 Spaced repetition (0/1/3/7/16/35 kun)
-- 📊 Haftalik XP grafigi, tizimlar bo'yicha progress
-- 🔖 Xatcho'plar, ⚙️ sozlamalar (ovoz, kunlik maqsad, tiklash)
-- 🎉 Natija ekrani: konfetti, aniqlik/vaqt/XP/to'g'ri statistikasi, **"Qayta ishlash"**
-- 5 xil mashq turi (test, rasm, moslashtirish, atama yig'ish, to'g'ri/noto'g'ri)
+- 🎯 **Kunlik maqsad**, ⭐ **daraja**, 🔥 **streak**, ❤️ **yuraklar**
+- 🏅 **12 ta yutuq (badges)**
+- 🔁 **Spaced repetition** (0/1/3/7/16/35 kun) — xatolar va unutilayotgan savollar avtomatik qaytadi
+- 📊 **Mastery** — har bir tizim bo'yicha o'zlashtirish % (≥80% = "O'zlashtirilgan")
+- 🗺️ **Anatomiya atlasi** — ob'yektlar: Uzbek + Latin + English nom, vazifa, bog'liq darslar, "O'rganish" tugmasi
+- 🔖 **Xatcho'plar**, ⚙️ **sozlamalar**, haftalik XP grafigi
+- 📖 Darsda **manba havolasi** (masalan: "Anatomiya II jild, 77–92-bet")
+
+## Dizayn tizimi
+
+- Dark navy (`#090D18`) + glassmorphism, Poppins/Inter, **Lucide** inline SVG ikonkalar
+- Markazlashgan dizayn tokenlari (`css/style.css`)
+- Custom logo (chap yarmi suyak / o'ng yarmi mushak)
+- Izchil anatomiya illyustratsiyalari (generatsiya qilingan, yagona uslub)
 
 ## Ishga tushirish
 
@@ -52,24 +77,24 @@ Brauzerda `http://localhost:8000` (PWA sifatida o'rnatish mumkin; 3D modellarga 
 ```
 index.html            — kirish nuqtasi + splash
 manifest.webmanifest  — PWA manifest
-sw.js                 — service worker (offline kesh, v7)
-css/style.css         — dizayn tizimi (tokenlar, komponentlar, responsivlik)
-js/data.js            — COURSE, ATLAS, SYSTEMS, ATLAS_CATS, QUICK, UNIT_META, EXAM
-js/icons.js           — Lucide inline SVG ikonkalari
-js/app.js             — ilova logikasi (SRS, daraja, yutuqlar, router)
-assets/img/illu/      — generatsiya qilingan anatomiya illyustratsiyalari (yagona uslub)
+sw.js                 — service worker (offline kesh)
+css/style.css         — dizayn tizimi
+js/content.js         — BOOKS + CURRICULUM (kontent xaritasi)
+js/data.js            — COURSE, ATLAS, SYSTEMS, ATLAS_CATS, QUICK, EXAM
+js/icons.js           — Lucide inline SVG ikonkalar
+js/app.js             — ilova logikasi (SRS, mastery, yutuqlar, router)
+assets/img/illu/      — anatomiya illyustratsiyalari
+assets/img/atlas/     — atlas sahifa rasmlari
 assets/img/           — PDF'dan olingan dars rasmlari
-assets/icons/         — logo.svg + ikonkalar
-assets/fonts/         — Poppins + Inter (lokal, offline)
+docs/screenshots/     — ekran skrinshotlari
+*.pdf                 — manba hujjatlar (kitoblar + atlas)
 ```
 
 ## Yangi mavzu qo'shish
 
-1. `js/data.js` → `COURSE.units[]` (darslar), `SYSTEMS[]` (tizim), `ATLAS_CATS[]` (atlas ob'yektlari)
-2. `UNIT_META` ga yangi modul ikonkasini qo'shing
-3. Illyustratsiya: `assets/img/illu/` ga yagona uslubdagi rasm
+1. `js/content.js` → `CURRICULUM`ga bo'lim/mavzu va manba sahifasini qo'shing
+2. `js/data.js` → `COURSE.units[]` (darslar, `source`, `slides`, savollar), `UNIT_META`
+3. `SYSTEMS[]` va `ATLAS_CATS[]` ni yangilang
+4. Illyustratsiya: `assets/img/illu/`ga yagona uslubdagi rasm
 
-## Responsivlik
-
-360 / 390 / 412 / 768 / 1440px da tekshirilgan — toshib ketish yo'q.
-Mobil'da pastki navigatsiya, desktop (≥1024px)da yon panel.
+Savol formatlari: `quiz/q opts a hint? explanation?`, `img +img`, `match pairs`, `build q answer extra`, `tf q a why?`, `order q items explanation?`, `fill q answer extra explanation?`, `func q opts a`.

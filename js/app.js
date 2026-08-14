@@ -97,10 +97,25 @@
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
   function pct(part, total) { return total ? Math.round((part / total) * 100) : 0; }
   function exCountLabel(n) { return n + " ta mashq"; }
+  // Mavzuni o'zlashtirish darajasi (%) — bajarilgan darslar aniqligi asosida
+  function topicMastery(unitId) {
+    const u = COURSE.units.find(x => x.id === unitId);
+    if (!u || !u.lessons.length) return 0;
+    const sum = u.lessons.reduce((s, l) => s + (S.done[l.id] ? Math.min(100, S.done[l.id].acc) : 0), 0);
+    return Math.round(sum / u.lessons.length);
+  }
+  function systemMastery(unitIds) {
+    const uids = unitIds.map(i => COURSE.units.find(u => u.id === i)).filter(Boolean);
+    if (!uids.length) return 0;
+    const lessons = uids.flatMap(u => u.lessons);
+    const sum = lessons.reduce((s, l) => s + (S.done[l.id] ? Math.min(100, S.done[l.id].acc) : 0), 0);
+    return lessons.length ? Math.round(sum / lessons.length) : 0;
+  }
 
   const KIND_LABEL = {
     quiz: "Savol", img: "Rasmni aniqlang", match: "Moslashtiring",
     build: "Atamani tuzing", tf: "To'g'ri / noto'g'ri",
+    order: "Tartiblang", fill: "Bo'sh joyni to'ldiring", func: "Tuzilma → vazifa",
   };
 
   // ---------- Yutuqlar ----------
@@ -455,13 +470,13 @@
   function renderAtlas() {
     regenHearts();
     let html = `<div class="sec-head" style="margin-top:20px"><h2>Anatomiya atlasi</h2></div>
-      <div class="pad" style="margin-bottom:16px"><div class="lead-muted">Suyaklar, mushaklar va a'zolar — nomi, lotincha atamasi va vazifasi bilan.</div></div>
+      <div class="pad" style="margin-bottom:16px"><div class="lead-muted">Suyaklar, mushaklar va a'zolar — nomi, lotincha atamasi, vazifasi va bog'liq darslar bilan.</div></div>
       <div class="atlas-cats">`;
-    for (const cat of ATLAS_CATS) {
+    ATLAS_CATS.forEach((cat, ci) => {
       html += `<div class="atlas-cat">
         <div class="ac-head" style="color:${cat.color}">${ic(cat.icon)}<h3>${esc(cat.title)}</h3></div>
-        ${cat.items.map(it => `
-          <div class="anatomy-card">
+        ${cat.items.map((it, ii) => `
+          <button class="anatomy-card" data-cat="${ci}" data-item="${ii}" style="width:100%;text-align:left">
             <div class="ac-illu"><img src="${it.img}" alt="${esc(it.name)}" loading="lazy" onerror="this.style.display='none'"></div>
             <div class="ac-body">
               <div class="ac-name">${esc(it.name)} <span class="ac-latin">— ${esc(it.latin)}</span></div>
@@ -469,13 +484,60 @@
               <div class="ac-func">${ic("activity", "ico")}<span><b>Vazifasi:</b> ${esc(it.func)}</span></div>
               ${it.lessons.length ? `<div class="ac-lessons">${it.lessons.map(l => `<span class="chip">${esc(l)}</span>`).join("")}</div>` : ""}
             </div>
-          </div>`).join("")}
+          </button>`).join("")}
       </div>`;
-    }
+    });
     html += `</div>`;
     $app.innerHTML = layout(html, "atlas");
+    $app.querySelectorAll("[data-cat]").forEach(b =>
+      b.addEventListener("click", () => renderAtlasItem(+b.dataset.cat, +b.dataset.item)));
     bindNav();
     window.scrollTo(0, 0);
+  }
+
+  function renderAtlasItem(ci, ii) {
+    const cat = ATLAS_CATS[ci];
+    const it = cat.items[ii];
+    if (!it) return renderAtlas();
+    let html = `<div class="detail-top" style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border)">
+      <button class="btn-quit" id="back" style="color:var(--text-2)">${ic("arrow-left")}</button>
+      <h2 style="font-size:16px">${esc(cat.title)}</h2>
+    </div>
+    <div class="pad" style="padding-top:16px">
+      <div class="ac-illu" style="border-radius:18px;overflow:hidden;border:1px solid var(--border)"><img src="${it.img}" alt="${esc(it.name)}" onerror="this.style.display='none'"></div>
+      <div style="margin-top:16px">
+        <div class="ac-name" style="font-size:22px;font-weight:800">${esc(it.name)}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+          <span class="chip" style="color:var(--purple-3);font-weight:700">${esc(it.latin)}</span>
+          ${it.en ? `<span class="chip">${esc(it.en)}</span>` : ""}
+        </div>
+        <p style="color:var(--text-2);line-height:1.65;font-size:14px;margin-top:14px">${esc(it.desc)}</p>
+        <div class="ac-func" style="margin-top:14px">${ic("activity", "ico")}<span><b>Vazifasi:</b> ${esc(it.func)}</span></div>
+        ${it.lessons.length ? `<div class="sec-head" style="margin:22px 0 0"><h2 style="font-size:14px">Bog'liq darslar</h2></div>
+          <div class="ac-lessons" style="margin-top:8px">${it.lessons.map(l => `<span class="chip">${esc(l)}</span>`).join("")}</div>` : ""}
+        <button class="btn full" id="btn-learn" style="margin-top:22px">${ic("play", "ico-sm")} O'rganish</button>
+      </div>
+    </div>`;
+    $app.innerHTML = layout(html, "atlas");
+    document.getElementById("back").addEventListener("click", renderAtlas);
+    document.getElementById("btn-learn").addEventListener("click", () => {
+      if (it.quiz) startUnitQuiz(it.quiz);
+      else showToast("info", "Dars hozircha yo'q", "Atlas ob'yekti uchun mashq tayyorlanmoqda");
+    });
+    bindNav();
+    window.scrollTo(0, 0);
+  }
+
+  // Bitta modul (tizim) bo'yicha tezkor mashq
+  function startUnitQuiz(unitId) {
+    const u = COURSE.units.find(x => x.id === unitId);
+    if (!u) return;
+    const pool = [];
+    u.lessons.forEach(l => l.ex.forEach(e => pool.push({ ...e, _key: null })));
+    const exs = shuffle(pool).slice(0, 8);
+    if (!exs.length) { showToast("info", "Mashq yo'q", "Bu mavzuda hozircha savollar yo'q"); return; }
+    session = { kind: "quick", lessonId: null, title: u.title, retry: () => startUnitQuiz(unitId), queue: exs, idx: 0, correct: 0, xpBase: 8, useHearts: false, startedAt: Date.now() };
+    renderExercise();
   }
 
   // ---------- Sinov ----------
@@ -605,16 +667,14 @@
         </div>
       </div>
 
-      <div class="sec-head"><h2>Tizimlar bo'yicha</h2></div>
+      <div class="sec-head"><h2>Tizimlar bo'yicha o'zlashtirish</h2></div>
       <div class="sys-progress">
         ${SYSTEMS.map(sys => {
-          if (sys.soon) return "";
-          const uids = sys.units.map(i => COURSE.units.find(u => u.id === i)).filter(Boolean);
-          const done = uids.reduce((s, u) => s + u.lessons.filter(l => S.done[l.id]).length, 0);
-          const total = uids.reduce((s, u) => s + u.lessons.length, 0);
-          const pr = pct(done, total);
+          if (!sys.units.length) return "";
+          const pr = systemMastery(sys.units);
+          const mastered = pr >= 80;
           return `<div class="sys-row">
-            <div class="sr-top"><span>${esc(sys.title)}</span><b class="num">${pr}%</b></div>
+            <div class="sr-top"><span>${esc(sys.title)}${mastered ? ` <span class="chip" style="color:var(--success);border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.12)">✓ O'zlashtirilgan</span>` : ""}</span><b class="num">${pr}%</b></div>
             <div class="bar"><div style="width:${pr}%;background:linear-gradient(90deg,${sys.color},${sys.color}cc)"></div></div>
           </div>`;
         }).join("")}
@@ -718,6 +778,8 @@
     const l = flatLessons[lessonIndex(id)];
     session = {
       kind: "lesson", lessonId: id, title: l.title, retry: () => startLesson(id),
+      source: l.source || null,
+      slides: l.slides || [], slideIdx: 0,
       queue: l.ex.map((e, i) => ({ ...e, _key: id + ":" + i })),
       idx: 0, correct: 0, xpBase: l.xp, useHearts: true, startedAt: Date.now(),
     };
@@ -802,17 +864,21 @@
   }
 
   function renderExercise() {
-    if (!session || session.idx >= session.queue.length) return renderResult();
+    if (!session) return;
+    if (session.slides && session.slideIdx < session.slides.length) return renderSlide();
+    if (session.idx >= session.queue.length) return renderResult();
     const ex = session.queue[session.idx];
     let body = "";
-    if (ex.t === "quiz" || ex.t === "img") body = quizBody(ex);
+    if (ex.t === "quiz" || ex.t === "img" || ex.t === "func") body = quizBody(ex);
     else if (ex.t === "tf") body = tfBody(ex);
     else if (ex.t === "match") body = matchBody(ex);
     else if (ex.t === "build") body = buildBody(ex);
+    else if (ex.t === "order") body = orderBody(ex);
+    else if (ex.t === "fill") body = fillBody(ex);
 
     $app.innerHTML = `<div class="lesson">${lessonHeader()}
       <div class="ex-body">
-        <div class="ex-kind">${KIND_LABEL[ex.t] || ""}</div>
+        <div class="ex-kind">${KIND_LABEL[ex.t] || ""}${session.source ? ` · <span style="opacity:.6">${BOOKS[session.source.book].title} · ${session.source.page}-bet</span>` : ""}</div>
         ${body}
       </div>
       <div class="ex-footer"><button class="btn full" id="check" disabled>Tekshirish</button></div>
@@ -821,12 +887,44 @@
       if (confirm("Chiqasizmi? Sessiya natijasi saqlanmaydi.")) { clearInterval(examTimer); session = null; renderHome(); }
     });
     if (session.kind === "exam") { clearInterval(examTimer); examTimer = setInterval(tickExam, 500); tickExam(); }
-    if (ex.t === "quiz" || ex.t === "img") bindQuiz(ex);
+    if (ex.t === "quiz" || ex.t === "img" || ex.t === "func") bindQuiz(ex);
     else if (ex.t === "tf") bindTF(ex);
     else if (ex.t === "match") bindMatch(ex);
     else if (ex.t === "build") bindBuild(ex);
+    else if (ex.t === "order") bindOrder(ex);
+    else if (ex.t === "fill") bindFill(ex);
     const hb = document.getElementById("hint-btn");
     if (hb) hb.addEventListener("click", () => { document.getElementById("hint-txt").style.display = "block"; hb.style.display = "none"; });
+    window.scrollTo(0, 0);
+  }
+
+  // ---------- O'rganish slaydlari (intro → vizual → tushuntirish) ----------
+  function renderSlide() {
+    const s = session.slides[session.slideIdx];
+    const total = session.slides.length;
+    const pct = Math.round((session.slideIdx / total) * 100);
+    $app.innerHTML = `<div class="lesson">
+      <div class="lesson-top glass">
+        <button class="btn-quit" id="quit">${ic("x")}</button>
+        <div class="progress"><div style="width:${pct}%"></div></div>
+        <div class="exam-timer">${session.slideIdx + 1}/${total}</div>
+      </div>
+      <div class="ex-body" style="align-items:center;text-align:center;justify-content:center">
+        <div class="ex-kind">${esc(session.title)}</div>
+        <h2 style="font-size:22px;margin:6px 0 14px">${esc(s.title)}</h2>
+        ${s.img ? `<div class="ex-img"><img src="${s.img}" alt="" onerror="this.style.display='none'" style="max-height:240px"></div>` : ""}
+        <p style="color:var(--text-2);line-height:1.7;font-size:14.5px;max-width:420px">${esc(s.text)}</p>
+        ${s.cap ? `<div class="lead-muted" style="margin-top:12px;font-size:11.5px">${esc(s.cap)}</div>` : ""}
+      </div>
+      <div class="ex-footer"><button class="btn full" id="next-slide">${session.slideIdx + 1 >= total ? "Mashqni boshlash" : "Davom etish"}</button></div>
+    </div>`;
+    document.getElementById("quit").addEventListener("click", () => {
+      if (confirm("Chiqasizmi? Sessiya natijasi saqlanmaydi.")) { session = null; renderHome(); }
+    });
+    document.getElementById("next-slide").addEventListener("click", () => {
+      session.slideIdx++;
+      renderExercise();
+    });
     window.scrollTo(0, 0);
   }
 
@@ -948,6 +1046,71 @@
     });
   }
 
+  // ----- Ordering (tartiblash) -----
+  function orderBody(ex) {
+    const items = shuffle(ex.items.map((t, i) => ({ t, i })));
+    return `<div class="ex-title">${esc(ex.q)}</div>
+      <div class="build-area" id="area" style="min-height:84px"></div>
+      <div class="bank" id="bank">${items.map((it, k) =>
+        `<button class="chip" data-t="${esc(it.t)}" data-i="${it.i}" data-k="${k}"><span class="num" style="margin-right:6px;opacity:.6">${k + 1}</span>${esc(it.t)}</button>`).join("")}
+      </div>
+      <div class="hint-txt" style="display:block;margin-top:16px;font-size:12px;color:var(--muted)">Elementlarni to'g'ri ketma-ketlikda bosing</div>`;
+  }
+  function bindOrder(ex) {
+    const area = document.getElementById("area");
+    const check = document.getElementById("check");
+    const picked = [];
+    function refresh() {
+      check.disabled = picked.length !== ex.items.length;
+      // qayta raqamlash
+      area.querySelectorAll(".chip .num").forEach((n, i) => n.textContent = i + 1);
+    }
+    $app.querySelectorAll("#bank .chip").forEach(b => b.addEventListener("click", () => {
+      if (b.classList.contains("ghost")) return;
+      b.classList.add("ghost");
+      const chip = document.createElement("button");
+      chip.className = "chip"; chip.dataset.i = b.dataset.i; chip.dataset.t = b.dataset.t;
+      chip.innerHTML = `<span class="num" style="margin-right:6px;opacity:.7">${picked.length + 1}</span>${esc(b.dataset.t)}`;
+      chip.addEventListener("click", () => {
+        area.removeChild(chip);
+        picked.splice(picked.indexOf(chip), 1);
+        $app.querySelector(`#bank .chip[data-k="${b.dataset.k}"]`).classList.remove("ghost");
+        refresh();
+      });
+      area.appendChild(chip); picked.push(chip); refresh();
+    }));
+    check.addEventListener("click", () => {
+      const good = picked.every((c, i) => c.dataset.i == ex.items[i]);
+      finishStep(ex, good, good ? null : `To'g'ri tartib: ${ex.items.join(" → ")}`);
+    });
+  }
+
+  // ----- Fill (bo'sh joyni to'ldirish) -----
+  function fillBody(ex) {
+    const bank = shuffle([ex.answer].concat(ex.extra || []));
+    return `<div class="ex-title">${esc(ex.q.replace("____", "______"))}</div>
+      <div class="bank" id="bank" style="margin-top:20px">${bank.map((w, i) =>
+        `<button class="chip fill-chip" data-w="${esc(w)}" data-i="${i}">${esc(w)}</button>`).join("")}
+      </div>
+      <div class="hint-txt" style="display:block;margin-top:16px;font-size:12px;color:var(--muted)">Bo'sh joyga mos keladigan so'zni tanlang</div>`;
+  }
+  function bindFill(ex) {
+    const check = document.getElementById("check");
+    check.textContent = "Tekshirish";
+    check.disabled = true;
+    $app.querySelectorAll("#bank .fill-chip").forEach(b => b.addEventListener("click", () => {
+      if (b.classList.contains("ghost")) return;
+      const good = b.dataset.w.toLowerCase() === ex.answer.toLowerCase();
+      $app.querySelectorAll("#bank .fill-chip").forEach(x => {
+        x.disabled = true;
+        if (x.dataset.w.toLowerCase() === ex.answer.toLowerCase()) x.classList.add("correct");
+        else if (x === b && !good) x.classList.add("wrong");
+        else x.classList.add("ghost");
+      });
+      finishStep(ex, good, good ? null : `To'g'ri javob: ${ex.answer}`);
+    }));
+  }
+
   function finishStep(ex, good, subText) {
     beep(good);
     S.answered++;
@@ -970,6 +1133,7 @@
     fb.className = "feedback " + (good ? "good" : "bad");
     fb.innerHTML = `<div class="fb-title">${good ? ic("check") + " To'g'ri" : ic("x") + " Noto'g'ri"}</div>
       ${subText ? `<div class="fb-sub">${esc(subText)}</div>` : `<div class="fb-sub"></div>`}
+      ${ex.explanation ? `<div class="fb-sub" style="opacity:.85">💡 ${esc(ex.explanation)}</div>` : ""}
       <button class="btn full ${good ? "" : "danger"}" id="next">Davom etish</button>`;
     document.body.appendChild(fb);
     document.getElementById("next").addEventListener("click", () => {
