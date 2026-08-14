@@ -7,8 +7,8 @@
 //  tf    — to'g'ri / noto'g'ri
 
 const COURSE = {
-  title: "Columna vertebralis",
-  subtitle: "Osteologiya · Dars 1",
+  title: "Odam skeleti (Osteologiya)",
+  subtitle: "Anatomiya I jild · Suyaklar haqidagi ilm",
   units: [
     {
       id: "u1",
@@ -237,6 +237,303 @@ const COURSE = {
           ]
         }
       ]
+    },
+    {
+      id: "u5",
+      title: "Ko'krak qafasi suyaklari",
+      color: "#ef4444",
+      icon: "🩻",
+      lessons: [
+        {
+          id: "l13",
+          title: "Qovurg'alar (Costae)",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Qovurg'alar lotinchada qanday ataladi?", opts: ["Costae", "Sternum", "Clavicula", "Scapula"], a: 0 },
+            { t: "quiz", q: "Odamda necha juft qovurg'a bor?", opts: ["10", "11", "12", "14"], a: 2 },
+            { t: "quiz", q: "Qovurg'alar orqa tomonda qaysi suyaklar bilan bo'g'im hosil qiladi?", opts: ["To'sh suyagi", "Ko'krak umurtqalari", "Bel umurtqalari", "O'mrov suyagi"], a: 1, hint: "Fovea costales orqali" },
+            { t: "quiz", q: "Qovurg'a boshi lotinchada qanday ataladi?", opts: ["Collum costae", "Caput costae", "Corpus costae", "Tuberculum costae"], a: 1 },
+            { t: "quiz", q: "Qovurg'a tanasining ichki yuzasidagi egat (tomir va nerv o'tadi)?", opts: ["Sulcus costae", "Sulcus vertebralis", "Sulcus arteriae vertebralis", "Sulcus bicipitalis"], a: 0 },
+            { t: "match", pairs: [["Caput costae", "Qovurg'a boshi"], ["Collum costae", "Qovurg'a bo'yni"], ["Tuberculum costae", "Qovurg'a do'mbog'i"], ["Corpus costae", "Qovurg'a tanasi"]] },
+            { t: "build", q: "«Qovurg'a boshi» atamasini yig'ing", answer: "Caput costae", extra: ["collum", "corpus"] },
+            { t: "quiz", q: "To'sh suyagiga bevosita birikadigan qovurg'alar qaysi?", opts: ["I–VII", "VIII–X", "XI–XII", "Barchasi"], a: 0, hint: "Costae verae — chin qovurg'alar" },
+            { t: "quiz", q: "VIII–X qovurg'alar qanday nomlanadi?", opts: ["Costae verae", "Costae spuriae", "Costae fluctuantes", "Costae bifidae"], a: 1, hint: "Spuriae — soxta" },
+            { t: "tf", q: "XI–XII qovurg'alar costae fluctuantes (erkin qovurg'alar) deb ataladi.", a: true },
+            { t: "quiz", q: "Qovurg'a do'mbog'i (tuberculum costae) umurtqaning qaysi qismi bilan bo'g'im hosil qiladi?", opts: ["Corpus vertebrae", "Fovea costalis transversalis", "Processus spinosus", "Foramen vertebrale"], a: 1 },
+            { t: "quiz", q: "Qovurg'a boshidagi ikkita bo'g'im yuzasi orasidagi qirra?", opts: ["Crista capitis costae", "Crista colli costae", "Linea aspera", "Spina costae"], a: 0 }
+          ]
+        },
+        {
+          id: "l14",
+          title: "To'sh suyagi (Sternum)",
+          xp: 20,
+          ex: [
+            { t: "quiz", q: "To'sh suyagi lotinchada qanday ataladi?", opts: ["Sternum", "Sacrum", "Scapula", "Stapes"], a: 0 },
+            { t: "quiz", q: "To'sh suyagi qanday qismlardan iborat?", opts: ["Manubrium, corpus, processus xiphoideus", "Caput, collum, corpus", "Basis, apex, ala", "Squama, corpus, ramus"], a: 0 },
+            { t: "quiz", q: "To'sh suyagining yuqori keng qismi qanday ataladi?", opts: ["Corpus sterni", "Manubrium sterni", "Processus xiphoideus", "Angulus sterni"], a: 1, hint: "Manubrium — dasta" },
+            { t: "quiz", q: "Manubriumning yuqori chetidagi o'yma?", opts: ["Incisura clavicularis", "Incisura jugularis", "Incisura costalis", "Incisura vertebralis"], a: 1, hint: "Jugulum — bo'yinturuq" },
+            { t: "quiz", q: "O'mrov suyagi bilan bo'g'im hosil qiladigan o'yma?", opts: ["Incisura jugularis", "Incisura costalis", "Incisura clavicularis", "Fovea dentis"], a: 2 },
+            { t: "match", pairs: [["Manubrium sterni", "Dasta"], ["Corpus sterni", "Tana"], ["Processus xiphoideus", "Xanjar o'simta"], ["Incisura jugularis", "Bo'yinturuq o'ymasi"]] },
+            { t: "quiz", q: "Dasta bilan tana chegarasidagi burchak (II qovurg'a sohasida)?", opts: ["Angulus sterni", "Angulus costae", "Angulus mandibulae", "Angulus inferior"], a: 0, hint: "Angulus Ludovici" },
+            { t: "build", q: "«Xanjar o'simta» atamasini yig'ing", answer: "Processus xiphoideus", extra: ["manubrium", "jugularis"] },
+            { t: "quiz", q: "Ko'krak qafasi lotinchada qanday ataladi?", opts: ["Thorax", "Pelvis", "Cranium", "Abdomen"], a: 0 },
+            { t: "quiz", q: "Ko'krak qafasining yuqori teshigi?", opts: ["Apertura thoracis inferior", "Apertura thoracis superior", "Hiatus aorticus", "Foramen magnum"], a: 1 },
+            { t: "tf", q: "Processus xiphoideus yosh o'tgan sari suyaklanib qoladi.", a: true }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u6",
+      title: "Qo'l skeleti",
+      color: "#f59e0b",
+      icon: "💪",
+      lessons: [
+        {
+          id: "l15",
+          title: "Yelka kamari (Scapula · Clavicula)",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Yelka kamari qaysi suyaklardan tashkil topgan?", opts: ["Clavicula va scapula", "Humerus va radius", "Sternum va costa", "Os coxae va femur"], a: 0 },
+            { t: "quiz", q: "O'mrov suyagi lotinchada qanday ataladi?", opts: ["Clavicula", "Scapula", "Costa", "Clavis"], a: 0 },
+            { t: "quiz", q: "Kurak suyagi lotinchada qanday ataladi?", opts: ["Clavicula", "Scapula", "Sternum", "Sacrum"], a: 1 },
+            { t: "quiz", q: "Kurak suyagining yelka suyagi bilan bo'g'im hosil qiladigan chuqurchasi?", opts: ["Fossa subscapularis", "Cavitas glenoidalis", "Acetabulum", "Fovea dentis"], a: 1, hint: "Glenoidalis — bo'g'imga oid" },
+            { t: "quiz", q: "Kurak suyagi orqa yuzasidagi qirra?", opts: ["Spina scapulae", "Linea aspera", "Crista iliaca", "Crista sacralis"], a: 0 },
+            { t: "quiz", q: "Spina scapulae'ning uchida joylashgan, o'mrov bilan bo'g'im hosil qiladigan o'simta?", opts: ["Processus coracoideus", "Acromion", "Processus styloideus", "Olecranon"], a: 1 },
+            { t: "quiz", q: "Kurak suyagining oldinga yo'nalgan «tumshuqsimon» o'simtasi?", opts: ["Acromion", "Processus coracoideus", "Processus mastoideus", "Processus xiphoideus"], a: 1 },
+            { t: "match", pairs: [["Clavicula", "O'mrov suyagi"], ["Scapula", "Kurak suyagi"], ["Acromion", "Yelka uchki o'simtasi"], ["Cavitas glenoidalis", "Bo'g'im chuqurchasi"]] },
+            { t: "build", q: "«Yelka uchki o'simtasi» atamasini yig'ing", answer: "Acromion", extra: ["coracoideus", "olecranon"] },
+            { t: "quiz", q: "Kurak suyagining qovurg'alarga qaragan yuzasidagi chuqurcha?", opts: ["Fossa supraspinata", "Fossa infraspinata", "Fossa subscapularis", "Cavitas glenoidalis"], a: 2 },
+            { t: "quiz", q: "Claviculaning to'sh suyagiga qaragan uchi?", opts: ["Extremitas acromialis", "Extremitas sternalis", "Caput claviculae", "Tuberculum"], a: 1 },
+            { t: "tf", q: "Acromion o'mrov suyagining akromial uchi bilan bo'g'im hosil qiladi.", a: true }
+          ]
+        },
+        {
+          id: "l16",
+          title: "Yelka suyagi (Humerus)",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Yelka suyagi lotinchada qanday ataladi?", opts: ["Humerus", "Femur", "Radius", "Ulna"], a: 0 },
+            { t: "quiz", q: "Yelka suyagining boshi qanday ataladi?", opts: ["Caput humeri", "Collum humeri", "Tuberculum", "Condylus"], a: 0 },
+            { t: "quiz", q: "Boshning chetidagi halqasimon botiq (anatomik)?", opts: ["Collum chirurgicum", "Collum anatomicum", "Tuberculum majus", "Epicondylus"], a: 1 },
+            { t: "quiz", q: "Sinishlar ko'p uchraydigan, boshdan pastroq toraygan joy?", opts: ["Collum anatomicum", "Collum chirurgicum", "Diaphysis", "Metaphysis"], a: 1, hint: "Chirurgicum — jarrohlik bo'yni" },
+            { t: "quiz", q: "Yelka suyagining katta va kichik do'mboqchalari?", opts: ["Tuberculum majus et minus", "Trochanter major et minor", "Epicondylus medialis et lateralis", "Condylus medialis et lateralis"], a: 0 },
+            { t: "quiz", q: "Ikki do'mboqcha orasidagi egat (biceps payi o'tadi)?", opts: ["Sulcus intertubercularis", "Sulcus bicipitalis", "Sulcus nervi radialis", "Sulcus costae"], a: 0 },
+            { t: "match", pairs: [["Caput humeri", "Yelka suyagi boshi"], ["Tuberculum majus", "Katta do'mboqcha"], ["Tuberculum minus", "Kichik do'mboqcha"], ["Sulcus intertubercularis", "Do'mboqchalararo egat"]] },
+            { t: "quiz", q: "Yelka suyagining pastki uchidagi yumaloq bo'g'im yuzasi (radius bilan)?", opts: ["Capitulum humeri", "Caput humeri", "Trochlea", "Fossa olecrani"], a: 0, hint: "Capitulum — boshcha" },
+            { t: "quiz", q: "Tirsak suyagi bilan bo'g'im hosil qiladigan blok?", opts: ["Trochlea humeri", "Capitulum humeri", "Epicondylus", "Fossa radialis"], a: 0 },
+            { t: "quiz", q: "Orqa yuzadagi chuqurcha (bilakni yozganda olecranon kiradi)?", opts: ["Fossa olecrani", "Fossa coronoidea", "Fossa radialis", "Fossa glenoidalis"], a: 0 },
+            { t: "build", q: "«Yelka suyagi boshi» atamasini yig'ing", answer: "Caput humeri", extra: ["femur", "radius"] },
+            { t: "tf", q: "Nervus radialis yelka suyagining sulcus nervi radialis'dan o'tadi.", a: true }
+          ]
+        },
+        {
+          id: "l17",
+          title: "Bilak va kaft suyaklari",
+          xp: 30,
+          ex: [
+            { t: "quiz", q: "Bilak suyaklari qaysilar?", opts: ["Radius va ulna", "Tibia va fibula", "Humerus va scapula", "Femur va patella"], a: 0 },
+            { t: "quiz", q: "Bosh barmoq tomonidagi bilak suyagi?", opts: ["Ulna", "Radius", "Humerus", "Fibula"], a: 1, hint: "Radius — tashqi tomonda" },
+            { t: "quiz", q: "Tirsak suyagi lotinchada qanday ataladi?", opts: ["Radius", "Ulna", "Ulcus", "Umbilicus"], a: 1 },
+            { t: "quiz", q: "Tirsak suyagining yuqori uchidagi katta o'simta (tirsak suyanchig'i)?", opts: ["Olecranon", "Acromion", "Malleolus", "Tuberculum"], a: 0 },
+            { t: "quiz", q: "Radiusning pastki uchidagi bigizsimon o'simta?", opts: ["Processus styloideus", "Processus coracoideus", "Processus xiphoideus", "Olecranon"], a: 0 },
+            { t: "match", pairs: [["Radius", "Bilak suyagi (bosh barmoq tomoni)"], ["Ulna", "Tirsak suyagi"], ["Olecranon", "Tirsak suyanchig'i"], ["Processus styloideus", "Bigizsimon o'simta"]] },
+            { t: "quiz", q: "Kaft ildizi suyaklari (ossa carpi) nechta?", opts: ["5", "7", "8", "10"], a: 2 },
+            { t: "quiz", q: "Kaft ildizi suyaklari lotinchada?", opts: ["Ossa carpi", "Ossa metacarpi", "Ossa tarsi", "Ossa digitorum"], a: 0 },
+            { t: "quiz", q: "Kaft suyaklari (ossa metacarpi) nechta?", opts: ["4", "5", "6", "8"], a: 1 },
+            { t: "quiz", q: "Bitta qo'lda nechta barmoq falangasi bor?", opts: ["12", "14", "15", "16"], a: 1, hint: "2 + 3 + 3 + 3 + 3" },
+            { t: "build", q: "«Tirsak suyanchig'i» atamasini yig'ing", answer: "Olecranon", extra: ["acromion", "malleolus"] },
+            { t: "quiz", q: "Bosh barmoq lotinchada qanday ataladi?", opts: ["Pollex", "Hallux", "Digitus", "Carpus"], a: 0 },
+            { t: "tf", q: "Ossa carpi ikki qatorda joylashgan 8 ta suyakdan iborat.", a: true }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u7",
+      title: "Oyoq skeleti",
+      color: "#10b981",
+      icon: "🦵",
+      lessons: [
+        {
+          id: "l18",
+          title: "Chanoq kamari (Os coxae)",
+          xp: 30,
+          ex: [
+            { t: "quiz", q: "Chanoq suyagi lotinchada qanday ataladi?", opts: ["Os coxae", "Os sacrum", "Os ilium", "Femur"], a: 0 },
+            { t: "quiz", q: "Os coxae nechta suyakning qo'shilishidan hosil bo'ladi?", opts: ["2", "3", "4", "5"], a: 1, hint: "Ilium, ischium, pubis" },
+            { t: "quiz", q: "Yonbosh suyagi lotinchada qanday ataladi?", opts: ["Os ischii", "Os pubis", "Os ilium", "Os coccygis"], a: 2 },
+            { t: "quiz", q: "Quymich suyagi lotinchada qanday ataladi?", opts: ["Os ischii", "Os ilium", "Os pubis", "Os sacrum"], a: 0 },
+            { t: "quiz", q: "Qov suyagi lotinchada qanday ataladi?", opts: ["Os pubis", "Os ischii", "Os ilium", "Os coxae"], a: 0 },
+            { t: "quiz", q: "Uch suyak birlashib hosil qilgan chuqurcha (son suyagi boshi kiradi)?", opts: ["Acetabulum", "Cavitas glenoidalis", "Fossa iliaca", "Foramen obturatum"], a: 0 },
+            { t: "quiz", q: "Yonbosh suyagining yuqori qirrasi?", opts: ["Crista iliaca", "Linea aspera", "Spina scapulae", "Crista sacralis"], a: 0 },
+            { t: "quiz", q: "Yonbosh suyagining oldingi-ustki bo'rtig'i (klinik orientir)?", opts: ["Spina iliaca anterior superior", "Spina iliaca posterior superior", "Tuber ischiadicum", "Tuberculum pubicum"], a: 0 },
+            { t: "quiz", q: "O'tirganda tayanch bo'ladigan quymich do'mbog'i?", opts: ["Tuber ischiadicum", "Spina ischiadica", "Crista iliaca", "Acetabulum"], a: 0 },
+            { t: "match", pairs: [["Os ilium", "Yonbosh suyagi"], ["Os ischii", "Quymich suyagi"], ["Os pubis", "Qov suyagi"], ["Acetabulum", "Bo'g'im chuqurchasi"]] },
+            { t: "quiz", q: "Qov suyaklarining oldingi birikishi?", opts: ["Symphysis pubica", "Articulatio sacroiliaca", "Acetabulum", "Ligamentum"], a: 0 },
+            { t: "quiz", q: "Qov va quymich suyaklari orasidagi katta teshik?", opts: ["Foramen obturatum", "Foramen ischiadicum", "Foramen magnum", "Hiatus sacralis"], a: 0 },
+            { t: "quiz", q: "Chanoqni katta va kichik qismlarga bo'luvchi chegara chizig'i?", opts: ["Linea terminalis", "Linea aspera", "Linea alba", "Linea transversa"], a: 0 },
+            { t: "build", q: "«Yonbosh suyagi» atamasini yig'ing", answer: "Os ilium", extra: ["ischii", "pubis"] },
+            { t: "tf", q: "Acetabulum ichiga femurning boshi kiradi.", a: true }
+          ]
+        },
+        {
+          id: "l19",
+          title: "Son va boldir suyaklari",
+          xp: 30,
+          ex: [
+            { t: "quiz", q: "Son suyagi lotinchada qanday ataladi?", opts: ["Femur", "Humerus", "Fibula", "Patella"], a: 0 },
+            { t: "quiz", q: "Femurning boshi qanday ataladi?", opts: ["Caput femoris", "Collum femoris", "Trochanter major", "Condylus"], a: 0 },
+            { t: "quiz", q: "Son suyagining boshini tanaga bog'lovchi qismi (sinish ko'p uchraydi)?", opts: ["Collum femoris", "Corpus femoris", "Trochanter", "Epicondylus"], a: 0 },
+            { t: "quiz", q: "Femurning katta va kichik do'mboqlari?", opts: ["Trochanter major et minor", "Tuberculum majus et minus", "Epicondylus medialis et lateralis", "Malleolus medialis et lateralis"], a: 0 },
+            { t: "quiz", q: "Son suyagining orqa yuzasidagi qo'pol qirra (mushaklar birikadi)?", opts: ["Linea aspera", "Crista iliaca", "Spina scapulae", "Linea alba"], a: 0 },
+            { t: "quiz", q: "Tizza qopqog'i suyagi qanday ataladi?", opts: ["Patella", "Fibula", "Tibia", "Talus"], a: 0 },
+            { t: "quiz", q: "Katta boldir suyagi lotinchada qanday ataladi?", opts: ["Tibia", "Fibula", "Tarsus", "Femur"], a: 0 },
+            { t: "quiz", q: "Kichik boldir suyagi lotinchada qanday ataladi?", opts: ["Fibula", "Tibia", "Patella", "Ulna"], a: 0 },
+            { t: "quiz", q: "Tibianing oldingi yuzasidagi do'mboqlik (pay birikadi)?", opts: ["Tuberositas tibiae", "Tuberculum majus", "Trochanter major", "Malleolus"], a: 0 },
+            { t: "quiz", q: "To'piqning ichki suyak bo'rtig'i qanday ataladi?", opts: ["Malleolus medialis", "Malleolus lateralis", "Tuber calcanei", "Talus"], a: 0, hint: "Medialis — ichki" },
+            { t: "quiz", q: "To'piqning tashqi bo'rtig'i (malleolus lateralis) qaysi suyakda?", opts: ["Tibia", "Fibula", "Talus", "Calcaneus"], a: 1 },
+            { t: "match", pairs: [["Femur", "Son suyagi"], ["Patella", "Tizza qopqog'i"], ["Tibia", "Katta boldir suyagi"], ["Fibula", "Kichik boldir suyagi"]] },
+            { t: "build", q: "«Son suyagi boshi» atamasini yig'ing", answer: "Caput femoris", extra: ["humeri", "radius"] },
+            { t: "quiz", q: "Tibianing yuqori uchidagi ikkita bo'g'im yuzasi?", opts: ["Condylus medialis et lateralis", "Epicondylus medialis et lateralis", "Trochanter major et minor", "Malleolus medialis et lateralis"], a: 0 },
+            { t: "tf", q: "Fibula tizza bo'g'imida ishtirok etmaydi.", a: true }
+          ]
+        },
+        {
+          id: "l20",
+          title: "Oyoq panjasi (Ossa pedis)",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Oyoq panjasining orqa qismidagi suyaklar (ossa tarsi) nechta?", opts: ["5", "7", "8", "14"], a: 1 },
+            { t: "quiz", q: "Oshiq suyagi lotinchada qanday ataladi?", opts: ["Talus", "Calcaneus", "Naviculare", "Cuboideum"], a: 0 },
+            { t: "quiz", q: "Tovon suyagi lotinchada qanday ataladi?", opts: ["Calcaneus", "Talus", "Cuneiforme", "Metatarsus"], a: 0 },
+            { t: "quiz", q: "Tovon suyagining orqaga bo'rtib chiqqan do'mbog'i (Axill payi birikadi)?", opts: ["Tuber calcanei", "Malleolus lateralis", "Tuberositas tibiae", "Tuberculum majus"], a: 0 },
+            { t: "quiz", q: "Oyoq panjasining o'rta qismidagi qayiqsimon suyak?", opts: ["Os naviculare", "Os cuboideum", "Os cuneiforme", "Talus"], a: 0, hint: "Navicula — qayiq" },
+            { t: "quiz", q: "Ponasimon suyaklar (ossa cuneiformia) nechta?", opts: ["1", "2", "3", "4"], a: 2, hint: "Mediale, intermedium, laterale" },
+            { t: "quiz", q: "Oyoq kafti suyaklari (ossa metatarsi) nechta?", opts: ["5", "7", "8", "14"], a: 0 },
+            { t: "match", pairs: [["Talus", "Oshiq suyagi"], ["Calcaneus", "Tovon suyagi"], ["Os naviculare", "Qayiqsimon suyak"], ["Os cuboideum", "Kubsimon suyak"]] },
+            { t: "quiz", q: "Oyoq panjasining bo'rtib turgan uzunasiga yoyi qanday ataladi?", opts: ["Arcus pedis", "Linea aspera", "Crista iliaca", "Foramen"], a: 0, hint: "Oyoq gumbazi" },
+            { t: "quiz", q: "Bitta oyoq panjasida nechta falanga bor?", opts: ["12", "14", "15", "16"], a: 1 },
+            { t: "build", q: "«Tovon suyagi» atamasini yig'ing", answer: "Calcaneus", extra: ["Talus", "Naviculare"] },
+            { t: "quiz", q: "Oyoqdagi bosh barmoq lotinchada qanday ataladi?", opts: ["Hallux", "Pollex", "Digitus", "Talus"], a: 0 },
+            { t: "tf", q: "Talus boldir suyaklari bilan to'piq bo'g'imini hosil qiladi.", a: true }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u8",
+      title: "Kalla — miya qismi",
+      color: "#64748b",
+      icon: "💀",
+      lessons: [
+        {
+          id: "l21",
+          title: "Miya qismi suyaklari (umumiy)",
+          xp: 20,
+          ex: [
+            { t: "quiz", q: "Kalla skeleti lotinchada qanday ataladi?", opts: ["Cranium", "Thorax", "Pelvis", "Columna"], a: 0 },
+            { t: "quiz", q: "Kallaning miya qismi qanday ataladi?", opts: ["Neurocranium", "Viscerocranium", "Calvaria", "Splanchnocranium"], a: 0 },
+            { t: "quiz", q: "Miya qismi (neurocranium) nechta suyakdan iborat?", opts: ["6", "8", "10", "14"], a: 1 },
+            { t: "quiz", q: "Quyidagilardan qaysi biri TOQ (juft emas) suyak?", opts: ["Os frontale", "Os occipitale", "Os parietale", "Os ethmoidale"], a: 2, hint: "Parietale — juft" },
+            { t: "quiz", q: "Toq miya suyaklari qaysi qatorda to'g'ri keltirilgan?", opts: ["Frontale, occipitale, sphenoidale, ethmoidale", "Parietale, temporale", "Maxilla, palatinum", "Nasale, lacrimale"], a: 0 },
+            { t: "match", pairs: [["Neurocranium", "Kalla miya qismi"], ["Viscerocranium", "Kalla yuz qismi"], ["Calvaria", "Kalla gumbazi"], ["Basis cranii", "Kalla asosi"]] },
+            { t: "quiz", q: "Kallaning gumbazi qanday ataladi?", opts: ["Calvaria", "Basis", "Sella", "Sinus"], a: 0 },
+            { t: "build", q: "«Kalla miya qismi» atamasini yig'ing", answer: "Neurocranium", extra: ["Viscerocranium", "Calvaria"] },
+            { t: "quiz", q: "Juft miya qismi suyaklari qaysilar?", opts: ["Parietale va temporale", "Frontale va occipitale", "Sphenoidale va ethmoidale", "Maxilla va zygomaticum"], a: 0 },
+            { t: "tf", q: "Neurocranium 8 ta suyakdan iborat (4 toq va 2 juft).", a: true }
+          ]
+        },
+        {
+          id: "l22",
+          title: "Ensa, tepa va peshona suyaklari",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Ensa suyagi lotinchada qanday ataladi?", opts: ["Os occipitale", "Os frontale", "Os parietale", "Os temporale"], a: 0 },
+            { t: "quiz", q: "Ensa suyagidagi eng katta teshik (orqa miya o'tadi)?", opts: ["Foramen magnum", "Foramen ovale", "Foramen rotundum", "Foramen lacerum"], a: 0 },
+            { t: "quiz", q: "Foramen magnum yonida, atlas bilan bo'g'im hosil qiladigan do'mboqchalar?", opts: ["Condylus occipitalis", "Processus mastoideus", "Tuberculum", "Epicondylus"], a: 0 },
+            { t: "quiz", q: "Ensa suyagining tashqi yuzasidagi bo'rtiq?", opts: ["Protuberantia occipitalis externa", "Crista galli", "Tuber frontale", "Glabella"], a: 0, hint: "Inion" },
+            { t: "quiz", q: "Tepa suyagi lotinchada qanday ataladi?", opts: ["Os parietale", "Os temporale", "Os occipitale", "Os frontale"], a: 0 },
+            { t: "quiz", q: "Peshona suyagi lotinchada qanday ataladi?", opts: ["Os frontale", "Os parietale", "Os occipitale", "Os temporale"], a: 0 },
+            { t: "quiz", q: "Peshona suyagining bo'rtib turgan sohalari (do'ng peshona joyi)?", opts: ["Tuber frontale", "Glabella", "Arcus superciliaris", "Crista galli"], a: 0 },
+            { t: "quiz", q: "Qoshlar orasidagi tekis maydon qanday ataladi?", opts: ["Glabella", "Inion", "Nasion", "Vertex"], a: 0 },
+            { t: "match", pairs: [["Os occipitale", "Ensa suyagi"], ["Os parietale", "Tepa suyagi"], ["Os frontale", "Peshona suyagi"], ["Foramen magnum", "Katta teshik"]] },
+            { t: "quiz", q: "Peshona suyagi ichidagi havo bo'shlig'i?", opts: ["Sinus frontalis", "Sinus maxillaris", "Sinus sphenoidalis", "Cellulae ethmoidales"], a: 0 },
+            { t: "build", q: "«Katta teshik» atamasini yig'ing", answer: "Foramen magnum", extra: ["ovale", "rotundum"] },
+            { t: "quiz", q: "Tepa va ensa suyaklari tutashadigan nuqta?", opts: ["Lambda", "Bregma", "Pterion", "Asterion"], a: 0, hint: "Yunoncha λ harfi" },
+            { t: "tf", q: "Condylus occipitalis atlasning fovea articularis superior'i bilan bo'g'im hosil qiladi.", a: true }
+          ]
+        },
+        {
+          id: "l23",
+          title: "G'alvirsimon, ponasimon va chakka",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "G'alvirsimon suyak lotinchada qanday ataladi?", opts: ["Os ethmoidale", "Os sphenoidale", "Os temporale", "Os palatinum"], a: 0 },
+            { t: "quiz", q: "G'alvirsimon suyakning teshikli plastinkasi (hid nervlari o'tadi)?", opts: ["Lamina cribrosa", "Lamina perpendicularis", "Lamina papyracea", "Lamina horizontalis"], a: 0 },
+            { t: "quiz", q: "Lamina cribrosa ustidagi xo'roz tojisimon o'simta?", opts: ["Crista galli", "Glabella", "Inion", "Sella turcica"], a: 0 },
+            { t: "quiz", q: "Ponasimon suyak lotinchada qanday ataladi?", opts: ["Os sphenoidale", "Os ethmoidale", "Os temporale", "Os zygomaticum"], a: 0 },
+            { t: "quiz", q: "Ponasimon suyak tanasidagi egarsimon chuqurlik (gipofiz joylashadi)?", opts: ["Sella turcica", "Fossa hypophysialis", "Crista galli", "Fovea dentis"], a: 0, hint: "Sella — egar" },
+            { t: "quiz", q: "Sella turcica ichidagi, gipofiz bezi joylashadigan chuqurcha?", opts: ["Fossa hypophysialis", "Fossa pterygoidea", "Fossa temporalis", "Fossa cranii"], a: 0 },
+            { t: "quiz", q: "Ponasimon suyakda nechta qanot bor?", opts: ["2 (katta va kichik)", "1", "3", "4"], a: 0 },
+            { t: "quiz", q: "Chakka suyagi lotinchada qanday ataladi?", opts: ["Os temporale", "Os occipitale", "Os parietale", "Os frontale"], a: 0 },
+            { t: "quiz", q: "Quloq orqasidagi so'rg'ichsimon o'simta?", opts: ["Processus mastoideus", "Processus styloideus", "Processus zygomaticus", "Processus coronoideus"], a: 0 },
+            { t: "quiz", q: "Chakka suyagining bigizsimon o'simtasi?", opts: ["Processus styloideus", "Processus mastoideus", "Processus zygomaticus", "Acromion"], a: 0 },
+            { t: "quiz", q: "Chakka suyagining toshsimon qismi (ichki quloq joylashadi)?", opts: ["Pars petrosa", "Squama temporalis", "Pars tympanica", "Pars mastoidea"], a: 0, hint: "Pyramis — piramida" },
+            { t: "match", pairs: [["Os ethmoidale", "G'alvirsimon suyak"], ["Os sphenoidale", "Ponasimon suyak"], ["Os temporale", "Chakka suyagi"], ["Sella turcica", "Turk egari"]] },
+            { t: "build", q: "«So'rg'ichsimon o'simta» atamasini yig'ing", answer: "Processus mastoideus", extra: ["styloideus", "zygomaticus"] },
+            { t: "quiz", q: "Eshitish va muvozanat a'zosi chakka suyagining qaysi qismida joylashgan?", opts: ["Pars petrosa", "Squama", "Pars tympanica", "Processus zygomaticus"], a: 0 },
+            { t: "tf", q: "Os ethmoidale kallaning miya qismiga kiradi.", a: true }
+          ]
+        }
+      ]
+    },
+    {
+      id: "u9",
+      title: "Kalla — yuz qismi",
+      color: "#a855f7",
+      icon: "🦷",
+      lessons: [
+        {
+          id: "l24",
+          title: "Ustki jag' va tanglay suyagi",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Ustki jag' suyagi lotinchada qanday ataladi?", opts: ["Maxilla", "Mandibula", "Zygomaticum", "Palatinum"], a: 0 },
+            { t: "quiz", q: "Ustki jag' suyagidagi eng katta havo bo'shlig'i (burun yonida)?", opts: ["Sinus maxillaris", "Sinus frontalis", "Sinus sphenoidalis", "Sinus ethmoidalis"], a: 0, hint: "Highmori bo'shlig'i" },
+            { t: "quiz", q: "Sinus maxillaris yana kimning nomi bilan ataladi?", opts: ["Highmori", "Ludovici", "Fallopiy", "Vartoni"], a: 0 },
+            { t: "quiz", q: "Ustki jag'dagi tishlar joylashadigan o'simta?", opts: ["Processus alveolaris", "Processus palatinus", "Processus frontalis", "Processus zygomaticus"], a: 0, hint: "Alveola — tish uyasi" },
+            { t: "quiz", q: "Ko'z ostidagi teshik (nerv chiqadi)?", opts: ["Foramen infraorbitale", "Foramen supraorbitale", "Foramen mentale", "Foramen mandibulae"], a: 0 },
+            { t: "quiz", q: "Qattiq tanglayning orqa qismini hosil qiluvchi suyak?", opts: ["Os palatinum", "Maxilla", "Vomer", "Mandibula"], a: 0 },
+            { t: "quiz", q: "Tanglay suyagining ikkita plastinkasi?", opts: ["Lamina horizontalis et perpendicularis", "Lamina cribrosa et perpendicularis", "Lamina medialis et lateralis", "Squama et pars petrosa"], a: 0 },
+            { t: "match", pairs: [["Maxilla", "Ustki jag' suyagi"], ["Os palatinum", "Tanglay suyagi"], ["Sinus maxillaris", "Yuqori jag' bo'shlig'i"], ["Processus alveolaris", "Tish o'simtasi"]] },
+            { t: "build", q: "«Ustki jag' suyagi» atamasini yig'ing", answer: "Maxilla", extra: ["Mandibula", "Zygomaticum"] },
+            { t: "quiz", q: "Tanglay suyagining gorizontal plastinkasi qattiq tanglayning qaysi qismini hosil qiladi?", opts: ["Orqa", "Oldingi", "O'rta", "Yon"], a: 0 },
+            { t: "quiz", q: "Ikki ustki jag' tanalari birlashib hosil qilgan chok?", opts: ["Sutura palatina mediana", "Sutura sagittalis", "Sutura coronalis", "Sutura lambdoidea"], a: 0 },
+            { t: "tf", q: "Sinus maxillaris yuqori jag'da joylashgan eng katta havo bo'shlig'idir.", a: true }
+          ]
+        },
+        {
+          id: "l25",
+          title: "Pastki jag', yonoq va butun kalla",
+          xp: 25,
+          ex: [
+            { t: "quiz", q: "Pastki jag' suyagi lotinchada qanday ataladi?", opts: ["Mandibula", "Maxilla", "Zygomaticum", "Vomer"], a: 0 },
+            { t: "quiz", q: "Mandibula kallaning qanday suyagi?", opts: ["Yagona harakatchan suyagi", "Eng katta miya suyagi", "Juft suyak", "Ichki quloq suyagi"], a: 0 },
+            { t: "quiz", q: "Pastki jag' tanasi qanday ataladi?", opts: ["Corpus mandibulae", "Ramus mandibulae", "Angulus mandibulae", "Caput mandibulae"], a: 0 },
+            { t: "quiz", q: "Pastki jag'ning yuqoriga ko'tarilgan qismi?", opts: ["Ramus mandibulae", "Corpus mandibulae", "Angulus", "Processus alveolaris"], a: 0 },
+            { t: "quiz", q: "Ramusning oldingi tojsimon o'simtasi?", opts: ["Processus coronoideus", "Processus condylaris", "Processus mastoideus", "Processus styloideus"], a: 0 },
+            { t: "quiz", q: "Ramusning orqa bo'g'im o'simtasi (chakka suyagi bilan bo'g'im)?", opts: ["Processus condylaris", "Processus coronoideus", "Caput costae", "Condylus occipitalis"], a: 0 },
+            { t: "quiz", q: "Chakka-pastki jag' bo'g'imi lotinchada qanday ataladi?", opts: ["Articulatio temporomandibularis", "Articulatio atlantooccipitalis", "Symphysis", "Articulatio sternoclavicularis"], a: 0, hint: "TMP bo'g'imi" },
+            { t: "quiz", q: "Yonoq suyagi lotinchada qanday ataladi?", opts: ["Os zygomaticum", "Os nasale", "Os lacrimale", "Vomer"], a: 0 },
+            { t: "match", pairs: [["Mandibula", "Pastki jag' suyagi"], ["Os zygomaticum", "Yonoq suyagi"], ["Processus coronoideus", "Tojsimon o'simta"], ["Articulatio temporomandibularis", "Chakka-jag' bo'g'imi"]] },
+            { t: "quiz", q: "Yangi tug'ilgan chaqaloq kallasidagi suyaklar orasidagi yumshoq soha (liqildoq)?", opts: ["Fonticulus", "Sutura", "Foramen", "Sinus"], a: 0 },
+            { t: "build", q: "«Pastki jag' suyagi» atamasini yig'ing", answer: "Mandibula", extra: ["Maxilla", "Zygomaticum"] },
+            { t: "quiz", q: "Katta liqildoq (fonticulus anterior) qaysi suyaklar chegarasida?", opts: ["Peshona va tepa", "Ensa va chakka", "Ponasimon va ensa", "Chakka va tepa"], a: 0 },
+            { t: "tf", q: "Mandibula kalla skeletining yagona harakatchan suyagidir.", a: true }
+          ]
+        }
+      ]
     }
   ]
 };
@@ -445,14 +742,216 @@ const ATLAS = [
       { t: "Sacrum — yorliqlar bilan", uid: "64b2bbe85aff4154847c5b6e27849911", src: "UMich BlueLink" },
       { t: "Sacrum va Coccyx birga", uid: "49aafdac520046ab97afc33a26d47d0c", src: "Elon University" }
     ]
+  },
+  {
+    id: "a6",
+    title: "Costae · Sternum",
+    subtitle: "Qovurg'alar va to'sh suyagi",
+    icon: "🩻",
+    color: "#e11d48",
+    lead: "Ko'krak qafasi (thorax) 12 juft qovurg'a, to'sh suyagi va 12 ta ko'krak umurtqasidan tashkil topadi. Qovurg'alar chin (I–VII), soxta (VIII–X) va erkin (XI–XII) guruhlarga bo'linadi.",
+    sections: [
+      {
+        h: "Qovurg'a (Costa)", tag: "PDF · 46–48-bet",
+        terms: [
+          ["Caput costae", "Qovurg'a boshi — umurtqa tanasi bilan bo'g'im"],
+          ["Collum costae", "Qovurg'a bo'yni"],
+          ["Tuberculum costae", "Qovurg'a do'mbog'i — ko'ndalang o'simta bilan bo'g'im"],
+          ["Corpus costae", "Qovurg'a tanasi"],
+          ["Sulcus costae", "Tananing ichki yuzasidagi egat — tomir va nerv o'tadi"],
+          ["Costae verae (I–VII)", "Chin qovurg'alar — to'sh suyagiga bevosita birikadi"],
+          ["Costae spuriae (VIII–X)", "Soxta qovurg'alar — tog'aylari birlashib birikadi"],
+          ["Costae fluctuantes (XI–XII)", "Erkin qovurg'alar — to'sh suyagiga birikmaydi"]
+        ]
+      },
+      {
+        h: "To'sh suyagi (Sternum)", tag: "PDF · 49–50-bet",
+        terms: [
+          ["Manubrium sterni", "Dasta — yuqori keng qismi"],
+          ["Corpus sterni", "Tana — o'rta qismi"],
+          ["Processus xiphoideus", "Xanjar o'simta — pastki uchi"],
+          ["Incisura jugularis", "Bo'yinturuq o'ymasi — dasta tepasida"],
+          ["Incisura clavicularis", "O'mrov o'ymasi — clavicula bilan bo'g'im"],
+          ["Angulus sterni (Ludovici)", "Dasta-tana chegarasidagi burchak (II qovurg'a sathi)"],
+          ["Apertura thoracis superior / inferior", "Ko'krak qafasining yuqori / pastki teshigi"]
+        ]
+      }
+    ]
+  },
+  {
+    id: "a7",
+    title: "Membrum superius",
+    subtitle: "Qo'l skeleti",
+    icon: "💪",
+    color: "#d97706",
+    lead: "Qo'l skeleti yelka kamari (clavicula + scapula) va qo'lning erkin qismidan (humerus, radius, ulna, kaft suyaklari) tashkil topgan. Kaft ildizida 8, kaftda 5, barmoqlarda 14 ta suyak bor.",
+    sections: [
+      {
+        h: "Yelka kamari", tag: "PDF · 51–55-bet",
+        terms: [
+          ["Clavicula", "O'mrov suyagi — S-shakldagi juft suyak"],
+          ["Extremitas sternalis / acromialis", "Claviculaning to'sh / akromion uchlari"],
+          ["Scapula", "Kurak suyagi — yassi uchburchak suyak"],
+          ["Cavitas glenoidalis", "Yelka suyagi bilan bo'g'im chuqurchasi"],
+          ["Spina scapulae", "Kurak suyagi orqa yuzasidagi qirra"],
+          ["Acromion", "Spina uchidagi o'simta — o'mrov bilan bo'g'im"],
+          ["Processus coracoideus", "Tumshuqsimon o'simta (oldinga yo'nalgan)"],
+          ["Fossa subscapularis", "Kurak suyagining qovurg'alarga qaragan chuqurchasi"]
+        ]
+      },
+      {
+        h: "Yelka suyagi (Humerus)", tag: "PDF · 56–60-bet",
+        terms: [
+          ["Caput humeri", "Boshi — cavitas glenoidalis bilan bo'g'im"],
+          ["Collum anatomicum / chirurgicum", "Anatomik / jarrohlik bo'yni (sinish ko'p)"],
+          ["Tuberculum majus et minus", "Katta va kichik do'mboqchalar"],
+          ["Sulcus intertubercularis", "Do'mboqchalararo egat"],
+          ["Tuberositas deltoidea", "Delta mushak birikadigan g'adir-budirlik"],
+          ["Sulcus nervi radialis", "Nervus radialis egati"],
+          ["Trochlea humeri / Capitulum humeri", "Blok (ulna bilan) / boshcha (radius bilan)"],
+          ["Fossa olecrani", "Olecranon kiradigan chuqurcha"]
+        ]
+      },
+      {
+        h: "Bilak va kaft", tag: "PDF · 61–71-bet",
+        terms: [
+          ["Radius", "Bilak suyagi — bosh barmoq tomonida"],
+          ["Ulna", "Tirsak suyagi — jimjiloq tomonida"],
+          ["Olecranon", "Tirsak suyanchig'i — ulnaning yuqori o'simtasi"],
+          ["Processus styloideus", "Bigizsimon o'simta (radius va ulnada)"],
+          ["Ossa carpi (8)", "Kaft ildizi suyaklari — ikki qatorda"],
+          ["Ossa metacarpi (5)", "Kaft suyaklari"],
+          ["Phalanges (14)", "Barmoq falangalari"],
+          ["Pollex", "Bosh barmoq"]
+        ]
+      }
+    ]
+  },
+  {
+    id: "a8",
+    title: "Membrum inferius",
+    subtitle: "Oyoq skeleti",
+    icon: "🦵",
+    color: "#059669",
+    lead: "Oyoq skeleti chanoq kamari (os coxae) va oyoqning erkin qismidan (femur, patella, tibia, fibula, panja suyaklari) tashkil topgan. Os coxae uch suyakdan — ilium, ischium, pubis — qo'shilib hosil bo'ladi.",
+    sections: [
+      {
+        h: "Chanoq kamari (Os coxae)", tag: "PDF · 72–77-bet",
+        terms: [
+          ["Os ilium", "Yonbosh suyagi — yuqori keng qism"],
+          ["Os ischii", "Quymich suyagi — orqa-pastki qism"],
+          ["Os pubis", "Qov suyagi — oldingi qism"],
+          ["Acetabulum", "Bo'g'im chuqurchasi — femur boshi kiradi"],
+          ["Crista iliaca", "Yonbosh suyagining yuqori qirrasi"],
+          ["Spina iliaca anterior superior", "Oldingi-ustki bo'rtiq (klinik orientir)"],
+          ["Tuber ischiadicum", "Quymich do'mbog'i — o'tirish tayanchi"],
+          ["Symphysis pubica", "Qov suyaklarining oldingi birikishi"],
+          ["Foramen obturatum", "Qov va quymich orasidagi teshik"],
+          ["Linea terminalis", "Chanoqni katta/kichik qismga bo'luvchi chiziq"]
+        ]
+      },
+      {
+        h: "Son, boldir va panja", tag: "PDF · 77–93-bet",
+        terms: [
+          ["Femur", "Son suyagi — tanadagi eng uzun suyak"],
+          ["Caput femoris / Collum femoris", "Boshlari / bo'yni (sinish joyi)"],
+          ["Trochanter major et minor", "Katta va kichik do'mboqlar"],
+          ["Linea aspera", "Son suyagi orqa yuzasidagi qo'pol qirra"],
+          ["Patella", "Tizza qopqog'i — sesamsimon suyak"],
+          ["Tibia", "Katta boldir suyagi — ichki tomonda"],
+          ["Fibula", "Kichik boldir suyagi — tashqi tomonda"],
+          ["Malleolus medialis / lateralis", "Ichki / tashqi to'piq bo'rtig'i"],
+          ["Ossa tarsi (7)", "Panja orqasi suyaklari"],
+          ["Talus / Calcaneus", "Oshiq / tovon suyagi"],
+          ["Ossa metatarsi (5) · Phalanges (14)", "Kaft suyaklari · falangalar"],
+          ["Arcus pedis", "Oyoq gumbazi"]
+        ]
+      }
+    ]
+  },
+  {
+    id: "a9",
+    title: "Neurocranium",
+    subtitle: "Kalla skeleti — miya qismi",
+    icon: "💀",
+    color: "#475569",
+    lead: "Kalla skeleti miya (neurocranium) va yuz (viscerocranium) qismlariga bo'linadi. Miya qismi 8 ta suyakdan iborat: 4 toq (frontale, occipitale, sphenoidale, ethmoidale) va 2 juft (parietale, temporale).",
+    sections: [
+      {
+        h: "Ensa, tepa va peshona suyaklari", tag: "PDF · 96–106-bet",
+        terms: [
+          ["Os occipitale", "Ensa suyagi"],
+          ["Foramen magnum", "Katta teshik — orqa miya o'tadi"],
+          ["Condylus occipitalis", "Atlas bilan bo'g'im hosil qiluvchi do'mboqchalar"],
+          ["Protuberantia occipitalis externa", "Tashqi ensa bo'rtig'i (inion)"],
+          ["Os parietale", "Tepa suyagi — juft"],
+          ["Os frontale", "Peshona suyagi"],
+          ["Tuber frontale", "Peshona bo'rtiqlari"],
+          ["Glabella", "Qoshlar orasidagi maydon"],
+          ["Sinus frontalis", "Peshona suyagi ichidagi havo bo'shlig'i"]
+        ]
+      },
+      {
+        h: "G'alvirsimon, ponasimon va chakka", tag: "PDF · 105–117-bet",
+        terms: [
+          ["Os ethmoidale", "G'alvirsimon suyak"],
+          ["Lamina cribrosa", "Teshikli plastinka — hid nervlari o'tadi"],
+          ["Crista galli", "Xo'roz tojisimon o'simta"],
+          ["Os sphenoidale", "Ponasimon suyak"],
+          ["Sella turcica", "Turk egari — gipofiz joylashadi"],
+          ["Fossa hypophysialis", "Gipofiz bezi chuqurchasi"],
+          ["Os temporale", "Chakka suyagi"],
+          ["Processus mastoideus", "So'rg'ichsimon o'simta"],
+          ["Processus styloideus", "Bigizsimon o'simta"],
+          ["Pars petrosa (pyramis)", "Toshsimon qism — ichki quloq"]
+        ]
+      }
+    ]
+  },
+  {
+    id: "a10",
+    title: "Viscerocranium",
+    subtitle: "Kalla skeleti — yuz qismi",
+    icon: "🦷",
+    color: "#9333ea",
+    lead: "Kallaning yuz qismi 14 ta suyakdan iborat bo'lib, ular orasida eng yiriklari ustki jag' (maxilla) va pastki jag' (mandibula). Mandibula kallaning yagona harakatchan suyagidir.",
+    sections: [
+      {
+        h: "Ustki jag' va tanglay", tag: "PDF · 118–125-bet",
+        terms: [
+          ["Maxilla", "Ustki jag' suyagi — juft"],
+          ["Sinus maxillaris", "Yuqori jag' bo'shlig'i (Highmori bo'shlig'i)"],
+          ["Processus alveolaris", "Tish o'simtasi"],
+          ["Processus palatinus", "Qattiq tanglay old qismini hosil qiladi"],
+          ["Foramen infraorbitale", "Ko'z osti teshigi"],
+          ["Os palatinum", "Tanglay suyagi"],
+          ["Lamina horizontalis", "Qattiq tanglayning orqa qismi"],
+          ["Sutura palatina mediana", "Ikki jag' tanasi choki"]
+        ]
+      },
+      {
+        h: "Pastki jag', yonoq va butun kalla", tag: "PDF · 126–148-bet",
+        terms: [
+          ["Mandibula", "Pastki jag' suyagi — yagona harakatchan suyak"],
+          ["Corpus mandibulae", "Pastki jag' tanasi"],
+          ["Ramus mandibulae", "Pastki jag' shoxi"],
+          ["Processus coronoideus", "Tojsimon o'simta"],
+          ["Processus condylaris", "Bo'g'im o'simtasi — chakka suyagi bilan bo'g'im"],
+          ["Articulatio temporomandibularis", "Chakka-pastki jag' bo'g'imi"],
+          ["Os zygomaticum", "Yonoq suyagi"],
+          ["Fonticulus", "Liqildoq — chaqaloq kallasidagi yumshoq soha"],
+          ["Suturae cranii", "Kalla choklari — suyaklarni biriktiradi"]
+        ]
+      }
+    ]
   }
 ];
 
 // ================== IMTIHON REJIMI ==================
 const EXAM = {
   title: "Yakuniy imtihon",
-  desc: "Barcha mavzulardan 20 ta tasodifiy savol. Vaqt — 10 daqiqa. O'tish balli — 70%. Yuraklar ishlatilmaydi, lekin natija profilga yoziladi.",
-  count: 20,
-  minutes: 10,
+  desc: "Barcha mavzulardan 30 ta tasodifiy savol. Vaqt — 15 daqiqa. O'tish balli — 70%. Yuraklar ishlatilmaydi, lekin natija profilga yoziladi.",
+  count: 30,
+  minutes: 15,
   passPct: 70
 };

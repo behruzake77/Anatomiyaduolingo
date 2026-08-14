@@ -1,15 +1,27 @@
 # 🦴 AnatomiLingo
 
-Anatomiyani interaktiv o'rganish uchun professional mobil (PWA) ilova. Birinchi kurs — **Columna vertebralis** (umurtqa pog'onasi), `Columna-vertebralis.pdf` prezentatsiyasi asosida tuzilgan.
+Anatomiyani interaktiv o'rganish uchun professional mobil (PWA) ilova. Darslik — **A. Ahmedov va boshq. «Anatomiya I jild» (Toshkent, 2018)**. Hozirgi kurs **Osteologiya (suyaklar haqidagi ilm)** — butun odam skeleti.
 
 ## Bo'limlar
 
 | Bo'lim | Tavsif |
 |---|---|
-| 📖 **O'rganish** | 4 modul, 12 dars, 110+ mashq — ketma-ket ochiladi, progress kuzatiladi |
-| 🧠 **Atlas** | Nazariy material: atamalar jadvali (lotin + o'zbek), PDF rasmlari va **11 ta interaktiv 3D model** (Sketchfab, ochiq ta'lim manbalari: Univ. of Michigan BlueLink, Elon Univ., Leiden UMC) |
-| 🎓 **Imtihon** | Yakuniy imtihon (20 savol, 10 daqiqa taymer, 70% o'tish balli), aqlli takrorlash, tezkor mashq |
+| 📖 **O'rganish** | 9 modul, 25 dars, 278 mashq — ketma-ket ochiladi, progress kuzatiladi |
+| 🧠 **Atlas** | 10 ta nazariy mavzu: atamalar jadvali (lotin + o'zbek), PDF rasmlari va interaktiv 3D modellar (Sketchfab, ochiq ta'lim manbalari) |
+| 🎓 **Imtihon** | Yakuniy imtihon (30 savol, 15 daqiqa taymer, 70% o'tish balli), aqlli takrorlash, tezkor mashq |
 | 👤 **Profil** | Statistika: XP, streak, o'zlashtirilgan savollar, imtihon rekordi |
+
+## Kurs modullari (Osteologiya)
+
+1. Umurtqa pog'onasi
+2. Bo'yin umurtqalari
+3. Ko'krak va bel
+4. Dumg'aza va dum
+5. Ko'krak qafasi suyaklari (qovurg'alar + to'sh suyagi)
+6. Qo'l skeleti
+7. Oyoq skeleti
+8. Kalla — miya qismi (neurocranium)
+9. Kalla — yuz qismi (viscerocranium)
 
 ## O'quv metodikasi
 
@@ -47,3 +59,13 @@ assets/fonts/         — Inter (lokal, offline)
 3. Yangi PDF'dan rasm olish: `pymupdf` bilan eng katta rasmlarni `assets/img/` ga eksport qiling
 
 Mashq turlari: `quiz` (q, opts, a, hint?), `img` (+img), `match` (pairs), `build` (q, answer, extra), `tf` (q, a, why?).
+
+## Reja (bosqichma-bosqich kengaytirish)
+
+Darslikning qolgan bo'limlari navbatdagi bosqichlarda qo'shiladi:
+
+- [x] **Osteologiya** — suyaklar (joriy kurs)
+- [ ] **Artrologiya** — suyaklarning o'zaro qo'shilishi (bo'g'imlar)
+- [ ] **Miologiya** — mushaklar haqidagi ilm
+- [ ] **Splanxnologiya** — ichki a'zolar: hazm a'zolari tizimi
+- [ ] **Nafas a'zolari tizimi** — burun, hiqildoq, kekirdak, o'pka
