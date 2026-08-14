@@ -7,8 +7,8 @@
 //  tf    — to'g'ri / noto'g'ri
 
 const COURSE = {
-  title: "Odam anatomiyasi",
-  subtitle: "Anatomiya I jild · Suyaklar, bo'g'imlar, mushaklar, ichki a'zolar",
+  title: "Odam skeleti",
+  subtitle: "Anatomiya I · Suyaklar haqida",
   units: [
     {
       id: "u1",
@@ -1305,10 +1305,76 @@ const ATLAS = [
 
 // ================== QUICK TOPICS (tezkor mavzular) ==================
 const QUICK = [
-  { id: "bones", label: "Suyaklar", icon: "🦴", color: "#6C5CE7", units: ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10"] },
-  { id: "muscles", label: "Mushaklar", icon: "💪", color: "#FD79A8", units: ["u11"] },
-  { id: "organs", label: "A'zolar", icon: "🫁", color: "#00B894", units: ["u12", "u13"] },
-  { id: "nerves", label: "Asab tizimi", icon: "🧠", color: "#3B82F6", units: [], soon: true }
+  { id: "bones", label: "Suyaklar", icon: "bone", color: "#6C5CE7", units: ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10"] },
+  { id: "muscles", label: "Mushaklar", icon: "activity", color: "#F472B6", units: ["u11"] },
+  { id: "organs", label: "A'zolar", icon: "apple", color: "#20D9C5", units: ["u12", "u13"] },
+  { id: "nerves", label: "Asab tizimi", icon: "brain", color: "#8B6CFF", units: [], soon: true }
+];
+
+// ================== MODUL META (ikonka) ==================
+const UNIT_META = {
+  u1: { icon: "bone" }, u2: { icon: "bone" }, u3: { icon: "bone" }, u4: { icon: "bone" },
+  u5: { icon: "bone" }, u6: { icon: "bone" }, u7: { icon: "bone" }, u8: { icon: "bone" },
+  u9: { icon: "bone" }, u10: { icon: "link" }, u11: { icon: "activity" },
+  u12: { icon: "apple" }, u13: { icon: "wind" }
+};
+
+// ================== TIZIMLAR (8 kategoriya) ==================
+const SYSTEMS = [
+  { id: "skeletal", num: "01", title: "Suyaklar tizimi", latin: "Systema skeletale", icon: "bone", color: "#6C5CE7", img: "assets/img/illu/skeleton.jpg", units: ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10"] },
+  { id: "muscular", num: "02", title: "Mushaklar tizimi", latin: "Systema musculare", icon: "activity", color: "#F472B6", img: "assets/img/illu/muscles.jpg", units: ["u11"] },
+  { id: "cardiovascular", num: "03", title: "Yurak-qon tomir tizimi", latin: "Systema cardiovasculare", icon: "heart", color: "#EF4444", img: "assets/img/illu/heart.jpg", units: [], soon: true },
+  { id: "respiratory", num: "04", title: "Nafas tizimi", latin: "Systema respiratorium", icon: "wind", color: "#20D9C5", img: "assets/img/illu/lungs.jpg", units: ["u13"] },
+  { id: "nervous", num: "05", title: "Asab tizimi", latin: "Systema nervosum", icon: "brain", color: "#8B6CFF", img: "assets/img/illu/brain.jpg", units: [], soon: true },
+  { id: "digestive", num: "06", title: "Hazm tizimi", latin: "Systema digestorium", icon: "apple", color: "#F59E0B", img: "assets/img/illu/stomach.jpg", units: ["u12"] },
+  { id: "urinary", num: "07", title: "Siydik tizimi", latin: "Systema urinarium", icon: "droplet", color: "#22C55E", img: "assets/img/illu/kidney.svg", units: [], soon: true },
+  { id: "reproductive", num: "08", title: "Jinsiy tizim", latin: "Systema genitale", icon: "users", color: "#F472B6", img: null, units: [], soon: true }
+];
+
+// ================== ANATOMIYA ATLASI (ob'yektlar) ==================
+const ATLAS_CATS = [
+  {
+    id: "skeleton", title: "Skelet", icon: "bone", color: "#6C5CE7",
+    items: [
+      { name: "Bosh suyagi", latin: "Cranium", img: "assets/img/illu/skull.jpg", desc: "Bosh miyani himoya qiluvchi va yuz tuzilishini hosil qiluvchi suyaklar majmui.", func: "Miyani himoyalash va chaynash harakatlari", lessons: ["Kalla — miya qismi", "Kalla — yuz qismi"] },
+      { name: "Qovurg'alar", latin: "Costae", img: "assets/img/illu/ribs.jpg", desc: "Ko'krak qafasini hosil qiluvchi 12 juft egilgan suyaklar.", func: "Ko'krak a'zolarini himoyalash va nafas olishda ishtirok", lessons: ["Qovurg'alar (Costae)", "To'sh suyagi (Sternum)"] },
+      { name: "Chanoq", latin: "Pelvis", img: "assets/img/illu/pelvis.jpg", desc: "Yonbosh, quymich va qov suyaklarining qo'shilishidan hosil bo'lgan halqa.", func: "Tana vaznini oyoqlarga o'tkazish va a'zolarni himoyalash", lessons: ["Chanoq kamari (Os coxae)"] },
+      { name: "Son suyagi", latin: "Femur", img: "assets/img/illu/femur.jpg", desc: "Odam tanasidagi eng uzun va mustahkam suyak.", func: "Tana vaznini ko'tarish va yurish harakati", lessons: ["Son va boldir suyaklari"] }
+    ]
+  },
+  {
+    id: "muscles", title: "Mushaklar", icon: "activity", color: "#F472B6",
+    items: [
+      { name: "Skelet mushaklari", latin: "Musculi skeleti", img: "assets/img/illu/muscles.jpg", desc: "Tayanch-harakat tizimining faol qismi — ixtiyoriy qisqaruvchi ko'ndalang-targ'il mushaklar.", func: "Harakat, tana holatini saqlash, issiqlik ishlab chiqarish", lessons: ["Mushak haqida tushuncha", "Tana mushaklari"] },
+      { name: "Diafragma", latin: "Diaphragma", img: "assets/img/illu/muscles.jpg", desc: "Ko'krak va qorin bo'shliqlarini ajratib turuvchi gumbazsimon asosiy nafas mushagi.", func: "Nafas olish va chiqarish", lessons: ["Tana mushaklari"] }
+    ]
+  },
+  {
+    id: "organs", title: "A'zolar", icon: "apple", color: "#F59E0B",
+    items: [
+      { name: "Oshqozon", latin: "Gaster", img: "assets/img/illu/stomach.jpg", desc: "Ovqat hazm qilish yo'lining kengaygan qismi bo'lib, ovqatni kimyoviy va mexanik qayta ishlaydi.", func: "Oqsillarni parchalash va ovqatni aralashtirish", lessons: ["Halqum, qizilo'ngach, oshqozon"] },
+      { name: "Jigar", latin: "Hepar", img: "assets/img/illu/liver.svg", desc: "Organizmdagi eng katta bez — 500 dan ortiq biokimyoviy vazifani bajaradi.", func: "Moddalar almashinuvi, zaharli moddalarni zararsizlantirish", lessons: ["Ichaklar, jigar va bezlar"] },
+      { name: "Buyrak", latin: "Ren", img: "assets/img/illu/kidney.svg", desc: "Juft loviyasimon a'zo — qonni filtrlab, siydik hosil qiladi.", func: "Qonni tozalash va suv-tuz muvozanatini saqlash", lessons: [] }
+    ]
+  },
+  {
+    id: "nervous", title: "Asab tizimi", icon: "brain", color: "#8B6CFF",
+    items: [
+      { name: "Bosh miya", latin: "Encephalon", img: "assets/img/illu/brain.jpg", desc: "Asab tizimining markaziy qismi — fikrlash, xotira va barcha a'zolarni boshqarish markazi.", func: "Axborotni qayta ishlash va organizmni boshqarish", lessons: [] }
+    ]
+  },
+  {
+    id: "cardiovascular", title: "Yurak-qon tomir", icon: "heart", color: "#EF4444",
+    items: [
+      { name: "Yurak", latin: "Cor", img: "assets/img/illu/heart.jpg", desc: "Qonni butun tana bo'ylab haydaydigan muskul a'zo.", func: "Qon aylanishini ta'minlash", lessons: [] }
+    ]
+  },
+  {
+    id: "respiratory", title: "Nafas", icon: "wind", color: "#20D9C5",
+    items: [
+      { name: "O'pka", latin: "Pulmo", img: "assets/img/illu/lungs.jpg", desc: "Kislorod va karbonat angidrid almashinuvini ta'minlovchi juft nafas a'zosi.", func: "Gaz almashinuvi (alveolalarda)", lessons: ["Kekirdak, o'pka va plevra"] }
+    ]
+  }
 ];
 
 // ================== IMTIHON REJIMI ==================

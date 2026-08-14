@@ -1,11 +1,13 @@
 // AnatomiLingo service worker — offline rejim
-const CACHE = "anatomilingo-v6";
+const CACHE = "anatomilingo-v7";
 const CORE = [
   ".", "index.html", "manifest.webmanifest",
-  "css/style.css", "js/app.js", "js/data.js",
-  "assets/fonts/poppins-400.woff2", "assets/fonts/poppins-500.woff2",
-  "assets/fonts/poppins-600.woff2", "assets/fonts/poppins-700.woff2", "assets/fonts/poppins-800.woff2",
-  "assets/icons/icon-192.png", "assets/icons/icon-512.png", "assets/icons/favicon.png"
+  "css/style.css", "js/app.js", "js/data.js", "js/icons.js",
+  "assets/fonts/poppins-500.woff2", "assets/fonts/poppins-600.woff2",
+  "assets/fonts/poppins-700.woff2", "assets/fonts/poppins-800.woff2",
+  "assets/fonts/inter-latin-400-normal.woff2", "assets/fonts/inter-latin-600-normal.woff2",
+  "assets/fonts/inter-latin-700-normal.woff2", "assets/fonts/inter-latin-800-normal.woff2",
+  "assets/icons/icon-192.png", "assets/icons/icon-512.png", "assets/icons/favicon.png", "assets/icons/logo.svg"
 ];
 
 self.addEventListener("install", e => {

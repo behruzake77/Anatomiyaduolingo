@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7C5CFF"/>
+      <stop offset="1" stop-color="#5A4BD1"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2EE3CF"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <clipPath id="left"><rect x="0" y="0" width="256" height="512"/></clipPath>
+    <clipPath id="right"><rect x="256" y="0" width="256" height="512"/></clipPath>
+  </defs>
+
+  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
+
+  <!-- yumshoq ichki nur -->
+  <circle cx="256" cy="230" r="150" fill="#FFFFFF" opacity="0.06"/>
+
+  <!-- kalla suyagi (chap = suyak, o'ng = mushak/teri) -->
+  <g>
+    <g clip-path="url(#left)">
+      <circle cx="256" cy="252" r="106" fill="#EEF2FB"/>
+      <rect x="176" y="346" width="160" height="68" rx="26" fill="#EEF2FB"/>
+      <circle cx="204" cy="250" r="26" fill="#0D1324"/>
+      <path d="M256 298 L236 342 L276 342 Z" fill="#0D1324"/>
+      <g fill="#0D1324">
+        <rect x="192" y="368" width="9" height="28" rx="3"/>
+        <rect x="213" y="368" width="9" height="28" rx="3"/>
+        <rect x="234" y="368" width="9" height="28" rx="3"/>
+      </g>
+    </g>
+    <g clip-path="url(#right)">
+      <circle cx="256" cy="252" r="106" fill="url(#face)"/>
+      <rect x="176" y="346" width="160" height="68" rx="26" fill="url(#face)"/>
+      <circle cx="308" cy="250" r="26" fill="#0D1324" opacity="0.5"/>
+      <path d="M256 298 L256 342" stroke="#0D1324" stroke-width="6" opacity="0.35"/>
+    </g>
+    <line x1="256" y1="128" x2="256" y2="432" stroke="#0D1324" stroke-width="6" opacity="0.5"/>
+  </g>
+</svg>
