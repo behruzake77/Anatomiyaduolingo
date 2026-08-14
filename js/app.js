@@ -1,6 +1,12 @@
 // AnatomiLingo — asosiy ilova
 (function () {
   const $app = document.getElementById("app");
+  const MASCOT = {
+    wave: "assets/mascot/wave.png",
+    party: "assets/mascot/party.png",
+    sad: "assets/mascot/sad.png",
+    think: "assets/mascot/think.png",
+  };
 
   // ---------- Holat (localStorage) ----------
   const DEFAULT_STATE = {
@@ -9,7 +15,7 @@
     heartsLostAt: null,
     streak: 0,
     lastActive: null,
-    done: {},        // lessonId -> {stars, best}
+    done: {},        // lessonId -> {acc, at}
     mistakes: {},    // "lessonId:exIndex" -> count (takrorlash uchun)
   };
   let S = load();
@@ -60,9 +66,14 @@
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
-  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g,"&quot;"); }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 
-  // Ovoz effektlari (WebAudio, fayl kerak emas)
+  const KIND_LABEL = {
+    quiz: "✏️ Savol", img: "🔍 Rasmni aniqlang", match: "🔗 Moslashtiring",
+    build: "🧩 Atama yig'ing", tf: "⚖️ To'g'ri yoki noto'g'ri",
+  };
+
+  // Ovoz effektlari (WebAudio)
   let audioCtx;
   function beep(good) {
     try {
@@ -79,6 +90,23 @@
     } catch {}
   }
 
+  function confetti() {
+    const box = document.createElement("div");
+    box.className = "confetti";
+    const colors = ["#58cc02", "#1cb0f6", "#ff9600", "#ffc800", "#ce82ff", "#ff4b4b"];
+    for (let i = 0; i < 70; i++) {
+      const p = document.createElement("i");
+      p.style.left = Math.random() * 100 + "%";
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.animationDuration = 1.4 + Math.random() * 1.6 + "s";
+      p.style.animationDelay = Math.random() * 0.6 + "s";
+      p.style.width = p.style.height = 6 + Math.random() * 8 + "px";
+      box.appendChild(p);
+    }
+    document.body.appendChild(box);
+    setTimeout(() => box.remove(), 3600);
+  }
+
   // ---------- Sahifalar ----------
   function topbar() {
     return `<div class="topbar">
@@ -88,27 +116,46 @@
     </div>`;
   }
 
+  function heroGreeting() {
+    const cur = currentLessonId();
+    const doneCount = Object.keys(S.done).length;
+    let msg, sub;
+    if (!doneCount) { msg = "Salom! Men Vertik 🦴"; sub = "Anatomiyani birga o'rganamiz. Birinchi darsni boshlang!"; }
+    else if (!cur) { msg = "Kurs tugallandi! 🏆"; sub = "Barcha darslarni yakunladingiz. Endi xatolarni takrorlang!"; }
+    else { msg = `Zo'r ketyapsiz! ${doneCount}/${flatLessons.length} dars`; sub = "Bugungi mashqni unutmang — streakni saqlang! 🔥"; }
+    return `<div class="hero">
+      <img src="${MASCOT.wave}" alt="Vertik">
+      <div class="h-txt"><b>${msg}</b><span>${sub}</span></div>
+    </div>`;
+  }
+
   function renderHome() {
     regenHearts();
     const cur = currentLessonId();
-    let html = topbar() + `<div class="home">`;
+    let html = topbar() + `<div class="home">` + heroGreeting();
     for (const u of COURSE.units) {
       html += `<div class="unit-header" style="background:${u.color}">
-        <div class="u-sub">${esc(COURSE.title)}</div>
-        <div class="u-title">${u.icon} ${esc(u.title)}</div>
+        <div>
+          <div class="u-sub">${esc(COURSE.title)}</div>
+          <div class="u-title">${esc(u.title)}</div>
+        </div>
+        <div class="u-book">${u.icon}</div>
       </div><div class="path">`;
       for (const l of u.lessons) {
         const unlocked = isUnlocked(l.id);
         const done = !!S.done[l.id];
         const isCur = l.id === cur;
         html += `<div class="node-wrap">
-          ${isCur ? `<div class="start-tip">BOSHLASH</div>` : ""}
-          <button class="node ${done ? "done" : ""} ${unlocked ? "" : "locked"} ${isCur ? "current" : ""}"
-            style="${unlocked ? `background:${u.color};color:#fff;box-shadow:0 7px 0 ${shade(u.color)}` : ""}"
-            data-lesson="${l.id}" ${unlocked ? "" : "disabled"}>
-            ${done ? "⭐" : unlocked ? "★" : "🔒"}
+          <div class="node-pos">
+            ${isCur ? `<div class="start-tip">BOSHLASH</div>` : ""}
+            <button class="node ${done ? "done" : ""} ${unlocked ? "" : "locked"} ${isCur ? "current" : ""}"
+              style="${unlocked ? `background:${u.color};box-shadow:0 8px 0 ${shade(u.color)}` : ""}"
+              data-lesson="${l.id}" ${unlocked ? "" : "disabled"}>
+              <span class="inner-ring"></span>
+              ${done ? "⭐" : unlocked ? "★" : "🔒"}
+            </button>
             <div class="node-label">${esc(l.title)}</div>
-          </button>
+          </div>
         </div>`;
       }
       html += `</div>`;
@@ -123,7 +170,7 @@
 
   function shade(hex) {
     const n = parseInt(hex.slice(1), 16);
-    const r = Math.max(0, (n >> 16) - 45), g = Math.max(0, ((n >> 8) & 255) - 45), b = Math.max(0, (n & 255) - 45);
+    const r = Math.max(0, (n >> 16) - 50), g = Math.max(0, ((n >> 8) & 255) - 50), b = Math.max(0, (n & 255) - 50);
     return `rgb(${r},${g},${b})`;
   }
 
@@ -148,8 +195,13 @@
     const doneCount = Object.keys(S.done).length;
     const mistakes = Object.keys(S.mistakes).length;
     $app.innerHTML = topbar() + `<div class="profile">
-      <h1>👤 Profil</h1>
-      <div class="sub">AnatomiLingo — anatomiya o'rganuvchisi</div>
+      <div class="profile-head">
+        <img src="${MASCOT.think}" alt="">
+        <div>
+          <h1>Profil</h1>
+          <div class="sub">AnatomiLingo — anatomiya o'rganuvchisi</div>
+        </div>
+      </div>
       <div class="pgrid">
         <div class="pcard"><div class="ico">🔥</div><div><div class="val">${S.streak} kun</div><div class="lbl">Streak</div></div></div>
         <div class="pcard"><div class="ico">⚡</div><div><div class="val">${S.xp}</div><div class="lbl">Jami XP</div></div></div>
@@ -224,9 +276,9 @@
       waitTxt = `Keyingi yurak ~${Math.ceil(next / 60000)} daqiqada tiklanadi.`;
     }
     $app.innerHTML = topbar() + `<div class="nohearts">
-      <div class="big-emoji">💔</div>
-      <h1 style="margin:10px 0">Yuraklar tugadi!</h1>
-      <p style="color:var(--gray-text);font-weight:600;margin-bottom:20px">Har 30 daqiqada 1 yurak tiklanadi. ${waitTxt}</p>
+      <img src="${MASCOT.sad}" alt="">
+      <h1>Yuraklar tugadi!</h1>
+      <p>Har 30 daqiqada 1 yurak tiklanadi. ${waitTxt}</p>
       <button class="btn-big blue" id="back-home" style="max-width:300px">Bosh sahifaga</button>
     </div>` + bottomnav("home");
     bindNav();
@@ -255,7 +307,10 @@
     else if (ex.t === "build") body = buildBody(ex);
 
     $app.innerHTML = `<div class="lesson">${lessonHeader()}
-      <div class="ex-body">${body}</div>
+      <div class="ex-body">
+        <div class="ex-kind">${KIND_LABEL[ex.t] || ""}</div>
+        ${body}
+      </div>
       <div class="ex-footer"><button class="btn-big" id="check" disabled>Tekshirish</button></div>
     </div>`;
     document.getElementById("quit").addEventListener("click", () => {
@@ -284,7 +339,7 @@
       <div class="opts">${order.map((x, k) =>
         `<button class="opt" data-i="${x.i}"><span class="key">${k + 1}</span>${esc(x.o)}</button>`).join("")}
       </div>
-      ${ex.hint ? `<button class="hint-btn" id="hint-btn">💡 Maslahat ko'rish</button><div class="hint-txt" id="hint-txt" style="display:none">${esc(ex.hint)}</div>` : ""}`;
+      ${ex.hint ? `<button class="hint-btn" id="hint-btn">💡 Maslahat</button><div class="hint-txt" id="hint-txt" style="display:none">${esc(ex.hint)}</div>` : ""}`;
   }
   function bindQuiz(ex) {
     let sel = null;
@@ -306,8 +361,10 @@
 
   // ----- True / False -----
   function tfBody(ex) {
-    return `<div class="ex-title">To'g'ri yoki noto'g'ri?</div>
-      <div class="ex-title" style="font-size:17px;color:var(--gray-text)">«${esc(ex.q)}»</div>
+    return `<div class="ex-quote">
+        <img src="${MASCOT.think}" alt="">
+        <div class="bubble">${esc(ex.q)}</div>
+      </div>
       <div class="tf-row">
         <button class="opt" data-v="1">✅ To'g'ri</button>
         <button class="opt" data-v="0">❌ Noto'g'ri</button>
@@ -336,10 +393,6 @@
   function matchBody(ex) {
     const left = shuffle(ex.pairs.map((p, i) => ({ txt: p[0], id: i })));
     const right = shuffle(ex.pairs.map((p, i) => ({ txt: p[1], id: i })));
-    ex._cells = [];
-    left.forEach((l, k) => { ex._cells.push({ ...l, side: "L", pos: k }); });
-    right.forEach((r, k) => { ex._cells.push({ ...r, side: "R", pos: k }); });
-    // interleave columns: L R L R
     const rows = [];
     for (let k = 0; k < ex.pairs.length; k++) { rows.push(left[k], right[k]); }
     return `<div class="ex-title">Juftlarni moslashtiring</div>
@@ -349,7 +402,7 @@
   }
   function bindMatch(ex) {
     const check = document.getElementById("check");
-    check.textContent = "Davom etish"; // match auto-checks
+    check.textContent = "Davom etish";
     let selBtn = null, solved = 0, errors = 0;
     $app.querySelectorAll(".mcard").forEach(b => b.addEventListener("click", () => {
       if (b.classList.contains("ok")) return;
@@ -358,7 +411,6 @@
       if (selBtn.dataset.side === b.dataset.side) {
         selBtn.classList.remove("sel"); selBtn = b; b.classList.add("sel"); return;
       }
-      // pair attempt
       if (selBtn.dataset.id === b.dataset.id) {
         selBtn.classList.remove("sel");
         selBtn.classList.add("ok"); b.classList.add("ok");
@@ -416,7 +468,7 @@
   }
 
   // ----- Umumiy qadam yakuni -----
-  function finishStep(ex, good, subText, noFooterSwap) {
+  function finishStep(ex, good, subText) {
     beep(good);
     if (good) {
       session.correct++;
@@ -426,14 +478,18 @@
       if (!S.heartsLostAt) S.heartsLostAt = Date.now();
       S.mistakes[ex._key] = (S.mistakes[ex._key] || 0) + 1;
       session.wrongKeys.push(ex._key);
-      // xato savolni navbat oxiriga qayta qo'shish (Duolingo uslubi)
       if (!ex._requeued) session.queue.push({ ...ex, _requeued: true });
       save();
     }
     const fb = document.createElement("div");
     fb.className = "feedback " + (good ? "good" : "bad");
-    fb.innerHTML = `<div class="fb-title">${good ? "✅ Ajoyib!" : "❌ Noto'g'ri"}</div>
-      ${subText ? `<div class="fb-sub">${esc(subText)}</div>` : `<div class="fb-sub"></div>`}
+    fb.innerHTML = `<div class="fb-row">
+        <img class="fb-mascot" src="${good ? MASCOT.party : MASCOT.sad}" alt="">
+        <div>
+          <div class="fb-title">${good ? "Ajoyib!" : "Noto'g'ri"}</div>
+          ${subText ? `<div class="fb-sub">${esc(subText)}</div>` : ""}
+        </div>
+      </div>
       <button class="btn-big ${good ? "" : "red"}" id="next">Davom etish</button>`;
     document.body.appendChild(fb);
     document.getElementById("next").addEventListener("click", () => {
@@ -461,7 +517,7 @@
     save();
 
     $app.innerHTML = `<div class="result">
-      <div class="big-emoji">${acc === 100 ? "🏆" : acc >= 70 ? "🎉" : "💪"}</div>
+      <img class="mascot-big" src="${acc >= 70 ? MASCOT.party : MASCOT.wave}" alt="">
       <h1>${session.review ? "Takrorlash yakunlandi!" : "Dars yakunlandi!"}</h1>
       <p>${acc === 100 ? "Mukammal natija! Barcha javoblar to'g'ri!" : "Yaxshi harakat! Davom eting!"}</p>
       <div class="res-cards">
@@ -471,6 +527,7 @@
       <button class="btn-big" id="continue">Davom etish</button>
     </div>`;
     beep(true);
+    if (acc >= 70) confetti();
     document.getElementById("continue").addEventListener("click", () => {
       if (newStreak) showStreak();
       else renderHome();

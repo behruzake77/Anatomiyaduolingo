@@ -1,8 +1,11 @@
 // AnatomiLingo service worker — offline rejim
-const CACHE = "anatomilingo-v1";
+const CACHE = "anatomilingo-v2";
 const CORE = [
   ".", "index.html", "manifest.webmanifest",
   "css/style.css", "js/app.js", "js/data.js",
+  "assets/fonts/nunito-latin-400-normal.woff2", "assets/fonts/nunito-latin-700-normal.woff2",
+  "assets/fonts/nunito-latin-800-normal.woff2", "assets/fonts/nunito-latin-900-normal.woff2",
+  "assets/mascot/wave.png", "assets/mascot/party.png", "assets/mascot/sad.png", "assets/mascot/think.png",
   "assets/icons/icon-192.png", "assets/icons/icon-512.png", "assets/icons/favicon.png"
 ];
 
