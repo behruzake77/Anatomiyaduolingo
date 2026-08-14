@@ -47,6 +47,13 @@ SAVOLLAR (interaktiv)
 NATIJA (XP, aniqlik, qayta ishlash)
 ```
 
+## Anatomiya atlasi — 2D asosiy + 3D qo'shimcha
+
+- **2D (asosiy)**: 14 ta nazariy mavzuning har birida Atlas/kitobdan olingan **haqiqiy 2D tasvir** (`cover`). Mavzu ichida: 2D rasm + atamalar jadvali (kitob ma'lumoti) + manba sahifasi.
+- **3D (qo'shimcha, lazy)**: faqat `m3d` bor mavzularda **[3D KO'RISH]** tugmasi — bosilgandagina Sketchfab iframe yuklanadi (aylantirish, kattalashtirish, yorliqlar).
+- Oqim: `2D tasvir → kitob ma'lumoti → [ixtiyoriy 3D] → dars/quiz`.
+- Atlas PDF'laridan olingan sahifa rasmlari: `assets/img/atlas/*.jpg`.
+
 ## Funksiyalar
 
 - 🎯 **Kunlik maqsad**, ⭐ **daraja**, 🔥 **streak**, ❤️ **yuraklar**

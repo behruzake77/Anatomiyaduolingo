@@ -1,5 +1,5 @@
 // AnatomiLingo service worker — offline rejim
-const CACHE = "anatomilingo-v8";
+const CACHE = "anatomilingo-v9";
 const CORE = [
   ".", "index.html", "manifest.webmanifest",
   "css/style.css", "js/app.js", "js/content.js", "js/data.js", "js/icons.js",

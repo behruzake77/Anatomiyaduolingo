@@ -14,7 +14,7 @@ const COURSE = {
       id: "u1",
       title: "Umurtqa pog'onasi",
       color: "#58cc02",
-      icon: "🦴",
+      icon: "bone",
       lessons: [
         {
           id: "l1",
@@ -72,7 +72,7 @@ const COURSE = {
       id: "u2",
       title: "Bo'yin umurtqalari",
       color: "#1cb0f6",
-      icon: "🔵",
+      icon: "bone",
       lessons: [
         {
           id: "l4",
@@ -145,7 +145,7 @@ const COURSE = {
       id: "u3",
       title: "Ko'krak va bel",
       color: "#ff9600",
-      icon: "🟠",
+      icon: "bone",
       lessons: [
         {
           id: "l8",
@@ -185,7 +185,7 @@ const COURSE = {
       id: "u4",
       title: "Dumg'aza va dum",
       color: "#ce82ff",
-      icon: "🟣",
+      icon: "bone",
       lessons: [
         {
           id: "l10",
@@ -242,7 +242,7 @@ const COURSE = {
       id: "u5",
       title: "Ko'krak qafasi suyaklari",
       color: "#ef4444",
-      icon: "🩻",
+      icon: "bone",
       lessons: [
         {
           id: "l13",
@@ -287,7 +287,7 @@ const COURSE = {
       id: "u6",
       title: "Qo'l skeleti",
       color: "#f59e0b",
-      icon: "💪",
+      icon: "activity",
       lessons: [
         {
           id: "l15",
@@ -353,7 +353,7 @@ const COURSE = {
       id: "u7",
       title: "Oyoq skeleti",
       color: "#10b981",
-      icon: "🦵",
+      icon: "bone",
       lessons: [
         {
           id: "l18",
@@ -425,7 +425,7 @@ const COURSE = {
       id: "u8",
       title: "Kalla — miya qismi",
       color: "#64748b",
-      icon: "💀",
+      icon: "bone",
       lessons: [
         {
           id: "l21",
@@ -492,7 +492,7 @@ const COURSE = {
       id: "u9",
       title: "Kalla — yuz qismi",
       color: "#a855f7",
-      icon: "🦷",
+      icon: "bone",
       lessons: [
         {
           id: "l24",
@@ -539,7 +539,7 @@ const COURSE = {
       id: "u10",
       title: "Suyaklarning birlashuvi",
       color: "#06b6d4",
-      icon: "🔗",
+      icon: "link",
       lessons: [
         {
           id: "l26",
@@ -584,7 +584,7 @@ const COURSE = {
       id: "u11",
       title: "Mushaklar tizimi",
       color: "#ec4899",
-      icon: "💪",
+      icon: "activity",
       lessons: [
         {
           id: "l28",
@@ -646,7 +646,7 @@ const COURSE = {
       id: "u12",
       title: "Hazm tizimi",
       color: "#f97316",
-      icon: "🫁",
+      icon: "apple",
       lessons: [
         {
           id: "l31",
@@ -709,7 +709,7 @@ const COURSE = {
       id: "u13",
       title: "Nafas tizimi",
       color: "#0ea5e9",
-      icon: "🌬️",
+      icon: "wind",
       lessons: [
         {
           id: "l34",
@@ -1023,8 +1023,10 @@ const ATLAS = [
     id: "a1",
     title: "Columna vertebralis",
     subtitle: "Umurtqa pog'onasi — umumiy ko'rinish",
-    icon: "🦴",
+    icon: "bone",
     color: "#0d9488",
+    cover: "assets/img/vertebra_labeled.jpg",
+    source: "Columna vertebralis · PDF",
     lead: "Umurtqa pog'onasi (columna vertebralis) — tananing o'q skeleti bo'lib, 33–34 umurtqadan tashkil topadi: 7 bo'yin, 12 ko'krak, 5 bel, 5 dumg'aza (qo'shilib os sacrum hosil qiladi) va 3–5 dum umurtqasi. U orqa miyani himoya qiladi, tanani tik tutadi va harakatni ta'minlaydi.",
     sections: [
       {
@@ -1060,8 +1062,10 @@ const ATLAS = [
     id: "a2",
     title: "Vertebrae cervicales",
     subtitle: "Bo'yin umurtqalari · Atlas · Axis",
-    icon: "🔵",
+    icon: "bone",
     color: "#0284c7",
+    cover: "assets/img/cervical_overview.jpg",
+    source: "Columna vertebralis · PDF",
     lead: "Bo'yin umurtqalari 7 ta. Tuzilishiga ko'ra tipik (C3–C7) va atipik (C1 atlas, C2 axis) turlarga bo'linadi. Asosiy farqlovchi belgi — processus transversus'dagi foramen transversarium, undan a. vertebralis o'tadi.",
     sections: [
       {
@@ -1122,8 +1126,10 @@ const ATLAS = [
     id: "a3",
     title: "Vertebrae thoracicae",
     subtitle: "Ko'krak umurtqalari",
-    icon: "🟠",
+    icon: "bone",
     color: "#d97706",
+    cover: "assets/img/thoracic_labeled.jpg",
+    source: "Columna vertebralis · PDF",
     lead: "Ko'krak umurtqalari 12 ta. Asosiy belgisi — qovurg'alar bilan bo'g'im hosil qiluvchi chuqurchalar (foveae costales). Processus spinosus'lari uzun va pastga qiya (cherepitsasimon) yo'nalgan.",
     sections: [
       {
@@ -1147,8 +1153,10 @@ const ATLAS = [
     id: "a4",
     title: "Vertebrae lumbales",
     subtitle: "Bel umurtqalari",
-    icon: "🟡",
+    icon: "bone",
     color: "#ca8a04",
+    cover: "assets/img/lumbar_labeled.jpg",
+    source: "Columna vertebralis · PDF",
     lead: "Bel umurtqalari 5 ta — eng katta va massiv umurtqalar. Qovurg'a rudimenti processus costarius deb ataladi. Processus spinosus keng, yassi va gorizontal yo'nalgan.",
     sections: [
       {
@@ -1171,8 +1179,10 @@ const ATLAS = [
     id: "a5",
     title: "Os sacrum · Os coccygis",
     subtitle: "Dumg'aza va dum suyagi",
-    icon: "🟣",
+    icon: "bone",
     color: "#7c3aed",
+    cover: "assets/img/sacrum_labeled.jpg",
+    source: "Columna vertebralis · PDF",
     lead: "Os sacrum 5 ta dumg'aza umurtqasining qo'shilishidan hosil bo'lgan uchburchaksimon suyak. Yuqori keng qismi — basis, pastki tor uchi — apex. Os coccygis — 3–5 rudimentar umurtqadan iborat dum suyagi.",
     sections: [
       {
@@ -1224,8 +1234,10 @@ const ATLAS = [
     id: "a6",
     title: "Costae · Sternum",
     subtitle: "Qovurg'alar va to'sh suyagi",
-    icon: "🩻",
+    icon: "bone",
     color: "#e11d48",
+    cover: "assets/img/atlas/costae_sternum.jpg",
+    source: "Atlas I jild · 14-bet",
     lead: "Ko'krak qafasi (thorax) 12 juft qovurg'a, to'sh suyagi va 12 ta ko'krak umurtqasidan tashkil topadi. Qovurg'alar chin (I–VII), soxta (VIII–X) va erkin (XI–XII) guruhlarga bo'linadi.",
     sections: [
       {
@@ -1259,8 +1271,10 @@ const ATLAS = [
     id: "a7",
     title: "Membrum superius",
     subtitle: "Qo'l skeleti",
-    icon: "💪",
+    icon: "bone",
     color: "#d97706",
+    cover: "assets/img/atlas/membrum_superius.jpg",
+    source: "Atlas I jild · 16-bet",
     lead: "Qo'l skeleti yelka kamari (clavicula + scapula) va qo'lning erkin qismidan (humerus, radius, ulna, kaft suyaklari) tashkil topgan. Kaft ildizida 8, kaftda 5, barmoqlarda 14 ta suyak bor.",
     sections: [
       {
@@ -1308,8 +1322,10 @@ const ATLAS = [
     id: "a8",
     title: "Membrum inferius",
     subtitle: "Oyoq skeleti",
-    icon: "🦵",
+    icon: "bone",
     color: "#059669",
+    cover: "assets/img/atlas/membrum_inferius.jpg",
+    source: "Atlas I jild · 24-bet",
     lead: "Oyoq skeleti chanoq kamari (os coxae) va oyoqning erkin qismidan (femur, patella, tibia, fibula, panja suyaklari) tashkil topgan. Os coxae uch suyakdan — ilium, ischium, pubis — qo'shilib hosil bo'ladi.",
     sections: [
       {
@@ -1350,8 +1366,10 @@ const ATLAS = [
     id: "a9",
     title: "Neurocranium",
     subtitle: "Kalla skeleti — miya qismi",
-    icon: "💀",
+    icon: "bone",
     color: "#475569",
+    cover: "assets/img/atlas/neurocranium.jpg",
+    source: "Atlas I jild · 32-bet",
     lead: "Kalla skeleti miya (neurocranium) va yuz (viscerocranium) qismlariga bo'linadi. Miya qismi 8 ta suyakdan iborat: 4 toq (frontale, occipitale, sphenoidale, ethmoidale) va 2 juft (parietale, temporale).",
     sections: [
       {
@@ -1389,8 +1407,10 @@ const ATLAS = [
     id: "a10",
     title: "Viscerocranium",
     subtitle: "Kalla skeleti — yuz qismi",
-    icon: "🦷",
+    icon: "bone",
     color: "#9333ea",
+    cover: "assets/img/atlas/viscerocranium.jpg",
+    source: "Atlas I jild · 46-bet",
     lead: "Kallaning yuz qismi 14 ta suyakdan iborat bo'lib, ular orasida eng yiriklari ustki jag' (maxilla) va pastki jag' (mandibula). Mandibula kallaning yagona harakatchan suyagidir.",
     sections: [
       {
@@ -1426,8 +1446,10 @@ const ATLAS = [
     id: "a11",
     title: "Arthrologia",
     subtitle: "Suyaklarning o'zaro qo'shilishi",
-    icon: "🔗",
+    icon: "link",
     color: "#0891b2",
+    cover: "assets/img/atlas/arthrologia.jpg",
+    source: "Atlas I jild · 52-bet",
     lead: "Suyaklarning qo'shilishi (artrologiya) uzluksiz (choklar, tog'ay, suyak orqali) va bo'g'imli (sinovial) turlarga bo'linadi. Sinovial bo'g'im — harakatlanuvchi bo'g'im bo'lib, bo'g'im yuzalari, xalta, bo'shliq va bog'lamlardan tashkil topgan.",
     sections: [
       {
@@ -1460,8 +1482,10 @@ const ATLAS = [
     id: "a12",
     title: "Myologia",
     subtitle: "Mushaklar haqidagi ilm",
-    icon: "💪",
+    icon: "activity",
     color: "#db2777",
+    cover: "assets/img/atlas/myologia.jpg",
+    source: "Atlas I jild · 82-bet",
     lead: "Mushaklar (musculi) tayanch-harakat tizimining faol qismi. Uch turga bo'linadi: silliq (ichki a'zolar), ko'ndalang-targ'il skelet mushaklari va yurak mushagi. Skelet mushagi qorin (venter) va pay (tendo)dan iborat.",
     sections: [
       {
@@ -1496,8 +1520,10 @@ const ATLAS = [
     id: "a13",
     title: "Systema digestorium",
     subtitle: "Hazm a'zolari tizimi",
-    icon: "🫁",
+    icon: "apple",
     color: "#ea580c",
+    cover: "assets/img/atlas/digestorium.jpg",
+    source: "Atlas I jild · 178-bet",
     lead: "Hazm tizimi og'iz bo'shlig'idan boshlanib, halqum, qizilo'ngach, oshqozon, ingichka va yo'g'on ichaklar orqali davom etadi. Yordamchi bezlar: so'lak bezlari, jigar, o't pufagi va oshqozon osti bezi.",
     sections: [
       {
@@ -1537,8 +1563,10 @@ const ATLAS = [
     id: "a14",
     title: "Systema respiratorium",
     subtitle: "Nafas a'zolari tizimi",
-    icon: "🌬️",
+    icon: "wind",
     color: "#0284c7",
+    cover: "assets/img/atlas/respiratorium.jpg",
+    source: "Atlas I jild · 202-bet",
     lead: "Nafas tizimi havo o'tkazuvchi yo'llar (burun bo'shlig'i, hiqildoq, kekirdak, bronxlar) va gaz almashinuvi a'zosi — o'pkadan iborat. Gaz almashinuvi alveolalarda sodir bo'ladi.",
     sections: [
       {

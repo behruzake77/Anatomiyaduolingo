@@ -221,7 +221,7 @@
       <div class="side-foot">
         <div class="mini">
           <div class="avatar">${ic("user")}</div>
-          <div><div class="xp num">⚡ ${S.xp} XP</div><div class="lv">${lv}-daraja · ${levelName(lv)}</div></div>
+          <div><div class="xp num" style="display:flex;align-items:center;gap:5px">${ic("zap", "ico-sm")} ${S.xp} XP</div><div class="lv">${lv}-daraja · ${levelName(lv)}</div></div>
         </div>
       </div>
     </aside>`;
@@ -292,7 +292,7 @@
           <div class="t-body">
             <div class="t-title">${esc(cl.title)}</div>
             <div class="t-latin">${esc(cl.unit.title)} · ${exCountLabel(cl.ex.length)}</div>
-            <div class="t-meta"><span>⏱ ~5 daqiqa</span><span style="color:var(--purple-3)">+${cl.xp} XP</span></div>
+            <div class="t-meta"><span style="display:inline-flex;align-items:center;gap:4px">${ic("clock", "ico-sm")} ~5 daqiqa</span><span style="color:var(--purple-3)">+${cl.xp} XP</span></div>
           </div>
           <div class="t-go">${ic("chevron-right")}</div>
         </button>
@@ -470,7 +470,24 @@
   function renderAtlas() {
     regenHearts();
     let html = `<div class="sec-head" style="margin-top:20px"><h2>Anatomiya atlasi</h2></div>
-      <div class="pad" style="margin-bottom:16px"><div class="lead-muted">Suyaklar, mushaklar va a'zolar — nomi, lotincha atamasi, vazifasi va bog'liq darslar bilan.</div></div>
+      <div class="pad" style="margin-bottom:16px"><div class="lead-muted">Nazariy mavzular — kitob va Atlas'dan olingan 2D tasvirlar. Ba'zi mavzularda interaktiv 3D model ham bor.</div></div>
+      <div class="pad atlas-topics">`;
+    ATLAS.forEach(a => {
+      const m3d = a.m3d ? a.m3d.length : 0;
+      html += `<button class="atlas-topic" data-topic="${a.id}">
+        <div class="at-cover"><img src="${a.cover}" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="at-body">
+          <div class="at-title">${esc(a.title)}</div>
+          <div class="at-sub">${esc(a.subtitle)}</div>
+          <div class="at-meta">${a.sections.length} bo'lim${m3d ? " · " + m3d + " ta 3D" : ""}</div>
+        </div>
+        <div class="at-go">${ic("chevron-right")}</div>
+      </button>`;
+    });
+    html += `</div>`;
+
+    // Anatomiya ob'yektlari (a'zolar) — 2D kartalar
+    html += `<div class="sec-head"><h2>Anatomiya ob'yektlari</h2></div>
       <div class="atlas-cats">`;
     ATLAS_CATS.forEach((cat, ci) => {
       html += `<div class="atlas-cat">
@@ -489,8 +506,66 @@
     });
     html += `</div>`;
     $app.innerHTML = layout(html, "atlas");
+    $app.querySelectorAll("[data-topic]").forEach(b =>
+      b.addEventListener("click", () => renderAtlasTopic(b.dataset.topic)));
     $app.querySelectorAll("[data-cat]").forEach(b =>
       b.addEventListener("click", () => renderAtlasItem(+b.dataset.cat, +b.dataset.item)));
+    bindNav();
+    window.scrollTo(0, 0);
+  }
+
+  // Nazariy mavzu tafsiloti: 2D → kitob ma'lumoti → [ixtiyoriy 3D]
+  function renderAtlasTopic(id) {
+    const a = ATLAS.find(x => x.id === id);
+    if (!a) return renderAtlas();
+    let html = `<div class="detail-top" style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border)">
+      <button class="btn-quit" id="back" style="color:var(--text-2)">${ic("arrow-left")}</button>
+      <h2 style="font-size:16px">${esc(a.title)}</h2>
+    </div>
+    <div class="pad" style="padding-top:16px">
+      <div class="at-hero"><img src="${a.cover}" alt="${esc(a.title)}" onerror="this.style.display='none'"></div>
+      <div style="margin-top:12px;display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--teal);font-weight:700">${ic("book-open", "ico-sm")} ${esc(a.source)}</div>
+      <p class="theory-lead">${esc(a.lead)}</p>`;
+    for (const s of a.sections) {
+      html += `<div class="card tsection">
+        <div class="ts-head">${esc(s.h)}<span class="tag">${esc(s.tag || "")}</span></div>
+        ${s.img ? `<figure><img src="${s.img}" alt="" loading="lazy" onerror="this.style.display='none'"><figcaption>${esc(s.cap || "")}</figcaption></figure>` : ""}
+        <table class="term-table">${s.terms.map(([lat, uz]) =>
+          `<tr><td class="lat">${esc(lat)}</td><td class="uzb">${esc(uz)}</td></tr>`).join("")}
+        </table>
+      </div>`;
+    }
+    if (a.m3d && a.m3d.length) {
+      html += `<div class="sec-head" style="margin:24px 0 0"><h2 style="font-size:15px">${ic("layers", "ico-sm")} Interaktiv 3D</h2></div>
+        <p class="lead-muted" style="margin:0 0 12px;font-size:12px">3D — qo'shimcha o'rganish vositasi. Aylantiring, kattalashtiring, tuzilmalarni o'rganing.</p>`;
+      for (const m of a.m3d) {
+        html += `<div class="card m3d" data-uid="${m.uid}">
+          <div class="m3d-head"><span class="badge3d">3D</span><span class="t">${esc(m.t)}</span><span class="src">${esc(m.src)}</span></div>
+          <div class="m3d-body">
+            <button class="m3d-load">
+              <span class="cube">${ic("box")}</span>
+              <b>3D modelni yuklash</b>
+              <span>Aylantirish · Kattalashtirish · Yorliqlar</span>
+              <span class="go">3D KO'RISH</span>
+            </button>
+          </div>
+          <div class="m3d-note">Manba: ${esc(m.src)} · Sketchfab · Internet kerak</div>
+        </div>`;
+      }
+    }
+    html += `</div>`;
+    $app.innerHTML = layout(html, "atlas");
+    document.getElementById("back").addEventListener("click", renderAtlas);
+    // 3D lazy-load: faqat bosilganda iframe yuklanadi
+    $app.querySelectorAll(".m3d").forEach(card => {
+      const btn = card.querySelector(".m3d-load");
+      btn.addEventListener("click", () => {
+        const uid = card.dataset.uid;
+        const body = card.querySelector(".m3d-body");
+        body.innerHTML = `<iframe title="3D model" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen
+          src="https://sketchfab.com/models/${uid}/embed?autostart=1&ui_theme=dark&ui_watermark=0&ui_hint=1"></iframe>`;
+      });
+    });
     bindNav();
     window.scrollTo(0, 0);
   }
@@ -554,7 +629,7 @@
         <div style="flex:1">
           <h3>${EXAM.title}</h3>
           <p>${EXAM.desc}</p>
-          <div class="meta"><span>📝 ${EXAM.count} savol</span><span>⏱ ${EXAM.minutes} daqiqa</span><span>✅ ${EXAM.passPct}% o'tish</span></div>
+          <div class="meta"><span>${ic("graduation-cap", "ico-sm")} ${EXAM.count} savol</span><span>${ic("clock", "ico-sm")} ${EXAM.minutes} daqiqa</span><span>${ic("check", "ico-sm")} ${EXAM.passPct}% o'tish</span></div>
           ${best ? `<div class="meta"><span style="background:${best.pct >= EXAM.passPct ? "rgba(34,197,94,0.14);color:var(--success)" : "rgba(239,68,68,0.14);color:var(--danger)"}">Eng yaxshi: ${best.pct}%</span></div>` : ""}
           <button class="btn full" id="btn-exam">Imtihonni boshlash</button>
         </div>
@@ -565,7 +640,7 @@
         <div style="flex:1">
           <h3>Aqlli takrorlash</h3>
           <p>Interval takrorlash (spaced repetition): xato qilgan va unutish arafasidagi savollar avtomatik tanlanadi.</p>
-          <div class="meta"><span>🧠 ${due} ta navbatda</span><span>❗ ${mistakes} ta xato</span></div>
+          <div class="meta"><span>${ic("brain", "ico-sm")} ${due} ta navbatda</span><span>${ic("x", "ico-sm")} ${mistakes} ta xato</span></div>
           <button class="btn full ghost" id="btn-rev" ${due || mistakes ? "" : "disabled"}>Takrorlashni boshlash</button>
         </div>
       </div>
@@ -575,7 +650,7 @@
         <div style="flex:1">
           <h3>Tezkor mashq</h3>
           <p>Barcha mavzulardan 10 ta tasodifiy savol — bilimni tez tekshirish uchun. Yurak talab qilinmaydi.</p>
-          <div class="meta"><span>🎯 Umumiy aniqlik: ${acc}%</span></div>
+          <div class="meta"><span>${ic("target", "ico-sm")} Umumiy aniqlik: ${acc}%</span></div>
           <button class="btn full ghost" id="btn-quick">Boshlash</button>
         </div>
       </div>
@@ -656,7 +731,7 @@
       <div class="sec-head" style="margin-top:20px"><h2>Progress</h2></div>
 
       <div class="card mode-card" style="flex-direction:column;align-items:stretch">
-        <div class="meta" style="margin-bottom:14px"><span style="background:rgba(32,217,197,0.14);color:var(--teal)">Bu hafta</span><span>🔥 ${S.streak} kunlik seriya</span></div>
+        <div class="meta" style="margin-bottom:14px"><span style="background:rgba(32,217,197,0.14);color:var(--teal)">Bu hafta</span><span style="display:inline-flex;align-items:center;gap:4px">${ic("flame", "ico-sm")} ${S.streak} kunlik seriya</span></div>
         <div class="chart">
           ${days.map(d => `
             <div class="col ${d.today ? "today" : ""}">
@@ -674,7 +749,7 @@
           const pr = systemMastery(sys.units);
           const mastered = pr >= 80;
           return `<div class="sys-row">
-            <div class="sr-top"><span>${esc(sys.title)}${mastered ? ` <span class="chip" style="color:var(--success);border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.12)">✓ O'zlashtirilgan</span>` : ""}</span><b class="num">${pr}%</b></div>
+            <div class="sr-top"><span>${esc(sys.title)}${mastered ? ` <span class="chip" style="display:inline-flex;align-items:center;gap:4px;color:var(--success);border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.12)">${ic("check", "ico-sm")} O'zlashtirilgan</span>` : ""}</span><b class="num">${pr}%</b></div>
             <div class="bar"><div style="width:${pr}%;background:linear-gradient(90deg,${sys.color},${sys.color}cc)"></div></div>
           </div>`;
         }).join("")}
@@ -828,7 +903,7 @@
       waitTxt = ` Keyingi yurak ~${Math.ceil(next / 60000)} daqiqada tiklanadi.`;
     }
     const html = `<div class="nohearts">
-      <div class="r-emoji">💔</div>
+      <div class="r-emoji" style="color:var(--pink)">${ic("heart")}</div>
       <h1>Yuraklar tugadi</h1>
       <p>Har 30 daqiqada 1 yurak tiklanadi.${waitTxt}<br>Yuraklarsiz «Tezkor mashq» rejimida mashq qilishingiz mumkin.</p>
       <button class="btn" id="go-quick" style="max-width:300px;width:100%;margin-bottom:10px">Tezkor mashq</button><br>
@@ -843,7 +918,7 @@
   function lessonHeader() {
     const pct = Math.round((session.idx / session.queue.length) * 100);
     let right;
-    if (session.kind === "exam") right = `<div class="exam-timer" id="timer">⏱ --:--</div>`;
+    if (session.kind === "exam") right = `<div class="exam-timer" id="timer">${ic("clock", "ico-sm")} <span id="timer-num">--:--</span></div>`;
     else if (session.useHearts) right = `<div class="lesson-hearts">${ic("heart", "ico-sm")} ${S.hearts}</div>`;
     else right = `<div class="exam-timer">${session.idx + 1}/${session.queue.length}</div>`;
     return `<div class="lesson-top glass">
@@ -858,7 +933,9 @@
     if (!el || !session || session.kind !== "exam") return;
     const left = Math.max(0, session.deadline - Date.now());
     const m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
-    el.textContent = `⏱ ${m}:${String(s).padStart(2, "0")}`;
+    const num = document.getElementById("timer-num");
+    if (num) num.textContent = `${m}:${String(s).padStart(2, "0")}`;
+    else el.textContent = `${m}:${String(s).padStart(2, "0")}`;
     if (left < 60000) el.classList.add("low");
     if (left <= 0) { clearInterval(examTimer); renderResult(true); }
   }
@@ -1133,7 +1210,7 @@
     fb.className = "feedback " + (good ? "good" : "bad");
     fb.innerHTML = `<div class="fb-title">${good ? ic("check") + " To'g'ri" : ic("x") + " Noto'g'ri"}</div>
       ${subText ? `<div class="fb-sub">${esc(subText)}</div>` : `<div class="fb-sub"></div>`}
-      ${ex.explanation ? `<div class="fb-sub" style="opacity:.85">💡 ${esc(ex.explanation)}</div>` : ""}
+      ${ex.explanation ? `<div class="fb-sub" style="opacity:.85;display:flex;gap:7px;align-items:flex-start">${ic("info", "ico-sm")}<span>${esc(ex.explanation)}</span></div>` : ""}
       <button class="btn full ${good ? "" : "danger"}" id="next">Davom etish</button>`;
     document.body.appendChild(fb);
     document.getElementById("next").addEventListener("click", () => {
@@ -1168,19 +1245,21 @@
     const newAch = checkAchievements();
     const retryFn = session.retry;
 
-    let h1, sub, emoji;
+    let h1, sub, rico, rcolor;
     if (isExam) {
-      emoji = passed ? "🎓" : "📚";
+      rico = passed ? "graduation-cap" : "book-open";
+      rcolor = passed ? "var(--success)" : "var(--warn)";
       h1 = timeUp ? "Vaqt tugadi" : passed ? "Imtihondan o'tdingiz!" : "Imtihondan o'tolmadingiz";
       sub = passed ? `Natija: ${acc}% (o'tish balli ${EXAM.passPct}%)` : `Natija: ${acc}%. Yana tayyorlanib qayta topshiring.`;
     } else {
-      emoji = acc === 100 ? "🏆" : acc >= 70 ? "🎉" : "💪";
+      rico = acc === 100 ? "trophy" : acc >= 70 ? "award" : "trending-up";
+      rcolor = acc === 100 ? "var(--warn)" : acc >= 70 ? "var(--success)" : "var(--purple-3)";
       h1 = acc === 100 ? "Zo'r natija!" : session.kind === "review" ? "Takrorlash yakunlandi" : "Dars yakunlandi";
       sub = acc === 100 ? "Mukammal — barcha javoblar to'g'ri." : "Xatolar avtomatik takrorlash navbatiga qo'shildi.";
     }
 
     $app.innerHTML = `<div class="result">
-      <div class="r-emoji">${emoji}</div>
+      <div class="r-emoji" style="color:${rcolor}">${ic(rico)}</div>
       <h1>${h1}</h1>
       <div class="r-xp num">+${gained} XP</div>
       <p>${sub}</p>
@@ -1209,7 +1288,7 @@
   function showStreak() {
     const d = document.createElement("div");
     d.className = "streak-flame";
-    d.innerHTML = `<div class="f">🔥</div><h2>${S.streak} kunlik seriya</h2>
+    d.innerHTML = `<div class="f">${ic("flame")}</div><h2>${S.streak} kunlik seriya</h2>
       <p>Har kuni mashq qilib seriyani saqlang</p>
       <button class="btn" id="sk">Davom etish</button>`;
     document.body.appendChild(d);
