@@ -168,7 +168,27 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "corpus-storage",
+      version: 2,
       storage: createJSONStorage(() => localStorage),
+      migrate: (persistedState, version) => {
+        // v0/v1 → v2: o'zbekcha endi ASOSIY til.
+        // Eski brauzerlarda saqlangan "language: en" yangi default ustidan yozilmasligi uchun
+        // migratsiyada til majburiy "uz" ga o'tkaziladi (foydalanuvchi sozlashda qayta tanlashi mumkin).
+        const s = (persistedState ?? {}) as Partial<AppState>;
+        if (version < 2) {
+          return {
+            ...s,
+            settings: {
+              darkMode: s.settings?.darkMode ?? false,
+              sound: s.settings?.sound ?? true,
+              notifications: s.settings?.notifications ?? true,
+              haptics: s.settings?.haptics ?? true,
+              language: "uz",
+            },
+          };
+        }
+        return s as AppState;
+      },
       partialize: (s) => ({
         onboardingDone: s.onboardingDone,
         xp: s.xp,
