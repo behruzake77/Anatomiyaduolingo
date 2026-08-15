@@ -41,7 +41,9 @@ export function LoginScreen() {
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col items-center gap-3 text-center"
       >
-        <Logo size={88} />
+        <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-surface shadow-soft">
+          <Logo size={84} />
+        </div>
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{t.brand}</h1>
           <p className="mt-1 text-sm text-muted">{t.tagline}</p>

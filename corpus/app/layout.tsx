@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   description:
     "Anatomiyani Duolingo uslubida o'rganing: interaktiv darslar, aqlli testlar, 3D o'rganish rejimi va gamifikatsiya.",
   icons: {
-    icon: "/logo/logo-192.png",
-    apple: "/logo/logo-192.png",
+    icon: "/logo/icon-192.png",
+    apple: "/logo/icon-192.png",
   },
 };
 

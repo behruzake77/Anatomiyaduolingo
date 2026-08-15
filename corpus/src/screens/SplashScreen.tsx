@@ -27,8 +27,9 @@ export function SplashScreen() {
         initial={{ scale: 0.7, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="flex h-32 w-32 items-center justify-center rounded-[28px] bg-white/95 shadow-pop"
       >
-        <Logo variant="light" size={96} />
+        <Logo size={104} />
       </motion.div>
 
       <motion.div
