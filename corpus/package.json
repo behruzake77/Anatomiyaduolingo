@@ -1,0 +1,28 @@
+{
+  "name": "corpus",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CORPUS — Learn Anatomy. Master Life. A Duolingo-style anatomy learning app.",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3000",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 3000"
+  },
+  "dependencies": {
+    "lucide-react": "^0.469.0",
+    "motion": "^12.0.6",
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.6",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.0.6",
+    "typescript": "^5.7.2"
+  }
+}

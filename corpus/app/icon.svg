@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6C5CE7"/>
+      <stop offset="1" stop-color="#A29BFE"/>
+    </linearGradient>
+    <clipPath id="l"><rect x="0" y="0" width="60" height="120"/></clipPath>
+    <clipPath id="r"><rect x="60" y="0" width="60" height="120"/></clipPath>
+  </defs>
+  <rect width="120" height="120" rx="26" fill="url(#g)"/>
+  <g fill="#F9C74F"><path d="M14 96c2-3 6-4 8-7 2 3 6 4 8 7-3 1-6 3-8 3s-5-2-8-3Z"/><path d="M90 96c2-3 6-4 8-7 2 3 6 4 8 7-3 1-6 3-8 3s-5-2-8-3Z"/></g>
+  <g clip-path="url(#l)">
+    <circle cx="60" cy="58" r="36" fill="#F8FAFC"/>
+    <rect x="36" y="88" width="48" height="17" rx="8" fill="#F8FAFC"/>
+    <circle cx="44" cy="58" r="8.5" fill="#2D3436"/>
+    <path d="M60 72 52 88h16Z" fill="#2D3436"/>
+    <g fill="#2D3436"><rect x="42" y="92" width="4" height="9" rx="1.5"/><rect x="49" y="92" width="4" height="9" rx="1.5"/><rect x="56" y="92" width="4" height="9" rx="1.5"/></g>
+  </g>
+  <g clip-path="url(#r)">
+    <circle cx="60" cy="58" r="36" fill="#3EE0C8"/>
+    <rect x="36" y="88" width="48" height="17" rx="8" fill="#3EE0C8"/>
+    <circle cx="76" cy="58" r="8.5" fill="#2D3436" opacity=".55"/>
+    <path d="M60 72v16" stroke="#2D3436" stroke-width="4.5" opacity=".4" stroke-linecap="round"/>
+  </g>
+  <line x1="60" y1="16" x2="60" y2="112" stroke="#2D3436" stroke-width="4" opacity=".45"/>
+</svg>

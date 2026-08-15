@@ -1,0 +1,103 @@
+"use client";
+
+import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight } from "lucide-react";
+import { Screen } from "@/components/layout/Screen";
+import { Card } from "@/components/ui/Card";
+import { Toggle } from "@/components/ui/Toggle";
+import { useAppStore } from "@/store/useAppStore";
+
+export function SettingsScreen() {
+  const settings = useAppStore((s) => s.settings);
+  const toggleSetting = useAppStore((s) => s.toggleSetting);
+  const setLanguage = useAppStore((s) => s.setLanguage);
+  const resetProgress = useAppStore((s) => s.resetProgress);
+  const navigate = useAppStore((s) => s.navigate);
+
+  const rows = [
+    { key: "notifications" as const, label: "Notifications", icon: Bell },
+    { key: "darkMode" as const, label: "Dark Mode", icon: Moon },
+    { key: "sound" as const, label: "Sound Effects", icon: Volume2 },
+  ];
+
+  return (
+    <Screen className="pt-6">
+      <header>
+        <h1 className="text-2xl font-semibold">Settings</h1>
+        <p className="text-sm text-muted">Personalize your learning experience.</p>
+      </header>
+
+      {/* toggles */}
+      <Card className="mt-5 overflow-hidden">
+        {rows.map((r, i) => (
+          <div
+            key={r.key}
+            className={
+              "flex items-center gap-3 px-4 py-3.5 " + (i > 0 ? "border-t border-line" : "")
+            }
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <r.icon className="h-5 w-5" aria-hidden />
+            </span>
+            <span className="flex-1 text-base font-medium">{r.label}</span>
+            <Toggle
+              checked={settings[r.key]}
+              onChange={() => toggleSetting(r.key)}
+              label={r.label}
+            />
+          </div>
+        ))}
+
+        {/* language */}
+        <div className="flex items-center gap-3 border-t border-line px-4 py-3.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Languages className="h-5 w-5" aria-hidden />
+          </span>
+          <span className="flex-1 text-base font-medium">Language</span>
+          <select
+            value={settings.language}
+            onChange={(e) => setLanguage(e.target.value as "en" | "uz")}
+            className="rounded-xl border border-line bg-surface2 px-3 py-1.5 text-sm font-medium"
+            aria-label="Language"
+          >
+            <option value="en">English</option>
+            <option value="uz">O‘zbekcha</option>
+          </select>
+        </div>
+      </Card>
+
+      {/* links */}
+      <Card className="mt-4 overflow-hidden">
+        {[
+          { label: "Privacy Policy", icon: Shield },
+          { label: "Terms of Service", icon: FileText },
+        ].map((l, i) => (
+          <button
+            key={l.label}
+            className={
+              "flex w-full items-center gap-3 px-4 py-3.5 text-left " +
+              (i > 0 ? "border-t border-line" : "")
+            }
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface2 text-muted">
+              <l.icon className="h-5 w-5" aria-hidden />
+            </span>
+            <span className="flex-1 text-base font-medium">{l.label}</span>
+            <ChevronRight className="h-5 w-5 text-muted" aria-hidden />
+          </button>
+        ))}
+        <button
+          onClick={() => {
+            resetProgress();
+            navigate("dashboard");
+          }}
+          className="flex w-full items-center gap-3 border-t border-line px-4 py-3.5 text-left text-danger"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-danger/10 text-danger">
+            <LogOut className="h-5 w-5" aria-hidden />
+          </span>
+          <span className="flex-1 text-base font-medium">Reset &amp; Log out</span>
+        </button>
+      </Card>
+    </Screen>
+  );
+}
