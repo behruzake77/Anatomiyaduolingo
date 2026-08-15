@@ -1,0 +1,15 @@
+# CORPUS — Render Blueprint (one-click deploy)
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: corpus
+    runtime: node
+    rootDir: corpus
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production

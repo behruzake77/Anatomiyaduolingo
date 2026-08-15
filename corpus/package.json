@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
-    "start": "next start -H 0.0.0.0 -p 3000"
+    "start": "next start -H 0.0.0.0 -p ${PORT:-3000}"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   },
   "dependencies": {
     "lucide-react": "^0.469.0",
