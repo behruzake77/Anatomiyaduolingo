@@ -3,6 +3,23 @@
 A production-ready, **Duolingo-style** anatomy learning app — mobile-first, with a premium
 medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, inglizcha ikkilamchi.
 
+## Tibbiyot talabalari uchun — to'liq kontent
+
+Kontent **A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi + "Odam anatomiyasi Atlas"** dan olinadi — ixtiro qilinmagan.
+
+| Tizim | Holat | Darslar |
+|---|---|---|
+| **Suyaklar (Osteologiya)** | ✅ To'liq | **9 bo'lim, 25 dars, 278 savol** |
+| Bo'g'imlar (Artrologiya) | ⏳ Keyingi bosqich | — |
+| Mushaklar (Miologiya) | ⏳ Keyingi bosqich | — |
+| Hazm tizimi | ⏳ Keyingi bosqich | — |
+| Nafas tizimi | ⏳ Keyingi bosqich | — |
+| Asab tizimi | ⏳ Keyingi bosqich | — |
+
+**Suyaklar bo'limlari**: Umurtqa pog'onasi · Bo'yin umurtqalari (Atlas, Axis) · Ko'krak va bel · Dumg'aza va dum · Qovurg'alar va to'sh · Qo'l skeleti · Oyoq skeleti · Kalla (miya qismi) · Kalla (yuz qismi)
+
+**5 xil savol turi**: test (quiz) · rasmni aniqlash (img) · moslashtirish (match) · atama yig'ish (build) · to'g'ri/noto'g'ri (tf)
+
 ## Kirish / Ro'yxatdan o'tish
 
 - Ilova birinchi ochilganda **ro'yxatdan o'tish** so'raladi (username + parol, localStorage'da saqlanadi)

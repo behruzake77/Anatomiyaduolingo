@@ -63,6 +63,7 @@ export const STR: Record<Lang, Strings> = {
     study3d: "3D o'rganish",
     lessons: "dars",
     complete: "bajarildi",
+    soonBadge: "Keyingi bosqich",
 
     question: "Savol",
     finish: "Yakunlash",
@@ -91,6 +92,7 @@ export const STR: Record<Lang, Strings> = {
     unlocked: "Ochilgan",
 
     drag: "Aylantirish uchun suring",
+    buildHint: "So'zlarni bosib atamani yig'ing",
     functionLabel: "Vazifasi",
     prevModel: "Oldingi model",
     play: "O'ynatish",
@@ -174,6 +176,7 @@ export const STR: Record<Lang, Strings> = {
     study3d: "3D study mode",
     lessons: "lessons",
     complete: "complete",
+    soonBadge: "Coming next",
 
     question: "Question",
     finish: "Finish",
@@ -202,6 +205,7 @@ export const STR: Record<Lang, Strings> = {
     unlocked: "Unlocked",
 
     drag: "Drag to rotate",
+    buildHint: "Tap the words to build the term",
     functionLabel: "Function",
     prevModel: "Previous model",
     play: "Play",

@@ -1,15 +1,8 @@
 /**
- * Anatomiya kontenti — 6 tana tizimi, darslar, quiz savollari
- * va interaktiv atlas ob'yektlari. O'zbekcha + lotincha atamalar.
+ * Anatomiya tizimlari (metadata) + interaktiv atlas ob'yektlari.
+ * Darslar va savollar `osteology.ts`da (suyaklar — to'liq), qolgan tizimlar
+ * keyingi bosqichlarda to'ldiriladi.
  */
-
-export interface Lesson {
-  id: string;
-  title: string;
-  description: string;
-  xp: number;
-  minutes: number;
-}
 
 export interface BodySystem {
   id: string;
@@ -19,41 +12,8 @@ export interface BodySystem {
   icon: string; // lucide icon name
   color: string;
   image: string;
-  lessons: Lesson[];
-}
-
-/** Real progressni hisoblash — demo raqamlar YO'Q. */
-export function systemProgress(sys: BodySystem, completedLessons: string[]) {
-  const done = sys.lessons.filter((l) => completedLessons.includes(l.id)).length;
-  return { done, total: sys.lessons.length, pct: sys.lessons.length ? Math.round((done / sys.lessons.length) * 100) : 0 };
-}
-
-export function systemStatus(sys: BodySystem, completedLessons: string[]): "completed" | "progress" | "new" {
-  const done = sys.lessons.filter((l) => completedLessons.includes(l.id)).length;
-  if (done === 0) return "new";
-  if (done >= sys.lessons.length) return "completed";
-  return "progress";
-}
-
-export interface AtlasObject {
-  id: string;
-  name: string;
-  latin: string;
-  en: string;
-  image: string;
-  description: string;
-  function: string;
-}
-
-export interface QuizQuestion {
-  id: string;
-  prompt: string;
-  image?: string;
-  /** % position of the green highlight on the image */
-  highlight?: { x: number; y: number };
-  options: string[];
-  answer: number;
-  explanation: string;
+  /** Kontent hali to'ldirilmagan tizimlar */
+  soon?: boolean;
 }
 
 export const SYSTEMS: BodySystem[] = [
@@ -65,12 +25,6 @@ export const SYSTEMS: BodySystem[] = [
     icon: "bone",
     color: "#6C5CE7",
     image: "/img/skeleton.jpg",
-    lessons: [
-      { id: "sk-1", title: "Suyaklar haqida kirish", description: "Suyak turlari va tasnifi", xp: 20, minutes: 6 },
-      { id: "sk-2", title: "Bosh suyagi", description: "Miya va yuz suyaklari", xp: 25, minutes: 8 },
-      { id: "sk-3", title: "Umurtqa pog'onasi", description: "Bo'yin, ko'krak va bel umurtqalari", xp: 25, minutes: 9 },
-      { id: "sk-4", title: "Qovurg'alar va to'sh suyagi", description: "Ko'krak qafasi himoyasi", xp: 20, minutes: 7 },
-    ],
   },
   {
     id: "muscular",
@@ -80,11 +34,7 @@ export const SYSTEMS: BodySystem[] = [
     icon: "activity",
     color: "#FD79A8",
     image: "/img/muscles.jpg",
-    lessons: [
-      { id: "mu-1", title: "Mushak turlari", description: "Skelet, yurak va silliq mushaklar", xp: 20, minutes: 6 },
-      { id: "mu-2", title: "Asosiy mushak guruhlari", description: "Delta mushakdan to'rt boshli songacha", xp: 25, minutes: 8 },
-      { id: "mu-3", title: "Mushak qisqarishi", description: "Sirpanish mexanizmi", xp: 25, minutes: 9 },
-    ],
+    soon: true,
   },
   {
     id: "digestive",
@@ -94,11 +44,7 @@ export const SYSTEMS: BodySystem[] = [
     icon: "apple",
     color: "#F59E0B",
     image: "/img/stomach.jpg",
-    lessons: [
-      { id: "di-1", title: "Hazm yo'li", description: "Og'izdan yo'g'on ichakkacha", xp: 20, minutes: 7 },
-      { id: "di-2", title: "Oshqozon va jigar", description: "Kimyoviy hazm jarayoni", xp: 25, minutes: 8 },
-      { id: "di-3", title: "So'rilish", description: "Oziq moddalarning qonga o'tishi", xp: 25, minutes: 8 },
-    ],
+    soon: true,
   },
   {
     id: "respiratory",
@@ -108,10 +54,7 @@ export const SYSTEMS: BodySystem[] = [
     icon: "wind",
     color: "#00B894",
     image: "/img/lungs.jpg",
-    lessons: [
-      { id: "re-1", title: "Nafas yo'llari", description: "Kekirdak, bronxlar va o'pka", xp: 20, minutes: 6 },
-      { id: "re-2", title: "Gaz almashinuvi", description: "Alveolalar va kislorod", xp: 25, minutes: 8 },
-    ],
+    soon: true,
   },
   {
     id: "nervous",
@@ -121,10 +64,7 @@ export const SYSTEMS: BodySystem[] = [
     icon: "brain",
     color: "#A29BFE",
     image: "/img/brain.jpg",
-    lessons: [
-      { id: "ne-1", title: "Bosh miya", description: "Katta yarim pallalar, miyacha, so'g'on", xp: 25, minutes: 9 },
-      { id: "ne-2", title: "Neyronlar va sinapslar", description: "Signallar qanday uzatiladi", xp: 25, minutes: 9 },
-    ],
+    soon: true,
   },
   {
     id: "circulatory",
@@ -134,12 +74,19 @@ export const SYSTEMS: BodySystem[] = [
     icon: "heart",
     color: "#EF4444",
     image: "/img/heart.jpg",
-    lessons: [
-      { id: "ci-1", title: "Yurak", description: "Kameralar va klapanlar", xp: 25, minutes: 9 },
-      { id: "ci-2", title: "Qon tomirlari", description: "Arteriyalar, venalar, kapillarlar", xp: 20, minutes: 7 },
-    ],
+    soon: true,
   },
 ];
+
+export interface AtlasObject {
+  id: string;
+  name: string;
+  latin: string;
+  en: string;
+  image: string;
+  description: string;
+  function: string;
+}
 
 export const ATLAS_OBJECTS: AtlasObject[] = [
   {
@@ -201,57 +148,5 @@ export const ATLAS_OBJECTS: AtlasObject[] = [
     description:
       "Tananing 206 ta suyakdan iborat asosi — tayanch vazifasini bajaradi va a'zolarni himoya qiladi.",
     function: "Tayanch va himoya",
-  },
-];
-
-export const QUIZ: QuizQuestion[] = [
-  {
-    id: "q1",
-    prompt: "Rasmda ta'kidlangan suyak qaysi?",
-    image: "/img/ribs.jpg",
-    highlight: { x: 50, y: 42 },
-    options: ["Sternum", "Clavicula", "Scapula", "Humerus"],
-    answer: 0,
-    explanation: "Sternum (to'sh suyagi) ko'krakning markazida joylashib, qovurg'alarni biriktiradi.",
-  },
-  {
-    id: "q2",
-    prompt: "Sonni hosil qiluvchi suyak qaysi?",
-    image: "/img/femur.jpg",
-    options: ["Tibia", "Fibula", "Femur", "Patella"],
-    answer: 2,
-    explanation: "Femur — inson tanasidagi eng uzun va mustahkam suyak.",
-  },
-  {
-    id: "q3",
-    prompt: "Qaysi a'zo qonni tana bo'ylab haydaydi?",
-    image: "/img/heart.jpg",
-    options: ["O'pka", "Jigar", "Miya", "Yurak"],
-    answer: 3,
-    explanation: "Yurak qon aylanishini ta'minlash uchun daqiqasiga ~70–75 marta qisqaradi.",
-  },
-  {
-    id: "q4",
-    prompt: "Qon bilan gaz almashinuvi qayerda sodir bo'ladi?",
-    image: "/img/lungs.jpg",
-    options: ["Kekirdak", "Alveolalar", "Bronxlar", "Hiqildoq"],
-    answer: 1,
-    explanation: "Alveolalar — kislorod va karbonat angidrid almashinadigan mayda havo pufakchalari.",
-  },
-  {
-    id: "q5",
-    prompt: "Bosh miyaning qaysi qismi muvozanatni boshqaradi?",
-    image: "/img/brain.jpg",
-    options: ["Katta yarim pallalar", "Miyacha", "Miya so'g'oni", "Talamus"],
-    answer: 1,
-    explanation: "Miyacha (cerebellum) harakat, muvozanat va tana holatini sozlaydi.",
-  },
-  {
-    id: "q6",
-    prompt: "Bosh suyagi qaysi ikki qismdan iborat?",
-    image: "/img/skull.jpg",
-    options: ["Miya qismi va yuz qismi", "Miya qismi va bo'yin", "Yuz qismi va jag'", "Gumbaz va umurtqa"],
-    answer: 0,
-    explanation: "Bosh suyagi miya gumbazi va yuz skeletiga bo'linadi.",
   },
 ];

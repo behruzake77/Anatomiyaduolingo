@@ -18,6 +18,7 @@ export type ScreenId =
   | "onboarding"
   | "dashboard"
   | "topics"
+  | "lessons"
   | "lesson"
   | "result-correct"
   | "result-wrong"
@@ -103,6 +104,8 @@ interface AppState {
 
   // actions
   finishOnboarding: () => void;
+  activeLessonId: string | null;
+  openLesson: (lessonId: string) => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
   resetProgress: () => void;
 }
@@ -218,6 +221,12 @@ export const useAppStore = create<AppState>()(
       setLanguage: (lang) => set((s) => ({ settings: { ...s.settings, language: lang } })),
 
       finishOnboarding: () => set({ onboardingDone: true }),
+
+      activeLessonId: null,
+      openLesson: (lessonId) => {
+        set({ activeLessonId: lessonId });
+        get().navigate("lesson");
+      },
 
       completeLesson: (lessonId, topicId, score, totalQ) => {
         const earned = Math.round(20 * (score / Math.max(1, totalQ)));

@@ -1,13 +1,15 @@
 "use client";
 
-import { Search, Box } from "lucide-react";
+import { Search, Box, Lock } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Icon } from "@/components/ui/Icon";
 import { useAppStore } from "@/store/useAppStore";
-import { SYSTEMS, systemProgress } from "@/data/anatomy";
+import { SYSTEMS } from "@/data/anatomy";
+import { skeletalProgress } from "@/data/osteology";
 import { useStrings, fmt } from "@/i18n";
+import { cn } from "@/utils/cn";
 
 export function TopicsScreen() {
   const navigate = useAppStore((s) => s.navigate);
@@ -39,12 +41,40 @@ export function TopicsScreen() {
         </div>
       </header>
 
-      {/* categories — real progress (yangi foydalanuvchi uchun 0/N) */}
+      {/* tizimlar — suyaklar to'liq, qolganlari keyingi bosqich */}
       <div className="mt-5 flex flex-col gap-4">
         {SYSTEMS.map((sys) => {
-          const { done, total, pct } = systemProgress(sys, completedLessons);
+          if (sys.soon) {
+            return (
+              <Card key={sys.id} className="opacity-60">
+                <div className="flex items-center gap-4 p-4">
+                  <div
+                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
+                    style={{ background: `${sys.color}1f`, color: sys.color }}
+                  >
+                    <Icon name={sys.icon} className="h-7 w-7" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <p className="truncate text-base font-semibold">{sys.name}</p>
+                      <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-muted">
+                        <Lock className="h-3.5 w-3.5" aria-hidden /> {t.soonBadge}
+                      </span>
+                    </div>
+                    <p className="text-xs italic text-muted">{sys.latin}</p>
+                    <div className="mt-2.5 h-2.5 overflow-hidden rounded-full bg-line">
+                      <div className="h-full w-0 rounded-full" />
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            );
+          }
+
+          // Suyaklar — real progress
+          const { done, total, pct } = skeletalProgress(completedLessons);
           return (
-            <Card key={sys.id} onClick={() => navigate("lesson")}>
+            <Card key={sys.id} onClick={() => navigate("lessons")}>
               <div className="flex items-center gap-4 p-4">
                 <div
                   className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
@@ -61,7 +91,7 @@ export function TopicsScreen() {
                   </div>
                   <p className="text-xs italic text-muted">{sys.latin}</p>
                   <ProgressBar value={pct} color={sys.color} className="mt-2.5" />
-                  <p className="mt-1.5 text-xs font-semibold" style={{ color: sys.color }}>
+                  <p className={cn("mt-1.5 text-xs font-semibold")} style={{ color: sys.color }}>
                     {pct}% {t.complete}
                   </p>
                 </div>

@@ -11,6 +11,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
 import { SYSTEMS } from "@/data/anatomy";
+import { SKELETAL_LESSONS } from "@/data/osteology";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
 
@@ -30,14 +31,15 @@ export function DashboardScreen() {
   const currentUser = useAppStore((s) => s.currentUser);
   const navigate = useAppStore((s) => s.navigate);
   const setTab = useAppStore((s) => s.setTab);
+  const openLesson = useAppStore((s) => s.openLesson);
   const t = useStrings();
 
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
   const firstSystem = SYSTEMS[0];
-  const doneInFirst = firstSystem.lessons.filter((l) => completedLessons.includes(l.id)).length;
-  const nextLesson = firstSystem.lessons.find((l) => !completedLessons.includes(l.id)) ?? firstSystem.lessons[0];
+  const doneInFirst = SKELETAL_LESSONS.filter((l) => completedLessons.includes(l.id)).length;
+  const nextLesson = SKELETAL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? SKELETAL_LESSONS[0];
   const name = currentUser ?? t.name;
 
   return (
@@ -126,12 +128,12 @@ export function DashboardScreen() {
           </div>
           <div className="p-4">
             <div className="flex items-center justify-between text-xs text-muted">
-              <span>{fmt(t.lessonOf, { n: doneInFirst + 1, total: firstSystem.lessons.length })}</span>
+              <span>{fmt(t.lessonOf, { n: doneInFirst + 1, total: SKELETAL_LESSONS.length })}</span>
               <span className="flex items-center gap-1">
                 <Zap className="h-3.5 w-3.5" aria-hidden /> ~{nextLesson.minutes} {t.min}
               </span>
             </div>
-            <Button className="mt-3 w-full" onClick={() => navigate("lesson")}>
+            <Button className="mt-3 w-full" onClick={() => openLesson(nextLesson.id)}>
               {t.continue}
             </Button>
           </div>

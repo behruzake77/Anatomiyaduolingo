@@ -8,7 +8,7 @@ import { Segmented } from "@/components/ui/Segmented";
 import { Sparkline } from "@/components/ui/Sparkline";
 import { Donut } from "@/components/ui/Donut";
 import { useAppStore } from "@/store/useAppStore";
-import { SYSTEMS, systemStatus } from "@/data/anatomy";
+import { OSTEOLOGY_UNITS, unitProgress, unitStatus, skeletalProgress } from "@/data/osteology";
 import { useStrings, fmt } from "@/i18n";
 
 type Range = "week" | "month" | "year";
@@ -23,7 +23,7 @@ export function ProgressScreen() {
   const total = useAppStore((s) => s.total);
   const xpHistory = useAppStore((s) => s.xpHistory);
 
-  // ---- real kunlik XP tarixi (store'dan) ----
+  // real kunlik XP tarixi
   function series(count: number): number[] {
     const out: number[] = [];
     for (let i = count - 1; i >= 0; i--) {
@@ -37,13 +37,16 @@ export function ProgressScreen() {
   const earned = data.reduce((a, b) => a + b, 0);
   const rangeText = range === "week" ? t.rangeWeek : range === "month" ? t.rangeMonth : t.rangeYear;
 
-  // ---- real tizim progressi ----
+  // real bo'lim statuslari (9 ta osteologiya bo'limi)
   const statusCount = { completed: 0, progress: 0, new: 0 };
-  for (const sys of SYSTEMS) {
-    statusCount[systemStatus(sys, completedLessons)]++;
+  for (const u of OSTEOLOGY_UNITS) {
+    statusCount[unitStatus(u, completedLessons)]++;
   }
-  const topicsPct = SYSTEMS.length ? Math.round((completedTopics.length / SYSTEMS.length) * 100) : 0;
+  const topicsPct = OSTEOLOGY_UNITS.length
+    ? Math.round((statusCount.completed / OSTEOLOGY_UNITS.length) * 100)
+    : 0;
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+  const overall = skeletalProgress(completedLessons);
 
   const categories = [
     { label: t.completed, value: statusCount.completed, color: "#6C5CE7" },
@@ -81,7 +84,7 @@ export function ProgressScreen() {
           </div>
         </Card>
 
-        {/* topics donut — real */}
+        {/* bo'limlar donut — real */}
         <Card className="mt-4 flex items-center gap-5 p-4">
           <Donut value={topicsPct} size={120} stroke={13}>
             <div className="text-center">
@@ -104,7 +107,7 @@ export function ProgressScreen() {
         <div className="mt-4 grid grid-cols-3 gap-3">
           <Card className="flex flex-col items-center gap-1 p-4">
             <p className="text-xl font-bold" style={{ color: "#6C5CE7" }}>
-              {completedLessons.length}
+              {overall.done}/{overall.total}
             </p>
             <p className="text-center text-xs text-muted">{t.lessonsDone}</p>
           </Card>
@@ -116,30 +119,29 @@ export function ProgressScreen() {
           </Card>
           <Card className="flex flex-col items-center gap-1 p-4">
             <p className="text-xl font-bold" style={{ color: "#F59E0B" }}>
-              {completedTopics.length}/{SYSTEMS.length}
+              {completedTopics.length}/{OSTEOLOGY_UNITS.length}
             </p>
             <p className="text-center text-xs text-muted">{t.topics}</p>
           </Card>
         </div>
 
-        {/* system-by-system progress — real */}
-        <h2 className="mt-6 text-base font-semibold">{t.continueLearning}</h2>
+        {/* bo'lim bo'yicha progress — real */}
+        <h2 className="mt-6 text-base font-semibold">Osteologiya — bo'limlar</h2>
         <div className="mt-3 flex flex-col gap-3">
-          {SYSTEMS.map((sys) => {
-            const done = sys.lessons.filter((l) => completedLessons.includes(l.id)).length;
-            const pct = sys.lessons.length ? Math.round((done / sys.lessons.length) * 100) : 0;
+          {OSTEOLOGY_UNITS.map((u) => {
+            const { done, total: uTotal, pct } = unitProgress(u, completedLessons);
             return (
-              <div key={sys.id}>
+              <div key={u.id}>
                 <div className="flex justify-between text-xs font-medium text-muted">
-                  <span>{sys.name}</span>
+                  <span>{u.title}</span>
                   <span className="font-semibold text-ink">
-                    {done}/{sys.lessons.length}
+                    {done}/{uTotal}
                   </span>
                 </div>
                 <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-line">
                   <div
                     className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${pct}%`, background: sys.color }}
+                    style={{ width: `${pct}%`, background: u.color }}
                   />
                 </div>
               </div>

@@ -10,6 +10,7 @@ import { LoginScreen } from "@/screens/LoginScreen";
 import { OnboardingScreen } from "@/screens/OnboardingScreen";
 import { DashboardScreen } from "@/screens/DashboardScreen";
 import { TopicsScreen } from "@/screens/TopicsScreen";
+import { LessonsScreen } from "@/screens/LessonsScreen";
 import { LessonScreen } from "@/screens/LessonScreen";
 import { ResultCorrectScreen } from "@/screens/ResultCorrectScreen";
 import { ResultWrongScreen } from "@/screens/ResultWrongScreen";
@@ -25,6 +26,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   onboarding: OnboardingScreen,
   dashboard: DashboardScreen,
   topics: TopicsScreen,
+  lessons: LessonsScreen,
   lesson: LessonScreen,
   "result-correct": ResultCorrectScreen,
   "result-wrong": ResultWrongScreen,
