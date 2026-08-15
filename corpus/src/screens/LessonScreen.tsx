@@ -6,13 +6,12 @@ import { X, Check, Play, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
-import { lessonById, unitOfLesson, type Question } from "@/data/osteology";
+import { lessonById, unitOfLesson, type Question, type Lesson } from "@/data/content";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
 /**
- * Dars ekrani: kirish (slayd) → savollar (5 tur) → natija.
- * Savollar kitob kontentidan (`osteology.ts`) olinadi — demo emas.
+ * Dars ekrani: kirish slaydlari → savollar (8 tur) → natija.
  */
 export function LessonScreen() {
   const navigate = useAppStore((s) => s.navigate);
@@ -24,7 +23,7 @@ export function LessonScreen() {
   const lesson = useMemo(() => lessonById(activeLessonId ?? ""), [activeLessonId]);
   const unit = useMemo(() => unitOfLesson(activeLessonId ?? ""), [activeLessonId]);
 
-  const [phase, setPhase] = useState<"intro" | "quiz">("intro");
+  const [slideIdx, setSlideIdx] = useState(0);
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
 
@@ -37,6 +36,8 @@ export function LessonScreen() {
     );
   }
 
+  const slides = lesson.slides ?? [];
+  const inSlides = slideIdx < slides.length;
   const questions = lesson.questions;
   const total = questions.length;
   const q = questions[idx];
@@ -67,20 +68,17 @@ export function LessonScreen() {
           />
         </div>
         <span className="text-sm font-semibold text-muted">
-          {phase === "intro" ? 0 : idx + 1}/{total}
+          {inSlides ? 0 : idx + 1}/{total}
         </span>
       </header>
 
-      {phase === "intro" ? (
-        <IntroSlide
-          unit={unit.title}
-          intro={unit.intro}
-          title={lesson.title}
-          description={lesson.description}
-          xp={lesson.xp}
-          minutes={lesson.minutes}
-          total={total}
-          onStart={() => setPhase("quiz")}
+      {inSlides ? (
+        <SlideView
+          lesson={lesson}
+          slide={slides[slideIdx]}
+          slideNo={slideIdx + 1}
+          slideTotal={slides.length}
+          onNext={() => setSlideIdx((i) => i + 1)}
           onQuit={() => navigate("lessons")}
         />
       ) : (
@@ -100,62 +98,47 @@ export function LessonScreen() {
   );
 }
 
-/* ---------- Kirish slaydi ---------- */
-function IntroSlide(props: {
-  unit: string;
-  intro: string;
-  title: string;
-  description: string;
-  xp: number;
-  minutes: number;
-  total: number;
-  onStart: () => void;
+/* ---------- Slayd (kirish) ---------- */
+function SlideView(props: {
+  lesson: Lesson;
+  slide: { title: string; text: string; img?: string; cap?: string };
+  slideNo: number;
+  slideTotal: number;
+  onNext: () => void;
   onQuit: () => void;
 }) {
+  const { lesson, slide, slideNo, slideTotal, onNext, onQuit } = props;
   const t = useStrings();
+  const isLast = slideNo >= slideTotal;
   return (
     <div className="flex flex-1 flex-col">
       <div className="mt-4">
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{props.unit}</p>
-        <h1 className="mt-2 text-2xl font-semibold leading-snug">{props.title}</h1>
-        <p className="mt-2 text-sm text-muted">{props.description}</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{lesson.title}</p>
+        <h1 className="mt-2 text-2xl font-semibold leading-snug">{slide.title}</h1>
       </div>
 
-      <div className="mt-5 rounded-2xl border border-line bg-surface2/60 p-4">
-        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted">
-          <BookOpen className="h-4 w-4 text-primary" aria-hidden /> Anatomiya I jild
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{props.intro}</p>
-      </div>
+      {slide.img && (
+        <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
+          <img src={slide.img} alt="" className="mx-auto max-h-56 object-contain" />
+        </div>
+      )}
 
-      <div className="mt-4 grid grid-cols-3 gap-3">
-        <div className="rounded-2xl border border-line bg-surface p-3 text-center">
-          <p className="text-base font-bold text-primary">+{props.xp}</p>
-          <p className="text-xs text-muted">XP</p>
-        </div>
-        <div className="rounded-2xl border border-line bg-surface p-3 text-center">
-          <p className="text-base font-bold">~{props.minutes}</p>
-          <p className="text-xs text-muted">{t.min}</p>
-        </div>
-        <div className="rounded-2xl border border-line bg-surface p-3 text-center">
-          <p className="text-base font-bold">{props.total}</p>
-          <p className="text-xs text-muted">{t.lessons}</p>
-        </div>
-      </div>
+      <p className="mt-4 text-sm leading-relaxed text-muted">{slide.text}</p>
+      {slide.cap && <p className="mt-2 text-xs italic text-muted">{slide.cap}</p>}
 
       <div className="mt-auto flex gap-3 pt-6">
-        <Button variant="ghost" onClick={props.onQuit}>
+        <Button variant="ghost" onClick={onQuit}>
           {t.backToTopics}
         </Button>
-        <Button className="flex-1" size="lg" onClick={props.onStart}>
-          <Play className="h-5 w-5" aria-hidden /> {t.continue}
+        <Button className="flex-1" size="lg" onClick={onNext}>
+          {isLast ? t.continue : t.next}
         </Button>
       </div>
     </div>
   );
 }
 
-/* ---------- Savol bloki (5 tur) ---------- */
+/* ---------- Savol bloki ---------- */
 function QuestionBlock(props: {
   q: Question;
   onCorrect: () => void;
@@ -163,58 +146,36 @@ function QuestionBlock(props: {
   isLast: boolean;
   haptic: (p: number | number[]) => void;
 }) {
+  const { q } = props;
+  if (q.type === "match") return <MatchUI {...props} />;
+  if (q.type === "build") return <BuildUI {...props} />;
+  if (q.type === "order") return <OrderUI {...props} />;
+  if (q.type === "fill") return <FillUI {...props} />;
+  if (q.type === "tf") return <TfUI {...props} />;
+  return <ChoiceUI {...props} />; // quiz / img / func
+}
+
+function Footer(props: { revealed: boolean; explanation?: string; onNext: () => void; isLast: boolean }) {
+  const t = useStrings();
+  return (
+    <div className="mt-auto pt-5">
+      {props.revealed && props.explanation && (
+        <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{props.explanation}</p>
+      )}
+      <Button className="w-full" size="lg" disabled={!props.revealed} onClick={props.onNext}>
+        {props.isLast ? t.finish : t.next}
+      </Button>
+    </div>
+  );
+}
+
+/* ---------- Tanlovli (quiz / img / func) ---------- */
+function ChoiceUI(props: { q: Question; onCorrect: () => void; onNext: () => void; isLast: boolean; haptic: (p: number | number[]) => void }) {
   const { q, onCorrect, onNext, isLast, haptic } = props;
   const t = useStrings();
   const [selected, setSelected] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
 
-  if (q.type === "match") return <MatchUI q={q} onNext={onNext} isLast={isLast} onCorrect={onCorrect} haptic={haptic} />;
-  if (q.type === "build") return <BuildUI q={q} onNext={onNext} isLast={isLast} onCorrect={onCorrect} haptic={haptic} />;
-  if (q.type === "tf") {
-    const options = [true, false];
-    return (
-      <div className="flex flex-1 flex-col">
-        <div className="mt-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.question}</p>
-          <h1 className="mt-2 text-2xl font-semibold leading-snug">{q.prompt}</h1>
-        </div>
-        <div className="mt-5 flex flex-col gap-3">
-          {options.map((v, i) => {
-            const isCorrect = revealed && v === q.statement;
-            const isWrong = revealed && selected === i && v !== q.statement;
-            return (
-              <button
-                key={i}
-                onClick={() => {
-                  if (revealed) return;
-                  setSelected(i);
-                  setRevealed(true);
-                  if (v === q.statement) { onCorrect(); haptic(12); } else haptic([30, 40, 30]);
-                }}
-                className={cn(
-                  "flex items-center gap-3 rounded-2xl border-2 bg-surface p-4 text-left text-base font-semibold transition-colors",
-                  isCorrect && "border-success bg-success/10",
-                  isWrong && "border-danger bg-danger/10",
-                  revealed && !isCorrect && !isWrong && "border-line opacity-60",
-                )}
-              >
-                <span className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-lg border-2 text-sm font-bold",
-                  isCorrect ? "border-success bg-success text-white" : isWrong ? "border-danger bg-danger text-white" : "border-line text-muted",
-                )}>
-                  {isCorrect ? <Check className="h-4 w-4" aria-hidden /> : v ? "✓" : "✕"}
-                </span>
-                {v ? "To'g'ri" : "Noto'g'ri"}
-              </button>
-            );
-          })}
-        </div>
-        <Footer revealed={revealed} explanation={q.explanation} onNext={onNext} isLast={isLast} />
-      </div>
-    );
-  }
-
-  // quiz / img
   return (
     <div className="flex flex-1 flex-col">
       <div className="mt-4">
@@ -223,7 +184,7 @@ function QuestionBlock(props: {
       </div>
 
       {q.image && (
-        <div className="relative mt-4 overflow-hidden rounded-2xl border border-line shadow-card bg-white">
+        <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
           <img src={q.image} alt="Anatomiya rasmi" className="mx-auto max-h-52 object-contain" />
         </div>
       )}
@@ -272,16 +233,52 @@ function QuestionBlock(props: {
   );
 }
 
-function Footer(props: { revealed: boolean; explanation?: string; onNext: () => void; isLast: boolean }) {
+/* ---------- To'g'ri / noto'g'ri ---------- */
+function TfUI(props: { q: Question; onCorrect: () => void; onNext: () => void; isLast: boolean; haptic: (p: number | number[]) => void }) {
+  const { q, onCorrect, onNext, isLast, haptic } = props;
   const t = useStrings();
+  const [selected, setSelected] = useState<number | null>(null);
+  const [revealed, setRevealed] = useState(false);
+  const options = [true, false];
+
   return (
-    <div className="mt-auto pt-5">
-      {props.revealed && props.explanation && (
-        <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{props.explanation}</p>
-      )}
-      <Button className="w-full" size="lg" disabled={!props.revealed} onClick={props.onNext}>
-        {props.isLast ? t.finish : t.next}
-      </Button>
+    <div className="flex flex-1 flex-col">
+      <div className="mt-4">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.question}</p>
+        <h1 className="mt-2 text-2xl font-semibold leading-snug">{q.prompt}</h1>
+      </div>
+      <div className="mt-5 flex flex-col gap-3">
+        {options.map((v, i) => {
+          const isCorrect = revealed && v === q.statement;
+          const isWrong = revealed && selected === i && v !== q.statement;
+          return (
+            <button
+              key={i}
+              onClick={() => {
+                if (revealed) return;
+                setSelected(i);
+                setRevealed(true);
+                if (v === q.statement) { onCorrect(); haptic(12); } else haptic([30, 40, 30]);
+              }}
+              className={cn(
+                "flex items-center gap-3 rounded-2xl border-2 bg-surface p-4 text-left text-base font-semibold transition-colors",
+                isCorrect && "border-success bg-success/10",
+                isWrong && "border-danger bg-danger/10",
+                revealed && !isCorrect && !isWrong && "border-line opacity-60",
+              )}
+            >
+              <span className={cn(
+                "flex h-8 w-8 items-center justify-center rounded-lg border-2 text-sm font-bold",
+                isCorrect ? "border-success bg-success text-white" : isWrong ? "border-danger bg-danger text-white" : "border-line text-muted",
+              )}>
+                {isCorrect ? <Check className="h-4 w-4" aria-hidden /> : v ? "✓" : "✕"}
+              </span>
+              {v ? "To'g'ri" : "Noto'g'ri"}
+            </button>
+          );
+        })}
+      </div>
+      <Footer revealed={revealed} explanation={q.explanation} onNext={onNext} isLast={isLast} />
     </div>
   );
 }
@@ -293,7 +290,6 @@ function MatchUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
   const pairs = q.pairs ?? [];
   const [leftSel, setLeftSel] = useState<number | null>(null);
   const [matched, setMatched] = useState<number[]>([]);
-  const [errors, setErrors] = useState(0);
 
   const done = matched.length === pairs.length;
 
@@ -307,7 +303,6 @@ function MatchUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
       setLeftSel(null);
       if (matched.length + 1 === pairs.length) onCorrect();
     } else {
-      setErrors((e) => e + 1);
       haptic([30, 40, 30]);
       setLeftSel(null);
     }
@@ -358,19 +353,12 @@ function BuildUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
   const { q, onNext, isLast, onCorrect, haptic } = props;
   const t = useStrings();
   const words = q.answerText?.split(" ") ?? [];
-  // bank: indeksli (dublikatlarni to'g'ri hisoblash uchun)
   const bank = useMemo(() => shuffle([...words, ...(q.extra ?? [])].map((w, i) => ({ key: i, word: w }))), [q]);
   const [picked, setPicked] = useState<number[]>([]);
   const [revealed, setRevealed] = useState(false);
 
-  const pick = (key: number) => {
-    if (revealed) return;
-    setPicked((p) => [...p, key]);
-  };
-  const unpick = (key: number) => {
-    if (revealed) return;
-    setPicked((p) => p.filter((k) => k !== key));
-  };
+  const pick = (key: number) => { if (!revealed) setPicked((p) => [...p, key]); };
+  const unpick = (key: number) => { if (!revealed) setPicked((p) => p.filter((k) => k !== key)); };
   const check = () => {
     const correct = picked.map((k) => bank.find((b) => b.key === k)?.word).join(" ") === (q.answerText ?? "");
     setRevealed(true);
@@ -399,19 +387,102 @@ function BuildUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         ))}
       </div>
       <div className="mt-auto pt-5">
-        {revealed && (
-          <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{t.correct}: {q.answerText}</p>
-        )}
+        {revealed && <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{t.correct}: {q.answerText}</p>}
         {!revealed ? (
-          <Button className="w-full" size="lg" disabled={picked.length === 0} onClick={check}>
-            {t.finish}
-          </Button>
+          <Button className="w-full" size="lg" disabled={picked.length === 0} onClick={check}>{t.finish}</Button>
         ) : (
-          <Button className="w-full" size="lg" onClick={onNext}>
-            {isLast ? t.finish : t.next}
-          </Button>
+          <Button className="w-full" size="lg" onClick={onNext}>{isLast ? t.finish : t.next}</Button>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ---------- Tartiblash ---------- */
+function OrderUI(props: { q: Question; onNext: () => void; isLast: boolean; onCorrect: () => void; haptic: (p: number | number[]) => void }) {
+  const { q, onNext, isLast, onCorrect, haptic } = props;
+  const t = useStrings();
+  const items = q.items ?? [];
+  const bank = useMemo(() => shuffle(items.map((w, i) => ({ key: i, word: w }))), [q]);
+  const [picked, setPicked] = useState<number[]>([]);
+  const [revealed, setRevealed] = useState(false);
+
+  const pick = (key: number) => { if (!revealed) setPicked((p) => [...p, key]); };
+  const unpick = (key: number) => { if (!revealed) setPicked((p) => p.filter((k) => k !== key)); };
+  const check = () => {
+    const correct = picked.every((k, i) => bank.find((b) => b.key === k)?.word === items[i]);
+    setRevealed(true);
+    if (correct) { onCorrect(); haptic(12); } else haptic([30, 40, 30]);
+  };
+
+  return (
+    <div className="flex flex-1 flex-col">
+      <div className="mt-4">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.question}</p>
+        <h1 className="mt-2 text-2xl font-semibold leading-snug">{q.prompt}</h1>
+      </div>
+      <div className="mt-5 min-h-16 rounded-2xl border-2 border-dashed border-line p-3">
+        {picked.length === 0 && <span className="text-sm text-muted">{t.orderHint}</span>}
+        {picked.map((k, i) => (
+          <button key={k} onClick={() => unpick(k)} className="m-1 rounded-xl border-2 border-primary bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary">
+            <span className="mr-1 opacity-60">{i + 1}.</span>{bank.find((b) => b.key === k)?.word}
+          </button>
+        ))}
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {bank.filter((b) => !picked.includes(b.key)).map((b) => (
+          <button key={b.key} onClick={() => pick(b.key)} className="rounded-xl border-2 border-line bg-surface px-3 py-1.5 text-sm font-semibold">
+            {b.word}
+          </button>
+        ))}
+      </div>
+      <div className="mt-auto pt-5">
+        {revealed && <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{q.explanation ?? t.correct + ": " + items.join(" → ")}</p>}
+        {!revealed ? (
+          <Button className="w-full" size="lg" disabled={picked.length !== items.length} onClick={check}>{t.finish}</Button>
+        ) : (
+          <Button className="w-full" size="lg" onClick={onNext}>{isLast ? t.finish : t.next}</Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Bo'sh joyni to'ldirish ---------- */
+function FillUI(props: { q: Question; onNext: () => void; isLast: boolean; onCorrect: () => void; haptic: (p: number | number[]) => void }) {
+  const { q, onNext, isLast, onCorrect, haptic } = props;
+  const t = useStrings();
+  const bank = useMemo(() => shuffle([q.answerText ?? "", ...(q.extra ?? [])].map((w, i) => ({ key: i, word: w }))), [q]);
+  const [revealed, setRevealed] = useState(false);
+
+  return (
+    <div className="flex flex-1 flex-col">
+      <div className="mt-4">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.question}</p>
+        <h1 className="mt-2 text-2xl font-semibold leading-snug">{q.prompt}</h1>
+      </div>
+      <div className="mt-5 flex flex-wrap gap-3">
+        {bank.map((b) => {
+          const correct = revealed && b.word === q.answerText;
+          return (
+            <button
+              key={b.key}
+              onClick={() => {
+                if (revealed) return;
+                setRevealed(true);
+                if (b.word === q.answerText) { onCorrect(); haptic(12); } else haptic([30, 40, 30]);
+              }}
+              className={cn(
+                "rounded-2xl border-2 bg-surface px-5 py-3 text-base font-semibold transition-colors",
+                correct ? "border-success bg-success/10 text-success" : revealed ? "border-line opacity-50" : "border-line active:border-primary",
+              )}
+            >
+              {b.word}
+            </button>
+          );
+        })}
+      </div>
+      <Footer revealed={revealed} explanation={q.explanation} onNext={onNext} isLast={isLast} />
     </div>
   );
 }

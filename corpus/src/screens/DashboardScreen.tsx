@@ -10,8 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
-import { SYSTEMS } from "@/data/anatomy";
-import { SKELETAL_LESSONS } from "@/data/osteology";
+import { ALL_LESSONS, systemOfLesson } from "@/data/content";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
 
@@ -37,9 +36,9 @@ export function DashboardScreen() {
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
-  const firstSystem = SYSTEMS[0];
-  const doneInFirst = SKELETAL_LESSONS.filter((l) => completedLessons.includes(l.id)).length;
-  const nextLesson = SKELETAL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? SKELETAL_LESSONS[0];
+  const doneCount = completedLessons.filter((id) => ALL_LESSONS.some((l) => l.id === id)).length;
+  const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
+  const nextSystem = systemOfLesson(nextLesson.id);
   const name = currentUser ?? t.name;
 
   return (
@@ -114,11 +113,11 @@ export function DashboardScreen() {
         <h2 className="text-lg font-semibold">{t.continueLearning}</h2>
         <Card className="mt-3 overflow-hidden">
           <div className="relative h-36 w-full overflow-hidden">
-            <img src={SYSTEMS[0].image} alt="" className="h-full w-full object-cover" />
+            <img src={nextSystem?.image} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
             <div className="absolute bottom-3 left-4 right-4 flex items-center gap-3">
               <div className="flex-1">
-                <p className="text-xs font-medium text-white/80">{SYSTEMS[0].name}</p>
+                <p className="text-xs font-medium text-white/80">{nextSystem?.name}</p>
                 <p className="text-base font-semibold text-white">{nextLesson.title}</p>
               </div>
               <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary">
@@ -128,7 +127,7 @@ export function DashboardScreen() {
           </div>
           <div className="p-4">
             <div className="flex items-center justify-between text-xs text-muted">
-              <span>{fmt(t.lessonOf, { n: doneInFirst + 1, total: SKELETAL_LESSONS.length })}</span>
+              <span>{fmt(t.lessonOf, { n: doneCount + 1, total: ALL_LESSONS.length })}</span>
               <span className="flex items-center gap-1">
                 <Zap className="h-3.5 w-3.5" aria-hidden /> ~{nextLesson.minutes} {t.min}
               </span>

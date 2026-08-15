@@ -58,7 +58,7 @@ export const STR: Record<Lang, Strings> = {
     nerves: "Asab",
 
     topicsTitle: "Mavzular",
-    topicsSubtitle: "6 ta tana tizimi",
+    topicsSubtitle: "11 ta tana tizimi",
     search: "Qidirish",
     study3d: "3D o'rganish",
     models3d: "3D modellar",
@@ -94,6 +94,7 @@ export const STR: Record<Lang, Strings> = {
 
     drag: "Aylantirish uchun suring",
     buildHint: "So'zlarni bosib atamani yig'ing",
+    orderHint: "Elementlarni to'g'ri ketma-ketlikda bosing",
     functionLabel: "Vazifasi",
     prevModel: "Oldingi model",
     play: "O'ynatish",
@@ -172,7 +173,7 @@ export const STR: Record<Lang, Strings> = {
     nerves: "Nerves",
 
     topicsTitle: "Topics",
-    topicsSubtitle: "6 body systems",
+    topicsSubtitle: "11 body systems",
     search: "Search",
     study3d: "3D study mode",
     models3d: "3D models",
@@ -208,6 +209,7 @@ export const STR: Record<Lang, Strings> = {
 
     drag: "Drag to rotate",
     buildHint: "Tap the words to build the term",
+    orderHint: "Tap the items in the correct order",
     functionLabel: "Function",
     prevModel: "Previous model",
     play: "Play",

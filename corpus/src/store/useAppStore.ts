@@ -106,7 +106,9 @@ interface AppState {
   // actions
   finishOnboarding: () => void;
   activeLessonId: string | null;
+  activeSystemId: string | null;
   openLesson: (lessonId: string) => void;
+  openSystem: (systemId: string) => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
   resetProgress: () => void;
 }
@@ -224,9 +226,14 @@ export const useAppStore = create<AppState>()(
       finishOnboarding: () => set({ onboardingDone: true }),
 
       activeLessonId: null,
+      activeSystemId: null,
       openLesson: (lessonId) => {
         set({ activeLessonId: lessonId });
         get().navigate("lesson");
+      },
+      openSystem: (systemId) => {
+        set({ activeSystemId: systemId });
+        get().navigate("lessons");
       },
 
       completeLesson: (lessonId, topicId, score, totalQ) => {

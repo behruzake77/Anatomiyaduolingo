@@ -3,39 +3,11 @@
 // Manba: A. Ahmedov va boshq. "Anatomiya I jild" (2018), 25–148-bet
 // ============================================================
 
-export type QuestionType = "quiz" | "img" | "match" | "build" | "tf";
+import type { Question, Lesson, SystemUnit } from "./types";
+export type { Question, Lesson, QuestionType } from "./types";
 
-export interface Question {
-  type: QuestionType;
-  prompt: string;
-  options?: string[];
-  answer?: number;
-  image?: string;
-  pairs?: [string, string][];
-  answerText?: string;
-  extra?: string[];
-  statement?: boolean;
-  hint?: string;
-  explanation?: string;
-}
-
-export interface Lesson {
-  id: string;
-  title: string;
-  description: string;
-  xp: number;
-  minutes: number;
-  questions: Question[];
-}
-
-export interface OsteologyUnit {
-  id: string;
-  title: string;
-  icon: string;
-  color: string;
-  intro: string;
-  lessons: Lesson[];
-}
+/** Osteologiya bo'limi (SystemUnit bilan bir xil tuzilishda). */
+export type OsteologyUnit = SystemUnit;
 
 /** Savolga aniq tip berish (literal torayishining oldini olish). */
 const q = (x: Question): Question => x;

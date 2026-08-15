@@ -8,7 +8,7 @@ import { Segmented } from "@/components/ui/Segmented";
 import { Sparkline } from "@/components/ui/Sparkline";
 import { Donut } from "@/components/ui/Donut";
 import { useAppStore } from "@/store/useAppStore";
-import { OSTEOLOGY_UNITS, unitProgress, unitStatus, skeletalProgress } from "@/data/osteology";
+import { CONTENT_SYSTEMS, systemProgress, unitStatus, totalStats } from "@/data/content";
 import { useStrings, fmt } from "@/i18n";
 
 type Range = "week" | "month" | "year";
@@ -18,12 +18,10 @@ export function ProgressScreen() {
   const t = useStrings();
 
   const completedLessons = useAppStore((s) => s.completedLessons);
-  const completedTopics = useAppStore((s) => s.completedTopics);
   const correct = useAppStore((s) => s.correct);
   const total = useAppStore((s) => s.total);
   const xpHistory = useAppStore((s) => s.xpHistory);
 
-  // real kunlik XP tarixi
   function series(count: number): number[] {
     const out: number[] = [];
     for (let i = count - 1; i >= 0; i--) {
@@ -37,16 +35,22 @@ export function ProgressScreen() {
   const earned = data.reduce((a, b) => a + b, 0);
   const rangeText = range === "week" ? t.rangeWeek : range === "month" ? t.rangeMonth : t.rangeYear;
 
-  // real bo'lim statuslari (9 ta osteologiya bo'limi)
+  // real statuslar (tizimlar bo'yicha)
   const statusCount = { completed: 0, progress: 0, new: 0 };
-  for (const u of OSTEOLOGY_UNITS) {
-    statusCount[unitStatus(u, completedLessons)]++;
+  for (const sys of CONTENT_SYSTEMS) {
+    const units = sys.units;
+    const st = units.some((u) => unitStatus(u, completedLessons) === "progress")
+      ? "progress"
+      : units.every((u) => unitStatus(u, completedLessons) === "completed")
+        ? "completed"
+        : "new";
+    statusCount[st]++;
   }
-  const topicsPct = OSTEOLOGY_UNITS.length
-    ? Math.round((statusCount.completed / OSTEOLOGY_UNITS.length) * 100)
+  const topicsPct = CONTENT_SYSTEMS.length
+    ? Math.round((statusCount.completed / CONTENT_SYSTEMS.length) * 100)
     : 0;
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-  const overall = skeletalProgress(completedLessons);
+  const overall = totalStats(completedLessons);
 
   const categories = [
     { label: t.completed, value: statusCount.completed, color: "#6C5CE7" },
@@ -70,7 +74,7 @@ export function ProgressScreen() {
           />
         </div>
 
-        {/* XP chart — real */}
+        {/* XP chart */}
         <Card className="mt-5 p-4">
           <div className="flex items-baseline justify-between">
             <div>
@@ -84,7 +88,7 @@ export function ProgressScreen() {
           </div>
         </Card>
 
-        {/* bo'limlar donut — real */}
+        {/* tizimlar donut */}
         <Card className="mt-4 flex items-center gap-5 p-4">
           <Donut value={topicsPct} size={120} stroke={13}>
             <div className="text-center">
@@ -103,7 +107,7 @@ export function ProgressScreen() {
           </div>
         </Card>
 
-        {/* summary — real */}
+        {/* summary */}
         <div className="mt-4 grid grid-cols-3 gap-3">
           <Card className="flex flex-col items-center gap-1 p-4">
             <p className="text-xl font-bold" style={{ color: "#6C5CE7" }}>
@@ -119,29 +123,29 @@ export function ProgressScreen() {
           </Card>
           <Card className="flex flex-col items-center gap-1 p-4">
             <p className="text-xl font-bold" style={{ color: "#F59E0B" }}>
-              {completedTopics.length}/{OSTEOLOGY_UNITS.length}
+              {statusCount.completed}/{CONTENT_SYSTEMS.length}
             </p>
             <p className="text-center text-xs text-muted">{t.topics}</p>
           </Card>
         </div>
 
-        {/* bo'lim bo'yicha progress — real */}
-        <h2 className="mt-6 text-base font-semibold">Osteologiya — bo'limlar</h2>
+        {/* tizim bo'yicha progress */}
+        <h2 className="mt-6 text-base font-semibold">{t.continueLearning}</h2>
         <div className="mt-3 flex flex-col gap-3">
-          {OSTEOLOGY_UNITS.map((u) => {
-            const { done, total: uTotal, pct } = unitProgress(u, completedLessons);
+          {CONTENT_SYSTEMS.map((sys) => {
+            const { done, total: sysTotal, pct } = systemProgress(sys, completedLessons);
             return (
-              <div key={u.id}>
+              <div key={sys.id}>
                 <div className="flex justify-between text-xs font-medium text-muted">
-                  <span>{u.title}</span>
+                  <span>{sys.name}</span>
                   <span className="font-semibold text-ink">
-                    {done}/{uTotal}
+                    {done}/{sysTotal}
                   </span>
                 </div>
                 <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-line">
                   <div
                     className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${pct}%`, background: u.color }}
+                    style={{ width: `${pct}%`, background: sys.color }}
                   />
                 </div>
               </div>
