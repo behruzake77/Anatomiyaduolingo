@@ -54,6 +54,8 @@ export const u1: OsteologyUnit = {
       xp: 20,
       minutes: 7,
       questions: [
+        q({ type: "img", prompt: "Rasmda odam organizmining qaysi tuzilmasi ko\u2018rsatilgan?", image: "/img/skeleton.jpg", options: ["Odam skeleti", "Mushaklar tizimi", "Nafas a\u2019zolari", "Qon aylanish tizimi"], answer: 0, hint: "Suyaklar majmuasi — tayanch vazifasini bajaradi" }),
+
         q({ type: "quiz", prompt: "«Columna vertebralis» o'zbekchada nimani anglatadi?", options: ["Umurtqa pog'onasi", "Ko'krak qafasi", "Chanoq suyagi", "Elka kamari"], answer: 0, hint: "Columna — ustun, vertebralis — umurtqaga oid" }),
         q({ type: "quiz", prompt: "Bo'yin umurtqalari lotinchada qanday ataladi?", options: ["Vertebrae thoracicae", "Vertebrae cervicales", "Vertebrae lumbales", "Os sacrum"], answer: 1, hint: "Cervix — bo'yin" }),
         q({ type: "match", prompt: "Lotincha atamani o‘zbekcha tarjimasi bilan moslang", pairs: [["Vertebrae cervicales", "Bo'yin umurtqalari"], ["Vertebrae thoracicae", "Ko'krak umurtqalari"], ["Vertebrae lumbales", "Bel umurtqalari"], ["Os sacrum", "Dumg'aza suyagi"]] }),
@@ -314,6 +316,8 @@ export const u5: OsteologyUnit = {
       xp: 25,
       minutes: 10,
       questions: [
+        q({ type: "img", prompt: "Rasmda qaysi suyaklar ko\u2018rsatilgan?", image: "/img/ribs.jpg", options: ["Qovurg\u2018alar (Costae)", "O\u2018mrov suyagi (Clavicula)", "Kurak suyagi (Scapula)", "Bilak suyaklari"], answer: 0, hint: "12 juft bo\u2018lib, ko\u2018krak qafasini hosil qiladi" }),
+
         q({ type: "quiz", prompt: "Qovurg'alar lotinchada qanday ataladi?", options: ["Costae", "Sternum", "Clavicula", "Scapula"], answer: 0 }),
         q({ type: "quiz", prompt: "Odamda necha juft qovurg'a bor?", options: ["10", "11", "12", "14"], answer: 2 }),
         q({ type: "quiz", prompt: "Qovurg'alar orqa tomonda qaysi suyaklar bilan bo'g'im hosil qiladi?", options: ["To'sh suyagi", "Ko'krak umurtqalari", "Bel umurtqalari", "O'mrov suyagi"], answer: 1, hint: "Fovea costales orqali" }),
@@ -439,6 +443,8 @@ export const u7: OsteologyUnit = {
       xp: 30,
       minutes: 12,
       questions: [
+        q({ type: "img", prompt: "Rasmda qaysi tuzilma ko\u2018rsatilgan?", image: "/img/pelvis.jpg", options: ["Chanoq (Pelvis)", "Bosh suyagi (Cranium)", "Ko\u2018krak qafasi (Thorax)", "Yelka kamari"], answer: 0, hint: "Tana bilan oyoqlarni bog\u2018lovchi halqa" }),
+
         q({ type: "quiz", prompt: "Chanoq suyagi lotinchada qanday ataladi?", options: ["Os coxae", "Os sacrum", "Os ilium", "Femur"], answer: 0 }),
         q({ type: "quiz", prompt: "Os coxae nechta suyakning qo'shilishidan hosil bo'ladi?", options: ["2", "3", "4", "5"], answer: 1, hint: "Ilium, ischium, pubis" }),
         q({ type: "quiz", prompt: "Yonbosh suyagi lotinchada qanday ataladi?", options: ["Os ischii", "Os pubis", "Os ilium", "Os coccygis"], answer: 2 }),
@@ -463,6 +469,8 @@ export const u7: OsteologyUnit = {
       xp: 30,
       minutes: 12,
       questions: [
+        q({ type: "img", prompt: "Rasmda qaysi suyak ko\u2018rsatilgan?", image: "/img/femur.jpg", options: ["Son suyagi (Femur)", "Yelka suyagi (Humerus)", "Katta boldir (Tibia)", "Bilak suyagi (Radius)"], answer: 0, hint: "Tanadagi eng uzun va mustahkam suyak" }),
+
         q({ type: "quiz", prompt: "Son suyagi lotinchada qanday ataladi?", options: ["Femur", "Humerus", "Fibula", "Patella"], answer: 0 }),
         q({ type: "quiz", prompt: "Femurning boshi qanday ataladi?", options: ["Caput femoris", "Collum femoris", "Trochanter major", "Condylus"], answer: 0 }),
         q({ type: "quiz", prompt: "Son suyagining boshini tanaga bog'lovchi qismi (sinish ko'p uchraydi)?", options: ["Collum femoris", "Corpus femoris", "Trochanter", "Epicondylus"], answer: 0 }),
@@ -519,6 +527,8 @@ export const u8: OsteologyUnit = {
       xp: 20,
       minutes: 8,
       questions: [
+        q({ type: "img", prompt: "Rasmda qaysi tuzilma ko\u2018rsatilgan?", image: "/img/skull.jpg", options: ["Bosh suyagi (Cranium)", "Chanoq (Pelvis)", "Ko\u2018krak qafasi (Thorax)", "Umurtqa pog\u2018onasi"], answer: 0, hint: "Bosh miyani himoya qiladi" }),
+
         q({ type: "quiz", prompt: "Kalla skeleti lotinchada qanday ataladi?", options: ["Cranium", "Thorax", "Pelvis", "Columna"], answer: 0 }),
         q({ type: "quiz", prompt: "Kallaning miya qismi qanday ataladi?", options: ["Neurocranium", "Viscerocranium", "Calvaria", "Splanchnocranium"], answer: 0 }),
         q({ type: "quiz", prompt: "Miya qismi (neurocranium) nechta suyakdan iborat?", options: ["6", "8", "10", "14"], answer: 1 }),
