@@ -26,7 +26,8 @@ export type ScreenId =
   | "achievements"
   | "study"
   | "progress"
-  | "settings";
+  | "settings"
+  | "models3d";
 
 export type Tab = "home" | "learn" | "profile" | "settings";
 

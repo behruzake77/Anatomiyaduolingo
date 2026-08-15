@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
-import { SkipBack, Play, Pause, SkipForward, RotateCcw } from "lucide-react";
+import { SkipBack, Play, Pause, SkipForward, RotateCcw, Box } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
+import { Button } from "@/components/ui/Button";
 import { ATLAS_OBJECTS } from "@/data/anatomy";
+import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 
 /**
@@ -16,6 +18,7 @@ export function StudyModeScreen() {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const t = useStrings();
+  const navigate = useAppStore((s) => s.navigate);
   const obj = ATLAS_OBJECTS[index % ATLAS_OBJECTS.length];
 
   const rotate = useMotionValue(0);
@@ -120,6 +123,11 @@ export function StudyModeScreen() {
             <SkipForward className="h-5 w-5" aria-hidden />
           </button>
         </div>
+
+        {/* real 3D modellar (suyaklar) */}
+        <Button variant="secondary" className="mt-6 w-full" onClick={() => navigate("models3d")}>
+          <Box className="h-5 w-5" aria-hidden /> {t.models3d}
+        </Button>
       </div>
     </Screen>
   );

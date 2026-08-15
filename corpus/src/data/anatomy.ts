@@ -24,7 +24,7 @@ export const SYSTEMS: BodySystem[] = [
     en: "Skeletal System",
     icon: "bone",
     color: "#6C5CE7",
-    image: "/img/skeleton.jpg",
+    image: "/img/atlas/skelet.jpg",
   },
   {
     id: "muscular",
@@ -33,7 +33,7 @@ export const SYSTEMS: BodySystem[] = [
     en: "Muscular System",
     icon: "activity",
     color: "#FD79A8",
-    image: "/img/muscles.jpg",
+    image: "/img/atlas/myologia.jpg",
     soon: true,
   },
   {
@@ -43,7 +43,7 @@ export const SYSTEMS: BodySystem[] = [
     en: "Digestive System",
     icon: "apple",
     color: "#F59E0B",
-    image: "/img/stomach.jpg",
+    image: "/img/atlas/digestorium.jpg",
     soon: true,
   },
   {
@@ -53,7 +53,7 @@ export const SYSTEMS: BodySystem[] = [
     en: "Respiratory System",
     icon: "wind",
     color: "#00B894",
-    image: "/img/lungs.jpg",
+    image: "/img/atlas/respiratorium.jpg",
     soon: true,
   },
   {
@@ -63,7 +63,7 @@ export const SYSTEMS: BodySystem[] = [
     en: "Nervous System",
     icon: "brain",
     color: "#A29BFE",
-    image: "/img/brain.jpg",
+    image: "/img/atlas/miya.jpg",
     soon: true,
   },
   {
@@ -73,7 +73,7 @@ export const SYSTEMS: BodySystem[] = [
     en: "Circulatory System",
     icon: "heart",
     color: "#EF4444",
-    image: "/img/heart.jpg",
+    image: "/img/atlas/yurak.jpg",
     soon: true,
   },
 ];
@@ -94,7 +94,7 @@ export const ATLAS_OBJECTS: AtlasObject[] = [
     name: "Yurak",
     latin: "Cor",
     en: "Heart",
-    image: "/img/heart.jpg",
+    image: "/img/atlas/yurak.jpg",
     description:
       "Qonni butun tana bo'ylab haydaydigan muskul a'zo — daqiqasiga o'rtacha 70–75 marta qisqaradi.",
     function: "Qon aylanishini ta'minlash",
@@ -104,7 +104,7 @@ export const ATLAS_OBJECTS: AtlasObject[] = [
     name: "Bosh miya",
     latin: "Encephalon",
     en: "Brain",
-    image: "/img/brain.jpg",
+    image: "/img/atlas/miya.jpg",
     description:
       "Asab tizimining boshqaruv markazi — fikrlash, xotira va muvozanat uchun javobgar.",
     function: "Axborotni qayta ishlash",
@@ -114,7 +114,7 @@ export const ATLAS_OBJECTS: AtlasObject[] = [
     name: "O'pka",
     latin: "Pulmo",
     en: "Lungs",
-    image: "/img/lungs.jpg",
+    image: "/img/atlas/respiratorium.jpg",
     description:
       "Kislorod qonga o'tib, karbonat angidrid chiqariladigan juft nafas a'zosi.",
     function: "Gaz almashinuvi",
@@ -124,7 +124,7 @@ export const ATLAS_OBJECTS: AtlasObject[] = [
     name: "Oshqozon",
     latin: "Gaster",
     en: "Stomach",
-    image: "/img/stomach.jpg",
+    image: "/img/atlas/digestorium.jpg",
     description:
       "Ovqatni mexanik va kimyoviy qayta ishlaydigan hazm yo'lining kengaygan qismi.",
     function: "Ovqat hazm qilish",
@@ -134,7 +134,7 @@ export const ATLAS_OBJECTS: AtlasObject[] = [
     name: "Buyrak",
     latin: "Ren",
     en: "Kidney",
-    image: "/img/kidney.svg",
+    image: "/img/atlas/buyrak.jpg",
     description:
       "Qonni filtrlash orqali siydik hosil qiluvchi, suv-tuz muvozanatini saqlovchi loviyasimon a'zo.",
     function: "Filtrlash",
@@ -144,7 +144,7 @@ export const ATLAS_OBJECTS: AtlasObject[] = [
     name: "Skelet",
     latin: "Skeleton",
     en: "Skeleton",
-    image: "/img/skeleton.jpg",
+    image: "/img/atlas/skelet.jpg",
     description:
       "Tananing 206 ta suyakdan iborat asosi — tayanch vazifasini bajaradi va a'zolarni himoya qiladi.",
     function: "Tayanch va himoya",

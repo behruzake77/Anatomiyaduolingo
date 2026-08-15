@@ -32,8 +32,8 @@ export function TopicsScreen() {
             <Search className="h-5 w-5" aria-hidden />
           </button>
           <button
-            aria-label={t.study3d}
-            onClick={() => navigate("study")}
+            aria-label={t.models3d}
+            onClick={() => navigate("models3d")}
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-soft"
           >
             <Box className="h-5 w-5" aria-hidden />

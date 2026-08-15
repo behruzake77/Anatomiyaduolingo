@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, Lock, Play, Check, Bone } from "lucide-react";
+import { ChevronDown, Lock, Play, Check, Bone, Box } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
@@ -19,6 +19,7 @@ import { cn } from "@/utils/cn";
 export function LessonsScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons);
   const openLesson = useAppStore((s) => s.openLesson);
+  const navigate = useAppStore((s) => s.navigate);
   const t = useStrings();
 
   const [open, setOpen] = useState<string | null>(OSTEOLOGY_UNITS[0].id);
@@ -31,9 +32,18 @@ export function LessonsScreen() {
       <TopBar
         title="Suyaklar tizimi"
         right={
-          <span className="text-sm font-semibold text-muted">
-            {totalDone}/{totalAll} {t.lessons}
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              aria-label={t.models3d}
+              onClick={() => navigate("models3d")}
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-soft"
+            >
+              <Box className="h-4 w-4" aria-hidden />
+            </button>
+            <span className="text-sm font-semibold text-muted">
+              {totalDone}/{totalAll} {t.lessons}
+            </span>
+          </div>
         }
       />
 

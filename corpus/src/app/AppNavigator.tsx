@@ -17,6 +17,7 @@ import { ResultWrongScreen } from "@/screens/ResultWrongScreen";
 import { ProfileScreen } from "@/screens/ProfileScreen";
 import { AchievementsScreen } from "@/screens/AchievementsScreen";
 import { StudyModeScreen } from "@/screens/StudyModeScreen";
+import { Models3DScreen } from "@/screens/Models3DScreen";
 import { ProgressScreen } from "@/screens/ProgressScreen";
 import { SettingsScreen } from "@/screens/SettingsScreen";
 
@@ -33,6 +34,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   profile: ProfileScreen,
   achievements: AchievementsScreen,
   study: StudyModeScreen,
+  models3d: Models3DScreen,
   progress: ProgressScreen,
   settings: SettingsScreen,
 };
