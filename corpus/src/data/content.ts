@@ -9,6 +9,7 @@ import { EXTRA_UNITS } from "./rest";
 import { HARD_QUESTIONS } from "./hardQuestions";
 import { ARTROLOGY_DETAIL, MYOLOGY_DETAIL, ANGIOLOGY_DETAIL } from "./detail";
 import { NEUROLOGY_DETAIL, SENSORY_DETAIL } from "./neuro";
+import { DIGESTIVE_DETAIL, RESPIRATORY_DETAIL, URINARY_DETAIL } from "./splanchno";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -61,11 +62,11 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "digestive", name: "Hazm tizimi", latin: "Systema digestorium", en: "Digestive System",
-    icon: "apple", color: "#F97316", image: "/img/atlas/digestorium.jpg", units: EXTRA_UNITS.digestive ?? [],
+    icon: "apple", color: "#F97316", image: "/img/atlas/digestorium.jpg", units: [...(EXTRA_UNITS.digestive ?? []), ...DIGESTIVE_DETAIL],
   },
   {
     id: "respiratory", name: "Nafas tizimi", latin: "Systema respiratorium", en: "Respiratory System",
-    icon: "wind", color: "#0EA5E9", image: "/img/atlas/respiratorium.jpg", units: EXTRA_UNITS.respiratory ?? [],
+    icon: "wind", color: "#0EA5E9", image: "/img/atlas/respiratorium.jpg", units: [...(EXTRA_UNITS.respiratory ?? []), ...RESPIRATORY_DETAIL],
   },
   {
     id: "circulatory", name: "Yurak-qon tomir tizimi", latin: "Systema cardiovasculare", en: "Circulatory System",
@@ -77,7 +78,7 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "urinary", name: "Siydik tizimi", latin: "Systema urinarium", en: "Urinary System",
-    icon: "droplet", color: "#22C55E", image: "/img/atlas/buyrak.jpg", units: EXTRA_UNITS.urinary ?? [],
+    icon: "droplet", color: "#22C55E", image: "/img/atlas/buyrak.jpg", units: [...(EXTRA_UNITS.urinary ?? []), ...URINARY_DETAIL],
   },
   {
     id: "reproductive", name: "Jinsiy tizim", latin: "Systema genitale", en: "Reproductive System",

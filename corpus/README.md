@@ -7,16 +7,16 @@ medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, i
 
 Kontent **A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi + "Odam anatomiyasi Atlas"** dan olinadi — ixtiro qilinmagan.
 
-**Jami: 11 tizim · 25 bo'lim · 61 dars · 721 savol** (butun kitob).
+**Jami: 11 tizim · 28 bo'lim · 68 dars · 806 savol** (butun kitob).
 
 | Tizim | Bo'limlar | Darslar |
 |---|---|---|
 | 🦴 Suyaklar (Osteologiya) | 9 | 25 |
 | 🔗 Bo'g'imlar (Artrologiya) | 2 | 6 |
 | 💪 Mushaklar (Miologiya) | 2 | 7 |
-| 🍎 Hazm tizimi | 1 | 3 |
-| 🌬️ Nafas tizimi | 1 | 2 |
-| 💧 Siydik tizimi | 1 | 2 |
+| 🍎 Hazm tizimi | 2 | 6 |
+| 🌬️ Nafas tizimi | 2 | 4 |
+| 💧 Siydik tizimi | 2 | 4 |
 | 👥 Jinsiy tizim | 1 | 1 |
 | ⚡ Endokrin bezlar | 1 | 1 |
 | ❤️ Yurak-qon tomir | 2 | 5 |
