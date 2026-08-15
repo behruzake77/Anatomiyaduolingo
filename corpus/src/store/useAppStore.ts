@@ -57,6 +57,7 @@ const freshProgress = {
   completedTopics: [] as string[],
   achievements: [] as string[],
   lastResult: null as LessonResult | null,
+  xpHistory: {} as Record<string, number>, // "YYYY-MM-DD" -> XP
   settings: {
     darkMode: false,
     sound: true,
@@ -93,6 +94,7 @@ interface AppState {
   completedTopics: string[];
   achievements: string[];
   lastResult: LessonResult | null;
+  xpHistory: Record<string, number>;
 
   // settings
   settings: Settings;
@@ -237,6 +239,7 @@ export const useAppStore = create<AppState>()(
         const newly = evaluateAchievements(snapshot, s.achievements);
 
         const result: LessonResult = { lessonId, score, total: totalQ, earned };
+        const today = new Date().toISOString().slice(0, 10);
 
         set({
           xp: s.xp + earned,
@@ -247,6 +250,7 @@ export const useAppStore = create<AppState>()(
           completedTopics,
           achievements: [...s.achievements, ...newly],
           lastResult: result,
+          xpHistory: { ...s.xpHistory, [today]: (s.xpHistory[today] ?? 0) + earned },
         });
         return result;
       },
@@ -273,6 +277,7 @@ export const useAppStore = create<AppState>()(
         completedLessons: s.completedLessons,
         completedTopics: s.completedTopics,
         achievements: s.achievements,
+        xpHistory: s.xpHistory,
         settings: s.settings,
       }),
     },

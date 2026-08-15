@@ -26,7 +26,7 @@ export function DashboardScreen() {
   const dailyXp = useAppStore((s) => s.dailyXp);
   const dailyGoal = useAppStore((s) => s.dailyGoal);
   const streak = useAppStore((s) => s.streak);
-  const completedLessons = useAppStore((s) => s.completedLessons.length);
+  const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
   const navigate = useAppStore((s) => s.navigate);
   const setTab = useAppStore((s) => s.setTab);
@@ -35,7 +35,9 @@ export function DashboardScreen() {
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
-  const nextLesson = SYSTEMS[0].lessons[completedLessons % SYSTEMS[0].lessons.length];
+  const firstSystem = SYSTEMS[0];
+  const doneInFirst = firstSystem.lessons.filter((l) => completedLessons.includes(l.id)).length;
+  const nextLesson = firstSystem.lessons.find((l) => !completedLessons.includes(l.id)) ?? firstSystem.lessons[0];
   const name = currentUser ?? t.name;
 
   return (
@@ -124,7 +126,7 @@ export function DashboardScreen() {
           </div>
           <div className="p-4">
             <div className="flex items-center justify-between text-xs text-muted">
-              <span>{fmt(t.lessonOf, { n: completedLessons + 1, total: SYSTEMS[0].total })}</span>
+              <span>{fmt(t.lessonOf, { n: doneInFirst + 1, total: firstSystem.lessons.length })}</span>
               <span className="flex items-center gap-1">
                 <Zap className="h-3.5 w-3.5" aria-hidden /> ~{nextLesson.minutes} {t.min}
               </span>

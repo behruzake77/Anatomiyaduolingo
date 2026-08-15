@@ -6,11 +6,12 @@ import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Icon } from "@/components/ui/Icon";
 import { useAppStore } from "@/store/useAppStore";
-import { SYSTEMS } from "@/data/anatomy";
+import { SYSTEMS, systemProgress } from "@/data/anatomy";
 import { useStrings, fmt } from "@/i18n";
 
 export function TopicsScreen() {
   const navigate = useAppStore((s) => s.navigate);
+  const completedLessons = useAppStore((s) => s.completedLessons);
   const t = useStrings();
 
   return (
@@ -38,10 +39,10 @@ export function TopicsScreen() {
         </div>
       </header>
 
-      {/* categories */}
+      {/* categories — real progress (yangi foydalanuvchi uchun 0/N) */}
       <div className="mt-5 flex flex-col gap-4">
         {SYSTEMS.map((sys) => {
-          const pct = Math.round((sys.completed / sys.total) * 100);
+          const { done, total, pct } = systemProgress(sys, completedLessons);
           return (
             <Card key={sys.id} onClick={() => navigate("lesson")}>
               <div className="flex items-center gap-4 p-4">
@@ -55,7 +56,7 @@ export function TopicsScreen() {
                   <div className="flex items-baseline justify-between gap-2">
                     <p className="truncate text-base font-semibold">{sys.name}</p>
                     <span className="shrink-0 text-xs font-medium text-muted">
-                      {fmt("{n}/{total} {lessons}", { n: sys.completed, total: sys.total, lessons: t.lessons })}
+                      {fmt("{n}/{total} {lessons}", { n: done, total, lessons: t.lessons })}
                     </span>
                   </div>
                   <p className="text-xs italic text-muted">{sys.latin}</p>

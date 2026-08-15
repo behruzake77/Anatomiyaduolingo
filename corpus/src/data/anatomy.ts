@@ -19,9 +19,20 @@ export interface BodySystem {
   icon: string; // lucide icon name
   color: string;
   image: string;
-  completed: number;
-  total: number;
   lessons: Lesson[];
+}
+
+/** Real progressni hisoblash — demo raqamlar YO'Q. */
+export function systemProgress(sys: BodySystem, completedLessons: string[]) {
+  const done = sys.lessons.filter((l) => completedLessons.includes(l.id)).length;
+  return { done, total: sys.lessons.length, pct: sys.lessons.length ? Math.round((done / sys.lessons.length) * 100) : 0 };
+}
+
+export function systemStatus(sys: BodySystem, completedLessons: string[]): "completed" | "progress" | "new" {
+  const done = sys.lessons.filter((l) => completedLessons.includes(l.id)).length;
+  if (done === 0) return "new";
+  if (done >= sys.lessons.length) return "completed";
+  return "progress";
 }
 
 export interface AtlasObject {
@@ -54,8 +65,6 @@ export const SYSTEMS: BodySystem[] = [
     icon: "bone",
     color: "#6C5CE7",
     image: "/img/skeleton.jpg",
-    completed: 12,
-    total: 24,
     lessons: [
       { id: "sk-1", title: "Suyaklar haqida kirish", description: "Suyak turlari va tasnifi", xp: 20, minutes: 6 },
       { id: "sk-2", title: "Bosh suyagi", description: "Miya va yuz suyaklari", xp: 25, minutes: 8 },
@@ -71,8 +80,6 @@ export const SYSTEMS: BodySystem[] = [
     icon: "activity",
     color: "#FD79A8",
     image: "/img/muscles.jpg",
-    completed: 8,
-    total: 24,
     lessons: [
       { id: "mu-1", title: "Mushak turlari", description: "Skelet, yurak va silliq mushaklar", xp: 20, minutes: 6 },
       { id: "mu-2", title: "Asosiy mushak guruhlari", description: "Delta mushakdan to'rt boshli songacha", xp: 25, minutes: 8 },
@@ -87,8 +94,6 @@ export const SYSTEMS: BodySystem[] = [
     icon: "apple",
     color: "#F59E0B",
     image: "/img/stomach.jpg",
-    completed: 6,
-    total: 24,
     lessons: [
       { id: "di-1", title: "Hazm yo'li", description: "Og'izdan yo'g'on ichakkacha", xp: 20, minutes: 7 },
       { id: "di-2", title: "Oshqozon va jigar", description: "Kimyoviy hazm jarayoni", xp: 25, minutes: 8 },
@@ -103,8 +108,6 @@ export const SYSTEMS: BodySystem[] = [
     icon: "wind",
     color: "#00B894",
     image: "/img/lungs.jpg",
-    completed: 5,
-    total: 24,
     lessons: [
       { id: "re-1", title: "Nafas yo'llari", description: "Kekirdak, bronxlar va o'pka", xp: 20, minutes: 6 },
       { id: "re-2", title: "Gaz almashinuvi", description: "Alveolalar va kislorod", xp: 25, minutes: 8 },
@@ -118,8 +121,6 @@ export const SYSTEMS: BodySystem[] = [
     icon: "brain",
     color: "#A29BFE",
     image: "/img/brain.jpg",
-    completed: 7,
-    total: 24,
     lessons: [
       { id: "ne-1", title: "Bosh miya", description: "Katta yarim pallalar, miyacha, so'g'on", xp: 25, minutes: 9 },
       { id: "ne-2", title: "Neyronlar va sinapslar", description: "Signallar qanday uzatiladi", xp: 25, minutes: 9 },
@@ -133,8 +134,6 @@ export const SYSTEMS: BodySystem[] = [
     icon: "heart",
     color: "#EF4444",
     image: "/img/heart.jpg",
-    completed: 4,
-    total: 24,
     lessons: [
       { id: "ci-1", title: "Yurak", description: "Kameralar va klapanlar", xp: 25, minutes: 9 },
       { id: "ci-2", title: "Qon tomirlari", description: "Arteriyalar, venalar, kapillarlar", xp: 20, minutes: 7 },
