@@ -3,9 +3,18 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { evaluateAchievements } from "@/utils/achievements";
+import {
+  getCurrent,
+  register as authRegister,
+  login as authLogin,
+  logout as authLogout,
+  progressKey,
+  normalizeName,
+} from "@/auth";
 
 export type ScreenId =
   | "splash"
+  | "login"
   | "onboarding"
   | "dashboard"
   | "topics"
@@ -35,6 +44,28 @@ export interface LessonResult {
   earned: number;
 }
 
+/** Yangi foydalanuvchi uchun boshlang'ich holat — hammasi NOL. */
+const freshProgress = {
+  onboardingDone: false,
+  xp: 0,
+  dailyXp: 0,
+  dailyGoal: 20,
+  streak: 0,
+  correct: 0,
+  total: 0,
+  completedLessons: [] as string[],
+  completedTopics: [] as string[],
+  achievements: [] as string[],
+  lastResult: null as LessonResult | null,
+  settings: {
+    darkMode: false,
+    sound: true,
+    notifications: true,
+    haptics: true,
+    language: "uz",
+  } as Settings,
+};
+
 interface AppState {
   // navigation
   screen: ScreenId;
@@ -44,11 +75,14 @@ interface AppState {
   back: () => void;
   setTab: (tab: Tab) => void;
 
-  // onboarding
-  onboardingDone: boolean;
-  finishOnboarding: () => void;
+  // auth
+  currentUser: string | null;
+  register: (username: string, password: string) => boolean;
+  login: (username: string, password: string) => boolean;
+  logout: () => void;
 
-  // gamification / progress
+  // progress (foydalanuvchiga xos, noldan boshlanadi)
+  onboardingDone: boolean;
   xp: number;
   dailyXp: number;
   dailyGoal: number;
@@ -66,21 +100,53 @@ interface AppState {
   setLanguage: (lang: "en" | "uz") => void;
 
   // actions
+  finishOnboarding: () => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
   resetProgress: () => void;
 }
 
-const seed = {
-  xp: 1200,
-  dailyXp: 15,
-  dailyGoal: 20,
-  streak: 7,
-  correct: 100,
-  total: 120,
-  completedLessons: ["sk-1", "sk-2", "sk-3", "mu-1", "di-1", "re-1", "ne-1", "ci-1"],
-  completedTopics: ["skeletal", "muscular", "digestive"],
-  achievements: ["first_steps", "week_warrior", "knowledgeable"],
+/** localStorage-ga joriy foydalanuvchi bo'yicha yo'naltiruvchi xom storage. */
+const rawStorage = {
+  getItem: (): string | null => {
+    const u = getCurrent();
+    if (!u) return null;
+    try {
+      return localStorage.getItem(progressKey(u));
+    } catch {
+      return null;
+    }
+  },
+  setItem: (_name: string, value: string) => {
+    const u = getCurrent();
+    if (!u) return;
+    try {
+      localStorage.setItem(progressKey(u), value);
+    } catch {
+      /* no-op */
+    }
+  },
+  removeItem: () => {
+    const u = getCurrent();
+    if (!u) return;
+    try {
+      localStorage.removeItem(progressKey(u));
+    } catch {
+      /* no-op */
+    }
+  },
 };
+
+/** Foydalanuvchining saqlangan progressini o'qish (login paytida). */
+function loadProgressFor(username: string): Partial<AppState> {
+  try {
+    const raw = localStorage.getItem(progressKey(username));
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed.state ?? {};
+  } catch {
+    return {};
+  }
+}
 
 export const useAppStore = create<AppState>()(
   persist(
@@ -106,23 +172,50 @@ export const useAppStore = create<AppState>()(
         set({ tab, screen: screen[tab], history: [] });
       },
 
-      onboardingDone: false,
-      finishOnboarding: () => set({ onboardingDone: true }),
+      currentUser: getCurrent(),
 
-      ...seed,
-
-      lastResult: null,
-
-      settings: {
-        darkMode: false,
-        sound: true,
-        notifications: true,
-        haptics: true,
-        language: "uz",
+      register: (username, password) => {
+        if (!authRegister(username, password)) return false;
+        set({
+          currentUser: normalizeName(username),
+          ...freshProgress,
+          screen: "onboarding",
+          tab: "home",
+          history: [],
+        });
+        return true;
       },
+      login: (username, password) => {
+        if (!authLogin(username, password)) return false;
+        const saved = loadProgressFor(username);
+        set({
+          currentUser: normalizeName(username),
+          ...freshProgress,
+          ...saved,
+          screen: "dashboard",
+          tab: "home",
+          history: [],
+        });
+        return true;
+      },
+      logout: () => {
+        authLogout();
+        set({
+          currentUser: null,
+          ...freshProgress,
+          screen: "login",
+          tab: "home",
+          history: [],
+        });
+      },
+
+      ...freshProgress,
+
       toggleSetting: (key) =>
         set((s) => ({ settings: { ...s.settings, [key]: !s.settings[key] } })),
       setLanguage: (lang) => set((s) => ({ settings: { ...s.settings, language: lang } })),
+
+      finishOnboarding: () => set({ onboardingDone: true }),
 
       completeLesson: (lessonId, topicId, score, totalQ) => {
         const earned = Math.round(20 * (score / Math.max(1, totalQ)));
@@ -160,35 +253,15 @@ export const useAppStore = create<AppState>()(
 
       resetProgress: () =>
         set((s) => ({
-          ...seed,
-          lastResult: null,
-          onboardingDone: s.onboardingDone,
+          ...freshProgress,
           settings: s.settings,
+          currentUser: s.currentUser,
         })),
     }),
     {
       name: "corpus-storage",
-      version: 2,
-      storage: createJSONStorage(() => localStorage),
-      migrate: (persistedState, version) => {
-        // v0/v1 → v2: o'zbekcha endi ASOSIY til.
-        // Eski brauzerlarda saqlangan "language: en" yangi default ustidan yozilmasligi uchun
-        // migratsiyada til majburiy "uz" ga o'tkaziladi (foydalanuvchi sozlashda qayta tanlashi mumkin).
-        const s = (persistedState ?? {}) as Partial<AppState>;
-        if (version < 2) {
-          return {
-            ...s,
-            settings: {
-              darkMode: s.settings?.darkMode ?? false,
-              sound: s.settings?.sound ?? true,
-              notifications: s.settings?.notifications ?? true,
-              haptics: s.settings?.haptics ?? true,
-              language: "uz",
-            },
-          };
-        }
-        return s as AppState;
-      },
+      version: 1,
+      storage: createJSONStorage(() => rawStorage),
       partialize: (s) => ({
         onboardingDone: s.onboardingDone,
         xp: s.xp,

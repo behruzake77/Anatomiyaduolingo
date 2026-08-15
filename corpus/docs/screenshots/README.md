@@ -1,20 +1,21 @@
 # CORPUS — ekran skrinshotlari
 
-Mobil ko'rinish (390×844, 2x). Asosiy til — **o'zbekcha**.
+Mobil ko'rinish (390×844, 2x). Asosiy til — **o'zbekcha**. Kirish — **ro'yxatdan o'tish / login** (yangi foydalanuvchi 0 XP bilan boshlaydi).
 
 | Fayl | Ekran |
 |---|---|
-| `1-splash.png` | Splash — premium logo + "Anatomiyani o'rgan. Hayotni boshqar." |
-| `2-onboarding.png` | Onboarding (3 slayd) |
-| `3-dashboard.png` / `-full` | Dashboard — bugungi maqsad, seriya, o'rganishni davom etish |
-| `4-topics.png` | Mavzular — 6 ta tana tizimi |
-| `5-lesson.png` | Dars / quiz — rasmli savol |
-| `6-study.png` | O'rganish rejimi — 3D ko'ruvchi (Yurak · Cor) |
-| `7-profile.png` | Profil |
-| `8-achievements.png` | Yutuqlar (badges) |
-| `9-progress.png` | Progress tahlili — XP grafigi + donut |
-| `10-settings.png` | Sozlamalar (til, tungi rejim, ...) |
-| `11-result-correct.png` | Natija (to'g'ri) — konfetti + XP |
-| `12-result-wrong.png` | Natija (xato) — izoh + qayta urinish |
-| `13-dashboard-dark.png` | Tungi rejim |
-| `_all-screens.png` | Barcha ekranlar bitta montajda |
+| `1-splash.png` | Splash — logo + "Anatomiyani o'rgan. Hayotni boshqar." |
+| `2-login.png` | Kirish / Ro'yxatdan o'tish |
+| `3-register.png` | Ro'yxatdan o'tish (username + parol to'ldirilgan) |
+| `4-onboarding.png` | Onboarding (3 slayd) |
+| `5-dashboard.png` / `-full` | Dashboard — yangi foydalanuvchi, **0 XP** |
+| `6-topics.png` | Mavzular — 6 ta tana tizimi |
+| `7-lesson.png` | Dars / quiz |
+| `8-study.png` | O'rganish rejimi — 3D (Yurak · Cor) |
+| `9-profile.png` | Profil (foydalanuvchi nomi bilan) |
+| `10-achievements.png` | Yutuqlar |
+| `11-progress.png` | Progress tahlili |
+| `12-settings.png` | Sozlamalar (til, chiqish, ...) |
+| `13-settings-dark.png` | Tungi rejim |
+| `14-dashboard-dark.png` | Dashboard (tungi) |
+| `_all-screens.png` | Barcha ekranlar montajda |

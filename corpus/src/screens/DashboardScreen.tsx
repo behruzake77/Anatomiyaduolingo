@@ -27,6 +27,7 @@ export function DashboardScreen() {
   const dailyGoal = useAppStore((s) => s.dailyGoal);
   const streak = useAppStore((s) => s.streak);
   const completedLessons = useAppStore((s) => s.completedLessons.length);
+  const currentUser = useAppStore((s) => s.currentUser);
   const navigate = useAppStore((s) => s.navigate);
   const setTab = useAppStore((s) => s.setTab);
   const t = useStrings();
@@ -35,6 +36,7 @@ export function DashboardScreen() {
   const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
   const nextLesson = SYSTEMS[0].lessons[completedLessons % SYSTEMS[0].lessons.length];
+  const name = currentUser ?? t.name;
 
   return (
     <Screen className="pt-4">
@@ -48,12 +50,12 @@ export function DashboardScreen() {
 
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
-        <Avatar name={t.name} size={44} />
+        <Avatar name={name} size={44} />
         <div className="flex-1">
           <p className="flex items-center gap-1.5 text-sm text-muted">
             <Sun className="h-4 w-4 text-warning" aria-hidden /> {t.goodMorning}
           </p>
-          <p className="text-base font-semibold leading-tight">{t.name}</p>
+          <p className="text-base font-semibold leading-tight">{name}</p>
         </div>
         <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
           {t.level} {level} · {tier}

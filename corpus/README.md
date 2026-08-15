@@ -3,6 +3,13 @@
 A production-ready, **Duolingo-style** anatomy learning app — mobile-first, with a premium
 medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, inglizcha ikkilamchi.
 
+## Kirish / Ro'yxatdan o'tish
+
+- Ilova birinchi ochilganda **ro'yxatdan o'tish** so'raladi (username + parol, localStorage'da saqlanadi)
+- **Yangi foydalanuvchi 0 XP bilan boshlaydi** — hech qanday oldindan to'ldirilgan progress yo'q
+- Har bir foydalanuvchining progressi **alohida** saqlanadi (`corpus-progress-<username>`)
+- Chiqish → progress saqlanib qoladi; qayta kirishda tiklanadi
+
 ## Tech stack
 
 | Layer | Choice |

@@ -11,8 +11,7 @@ export function SettingsScreen() {
   const settings = useAppStore((s) => s.settings);
   const toggleSetting = useAppStore((s) => s.toggleSetting);
   const setLanguage = useAppStore((s) => s.setLanguage);
-  const resetProgress = useAppStore((s) => s.resetProgress);
-  const navigate = useAppStore((s) => s.navigate);
+  const logout = useAppStore((s) => s.logout);
   const t = useStrings();
 
   const rows = [
@@ -81,16 +80,13 @@ export function SettingsScreen() {
           </button>
         ))}
         <button
-          onClick={() => {
-            resetProgress();
-            navigate("dashboard");
-          }}
+          onClick={logout}
           className="flex w-full items-center gap-3 border-t border-line px-4 py-3.5 text-left text-danger"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-danger/10 text-danger">
             <LogOut className="h-5 w-5" aria-hidden />
           </span>
-          <span className="flex-1 text-base font-medium">{t.resetLogout}</span>
+          <span className="flex-1 text-base font-medium">{t.logout}</span>
         </button>
       </Card>
     </Screen>

@@ -6,6 +6,7 @@ import { useAppStore, type ScreenId, type Tab } from "@/store/useAppStore";
 import { BottomNav } from "@/components/layout/BottomNav";
 
 import { SplashScreen } from "@/screens/SplashScreen";
+import { LoginScreen } from "@/screens/LoginScreen";
 import { OnboardingScreen } from "@/screens/OnboardingScreen";
 import { DashboardScreen } from "@/screens/DashboardScreen";
 import { TopicsScreen } from "@/screens/TopicsScreen";
@@ -20,6 +21,7 @@ import { SettingsScreen } from "@/screens/SettingsScreen";
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
+  login: LoginScreen,
   onboarding: OnboardingScreen,
   dashboard: DashboardScreen,
   topics: TopicsScreen,

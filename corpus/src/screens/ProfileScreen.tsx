@@ -12,11 +12,13 @@ export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
   const streak = useAppStore((s) => s.streak);
   const completedLessons = useAppStore((s) => s.completedLessons.length);
+  const currentUser = useAppStore((s) => s.currentUser);
   const navigate = useAppStore((s) => s.navigate);
   const t = useStrings();
 
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
+  const name = currentUser ?? t.name;
 
   const menu = [
     { id: "achievements", label: t.achievements, icon: Trophy, screen: "achievements" as const },
@@ -31,9 +33,9 @@ export function ProfileScreen() {
     <Screen className="pt-6">
       {/* identity */}
       <div className="flex flex-col items-center gap-3 text-center">
-        <Avatar name={t.name} size={88} />
+        <Avatar name={name} size={88} />
         <div>
-          <h1 className="text-2xl font-semibold">{t.name}</h1>
+          <h1 className="text-2xl font-semibold">{name}</h1>
           <p className="mt-0.5 text-sm text-muted">
             {t.level} {level} • {tier}
           </p>

@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
+import { getCurrent } from "@/auth";
 
 export function SplashScreen() {
   const navigate = useAppStore((s) => s.navigate);
@@ -12,7 +13,11 @@ export function SplashScreen() {
   const t = useStrings();
 
   useEffect(() => {
-    const time = setTimeout(() => navigate(onboardingDone ? "dashboard" : "onboarding"), 1900);
+    const time = setTimeout(() => {
+      const loggedIn = !!getCurrent();
+      if (!loggedIn) navigate("login");
+      else navigate(onboardingDone ? "dashboard" : "onboarding");
+    }, 1900);
     return () => clearTimeout(time);
   }, [navigate, onboardingDone]);
 
