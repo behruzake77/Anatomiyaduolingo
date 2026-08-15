@@ -7,6 +7,7 @@ import type { ContentSystem, Lesson, SystemUnit, Question, Difficulty } from "./
 import { OSTEOLOGY_UNITS } from "./osteology";
 import { EXTRA_UNITS } from "./rest";
 import { HARD_QUESTIONS } from "./hardQuestions";
+import { ARTROLOGY_DETAIL, MYOLOGY_DETAIL, ANGIOLOGY_DETAIL } from "./detail";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -51,11 +52,11 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "arthrology", name: "Bo'g'imlar", latin: "Arthrologia", en: "Joints",
-    icon: "link", color: "#06b6d4", image: "/img/atlas/arthrologia.jpg", units: EXTRA_UNITS.arthrology ?? [],
+    icon: "link", color: "#06b6d4", image: "/img/atlas/arthrologia.jpg", units: [...(EXTRA_UNITS.arthrology ?? []), ...ARTROLOGY_DETAIL],
   },
   {
     id: "muscular", name: "Mushaklar tizimi", latin: "Systema musculare", en: "Muscular System",
-    icon: "activity", color: "#EC4899", image: "/img/atlas/myologia.jpg", units: EXTRA_UNITS.muscular ?? [],
+    icon: "activity", color: "#EC4899", image: "/img/atlas/myologia.jpg", units: [...(EXTRA_UNITS.muscular ?? []), ...MYOLOGY_DETAIL],
   },
   {
     id: "digestive", name: "Hazm tizimi", latin: "Systema digestorium", en: "Digestive System",
@@ -67,7 +68,7 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "circulatory", name: "Yurak-qon tomir tizimi", latin: "Systema cardiovasculare", en: "Circulatory System",
-    icon: "heart", color: "#EF4444", image: "/img/atlas/yurak.jpg", units: EXTRA_UNITS.circulatory ?? [],
+    icon: "heart", color: "#EF4444", image: "/img/atlas/yurak.jpg", units: [...(EXTRA_UNITS.circulatory ?? []), ...ANGIOLOGY_DETAIL],
   },
   {
     id: "nervous", name: "Asab tizimi", latin: "Systema nervosum", en: "Nervous System",
