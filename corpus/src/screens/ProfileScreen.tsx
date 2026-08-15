@@ -1,45 +1,51 @@
 "use client";
 
-import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, Layers } from "lucide-react";
+import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { Card } from "@/components/ui/Card";
 import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier } from "@/utils/levels";
+import { useStrings, TIER_KEY } from "@/i18n";
 
 export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
   const streak = useAppStore((s) => s.streak);
+  const completedLessons = useAppStore((s) => s.completedLessons.length);
   const navigate = useAppStore((s) => s.navigate);
+  const t = useStrings();
 
   const level = levelFromXp(xp);
+  const tier = t[TIER_KEY[levelTier(level)]];
 
   const menu = [
-    { id: "achievements", label: "Achievements", icon: Trophy, screen: "achievements" as const },
-    { id: "bookmarks", label: "Bookmarks", icon: Bookmark, screen: "topics" as const },
-    { id: "progress", label: "Progress", icon: TrendingUp, screen: "progress" as const },
-    { id: "study", label: "Study Mode", icon: Layers, screen: "study" as const },
-    { id: "settings", label: "Settings", icon: Settings, screen: "settings" as const },
-    { id: "about", label: "About CORPUS", icon: Info, screen: "settings" as const },
+    { id: "achievements", label: t.achievements, icon: Trophy, screen: "achievements" as const },
+    { id: "bookmarks", label: t.bookmarks, icon: Bookmark, screen: "topics" as const },
+    { id: "progress", label: t.progress, icon: TrendingUp, screen: "progress" as const },
+    { id: "study", label: t.studyMode, icon: BookOpen, screen: "study" as const },
+    { id: "settings", label: t.settings, icon: Settings, screen: "settings" as const },
+    { id: "about", label: t.about, icon: Info, screen: "settings" as const },
   ];
 
   return (
     <Screen className="pt-6">
       {/* identity */}
       <div className="flex flex-col items-center gap-3 text-center">
-        <Avatar name="Anatomy Learner" size={88} />
+        <Avatar name={t.name} size={88} />
         <div>
-          <h1 className="text-2xl font-semibold">AnatomyLearner</h1>
-          <p className="mt-0.5 text-sm text-muted">Level {level} • {levelTier(level)}</p>
+          <h1 className="text-2xl font-semibold">{t.name}</h1>
+          <p className="mt-0.5 text-sm text-muted">
+            {t.level} {level} • {tier}
+          </p>
         </div>
       </div>
 
       {/* stats */}
       <div className="mt-6 grid grid-cols-3 gap-3">
         {[
-          { icon: Zap, value: `${xp} XP`, label: "Total XP" },
-          { icon: Flame, value: `${streak} days`, label: "Day Streak" },
-          { icon: Layers, value: "24", label: "Topics" },
+          { icon: Zap, value: `${xp} XP`, label: t.totalEarned },
+          { icon: Flame, value: `${streak} ${t.days}`, label: t.dayStreak },
+          { icon: BookOpen, value: String(completedLessons), label: t.lessonsDone },
         ].map((s) => (
           <Card key={s.label} className="flex flex-col items-center gap-1.5 p-4">
             <s.icon className="h-5 w-5 text-primary" aria-hidden />

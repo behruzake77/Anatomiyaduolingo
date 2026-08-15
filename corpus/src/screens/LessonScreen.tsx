@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/Button";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
 import { QUIZ } from "@/data/anatomy";
+import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
 export function LessonScreen() {
   const navigate = useAppStore((s) => s.navigate);
   const completeLesson = useAppStore((s) => s.completeLesson);
   const haptic = useHaptics();
+  const t = useStrings();
 
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -53,7 +55,7 @@ export function LessonScreen() {
       <header className="flex items-center gap-4">
         <button
           onClick={() => navigate("dashboard")}
-          aria-label="Quit lesson"
+          aria-label={t.quitLesson}
           className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-surface text-muted"
         >
           <X className="h-5 w-5" aria-hidden />
@@ -72,14 +74,16 @@ export function LessonScreen() {
 
       {/* question */}
       <div className="mt-6">
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">Question {questionNo}</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+          {t.question} {questionNo}
+        </p>
         <h1 className="mt-2 text-2xl font-semibold leading-snug">{q.prompt}</h1>
       </div>
 
       {/* illustration with highlight */}
       {q.image && (
         <div className="relative mt-4 overflow-hidden rounded-2xl border border-line shadow-card">
-          <img src={q.image} alt="Anatomy illustration" className="h-44 w-full object-cover" />
+          <img src={q.image} alt="Anatomiya rasmi" className="h-44 w-full object-cover" />
           {q.highlight && (
             <motion.span
               className="absolute h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full bg-success/60 blur-md"
@@ -134,11 +138,9 @@ export function LessonScreen() {
 
       {/* explanation + next */}
       <div className="mt-auto pt-5">
-        {revealed && (
-          <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{q.explanation}</p>
-        )}
+        {revealed && <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{q.explanation}</p>}
         <Button className="w-full" size="lg" disabled={!revealed} onClick={next}>
-          {isLast ? "Finish" : "Next"}
+          {isLast ? t.finish : t.next}
         </Button>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { SkipBack, Play, Pause, SkipForward, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { ATLAS_OBJECTS } from "@/data/anatomy";
+import { useStrings } from "@/i18n";
 
 /**
  * Interactive 3D-style viewer: drag to rotate the model,
@@ -14,6 +15,7 @@ import { ATLAS_OBJECTS } from "@/data/anatomy";
 export function StudyModeScreen() {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const t = useStrings();
   const obj = ATLAS_OBJECTS[index % ATLAS_OBJECTS.length];
 
   const rotate = useMotionValue(0);
@@ -50,7 +52,7 @@ export function StudyModeScreen() {
         right={
           <button
             onClick={reset}
-            aria-label="Reset rotation"
+            aria-label={t.resetRotation}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface text-muted"
           >
             <RotateCcw className="h-5 w-5" aria-hidden />
@@ -67,7 +69,7 @@ export function StudyModeScreen() {
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerLeave={onPointerUp}
-          aria-label="Rotatable 3D model"
+          aria-label={t.drag}
           role="img"
         >
           <motion.img
@@ -78,7 +80,7 @@ export function StudyModeScreen() {
             style={{ rotateY: smooth }}
           />
           <span className="absolute left-3 top-3 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium text-white">
-            Drag to rotate
+            {t.drag}
           </span>
         </div>
 
@@ -90,7 +92,7 @@ export function StudyModeScreen() {
           </div>
           <p className="mt-2 text-sm leading-relaxed text-muted">{obj.description}</p>
           <p className="mt-3 inline-flex items-center gap-2 rounded-xl bg-success/10 px-3 py-2 text-sm font-medium text-success">
-            Function: {obj.function}
+            {t.functionLabel}: {obj.function}
           </p>
         </div>
 
@@ -98,21 +100,21 @@ export function StudyModeScreen() {
         <div className="mt-6 flex items-center justify-center gap-6">
           <button
             onClick={() => setIndex((i) => (i - 1 + ATLAS_OBJECTS.length) % ATLAS_OBJECTS.length)}
-            aria-label="Previous model"
+            aria-label={t.prevModel}
             className="flex h-12 w-12 items-center justify-center rounded-full border border-line bg-surface text-muted shadow-card active:scale-95"
           >
             <SkipBack className="h-5 w-5" aria-hidden />
           </button>
           <button
             onClick={() => setPlaying((p) => !p)}
-            aria-label={playing ? "Pause" : "Play"}
+            aria-label={playing ? t.pause : t.play}
             className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-pop active:scale-95"
           >
             {playing ? <Pause className="h-7 w-7" aria-hidden /> : <Play className="h-7 w-7" aria-hidden />}
           </button>
           <button
             onClick={() => setIndex((i) => (i + 1) % ATLAS_OBJECTS.length)}
-            aria-label="Next model"
+            aria-label={t.nextModel}
             className="flex h-12 w-12 items-center justify-center rounded-full border border-line bg-surface text-muted shadow-card active:scale-95"
           >
             <SkipForward className="h-5 w-5" aria-hidden />

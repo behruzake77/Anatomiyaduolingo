@@ -2,9 +2,13 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CORPUS — Learn Anatomy. Master Life.",
+  title: "CORPUS — Anatomiyani o'rgan. Hayotni boshqar.",
   description:
-    "A Duolingo-style anatomy learning app. Interactive lessons, smart quizzes, 3D study mode and gamified progress.",
+    "Anatomiyani Duolingo uslubida o'rganing: interaktiv darslar, aqlli testlar, 3D o'rganish rejimi va gamifikatsiya.",
+  icons: {
+    icon: "/logo/logo-192.png",
+    apple: "/logo/logo-192.png",
+  },
 };
 
 export const viewport: Viewport = {

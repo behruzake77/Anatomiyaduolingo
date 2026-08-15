@@ -5,8 +5,8 @@ import { cn } from "@/utils/cn";
 export type LogoVariant = "primary" | "light" | "monochrome";
 
 /**
- * CORPUS split-face logo — half skull, half anatomy,
- * on a rounded-square purple gradient with a subtle laurel accent.
+ * CORPUS premium split-face logo — half skull, half anatomy,
+ * rounded-square purple gradient with ring, highlight and laurel accent.
  */
 export function Logo({
   variant = "primary",
@@ -20,13 +20,11 @@ export function Logo({
   const id = `corpus-${variant}`;
   const grad =
     variant === "monochrome"
-      ? { from: "#2D3436", to: "#2D3436" }
+      ? { from: "#2D3436", to: "#2D3436", skull: "#FFFFFF", face: "#94A3B8", laurel: "#94A3B8", ring: "rgba(255,255,255,0.10)" }
       : variant === "light"
-        ? { from: "#FFFFFF", to: "#F1F2F7" }
-        : { from: "#6C5CE7", to: "#A29BFE" };
+        ? { from: "#FFFFFF", to: "#E9EBF4", skull: "#6C5CE7", face: "#3EE0C8", laurel: "#F59E0B", ring: "rgba(45,52,54,0.10)" }
+        : { from: "#6C5CE7", to: "#A29BFE", skull: "#F8FAFC", face: "#3EE0C8", laurel: "#F9C74F", ring: "rgba(255,255,255,0.22)" };
 
-  const skull = variant === "monochrome" ? "#FFFFFF" : variant === "light" ? "#6C5CE7" : "#F8FAFC";
-  const face = variant === "monochrome" ? "#94A3B8" : "#3EE0C8";
   const detail = variant === "monochrome" ? "#0B0F1A" : "#2D3436";
 
   return (
@@ -43,6 +41,10 @@ export function Logo({
           <stop offset="0" stopColor={grad.from} />
           <stop offset="1" stopColor={grad.to} />
         </linearGradient>
+        <radialGradient id={`${id}-hl`} cx="0.32" cy="0.26" r="0.6">
+          <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.22" />
+          <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+        </radialGradient>
         <clipPath id={`${id}-left`}>
           <rect x="0" y="0" width="60" height="120" />
         </clipPath>
@@ -51,37 +53,69 @@ export function Logo({
         </clipPath>
       </defs>
 
-      {/* rounded-square container */}
-      <rect width="120" height="120" rx="26" fill={`url(#${id}-bg)`} />
+      {/* container + highlight + ring */}
+      <rect width="120" height="120" rx="27" fill={`url(#${id}-bg)`} />
+      <rect width="120" height="120" rx="27" fill={`url(#${id}-hl)`} />
+      <rect x="4" y="4" width="112" height="112" rx="23" fill="none" stroke={grad.ring} strokeWidth="2" />
 
-      {/* laurel accent */}
-      <g fill={variant === "monochrome" ? "#0B0F1A" : "#F9C74F"} opacity="0.9">
-        <path d="M14 96c2-3 6-4 8-7 2 3 6 4 8 7-3 1-6 3-8 3s-5-2-8-3Z" />
-        <path d="M90 96c2-3 6-4 8-7 2 3 6 4 8 7-3 1-6 3-8 3s-5-2-8-3Z" />
+      {/* laurel */}
+      <g fill={grad.laurel}>
+        <path d="M12 97c2.6-3.2 6.2-4.4 8.4-7.4 1 1.6 2.2 2.9 3.6 3.6-2.6 3-6.2 4.2-8.4 7.2-1.4-1-2.6-2.2-3.6-3.4Z" />
+        <path d="M96 97c2.6-3.2 6.2-4.4 8.4-7.4 1 1.6 2.2 2.9 3.6 3.6-2.6 3-6.2 4.2-8.4 7.2-1.4-1-2.6-2.2-3.6-3.4Z" />
       </g>
 
       {/* head: left = skull, right = anatomy */}
       <g>
         <g clipPath={`url(#${id}-left)`}>
-          <circle cx="60" cy="58" r="36" fill={skull} />
-          <rect x="36" y="88" width="48" height="17" rx="8" fill={skull} />
-          <circle cx="44" cy="58" r="8.5" fill={detail} />
-          <path d="M60 72 52 88h16Z" fill={detail} />
+          <circle cx="60" cy="56" r="37" fill={grad.skull} />
+          <rect x="33" y="86" width="54" height="18" rx="9" fill={grad.skull} />
+          <circle cx="43" cy="56" r="9" fill={detail} />
+          <path d="M43 60q1.6 3 4 4.4" stroke={detail} strokeWidth="2.4" fill="none" strokeLinecap="round" opacity=".55" />
+          <path d="M60 70 52.5 86h15Z" fill={detail} />
           <g fill={detail}>
-            <rect x="42" y="92" width="4" height="9" rx="1.5" />
-            <rect x="49" y="92" width="4" height="9" rx="1.5" />
-            <rect x="56" y="92" width="4" height="9" rx="1.5" />
+            <rect x="40.5" y="91" width="4" height="9" rx="1.6" />
+            <rect x="47.5" y="91" width="4" height="9" rx="1.6" />
+            <rect x="54.5" y="91" width="4" height="9" rx="1.6" />
           </g>
         </g>
         <g clipPath={`url(#${id}-right)`}>
-          <circle cx="60" cy="58" r="36" fill={face} />
-          <rect x="36" y="88" width="48" height="17" rx="8" fill={face} />
-          <circle cx="76" cy="58" r="8.5" fill={detail} opacity="0.55" />
-          <path d="M60 72v16" stroke={detail} strokeWidth="4.5" opacity="0.4" strokeLinecap="round" />
-          <path d="M74 40c4 3 5 6 5 9M70 34c2 2 3 4 3 6" stroke={detail} strokeWidth="2.5" opacity="0.35" fill="none" strokeLinecap="round" />
+          <circle cx="60" cy="56" r="37" fill={grad.face} />
+          <rect x="33" y="86" width="54" height="18" rx="9" fill={grad.face} />
+          <circle cx="96.5" cy="58" r="5.5" fill={grad.face} stroke={detail} strokeWidth="2.4" opacity=".6" />
+          <circle cx="77" cy="56" r="9" fill={detail} opacity=".5" />
+          <path d="M60 70v16" stroke={detail} strokeWidth="4.5" opacity=".4" strokeLinecap="round" />
+          <g stroke={detail} strokeWidth="2.2" fill="none" strokeLinecap="round" opacity=".4">
+            <path d="M71 38q3 2 4 5" />
+            <path d="M74 32q2.4 2 3 4.6" />
+          </g>
         </g>
-        <line x1="60" y1="16" x2="60" y2="112" stroke={detail} strokeWidth="4" opacity="0.45" />
+        <line x1="60" y1="14" x2="60" y2="112" stroke={detail} strokeWidth="4" opacity=".45" />
       </g>
     </svg>
+  );
+}
+
+/** Logo + wordmark (premium branding row). */
+export function Wordmark({
+  variant = "primary",
+  size = 40,
+  className,
+}: {
+  variant?: LogoVariant;
+  size?: number;
+  className?: string;
+}) {
+  return (
+    <div className={cn("flex items-center gap-2.5", className)}>
+      <Logo variant={variant} size={size} />
+      <span
+        className={cn(
+          "text-xl font-bold tracking-tight",
+          variant === "light" ? "text-white" : "text-ink",
+        )}
+      >
+        CORPUS
+      </span>
+    </div>
   );
 }

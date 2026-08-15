@@ -8,15 +8,17 @@ import { Donut } from "@/components/ui/Donut";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
 import { SYSTEMS } from "@/data/anatomy";
 import { levelFromXp, levelTier } from "@/utils/levels";
+import { useStrings, TIER_KEY, fmt } from "@/i18n";
 
 const QUICK_TOPICS = [
-  { id: "bones", label: "Bones", icon: "bone", color: "#6C5CE7" },
-  { id: "muscles", label: "Muscles", icon: "activity", color: "#FD79A8" },
-  { id: "organs", label: "Organs", icon: "apple", color: "#00B894" },
-  { id: "nerves", label: "Nerves", icon: "brain", color: "#A29BFE" },
+  { id: "bones", labelKey: "bones" as const, icon: "bone", color: "#6C5CE7" },
+  { id: "muscles", labelKey: "muscles" as const, icon: "activity", color: "#FD79A8" },
+  { id: "organs", labelKey: "organs" as const, icon: "apple", color: "#00B894" },
+  { id: "nerves", labelKey: "nerves" as const, icon: "brain", color: "#A29BFE" },
 ];
 
 export function DashboardScreen() {
@@ -24,26 +26,37 @@ export function DashboardScreen() {
   const dailyXp = useAppStore((s) => s.dailyXp);
   const dailyGoal = useAppStore((s) => s.dailyGoal);
   const streak = useAppStore((s) => s.streak);
+  const completedLessons = useAppStore((s) => s.completedLessons.length);
   const navigate = useAppStore((s) => s.navigate);
   const setTab = useAppStore((s) => s.setTab);
+  const t = useStrings();
 
   const level = levelFromXp(xp);
+  const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
-  const nextLesson = SYSTEMS[0].lessons[3];
+  const nextLesson = SYSTEMS[0].lessons[completedLessons % SYSTEMS[0].lessons.length];
 
   return (
-    <Screen className="pt-6">
+    <Screen className="pt-4">
+      {/* brand header */}
+      <header className="flex items-center gap-2">
+        <Logo size={34} />
+        <span className="text-lg font-bold tracking-tight">
+          {t.brand}
+        </span>
+      </header>
+
       {/* greeting */}
-      <header className="flex items-center gap-3">
-        <Avatar name="Anatomy Learner" size={44} />
+      <header className="mt-4 flex items-center gap-3">
+        <Avatar name={t.name} size={44} />
         <div className="flex-1">
           <p className="flex items-center gap-1.5 text-sm text-muted">
-            <Sun className="h-4 w-4 text-warning" aria-hidden /> Good morning
+            <Sun className="h-4 w-4 text-warning" aria-hidden /> {t.goodMorning}
           </p>
-          <p className="text-base font-semibold leading-tight">Anatomy Learner</p>
+          <p className="text-base font-semibold leading-tight">{t.name}</p>
         </div>
         <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-          Level {level} · {levelTier(level)}
+          {t.level} {level} · {tier}
         </span>
       </header>
 
@@ -56,12 +69,13 @@ export function DashboardScreen() {
           </div>
         </Donut>
         <div className="flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted">Today&apos;s goal</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted">{t.todayGoal}</p>
           <p className="mt-1 text-xl font-bold">
-            {dailyXp}<span className="text-sm font-medium text-muted"> / {dailyGoal} XP</span>
+            {dailyXp}
+            <span className="text-sm font-medium text-muted"> / {dailyGoal} XP</span>
           </p>
           <ProgressBar value={goalPct} className="mt-2" />
-          <p className="mt-1.5 text-xs text-muted">{goalPct}% of your daily goal</p>
+          <p className="mt-1.5 text-xs text-muted">{fmt(t.goalPercent, { pct: goalPct })}</p>
         </div>
       </Card>
 
@@ -72,8 +86,10 @@ export function DashboardScreen() {
             <Flame className="h-6 w-6" aria-hidden />
           </div>
           <div>
-            <p className="text-xl font-bold leading-none">{streak} days</p>
-            <p className="mt-1 text-xs text-muted">Streak</p>
+            <p className="text-xl font-bold leading-none">
+              {streak} {t.days}
+            </p>
+            <p className="mt-1 text-xs text-muted">{t.streak}</p>
           </div>
         </Card>
         <Card className="flex items-center gap-3 p-4">
@@ -82,17 +98,17 @@ export function DashboardScreen() {
           </div>
           <div>
             <p className="text-xl font-bold leading-none">{xp} XP</p>
-            <p className="mt-1 text-xs text-muted">Total earned</p>
+            <p className="mt-1 text-xs text-muted">{t.totalEarned}</p>
           </div>
         </Card>
       </div>
 
       {/* Continue learning */}
       <section className="mt-6">
-        <h2 className="text-lg font-semibold">Continue Learning</h2>
+        <h2 className="text-lg font-semibold">{t.continueLearning}</h2>
         <Card className="mt-3 overflow-hidden">
           <div className="relative h-36 w-full overflow-hidden">
-            <img src={nextLessonSystemImage()} alt="" className="h-full w-full object-cover" />
+            <img src={SYSTEMS[0].image} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
             <div className="absolute bottom-3 left-4 right-4 flex items-center gap-3">
               <div className="flex-1">
@@ -106,13 +122,13 @@ export function DashboardScreen() {
           </div>
           <div className="p-4">
             <div className="flex items-center justify-between text-xs text-muted">
-              <span>Lesson {SYSTEMS[0].completed + 1} of {SYSTEMS[0].total}</span>
+              <span>{fmt(t.lessonOf, { n: completedLessons + 1, total: SYSTEMS[0].total })}</span>
               <span className="flex items-center gap-1">
-                <Zap className="h-3.5 w-3.5" aria-hidden /> ~{nextLesson.minutes} min
+                <Zap className="h-3.5 w-3.5" aria-hidden /> ~{nextLesson.minutes} {t.min}
               </span>
             </div>
             <Button className="mt-3 w-full" onClick={() => navigate("lesson")}>
-              Continue
+              {t.continue}
             </Button>
           </div>
         </Card>
@@ -121,9 +137,9 @@ export function DashboardScreen() {
       {/* Quick topics */}
       <section className="mt-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Quick Topics</h2>
+          <h2 className="text-lg font-semibold">{t.quickTopics}</h2>
           <button onClick={() => setTab("learn")} className="text-sm font-semibold text-primary">
-            See all
+            {t.seeAll}
           </button>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-4">
@@ -139,15 +155,11 @@ export function DashboardScreen() {
               >
                 <Icon name={q.icon} className="h-6 w-6" />
               </div>
-              <span className="text-sm font-semibold">{q.label}</span>
+              <span className="text-sm font-semibold">{t[q.labelKey]}</span>
             </Card>
           ))}
         </div>
       </section>
     </Screen>
   );
-}
-
-function nextLessonSystemImage() {
-  return SYSTEMS[0].image;
 }

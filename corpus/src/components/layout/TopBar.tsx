@@ -18,7 +18,7 @@ export function TopBar({
       {showBack && (
         <button
           onClick={back}
-          aria-label="Go back"
+          aria-label="Orqaga"
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-surface text-muted transition active:scale-95"
         >
           <ChevronLeft className="h-5 w-5" aria-hidden />

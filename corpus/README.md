@@ -1,7 +1,7 @@
-# 🦴 CORPUS — Learn Anatomy. Master Life.
+# 🦴 CORPUS — Anatomiyani o'rgan. Hayotni boshqar.
 
 A production-ready, **Duolingo-style** anatomy learning app — mobile-first, with a premium
-medical-education feel inspired by Complete Anatomy.
+medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, inglizcha ikkilamchi.
 
 ## Tech stack
 
@@ -70,7 +70,9 @@ corpus/
 
 ## Features
 
-- **Gamification** — XP, levels (Beginner → Expert), daily goal, streak, 6 badges
+- **O'zbekcha asosiy til** — barcha interfeys va kontent o'zbekcha (+ lotincha atamalar); Sozlamalar → Til → English
+- **Gamifikatsiya** — XP, levels (Boshlang'ich → Ekspert), kunlik maqsad, seriya, 6 badge
+- **Premium logo** — split-face (suyak/anatomiya), binafsha gradient, halqa + laurel aksent
 - **Dark mode** — no-flash init script + reactive class toggle
 - **Haptics** — Vibration API with graceful fallback
 - **Confetti** — canvas-based, respects `prefers-reduced-motion`

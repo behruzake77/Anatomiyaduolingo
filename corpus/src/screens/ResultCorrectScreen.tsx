@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/Button";
 import { Donut } from "@/components/ui/Donut";
 import { Confetti } from "@/components/ui/Confetti";
 import { useAppStore } from "@/store/useAppStore";
+import { useStrings } from "@/i18n";
 
 export function ResultCorrectScreen() {
   const navigate = useAppStore((s) => s.navigate);
   const lastResult = useAppStore((s) => s.lastResult);
+  const t = useStrings();
 
   const score = lastResult?.score ?? 8;
   const total = lastResult?.total ?? 10;
@@ -27,7 +29,7 @@ export function ResultCorrectScreen() {
         className="flex items-center gap-2"
       >
         <PartyPopper className="h-8 w-8 text-accent" aria-hidden />
-        <h1 className="text-3xl font-bold">Great Job!</h1>
+        <h1 className="text-3xl font-bold">{t.greatJob}</h1>
       </motion.div>
 
       <motion.div
@@ -40,14 +42,14 @@ export function ResultCorrectScreen() {
         </Donut>
       </motion.div>
 
-      <p className="text-lg font-bold text-primary">+{earned} XP earned</p>
+      <p className="text-lg font-bold text-primary">+{earned} {t.xpEarned}</p>
 
       {/* stats */}
       <div className="grid w-full max-w-xs grid-cols-3 gap-3">
         {[
-          { label: "Answered", value: String(total) },
-          { label: "Correct", value: String(score) },
-          { label: "Accuracy", value: `${accuracy}%` },
+          { label: t.answered, value: String(total) },
+          { label: t.correct, value: String(score) },
+          { label: t.accuracy, value: `${accuracy}%` },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl border border-line bg-surface p-3 shadow-card">
             <p className="text-lg font-bold">{s.value}</p>
@@ -57,7 +59,7 @@ export function ResultCorrectScreen() {
       </div>
 
       <Button className="w-full max-w-xs" size="lg" onClick={() => navigate("dashboard")}>
-        Continue
+        {t.continue}
       </Button>
     </div>
   );

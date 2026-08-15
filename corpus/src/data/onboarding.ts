@@ -9,22 +9,22 @@ export const ONBOARDING: OnboardingSlide[] = [
   {
     id: "interactive",
     icon: "layers",
-    title: "Interactive Learning",
+    title: "Interaktiv o'rganish",
     description:
-      "Explore every system of the human body with bite-sized, visual lessons built like a game.",
+      "Inson tanasining har bir tizimini o'yin kabi qisqa, vizual darslar orqali o'rganing.",
   },
   {
     id: "quizzes",
     icon: "target",
-    title: "Smart Quizzes",
+    title: "Aqlli testlar",
     description:
-      "Reinforce what you learn with adaptive quizzes that adapt to your mistakes.",
+      "Xatolaringizga moslashuvchi testlar orqali bilimlaringizni mustahkamlang.",
   },
   {
     id: "progress",
     icon: "trending-up",
-    title: "Track Progress",
+    title: "Progressni kuzating",
     description:
-      "Earn XP, keep your streak alive and master anatomy one level at a time.",
+      "XP to'plang, seriyani saqlang va anatomiya bo'yicha bosqichma-bosqich o'sing.",
   },
 ];

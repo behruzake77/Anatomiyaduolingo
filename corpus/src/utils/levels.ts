@@ -4,17 +4,13 @@ export function levelFromXp(xp: number): number {
   return Math.max(1, Math.floor(xp / 160) + 1);
 }
 
-export type LevelTier = "Beginner" | "Intermediate" | "Advanced" | "Expert";
+export type LevelTier = "beginner" | "intermediate" | "advanced" | "expert";
 
 export function levelTier(level: number): LevelTier {
-  if (level <= 3) return "Beginner";
-  if (level <= 9) return "Intermediate";
-  if (level <= 14) return "Advanced";
-  return "Expert";
-}
-
-export function levelLabel(level: number): string {
-  return `Level ${level} • ${levelTier(level)}`;
+  if (level <= 3) return "beginner";
+  if (level <= 9) return "intermediate";
+  if (level <= 14) return "advanced";
+  return "expert";
 }
 
 export function xpToNextLevel(xp: number): { current: number; next: number } {

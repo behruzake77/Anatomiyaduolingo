@@ -118,7 +118,7 @@ export const useAppStore = create<AppState>()(
         sound: true,
         notifications: true,
         haptics: true,
-        language: "en",
+        language: "uz",
       },
       toggleSetting: (key) =>
         set((s) => ({ settings: { ...s.settings, [key]: !s.settings[key] } })),

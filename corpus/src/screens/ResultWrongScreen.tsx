@@ -4,9 +4,11 @@ import { motion } from "motion/react";
 import { Frown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/store/useAppStore";
+import { useStrings } from "@/i18n";
 
 export function ResultWrongScreen() {
   const navigate = useAppStore((s) => s.navigate);
+  const t = useStrings();
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5 px-6 text-center">
@@ -19,18 +21,18 @@ export function ResultWrongScreen() {
         <Frown className="h-14 w-14" aria-hidden />
       </motion.div>
 
-      <h1 className="text-3xl font-bold">Try Again</h1>
+      <h1 className="text-3xl font-bold">{t.tryAgain}</h1>
       <p className="max-w-xs text-sm leading-relaxed text-muted">
-        The sternum (breastbone) sits at the centre of the chest and anchors the ribs — review the
-        lesson and give it another go.
+        Sternum (to&apos;sh suyagi) ko&apos;krakning markazida joylashib, qovurg&apos;alarni biriktiradi —
+        darsni qayta ko&apos;rib, yana urinib ko&apos;ring.
       </p>
 
       <div className="flex w-full max-w-xs flex-col gap-3">
         <Button size="lg" onClick={() => navigate("lesson")}>
-          Retry
+          {t.retry}
         </Button>
         <Button size="lg" variant="ghost" onClick={() => navigate("topics")}>
-          Back to topics
+          {t.backToTopics}
         </Button>
       </div>
     </div>

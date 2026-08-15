@@ -4,14 +4,16 @@ import { useEffect } from "react";
 import { motion } from "motion/react";
 import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
+import { useStrings } from "@/i18n";
 
 export function SplashScreen() {
   const navigate = useAppStore((s) => s.navigate);
   const onboardingDone = useAppStore((s) => s.onboardingDone);
+  const t = useStrings();
 
   useEffect(() => {
-    const t = setTimeout(() => navigate(onboardingDone ? "dashboard" : "onboarding"), 1900);
-    return () => clearTimeout(t);
+    const time = setTimeout(() => navigate(onboardingDone ? "dashboard" : "onboarding"), 1900);
+    return () => clearTimeout(time);
   }, [navigate, onboardingDone]);
 
   return (
@@ -30,8 +32,8 @@ export function SplashScreen() {
         transition={{ delay: 0.15, duration: 0.4 }}
         className="text-center"
       >
-        <h1 className="text-3xl font-bold tracking-tight">CORPUS</h1>
-        <p className="mt-1 text-sm font-medium text-white/85">Learn Anatomy. Master Life.</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t.brand}</h1>
+        <p className="mt-1 text-sm font-medium text-white/85">{t.tagline}</p>
       </motion.div>
 
       {/* loading indicator */}

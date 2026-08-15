@@ -2,18 +2,22 @@
 
 import { Home, BookOpen, User, Settings, type LucideIcon } from "lucide-react";
 import { useAppStore, type Tab } from "@/store/useAppStore";
+import { useStrings, type Strings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
-const ITEMS: { id: Tab; label: string; icon: LucideIcon }[] = [
-  { id: "home", label: "Home", icon: Home },
-  { id: "learn", label: "Learn", icon: BookOpen },
-  { id: "profile", label: "Profile", icon: User },
-  { id: "settings", label: "Settings", icon: Settings },
-];
+function items(t: Strings): { id: Tab; label: string; icon: LucideIcon }[] {
+  return [
+    { id: "home", label: t.home, icon: Home },
+    { id: "learn", label: t.learn, icon: BookOpen },
+    { id: "profile", label: t.profile, icon: User },
+    { id: "settings", label: t.settings, icon: Settings },
+  ];
+}
 
 export function BottomNav() {
   const tab = useAppStore((s) => s.tab);
   const setTab = useAppStore((s) => s.setTab);
+  const t = useStrings();
 
   return (
     <nav
@@ -21,7 +25,7 @@ export function BottomNav() {
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       aria-label="Primary"
     >
-      {ITEMS.map(({ id, label, icon: Icon }) => {
+      {items(t).map(({ id, label, icon: Icon }) => {
         const active = tab === id;
         return (
           <button

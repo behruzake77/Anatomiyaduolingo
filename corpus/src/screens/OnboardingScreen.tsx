@@ -6,12 +6,14 @@ import { ONBOARDING } from "@/data/onboarding";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/store/useAppStore";
+import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
 export function OnboardingScreen() {
   const [index, setIndex] = useState(0);
   const finishOnboarding = useAppStore((s) => s.finishOnboarding);
   const navigate = useAppStore((s) => s.navigate);
+  const t = useStrings();
 
   const slide = ONBOARDING[index];
   const last = index === ONBOARDING.length - 1;
@@ -29,7 +31,7 @@ export function OnboardingScreen() {
     <div className="flex flex-1 flex-col px-6 py-8">
       {/* top row */}
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-widest text-muted">CORPUS</span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-muted">{t.brand}</span>
         <button
           onClick={() => {
             finishOnboarding();
@@ -37,7 +39,7 @@ export function OnboardingScreen() {
           }}
           className="text-sm font-semibold text-muted"
         >
-          Skip
+          {t.skip}
         </button>
       </div>
 
@@ -77,7 +79,7 @@ export function OnboardingScreen() {
           ))}
         </div>
         <Button size="lg" className="w-full" onClick={next}>
-          {last ? "Get Started" : "Next"}
+          {last ? t.getStarted : t.next}
         </Button>
       </div>
     </div>

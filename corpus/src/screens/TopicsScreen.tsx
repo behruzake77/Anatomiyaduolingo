@@ -7,27 +7,29 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Icon } from "@/components/ui/Icon";
 import { useAppStore } from "@/store/useAppStore";
 import { SYSTEMS } from "@/data/anatomy";
+import { useStrings, fmt } from "@/i18n";
 
 export function TopicsScreen() {
   const navigate = useAppStore((s) => s.navigate);
+  const t = useStrings();
 
   return (
     <Screen className="pt-6">
       {/* header */}
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Topics</h1>
-          <p className="text-sm text-muted">6 body systems · 24 lessons each</p>
+          <h1 className="text-2xl font-semibold">{t.topicsTitle}</h1>
+          <p className="text-sm text-muted">{t.topicsSubtitle}</p>
         </div>
         <div className="flex gap-2">
           <button
-            aria-label="Search"
+            aria-label={t.search}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface text-muted"
           >
             <Search className="h-5 w-5" aria-hidden />
           </button>
           <button
-            aria-label="3D study mode"
+            aria-label={t.study3d}
             onClick={() => navigate("study")}
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-soft"
           >
@@ -53,13 +55,13 @@ export function TopicsScreen() {
                   <div className="flex items-baseline justify-between gap-2">
                     <p className="truncate text-base font-semibold">{sys.name}</p>
                     <span className="shrink-0 text-xs font-medium text-muted">
-                      {sys.completed}/{sys.total} lessons
+                      {fmt("{n}/{total} {lessons}", { n: sys.completed, total: sys.total, lessons: t.lessons })}
                     </span>
                   </div>
                   <p className="text-xs italic text-muted">{sys.latin}</p>
                   <ProgressBar value={pct} color={sys.color} className="mt-2.5" />
                   <p className="mt-1.5 text-xs font-semibold" style={{ color: sys.color }}>
-                    {pct}% complete
+                    {pct}% {t.complete}
                   </p>
                 </div>
               </div>
