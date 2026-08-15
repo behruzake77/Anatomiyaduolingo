@@ -5,6 +5,8 @@
 
 export type QuestionType = "quiz" | "img" | "match" | "build" | "tf" | "order" | "fill" | "func";
 
+export type Difficulty = "easy" | "medium" | "hard";
+
 export interface Question {
   type: QuestionType;
   prompt: string;
@@ -19,6 +21,8 @@ export interface Question {
   items?: string[];
   hint?: string;
   explanation?: string;
+  /** Qiyinlik darajasi (oson → o'rta → qiyin). Ko'rsatilmagan bo'lsa avtomatik aniqlanadi. */
+  difficulty?: Difficulty;
 }
 
 export interface Lesson {

@@ -3,14 +3,48 @@
  * Osteologiya (to'liq) + artrologiya, miologiya, splanxnologiya,
  * angiologiya, nevrologiya, sezgi a'zolari.
  */
-import type { ContentSystem, Lesson, SystemUnit, Question } from "./types";
+import type { ContentSystem, Lesson, SystemUnit, Question, Difficulty } from "./types";
 import { OSTEOLOGY_UNITS } from "./osteology";
 import { EXTRA_UNITS } from "./rest";
+import { HARD_QUESTIONS } from "./hardQuestions";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
-export type { QuestionType } from "./types";
+export type { QuestionType, Difficulty } from "./types";
 
-export const CONTENT_SYSTEMS: ContentSystem[] = [
+/**
+ * Savol qiyinligini aniqlash (agar savolda ko'rsatilmagan bo'lsa).
+ * - match/build/order → o'rta
+ * - rasmli (img) → oson (vizual tanishuv)
+ * - to'g'ri/noto'g'ri va fill → oson/o'rta
+ * - quiz → maslahati (hint) bor bo'lsa oson, izohli bo'lsa o'rta, aks holda o'rta
+ */
+export function difficultyOf(q: Question): Difficulty {
+  if (q.difficulty) return q.difficulty;
+  switch (q.type) {
+    case "img":
+      return "easy";
+    case "tf":
+    case "fill":
+      return q.explanation ? "medium" : "easy";
+    case "match":
+    case "build":
+    case "order":
+      return "medium";
+    default:
+      // quiz / func
+      if (q.hint) return "easy";
+      return "medium";
+  }
+}
+
+const RANK: Record<Difficulty, number> = { easy: 0, medium: 1, hard: 2 };
+
+/** Dars savollarini oson → o'rta → qiyin tartibida saralash. */
+export function sortByDifficulty(questions: Question[]): Question[] {
+  return [...questions].sort((a, b) => RANK[difficultyOf(a)] - RANK[difficultyOf(b)]);
+}
+
+const BASE_SYSTEMS: ContentSystem[] = [
   {
     id: "skeletal", name: "Suyaklar tizimi", latin: "Systema skeletale", en: "Skeletal System",
     icon: "bone", color: "#6C5CE7", image: "/img/atlas/skelet.jpg", units: OSTEOLOGY_UNITS,
@@ -56,6 +90,21 @@ export const CONTENT_SYSTEMS: ContentSystem[] = [
     icon: "sparkles", color: "#20D9C5", image: "/img/atlas/neurocranium.jpg", units: EXTRA_UNITS.sensory ?? [],
   },
 ];
+
+/**
+ * Yuqori saviyali (hard) savollarni har tizimning OXIRGI darsiga qo'shish —
+ * talaba bo'limni yakunlash arafasida klinik/amaliy savollarga duch keladi.
+ */
+export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
+  const hard = HARD_QUESTIONS[sys.id];
+  if (!hard || hard.length === 0 || sys.units.length === 0) return sys;
+  const lastUnit = sys.units[sys.units.length - 1];
+  const lastLesson = lastUnit.lessons[lastUnit.lessons.length - 1];
+  if (!lastLesson) return sys;
+  const patchedLesson: Lesson = { ...lastLesson, questions: [...lastLesson.questions, ...hard] };
+  const patchedUnit: SystemUnit = { ...lastUnit, lessons: [...lastUnit.lessons.slice(0, -1), patchedLesson] };
+  return { ...sys, units: [...sys.units.slice(0, -1), patchedUnit] };
+});
 
 export const ALL_LESSONS: Lesson[] = CONTENT_SYSTEMS.flatMap((s) => s.units).flatMap((u) => u.lessons);
 

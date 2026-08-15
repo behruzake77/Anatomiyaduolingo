@@ -25,6 +25,8 @@ Kontent **A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi + "Odam ana
 
 **8 xil savol turi**: test (quiz) · rasmni aniqlash (img) · moslashtirish (match) · atama yig'ish (build) · to'g'ri/noto'g'ri (tf) · tartiblash (order) · bo'sh joyni to'ldirish (fill) · tuzilma→vazifa (func)
 
+**3 darajali qiyinlik tizimi**: savollar **oson → o'rta → qiyin** tartibida gradatsiyalanadi. Har bir darsning oxirida **klinik/amaliy (qiyin) savollar** — masalan, "tuberculum caroticum'ga bosib qon to'xtatish", "collum chirurgicum sinishi", "kichik qon aylanish doirasi" va h.k. Har savolda qiyinlik belgisi (Oson/O'rta/Qiyin) ko'rsatiladi.
+
 Darslar kitob tartibida **ketma-ket ochiladi** (Duolingo yo'li), har bir darsda kirish slaydlari (kitob ma'lumoti + manba sahifasi).
 
 ## Kirish / Ro'yxatdan o'tish

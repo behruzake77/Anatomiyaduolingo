@@ -6,7 +6,7 @@ import { X, Check, Play, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
-import { lessonById, unitOfLesson, type Question, type Lesson } from "@/data/content";
+import { lessonById, unitOfLesson, sortByDifficulty, difficultyOf, type Question, type Lesson, type Difficulty } from "@/data/content";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
@@ -38,7 +38,8 @@ export function LessonScreen() {
 
   const slides = lesson.slides ?? [];
   const inSlides = slideIdx < slides.length;
-  const questions = lesson.questions;
+  // Savollar oson → o'rta → qiyin tartibida gradatsiyalanadi.
+  const questions = useMemo(() => sortByDifficulty(lesson.questions), [lesson]);
   const total = questions.length;
   const q = questions[idx];
   const isLast = idx + 1 >= total;
@@ -138,6 +139,23 @@ function SlideView(props: {
   );
 }
 
+/* ---------- Qiyinlik ko'rsatkichi ---------- */
+function DifficultyBadge({ q }: { q: Question }) {
+  const t = useStrings();
+  const d = difficultyOf(q);
+  const conf: Record<Difficulty, { label: string; cls: string }> = {
+    easy: { label: t.easy, cls: "bg-success/15 text-success border-success/30" },
+    medium: { label: t.medium, cls: "bg-warning/15 text-warning border-warning/30" },
+    hard: { label: t.hard, cls: "bg-danger/15 text-danger border-danger/30" },
+  };
+  const c = conf[d];
+  return (
+    <span className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[11px] font-bold ${c.cls}`}>
+      {c.label}
+    </span>
+  );
+}
+
 /* ---------- Savol bloki ---------- */
 function QuestionBlock(props: {
   q: Question;
@@ -147,12 +165,22 @@ function QuestionBlock(props: {
   haptic: (p: number | number[]) => void;
 }) {
   const { q } = props;
-  if (q.type === "match") return <MatchUI {...props} />;
-  if (q.type === "build") return <BuildUI {...props} />;
-  if (q.type === "order") return <OrderUI {...props} />;
-  if (q.type === "fill") return <FillUI {...props} />;
-  if (q.type === "tf") return <TfUI {...props} />;
-  return <ChoiceUI {...props} />; // quiz / img / func
+  let body: React.ReactNode;
+  if (q.type === "match") body = <MatchUI {...props} />;
+  else if (q.type === "build") body = <BuildUI {...props} />;
+  else if (q.type === "order") body = <OrderUI {...props} />;
+  else if (q.type === "fill") body = <FillUI {...props} />;
+  else if (q.type === "tf") body = <TfUI {...props} />;
+  else body = <ChoiceUI {...props} />; // quiz / img / func
+
+  return (
+    <>
+      <div className="mt-3">
+        <DifficultyBadge q={q} />
+      </div>
+      {body}
+    </>
+  );
 }
 
 function Footer(props: { revealed: boolean; explanation?: string; onNext: () => void; isLast: boolean }) {

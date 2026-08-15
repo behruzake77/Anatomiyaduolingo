@@ -68,6 +68,9 @@ export const STR: Record<Lang, Strings> = {
 
     question: "Savol",
     finish: "Yakunlash",
+    easy: "Oson",
+    medium: "O‘rta",
+    hard: "Qiyin",
     quitLesson: "Darsni tark etish",
 
     greatJob: "Ajoyib natija!",
@@ -183,6 +186,9 @@ export const STR: Record<Lang, Strings> = {
 
     question: "Question",
     finish: "Finish",
+    easy: "Easy",
+    medium: "Medium",
+    hard: "Hard",
     quitLesson: "Quit lesson",
 
     greatJob: "Great Job!",
