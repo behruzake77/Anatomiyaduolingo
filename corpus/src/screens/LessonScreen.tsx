@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Check, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Lightbox } from "@/components/ui/Lightbox";
+import { Lightbox, type LightboxMarker } from "@/components/ui/Lightbox";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
 import { lessonById, unitOfLesson, sortByDifficulty, difficultyOf, type Question, type Lesson, type Difficulty } from "@/data/content";
+import { LESSON_MARKERS } from "@/data/markers";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
@@ -112,6 +113,18 @@ function SlideView(props: {
   const { lesson, slide, slideNo, slideTotal, onNext, onQuit } = props;
   const t = useStrings();
   const isLast = slideNo >= slideTotal;
+  const [zoom, setZoom] = useState(false);
+  const [find, setFind] = useState<string | null>(null);
+
+  const markers: LightboxMarker[] | undefined = useMemo(() => {
+    const raw = LESSON_MARKERS[lesson.id];
+    if (!raw || raw.length === 0) return undefined;
+    const byN = new Map((slide.legend ?? []).map((l) => [l.n, l.name]));
+    return raw.map((m) => ({ n: m.n, x: m.x, y: m.y, name: byN.get(m.n) ?? m.n }));
+  }, [lesson.id, slide.legend]);
+
+  const findName = find ? (slide.legend?.find((l) => l.n === find)?.name ?? find) : null;
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="mt-4">
@@ -119,22 +132,62 @@ function SlideView(props: {
         <h1 className="mt-2 text-2xl font-semibold leading-snug">{slide.title}</h1>
       </div>
 
-      {slide.img && <ZoomableImage src={slide.img} alt={slide.title} maxH="max-h-56" showHint />}
+      {slide.img && (
+        <button
+          type="button"
+          onClick={() => setZoom(true)}
+          aria-label={t.zoomHint}
+          className="group relative mt-4 block w-full overflow-hidden rounded-2xl border border-line bg-white shadow-card"
+        >
+          <span className="relative mx-auto block w-fit max-w-full">
+            <img src={slide.img} alt={slide.title} className="max-h-56 max-w-full object-contain" />
+            <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors group-hover:bg-primary">
+              <ZoomIn className="h-4 w-4" aria-hidden />
+            </span>
+          </span>
+        </button>
+      )}
 
       {slide.legend && slide.legend.length > 0 && (
         <div className="mt-4 rounded-2xl border border-line bg-surface2 p-3">
-          <p className="mb-2 text-xs font-bold uppercase tracking-wider text-primary">{t.imageParts}</p>
-          <ul className="grid max-h-56 grid-cols-1 gap-1 overflow-y-auto pr-1">
+          <p className="mb-2 text-xs font-bold uppercase tracking-wider text-primary">
+            {t.imageParts}
+            <span className="ml-1 font-normal normal-case text-muted">— {t.tapToFind}</span>
+          </p>
+          <ul className="grid max-h-52 grid-cols-1 gap-1 overflow-y-auto pr-1">
             {slide.legend.map((it, i) => (
-              <li key={i} className="flex items-start gap-2 text-[13px] leading-snug">
-                <span className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md bg-primary/15 px-1 text-[11px] font-bold text-primary">
-                  {it.n}
-                </span>
-                <span className="text-ink">{it.name}</span>
+              <li key={i}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFind(it.n);
+                    setZoom(true);
+                  }}
+                  className="flex w-full items-start gap-2 rounded-lg px-1 py-0.5 text-left text-[13px] leading-snug transition-colors hover:bg-primary/10"
+                >
+                  <span className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md bg-primary/15 px-1 text-[11px] font-bold text-primary">
+                    {it.n}
+                  </span>
+                  <span className="text-ink">{it.name}</span>
+                </button>
               </li>
             ))}
           </ul>
         </div>
+      )}
+
+      {zoom && slide.img && (
+        <Lightbox
+          src={slide.img}
+          alt={slide.title}
+          onClose={() => {
+            setZoom(false);
+            setFind(null);
+          }}
+          labels={{ close: t.zoomClose, zoomIn: t.zoomIn, zoomOut: t.zoomOut, reset: t.zoomReset }}
+          banner={findName ? t.findPart.replace("{n}", find ?? "").replace("{name}", findName) : undefined}
+          markers={markers}
+        />
       )}
 
       <p className="mt-4 text-sm leading-relaxed text-muted">{slide.text}</p>

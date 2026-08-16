@@ -27,11 +27,22 @@ interface LightboxLabels {
   reset: string;
 }
 
+export interface LightboxMarker {
+  n: string;
+  x: number;
+  y: number;
+  name: string;
+}
+
 interface LightboxProps {
   src: string;
   alt?: string;
   onClose: () => void;
   labels?: LightboxLabels;
+  /** Yuqorida ko'rsatiladigan topish ko'rsatmasi (masalan: "№3 — ... ni toping") */
+  banner?: string;
+  /** Rasm ustida bosiladigan raqamli nishonlar (0..1 nisbiy koordinata) */
+  markers?: LightboxMarker[];
 }
 
 interface Pt {
@@ -50,12 +61,13 @@ function clampPos(scale: number, x: number, y: number, w: number, h: number): Pt
   return { x: Math.min(mx, Math.max(-mx, x)), y: Math.min(my, Math.max(-my, y)) };
 }
 
-export function Lightbox({ src, alt = "", onClose, labels }: LightboxProps) {
+export function Lightbox({ src, alt = "", onClose, labels, banner, markers }: LightboxProps) {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState<Pt>({ x: 0, y: 0 });
   const [gesturing, setGesturing] = useState(false);
+  const [activeN, setActiveN] = useState<string | null>(null);
 
   // Manba sifatida ref-lar (gesture ichida eskirgan holatdan qochish uchun).
   const scaleRef = useRef(1);
@@ -250,12 +262,18 @@ export function Lightbox({ src, alt = "", onClose, labels }: LightboxProps) {
       }}
     >
       {/* Yuqori panel */}
-      <div className="flex items-center justify-between p-4">
-        <span className="max-w-[70%] truncate text-sm font-medium text-white/80">{alt}</span>
+      <div className="flex items-center justify-between gap-3 p-4">
+        {banner ? (
+          <span className="flex-1 rounded-xl bg-primary/25 px-3 py-2 text-sm font-semibold leading-snug text-white">
+            {banner}
+          </span>
+        ) : (
+          <span className="max-w-[70%] truncate text-sm font-medium text-white/80">{alt}</span>
+        )}
         <button
           onClick={onClose}
           aria-label={labels?.close ?? "Close"}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
         >
           <X className="h-5 w-5" aria-hidden />
         </button>
@@ -271,20 +289,54 @@ export function Lightbox({ src, alt = "", onClose, labels }: LightboxProps) {
         onPointerUp={endPointer}
         onPointerCancel={endPointer}
       >
-        <img
-          src={src}
-          alt={alt}
-          draggable={false}
-          onDragStart={(e) => e.preventDefault()}
+        <div
           className={cn(
-            "max-h-full max-w-full select-none object-contain",
+            "relative",
             !gesturing && "transition-transform duration-150 ease-out",
           )}
-          style={{
-            transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
-          }}
-        />
+          style={{ transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})` }}
+        >
+          <img
+            src={src}
+            alt={alt}
+            draggable={false}
+            onDragStart={(e) => e.preventDefault()}
+            className="max-h-[78vh] max-w-[92vw] select-none object-contain"
+          />
+          {markers?.map((m) => {
+            const active = activeN === m.n;
+            return (
+              <button
+                key={m.n}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveN(active ? null : m.n);
+                }}
+                aria-label={`${m.n} — ${m.name}`}
+                className={cn(
+                  "absolute flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 text-[11px] font-bold transition-transform",
+                  active
+                    ? "scale-125 border-white bg-primary text-white shadow-lg"
+                    : "border-primary bg-white/90 text-primary shadow",
+                )}
+                style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }}
+              >
+                {m.n}
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Faol qism nomi */}
+      {activeN && markers && (
+        <div className="flex justify-center px-4 pb-1">
+          <span className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-white">
+            {markers.find((m) => m.n === activeN)?.name}
+          </span>
+        </div>
+      )}
 
       {/* Pastki boshqaruv */}
       <div className="flex items-center justify-center gap-3 p-4">

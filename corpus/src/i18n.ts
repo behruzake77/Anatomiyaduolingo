@@ -79,6 +79,8 @@ export const STR: Record<Lang, Strings> = {
     zoomOut: "Kichraytirish",
     zoomReset: "Asliga qaytarish",
     imageParts: "Rasm qismlari (raqamlar)",
+    tapToFind: "qismni bossangiz, rasmda topishga yordam beradi",
+    findPart: "№{n} — {name} ni rasmda toping",
 
     greatJob: "Ajoyib natija!",
     xpEarned: "XP to'plandi",
@@ -204,6 +206,8 @@ export const STR: Record<Lang, Strings> = {
     zoomOut: "Zoom out",
     zoomReset: "Reset",
     imageParts: "Labeled parts",
+    tapToFind: "tap a part to locate it on the image",
+    findPart: "Find №{n} — {name} on the image",
 
     greatJob: "Great Job!",
     xpEarned: "XP earned",
