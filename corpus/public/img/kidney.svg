@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 436">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0D1324"/>
+      <stop offset="1" stop-color="#090D18"/>
+    </linearGradient>
+    <linearGradient id="kid" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#20D9C5" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#20D9C5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="436" fill="url(#bg)"/>
+  <rect width="800" height="436" fill="url(#glow)"/>
+  <path d="M400 128
+    C 528 128 610 190 610 218
+    C 610 246 528 308 400 308
+    C 272 308 190 246 190 218
+    C 190 190 272 128 400 128 Z"
+    fill="url(#kid)"/>
+  <path d="M330 168
+    C 300 190 288 210 288 218
+    C 288 226 300 246 330 268
+    C 316 250 310 236 310 218
+    C 310 200 316 186 330 168 Z"
+    fill="#0D1324" opacity="0.4"/>
+  <g stroke="#F8FAFC" stroke-width="7" stroke-linecap="round" opacity="0.85">
+    <path d="M360 200 L 388 200" />
+    <path d="M360 220 L 396 220" />
+    <path d="M360 240 L 384 240" />
+  </g>
+</svg>

@@ -1,0 +1,267 @@
+/**
+ * VIZUAL kontent — har bir tizim uchun rasmli savollar va rasmli slaydlar.
+ * Toza bitta-a'zoli illyustratsiyalar + haqiqiy atlas sahifalari.
+ */
+import type { Question } from "./types";
+
+const q = (x: Question): Question => x;
+
+/** Har tizim uchun rasmli (img) savollar — toza bitta-a'zoli rasmlar bilan. */
+export const IMG_QUESTIONS: Record<string, Question[]> = {
+  muscular: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tana tizimi ko'rsatilgan?",
+      image: "/img/muscles.jpg",
+      options: ["Suyaklar tizimi", "Mushaklar tizimi", "Asab tizimi", "Qon aylanish tizimi"],
+      answer: 1,
+      difficulty: "easy",
+      hint: "Ko'ndalang-targ'il tolalardan tashkil topgan",
+    }),
+  ],
+  digestive: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zo ko'rsatilgan?",
+      image: "/img/stomach.jpg",
+      options: ["Jigar (Hepar)", "Oshqozon (Gaster)", "O't pufagi", "Buyrak (Ren)"],
+      answer: 1,
+      difficulty: "easy",
+      hint: "Hazm yo'lining kengaygan qismi",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zo ko'rsatilgan?",
+      image: "/img/liver.svg",
+      options: ["Oshqozon", "Jigar (Hepar)", "Taloq (Lien)", "Buyrak (Ren)"],
+      answer: 1,
+      difficulty: "easy",
+      hint: "Organizmdagi eng katta bez",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning kesmasi ko'rsatilgan?",
+      image: "/img/cross/tooth-cross.jpg",
+      options: ["Tish (dens)", "Suyak", "Tirnoq", "Tog'ay"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Emal, dentin va pulpa qatlamlari rang bilan ajratilgan",
+    }),
+  ],
+  respiratory: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zo ko'rsatilgan?",
+      image: "/img/lungs.jpg",
+      options: ["Yurak (Cor)", "Jigar (Hepar)", "O'pka (Pulmo)", "Buyrak (Ren)"],
+      answer: 2,
+      difficulty: "easy",
+      hint: "Juft nafas a'zosi",
+    }),
+  ],
+  urinary: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zo ko'rsatilgan?",
+      image: "/img/kidney.svg",
+      options: ["Jigar", "Buyrak (Ren)", "Taloq", "O't pufagi"],
+      answer: 1,
+      difficulty: "easy",
+      hint: "Loviyasimon, qonni filtrlaydi",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zoning kesmasi ko'rsatilgan?",
+      image: "/img/cross/kidney-cross.jpg",
+      options: ["Buyrak (Ren)", "Jigar", "Taloq", "O'pka"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Po'stloq, mag'iz va jom (pelvis) rang bilan ajratilgan",
+    }),
+  ],
+  circulatory: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zo ko'rsatilgan?",
+      image: "/img/heart.jpg",
+      options: ["O'pka (Pulmo)", "Yurak (Cor)", "Jigar (Hepar)", "Buyrak (Ren)"],
+      answer: 1,
+      difficulty: "easy",
+      hint: "Qon aylanish tizimining markaziy a'zosi",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning ko'ndalang kesmasi ko'rsatilgan?",
+      image: "/img/cross/artery-cross.jpg",
+      options: ["Arteriya (qon tomir)", "Bronx", "Qizilo'ngach", "Siydik nayi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Devor uch qavatli — qatlamlar rang bilan ajratilgan",
+    }),
+  ],
+  nervous: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zo ko'rsatilgan?",
+      image: "/img/brain.jpg",
+      options: ["Miyacha", "Bosh miya (Encephalon)", "Orqa miya", "Ko'prik"],
+      answer: 1,
+      difficulty: "easy",
+      hint: "Asab tizimining boshqaruv markazi",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning ko'ndalang kesmasi ko'rsatilgan?",
+      image: "/img/cross/spinal-cord-cross.jpg",
+      options: ["Orqa miya (medulla spinalis)", "Bosh miya", "Periferik nerv", "Miyacha"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Kulrang modda «H» shaklida — rang bilan ajratilgan",
+    }),
+  ],
+  skeletal: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilma ko'rsatilgan?",
+      image: "/img/skeleton.jpg",
+      options: ["Mushaklar tizimi", "Odam skeleti", "Nafas a'zolari", "Qon aylanish tizimi"],
+      answer: 1,
+      difficulty: "easy",
+      hint: "Suyaklardan tashkil topgan tayanch",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning ko'ndalang kesmasi ko'rsatilgan?",
+      image: "/img/cross/bone-cross.jpg",
+      options: ["Uzun suyak (os longum)", "Mushak", "Qon tomir", "Asab"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Kompakt va g'ovak modda, markazida ilik — rang bilan ajratilgan",
+    }),
+  ],
+  arthrology: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilma ko'rsatilgan?",
+      image: "/img/cross/joint-cross.jpg",
+      options: ["Bo'g'im (articulatio)", "Suyak", "Chok (sutura)", "Pay (tendo)"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Bo'g'im tog'ayi, xalta va bo'shliq — rang bilan ajratilgan",
+    }),
+  ],
+  reproductive: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tizim ko'rsatilgan?",
+      image: "/img/atlas/jinsiy.jpg",
+      options: ["Jinsiy a'zolar tizimi", "Siydik tizimi", "Hazm tizimi", "Nafas tizimi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Ko'payish vazifasini bajaradi",
+    }),
+  ],
+  endocrine: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi bez ko'rsatilgan?",
+      image: "/img/atlas/endokrin.jpg",
+      options: ["Gipofiz (hypophysis)", "Qalqonsimon bez", "Oshqozon osti bezi", "Buyrak usti bezi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Endokrin tizimning markaziy bezi",
+    }),
+  ],
+  sensory: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zoning kesmasi ko'rsatilgan?",
+      image: "/img/cross/eye-cross.jpg",
+      options: ["Ko'z (oculus)", "Quloq", "Miya", "Burun"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Gavhar (lens) va shishasimon tana — rang bilan ajratilgan",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning kesmasi ko'rsatilgan?",
+      image: "/img/cross/skin-cross.jpg",
+      options: ["Teri (cutis)", "Shilliq parda", "Plevra", "Mushak pardasi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Epidermis, dermis va teri osti — rang bilan ajratilgan",
+    }),
+  ],
+};
+
+/** Rasmli slaydlar (kirish uchun) — toza rasmi yo'q tizimlar uchun atlas sahifalari. */
+export const VISUAL_SLIDES: Record<string, { title: string; text: string; img: string }> = {
+  arthrology: {
+    title: "Bo'g'imlar atlasi",
+    text: "Bo'g'imlar (articulationes) suyaklarni o'zaro bog'lab, harakatni ta'minlaydi. Rasmda bo'g'im tuzilishi ko'rsatilgan.",
+    img: "/img/atlas/arthrologia.jpg",
+  },
+  endocrine: {
+    title: "Endokrin bezlar atlasi",
+    text: "Endokrin bezlar gormonlar ishlab chiqaradi. Rasmda gipofiz va uning joylashuvi ko'rsatilgan.",
+    img: "/img/atlas/endokrin.jpg",
+  },
+  reproductive: {
+    title: "Jinsiy tizim atlasi",
+    text: "Jinsiy a'zolar tizimi ko'payish vazifasini bajaradi. Rasmda erkak jinsiy a'zolari ko'rsatilgan.",
+    img: "/img/atlas/jinsiy.jpg",
+  },
+  sensory: {
+    title: "Sezgi a'zolari atlasi",
+    text: "Sezgi a'zolari tashqi muhitdan axborot qabul qiladi. Rasmda ko'rish va eshitish a'zolari ko'rsatilgan.",
+    img: "/img/atlas/neurocranium.jpg",
+  },
+};
+
+/**
+ * Har bir darsga o'zining KITOBDAN rasmi (Ahmedov darsligi I jild, skanerlangan
+ * sahifadan kesilgan haqiqiy rasm) — umumiy skelet/orgaan rasmi emas.
+ * Kalit: dars id → rasm yo'li.
+ */
+export const LESSON_IMAGES: Record<string, string> = {
+  l1: "/img/book/l1.jpg",
+  l2: "/img/book/l2.jpg",
+  l3: "/img/book/l3.jpg",
+  l4: "/img/book/l4.jpg",
+  l5: "/img/book/l5.jpg",
+  l6: "/img/book/l6.jpg",
+  l7: "/img/book/l7.jpg",
+  l8: "/img/book/l8.jpg",
+  l9: "/img/book/l9.jpg",
+  l10: "/img/book/l10.jpg",
+  l11: "/img/book/l11.jpg",
+  l12: "/img/book/l12.jpg",
+  l13: "/img/book/l13.jpg",
+  l14: "/img/book/l14.jpg",
+  l15: "/img/book/l15.jpg",
+  l16: "/img/book/l16.jpg",
+  l17: "/img/book/l17.jpg",
+  l18: "/img/book/l18.jpg",
+  l19: "/img/book/l19.jpg",
+  l20: "/img/book/l20.jpg",
+  l21: "/img/book/l21.jpg",
+  l22: "/img/book/l22.jpg",
+  l23: "/img/book/l23.jpg",
+  l24: "/img/book/l24.jpg",
+  l25: "/img/book/l25.jpg",
+  l26: "/img/book/l26.jpg",
+  l27: "/img/book/l27.jpg",
+  l28: "/img/book/l28.jpg",
+  l29: "/img/book/l29.jpg",
+  l30: "/img/book/l30.jpg",
+  l47: "/img/book/l47.jpg",
+  l48: "/img/book/l48.jpg",
+  l49: "/img/book/l49.jpg",
+  l50: "/img/book/l50.jpg",
+  l51: "/img/book/l51.jpg",
+  l52: "/img/book/l52.jpg",
+  l53: "/img/book/l53.jpg",
+  l54: "/img/book/l54.jpg",
+  l76: "/img/book/l76.jpg",
+  l77: "/img/book/l77.jpg",
+};

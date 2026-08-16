@@ -4,18 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>AnatomiLingo — Anatomiyani o'rgan</title>
-<meta name="description" content="Anatomiyani Duolingo uslubida o'rganing — Columna vertebralis">
-<meta name="theme-color" content="#0b1120">
+<meta name="description" content="Anatomiyani Duolingo uslubida o'rganing — suyaklar, bo'g'imlar, mushaklar, ichki a'zolar">
+<meta name="theme-color" content="#090D18">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="assets/icons/favicon.png">
+<link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+<link rel="icon" type="image/png" href="assets/icons/favicon.png">
 <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="splash" id="splash">
+  <img class="logo" src="assets/icons/logo.svg" alt="">
+  <div class="wn">Anatomi<span class="ln">Lingo</span></div>
+  <div class="ld"><div></div></div>
+</div>
 <div id="app"></div>
+<script src="js/content.js"></script>
 <script src="js/data.js"></script>
+<script src="js/icons.js"></script>
 <script src="js/app.js"></script>
 <script>
 if ('serviceWorker' in navigator) {

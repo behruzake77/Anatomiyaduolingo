@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/* Dark-mode custom variant: `.dark` class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Poppins (local, offline) ---------- */
+@font-face { font-family: "Poppins"; font-weight: 400; font-display: swap; src: url("/fonts/poppins-400.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 500; font-display: swap; src: url("/fonts/poppins-500.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 600; font-display: swap; src: url("/fonts/poppins-600.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 700; font-display: swap; src: url("/fonts/poppins-700.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 800; font-display: swap; src: url("/fonts/poppins-800.woff2") format("woff2"); }
+
+/* ---------- Semantic surface tokens (light + dark) ---------- */
+:root {
+  --bg: #F8F9FA;
+  --surface: #FFFFFF;
+  --surface-2: #F1F2F7;
+  --ink: #2D3436;
+  --muted: #6B7280;
+  --line: #E9ECF2;
+}
+.dark {
+  --bg: #12131A;
+  --surface: #1C1D27;
+  --surface-2: #24252F;
+  --ink: #F8FAFC;
+  --muted: #9CA3AF;
+  --line: #2A2B36;
+}
+
+/* ---------- Design tokens → Tailwind utilities ---------- */
+@theme inline {
+  --color-primary: #6C5CE7;
+  --color-primary-soft: #A29BFE;
+  --color-primary-deep: #5A4BD1;
+  --color-success: #00B894;
+  --color-accent: #FD79A8;
+  --color-danger: #EF4444;
+  --color-warning: #F59E0B;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-soft: 0 4px 12px rgba(108, 92, 231, 0.10);
+  --shadow-card: 0 8px 24px rgba(45, 52, 54, 0.08);
+  --shadow-pop: 0 12px 40px -8px rgba(108, 92, 231, 0.35);
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+}
+* { -webkit-tap-highlight-color: transparent; }
+
+/* a11y focus ring */
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; border-radius: 6px; }
+
+/* hide scrollbars for horizontal snap rows */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

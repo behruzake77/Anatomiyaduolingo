@@ -1,22 +1,75 @@
 # 🦴 AnatomiLingo
 
-Anatomiyani interaktiv o'rganish uchun professional mobil (PWA) ilova. Birinchi kurs — **Columna vertebralis** (umurtqa pog'onasi), `Columna-vertebralis.pdf` prezentatsiyasi asosida tuzilgan.
+Anatomiyani **Duolingo uslubida** o'rganish uchun premium, mobile-first (PWA) o'quv platformasi.
 
-## Bo'limlar
+> "Anatomiyani o'rgan. Hayotni boshqar."
 
-| Bo'lim | Tavsif |
+## Asosiy kontent manbalari
+
+Ilova to'rtta hujjatga tayangan holda qurilgan (ixtiro qilingan mazmun emas):
+
+| Manba | Mazmun |
 |---|---|
-| 📖 **O'rganish** | 4 modul, 12 dars, 110+ mashq — ketma-ket ochiladi, progress kuzatiladi |
-| 🧠 **Atlas** | Nazariy material: atamalar jadvali (lotin + o'zbek), PDF rasmlari va **11 ta interaktiv 3D model** (Sketchfab, ochiq ta'lim manbalari: Univ. of Michigan BlueLink, Elon Univ., Leiden UMC) |
-| 🎓 **Imtihon** | Yakuniy imtihon (20 savol, 10 daqiqa taymer, 70% o'tish balli), aqlli takrorlash, tezkor mashq |
-| 👤 **Profil** | Statistika: XP, streak, o'zlashtirilgan savollar, imtihon rekordi |
+| **Anatomiya I jild** (A. Ahmedov va boshq., 2018) | Osteologiya, artrologiya, miologiya, hazm va nafas a'zolari |
+| **Anatomiya II jild** (A. Ahmedov va boshq., 2018) | Siydik-tanosil, endokrin, yurak-tomir, nerv, sezgi a'zolari |
+| **Odam anatomiyasi — Atlas I/II jild** (N.K. Ahmedov, 2004–2005) | Vizual anatomik manba |
+| Sketchfab ochiq ta'lim 3D modellari | Interaktiv 3D anatomiya |
 
-## O'quv metodikasi
+## Kontent quvuri (pipeline)
 
-- **Aqlli takrorlash (spaced repetition)** — har bir savol bo'yicha daraja saqlanadi (0→5), interval: 0/1/3/7/16/35 kun. Unutish arafasidagi savollar avtomatik navbatga chiqadi
-- **Xato savollar** dars ichida qayta so'raladi va takrorlash bazasiga qo'shiladi
-- **5 xil mashq turi**: test, rasm bo'yicha aniqlash, moslashtirish, atama yig'ish, to'g'ri/noto'g'ri
-- **Gamifikatsiya**: XP, yuraklar (30 daqiqada tiklanadi), kunlik streak. Imtihon va tezkor mashq yuraklarsiz ishlaydi
+```
+KITOB → BOB → MAVZU → DARS → ANATOMIK TUZILMA → TUSHUNTIRISH → SAVOLLAR → QUIZ → PROGRESS
+  │                                                          ▲
+  └────────────── ATLAS (vizual manba) ──────────────────────┘
+```
+
+- **`js/content.js`** — kitoblar ro'yxati (`BOOKS`) va to'liq **o'quv dasturi xaritasi** (`CURRICULUM`): har bir bo'lim/mavzu uchun manba sahifasi.
+- **`js/data.js`** — darslar, savollar, tizimlar, atlas ob'yektlari. Har bir dars `source: {book, page}` manba havolasiga ega.
+
+## O'quv tuzilmasi — 19 modul, 46 dars, 505 mashq
+
+**I jild:** Suyaklar (u1–u9) · Bo'g'imlar (u10) · Mushaklar (u11) · Hazm (u12) · Nafas (u13)
+**II jild:** Siydik (u14) · Jinsiy (u15) · Endokrin (u16) · Yurak-tomir (u17) · Nerv (u18) · Sezgi a'zolari (u19)
+
+### 8 xil savol turi
+
+`quiz` (test) · `img` (rasmni aniqlash) · `match` (moslashtirish) · `build` (atama yig'ish) · `tf` (to'g'ri/noto'g'ri) · `order` (tartiblash) · `fill` (bo'sh joyni to'ldirish) · `func` (tuzilma → vazifa)
+
+Har bir savol: `explanation` (izoh), manba bo'limi va mavzu. Savollar kitob mazmunidan olinadi.
+
+### Dars o'rganish oqimi
+
+```
+SLAYDLAR (kirish → vizual → tushuntirish → manba)
+   ↓
+SAVOLLAR (interaktiv)
+   ↓
+NATIJA (XP, aniqlik, qayta ishlash)
+```
+
+## Anatomiya atlasi — 2D asosiy + 3D qo'shimcha
+
+- **2D (asosiy)**: 14 ta nazariy mavzuning har birida Atlas/kitobdan olingan **haqiqiy 2D tasvir** (`cover`). Mavzu ichida: 2D rasm + atamalar jadvali (kitob ma'lumoti) + manba sahifasi.
+- **3D (qo'shimcha, lazy)**: faqat `m3d` bor mavzularda **[3D KO'RISH]** tugmasi — bosilgandagina Sketchfab iframe yuklanadi (aylantirish, kattalashtirish, yorliqlar).
+- Oqim: `2D tasvir → kitob ma'lumoti → [ixtiyoriy 3D] → dars/quiz`.
+- Atlas PDF'laridan olingan sahifa rasmlari: `assets/img/atlas/*.jpg`.
+
+## Funksiyalar
+
+- 🎯 **Kunlik maqsad**, ⭐ **daraja**, 🔥 **streak**, ❤️ **yuraklar**
+- 🏅 **12 ta yutuq (badges)**
+- 🔁 **Spaced repetition** (0/1/3/7/16/35 kun) — xatolar va unutilayotgan savollar avtomatik qaytadi
+- 📊 **Mastery** — har bir tizim bo'yicha o'zlashtirish % (≥80% = "O'zlashtirilgan")
+- 🗺️ **Anatomiya atlasi** — ob'yektlar: Uzbek + Latin + English nom, vazifa, bog'liq darslar, "O'rganish" tugmasi
+- 🔖 **Xatcho'plar**, ⚙️ **sozlamalar**, haftalik XP grafigi
+- 📖 Darsda **manba havolasi** (masalan: "Anatomiya II jild, 77–92-bet")
+
+## Dizayn tizimi
+
+- Dark navy (`#090D18`) + glassmorphism, Poppins/Inter, **Lucide** inline SVG ikonkalar
+- Markazlashgan dizayn tokenlari (`css/style.css`)
+- Custom logo (chap yarmi suyak / o'ng yarmi mushak)
+- Izchil anatomiya illyustratsiyalari (generatsiya qilingan, yagona uslub)
 
 ## Ishga tushirish
 
@@ -24,26 +77,31 @@ Anatomiyani interaktiv o'rganish uchun professional mobil (PWA) ilova. Birinchi 
 python3 -m http.server 8000
 ```
 
-Brauzerda `http://localhost:8000` oching. PWA sifatida telefonga o'rnatish mumkin, asosiy kontent offline ishlaydi (3D modellarga internet kerak).
+Brauzerda `http://localhost:8000` (PWA sifatida o'rnatish mumkin; 3D modellarga internet kerak).
 
 ## Tuzilishi
 
 ```
-index.html            — kirish nuqtasi
+index.html            — kirish nuqtasi + splash
 manifest.webmanifest  — PWA manifest
 sw.js                 — service worker (offline kesh)
-css/style.css         — dizayn (Inter shrifti, professional tibbiy uslub)
-js/data.js            — COURSE (darslar), ATLAS (nazariya + 3D), EXAM (sozlamalar)
-js/app.js             — ilova logikasi, SRS, imtihon taymeri (progress localStorage'da)
+css/style.css         — dizayn tizimi
+js/content.js         — BOOKS + CURRICULUM (kontent xaritasi)
+js/data.js            — COURSE, ATLAS, SYSTEMS, ATLAS_CATS, QUICK, EXAM
+js/icons.js           — Lucide inline SVG ikonkalar
+js/app.js             — ilova logikasi (SRS, mastery, yutuqlar, router)
+assets/img/illu/      — anatomiya illyustratsiyalari
+assets/img/atlas/     — atlas sahifa rasmlari
 assets/img/           — PDF'dan olingan dars rasmlari
-assets/icons/         — ilova ikonkalari
-assets/fonts/         — Inter (lokal, offline)
+docs/screenshots/     — ekran skrinshotlari
+*.pdf                 — manba hujjatlar (kitoblar + atlas)
 ```
 
 ## Yangi mavzu qo'shish
 
-1. **Darslar**: `js/data.js` → `COURSE.units[]` ga yangi modul/darslar qo'shing
-2. **Nazariya**: `ATLAS[]` ga mavzu qo'shing (`sections[].terms` — atamalar, `m3d[].uid` — Sketchfab model ID)
-3. Yangi PDF'dan rasm olish: `pymupdf` bilan eng katta rasmlarni `assets/img/` ga eksport qiling
+1. `js/content.js` → `CURRICULUM`ga bo'lim/mavzu va manba sahifasini qo'shing
+2. `js/data.js` → `COURSE.units[]` (darslar, `source`, `slides`, savollar), `UNIT_META`
+3. `SYSTEMS[]` va `ATLAS_CATS[]` ni yangilang
+4. Illyustratsiya: `assets/img/illu/`ga yagona uslubdagi rasm
 
-Mashq turlari: `quiz` (q, opts, a, hint?), `img` (+img), `match` (pairs), `build` (q, answer, extra), `tf` (q, a, why?).
+Savol formatlari: `quiz/q opts a hint? explanation?`, `img +img`, `match pairs`, `build q answer extra`, `tf q a why?`, `order q items explanation?`, `fill q answer extra explanation?`, `func q opts a`.
