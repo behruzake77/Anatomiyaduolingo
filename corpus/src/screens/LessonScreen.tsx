@@ -4,11 +4,10 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Check, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Lightbox, type LightboxMarker } from "@/components/ui/Lightbox";
+import { Lightbox } from "@/components/ui/Lightbox";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
 import { lessonById, unitOfLesson, sortByDifficulty, difficultyOf, type Question, type Lesson, type Difficulty } from "@/data/content";
-import { LESSON_MARKERS } from "@/data/markers";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
@@ -116,13 +115,6 @@ function SlideView(props: {
   const [zoom, setZoom] = useState(false);
   const [find, setFind] = useState<string | null>(null);
 
-  const markers: LightboxMarker[] | undefined = useMemo(() => {
-    const raw = LESSON_MARKERS[lesson.id];
-    if (!raw || raw.length === 0) return undefined;
-    const byN = new Map((slide.legend ?? []).map((l) => [l.n, l.name]));
-    return raw.map((m) => ({ n: m.n, x: m.x, y: m.y, approx: m.approx, name: byN.get(m.n) ?? m.n }));
-  }, [lesson.id, slide.legend]);
-
   const findName = find ? (slide.legend?.find((l) => l.n === find)?.name ?? find) : null;
 
   return (
@@ -186,7 +178,6 @@ function SlideView(props: {
           }}
           labels={{ close: t.zoomClose, zoomIn: t.zoomIn, zoomOut: t.zoomOut, reset: t.zoomReset, list: t.legendList }}
           banner={findName ? t.findPart.replace("{n}", find ?? "").replace("{name}", findName) : undefined}
-          markers={markers}
           legend={slide.legend}
         />
       )}

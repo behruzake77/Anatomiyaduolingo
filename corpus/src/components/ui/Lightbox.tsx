@@ -28,14 +28,6 @@ interface LightboxLabels {
   list?: string;
 }
 
-export interface LightboxMarker {
-  n: string;
-  x: number;
-  y: number;
-  name: string;
-  approx?: boolean;
-}
-
 interface LightboxProps {
   src: string;
   alt?: string;
@@ -43,9 +35,7 @@ interface LightboxProps {
   labels?: LightboxLabels;
   /** Yuqorida ko'rsatiladigan topish ko'rsatmasi (masalan: "№3 — ... ni toping") */
   banner?: string;
-  /** Rasm ustida bosiladigan raqamli nishonlar (0..1 nisbiy koordinata) */
-  markers?: LightboxMarker[];
-  /** Raqamlangan qismlar ro'yxati (kitob izohi) — har doim to'g'ri, nishonsiz ham ishlaydi */
+  /** Raqamlangan qismlar ro'yxati (kitob izohi) — har doim to'g'ri */
   legend?: { n: string; name: string }[];
 }
 
@@ -65,13 +55,12 @@ function clampPos(scale: number, x: number, y: number, w: number, h: number): Pt
   return { x: Math.min(mx, Math.max(-mx, x)), y: Math.min(my, Math.max(-my, y)) };
 }
 
-export function Lightbox({ src, alt = "", onClose, labels, banner, markers, legend }: LightboxProps) {
+export function Lightbox({ src, alt = "", onClose, labels, banner, legend }: LightboxProps) {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState<Pt>({ x: 0, y: 0 });
   const [gesturing, setGesturing] = useState(false);
-  const [activeN, setActiveN] = useState<string | null>(null);
   const [listOpen, setListOpen] = useState<boolean>(!!banner);
 
   // Manba sifatida ref-lar (gesture ichida eskirgan holatdan qochish uchun).
@@ -308,66 +297,21 @@ export function Lightbox({ src, alt = "", onClose, labels, banner, markers, lege
             onDragStart={(e) => e.preventDefault()}
             className="max-h-[78vh] max-w-[92vw] select-none object-contain"
           />
-          {markers?.map((m) => {
-            const active = activeN === m.n;
-            return (
-              <button
-                key={m.n}
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveN(active ? null : m.n);
-                }}
-                aria-label={`${m.n} — ${m.name}`}
-                className={cn(
-                  "absolute flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 text-[11px] font-bold transition-transform",
-                  active
-                    ? "scale-125 border-white bg-primary text-white shadow-lg"
-                    : "border-primary bg-white/90 text-primary shadow",
-                  m.approx && !active && "border-dashed",
-                )}
-                style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }}
-              >
-                {m.n}
-              </button>
-            );
-          })}
         </div>
       </div>
 
-      {/* Faol qism nomi */}
-      {activeN && (
-        <div className="flex justify-center px-4 pb-1">
-          <span className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-white">
-            {legend?.find((l) => l.n === activeN)?.name ?? markers?.find((m) => m.n === activeN)?.name ?? activeN}
-          </span>
-        </div>
-      )}
-
       {/* Raqamlangan qismlar ro'yxati (kitob izohi) — har doim to'g'ri */}
-      {legend && legend.length > 0 && (
-        <>
-          {listOpen && (
-            <ul className="mx-4 mb-2 max-h-40 overflow-y-auto rounded-2xl border border-white/10 bg-white/5 p-2">
-              {legend.map((it) => (
-                <li key={it.n}>
-                  <button
-                    onClick={() => setActiveN(activeN === it.n ? null : it.n)}
-                    className={cn(
-                      "flex w-full items-start gap-2 rounded-lg px-2 py-1 text-left text-[13px] leading-snug text-white/90 transition-colors",
-                      activeN === it.n ? "bg-primary/40 text-white" : "hover:bg-white/10",
-                    )}
-                  >
-                    <span className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md bg-white/15 px-1 text-[11px] font-bold text-white">
-                      {it.n}
-                    </span>
-                    <span className="text-white">{it.name}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </>
+      {legend && legend.length > 0 && listOpen && (
+        <ul className="mx-4 mb-2 max-h-40 overflow-y-auto rounded-2xl border border-white/10 bg-white/5 p-2">
+          {legend.map((it, i) => (
+            <li key={`${it.n}-${i}`} className="flex items-start gap-2 px-2 py-1 text-left text-[13px] leading-snug text-white/90">
+              <span className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md bg-white/15 px-1 text-[11px] font-bold text-white">
+                {it.n}
+              </span>
+              <span className="text-white">{it.name}</span>
+            </li>
+          ))}
+        </ul>
       )}
 
       {/* Pastki boshqaruv */}
