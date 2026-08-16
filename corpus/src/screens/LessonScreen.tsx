@@ -120,7 +120,7 @@ function SlideView(props: {
     const raw = LESSON_MARKERS[lesson.id];
     if (!raw || raw.length === 0) return undefined;
     const byN = new Map((slide.legend ?? []).map((l) => [l.n, l.name]));
-    return raw.map((m) => ({ n: m.n, x: m.x, y: m.y, name: byN.get(m.n) ?? m.n }));
+    return raw.map((m) => ({ n: m.n, x: m.x, y: m.y, approx: m.approx, name: byN.get(m.n) ?? m.n }));
   }, [lesson.id, slide.legend]);
 
   const findName = find ? (slide.legend?.find((l) => l.n === find)?.name ?? find) : null;

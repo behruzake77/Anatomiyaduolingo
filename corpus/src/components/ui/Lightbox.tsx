@@ -32,6 +32,7 @@ export interface LightboxMarker {
   x: number;
   y: number;
   name: string;
+  approx?: boolean;
 }
 
 interface LightboxProps {
@@ -319,6 +320,7 @@ export function Lightbox({ src, alt = "", onClose, labels, banner, markers }: Li
                   active
                     ? "scale-125 border-white bg-primary text-white shadow-lg"
                     : "border-primary bg-white/90 text-primary shadow",
+                  m.approx && !active && "border-dashed",
                 )}
                 style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }}
               >
