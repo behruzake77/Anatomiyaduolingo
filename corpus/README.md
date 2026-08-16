@@ -7,9 +7,9 @@ medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, i
 
 Kontent **A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi + "Odam anatomiyasi Atlas"** dan olinadi — ixtiro qilinmagan.
 
-**Jami: 11 tizim · 34 bo'lim · 80 dars · 953 savol** (butun kitob).
+**Jami: 11 tizim · 34 bo'lim · 83 dars · 953 savol** (butun kitob).
 
-**Vizual qamrov**: har bir darsda rasmli kirish slaydi (haqiqiy atlas yoki toza illyustratsiya) + rasmli savollar (img turi) — tasavvurni kuchaytirish uchun.
+**Vizual qamrov**: har bir darsda rasmli kirish slaydi (haqiqiy atlas yoki toza illyustratsiya) + rasmli savollar (img turi) — tasavvurni kuchaytirish uchun. Har bir rasmni bosib **to'liq ekranda kattalashtirib o'qish** mumkin (chimchilab zoom, surib ko'chirish, ikki marta bosish, sichqoncha g'ildiragi, +/− tugmalari, ESC yopish).
 
 | Tizim | Bo'limlar | Darslar |
 |---|---|---|

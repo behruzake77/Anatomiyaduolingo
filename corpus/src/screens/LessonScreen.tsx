@@ -2,8 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Check, Play, BookOpen } from "lucide-react";
+import { X, Check, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { Lightbox } from "@/components/ui/Lightbox";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
 import { lessonById, unitOfLesson, sortByDifficulty, difficultyOf, type Question, type Lesson, type Difficulty } from "@/data/content";
@@ -118,11 +119,7 @@ function SlideView(props: {
         <h1 className="mt-2 text-2xl font-semibold leading-snug">{slide.title}</h1>
       </div>
 
-      {slide.img && (
-        <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-          <img src={slide.img} alt="" className="mx-auto max-h-56 object-contain" />
-        </div>
-      )}
+      {slide.img && <ZoomableImage src={slide.img} alt={slide.title} maxH="max-h-56" showHint />}
 
       <p className="mt-4 text-sm leading-relaxed text-muted">{slide.text}</p>
       {slide.cap && <p className="mt-2 text-xs italic text-muted">{slide.cap}</p>}
@@ -136,6 +133,44 @@ function SlideView(props: {
         </Button>
       </div>
     </div>
+  );
+}
+
+/* ---------- Kattalashtiriladigan rasm ---------- */
+function ZoomableImage(props: { src: string; alt: string; maxH: string; showHint?: boolean }) {
+  const { src, alt, maxH, showHint } = props;
+  const t = useStrings();
+  const [zoom, setZoom] = useState(false);
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setZoom(true)}
+        aria-label={t.zoomHint}
+        className="group relative mt-4 block w-full overflow-hidden rounded-2xl border border-line bg-white shadow-card"
+      >
+        <span className="relative mx-auto block w-fit max-w-full">
+          <img src={src} alt={alt} className={cn("max-w-full object-contain", maxH)} />
+          <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors group-hover:bg-primary">
+            <ZoomIn className="h-4 w-4" aria-hidden />
+          </span>
+          {showHint && (
+            <span className="absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-black/50 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+              {t.zoomHint}
+            </span>
+          )}
+        </span>
+      </button>
+
+      {zoom && (
+        <Lightbox
+          src={src}
+          alt={alt}
+          onClose={() => setZoom(false)}
+          labels={{ close: t.zoomClose, zoomIn: t.zoomIn, zoomOut: t.zoomOut, reset: t.zoomReset }}
+        />
+      )}
+    </>
   );
 }
 
@@ -211,11 +246,7 @@ function ChoiceUI(props: { q: Question; onCorrect: () => void; onNext: () => voi
         <h1 className="mt-2 text-2xl font-semibold leading-snug">{q.prompt}</h1>
       </div>
 
-      {q.image && (
-        <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-          <img src={q.image} alt="Anatomiya rasmi" className="mx-auto max-h-52 object-contain" />
-        </div>
-      )}
+      {q.image && <ZoomableImage src={q.image} alt="Anatomiya rasmi" maxH="max-h-52" />}
 
       <div className="mt-5 flex flex-col gap-3">
         <AnimatePresence>

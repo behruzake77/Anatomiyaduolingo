@@ -73,6 +73,12 @@ export const STR: Record<Lang, Strings> = {
     hard: "Qiyin",
     quitLesson: "Darsni tark etish",
 
+    zoomHint: "Kattalashtirib o'qish",
+    zoomClose: "Yopish",
+    zoomIn: "Kattalashtirish",
+    zoomOut: "Kichraytirish",
+    zoomReset: "Asliga qaytarish",
+
     greatJob: "Ajoyib natija!",
     xpEarned: "XP to'plandi",
     answered: "Javob berildi",
@@ -190,6 +196,12 @@ export const STR: Record<Lang, Strings> = {
     medium: "Medium",
     hard: "Hard",
     quitLesson: "Quit lesson",
+
+    zoomHint: "Zoom to read",
+    zoomClose: "Close",
+    zoomIn: "Zoom in",
+    zoomOut: "Zoom out",
+    zoomReset: "Reset",
 
     greatJob: "Great Job!",
     xpEarned: "XP earned",
