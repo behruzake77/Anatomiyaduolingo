@@ -11,7 +11,7 @@ medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, i
 
 **Jami: 11 tizim · 34 bo'lim · 83 dars · 953 savol** (butun kitob, 83/83 dars manbali).
 
-**Vizual qamrov**: har bir darsda rasmli kirish slaydi + **46 ta rasmli savol** (img turi). **31 darsga kitobdan (Ahmedov I jild) kesilgan o'z rasmi** berilgan — suyaklar (25) va bo'g'imlar (6) — umumiy skelet emas, aynan o'rganilayotgan qism. Shundan **8 tasi ko'ndalang kesma (rang bilan ajratilgan)**. Har bir rasmni bosib **to'liq ekranda kattalashtirib o'qish** mumkin (chimchilab zoom, surib ko'chirish, ikki marta bosish, sichqoncha g'ildiragi, +/− tugmalari, ESC yopish).
+**Vizual qamrov**: har bir darsda rasmli kirish slaydi + **46 ta rasmli savol** (img turi). **31 darsga kitobdan (Ahmedov I jild) kesilgan o'z rasmi** berilgan — suyaklar (25) va bo'g'imlar (6) — umumiy skelet emas, aynan o'rganilayotgan qism. **Har bir kitob rasmi raqamlangan qismlar ro'yxati bilan** keladi (masalan Atlas C1: 1-tuberculum anterius … 9-fovea dentis) — tibbiyot uchun har bir qism nomi raqam bilan ko'rsatiladi. Shundan **8 tasi ko'ndalang kesma (rang bilan ajratilgan)**. Har bir rasmni bosib **to'liq ekranda kattalashtirib o'qish** mumkin (chimchilab zoom, surib ko'chirish, ikki marta bosish, sichqoncha g'ildiragi, +/− tugmalari, ESC yopish).
 
 | Tizim | Bo'limlar | Darslar |
 |---|---|---|

@@ -35,7 +35,7 @@ export interface Lesson {
   /** kitob manbasi */
   source?: { book: string; page: string };
   /** dars boshidagi o'rganish slaydlari */
-  slides?: { title: string; text: string; img?: string; cap?: string }[];
+  slides?: { title: string; text: string; img?: string; cap?: string; legend?: { n: string; name: string }[] }[];
 }
 
 export interface SystemUnit {

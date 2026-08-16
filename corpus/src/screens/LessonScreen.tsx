@@ -103,7 +103,7 @@ export function LessonScreen() {
 /* ---------- Slayd (kirish) ---------- */
 function SlideView(props: {
   lesson: Lesson;
-  slide: { title: string; text: string; img?: string; cap?: string };
+  slide: { title: string; text: string; img?: string; cap?: string; legend?: { n: string; name: string }[] };
   slideNo: number;
   slideTotal: number;
   onNext: () => void;
@@ -120,6 +120,22 @@ function SlideView(props: {
       </div>
 
       {slide.img && <ZoomableImage src={slide.img} alt={slide.title} maxH="max-h-56" showHint />}
+
+      {slide.legend && slide.legend.length > 0 && (
+        <div className="mt-4 rounded-2xl border border-line bg-surface2 p-3">
+          <p className="mb-2 text-xs font-bold uppercase tracking-wider text-primary">{t.imageParts}</p>
+          <ul className="grid max-h-56 grid-cols-1 gap-1 overflow-y-auto pr-1">
+            {slide.legend.map((it, i) => (
+              <li key={i} className="flex items-start gap-2 text-[13px] leading-snug">
+                <span className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md bg-primary/15 px-1 text-[11px] font-bold text-primary">
+                  {it.n}
+                </span>
+                <span className="text-ink">{it.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <p className="mt-4 text-sm leading-relaxed text-muted">{slide.text}</p>
       {slide.cap && <p className="mt-2 text-xs italic text-muted">{slide.cap}</p>}

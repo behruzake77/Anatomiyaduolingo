@@ -78,6 +78,7 @@ export const STR: Record<Lang, Strings> = {
     zoomIn: "Kattalashtirish",
     zoomOut: "Kichraytirish",
     zoomReset: "Asliga qaytarish",
+    imageParts: "Rasm qismlari (raqamlar)",
 
     greatJob: "Ajoyib natija!",
     xpEarned: "XP to'plandi",
@@ -202,6 +203,7 @@ export const STR: Record<Lang, Strings> = {
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     zoomReset: "Reset",
+    imageParts: "Labeled parts",
 
     greatJob: "Great Job!",
     xpEarned: "XP earned",

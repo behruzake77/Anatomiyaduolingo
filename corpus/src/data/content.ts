@@ -14,6 +14,7 @@ import { REPRODUCTIVE_DETAIL, ENDOCRINE_DETAIL } from "./glands";
 import { NECK_HEAD_MUSCLES, VESSELS_DETAIL } from "./neckvessels";
 import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
 import { IMG_QUESTIONS, VISUAL_SLIDES, LESSON_IMAGES } from "./visuals";
+import { LESSON_LEGENDS } from "./labels";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -139,6 +140,7 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
               text: lesson.description,
               img: lessonImg ?? s.img,
               cap: lessonImg && lesson.source ? `${lesson.source.book}, ${lesson.source.page}-bet` : s.text,
+              legend: LESSON_LEGENDS[lesson.id],
             },
           ],
         };
