@@ -13,7 +13,7 @@ import { DIGESTIVE_DETAIL, RESPIRATORY_DETAIL, URINARY_DETAIL } from "./splanchn
 import { REPRODUCTIVE_DETAIL, ENDOCRINE_DETAIL } from "./glands";
 import { NECK_HEAD_MUSCLES, VESSELS_DETAIL } from "./neckvessels";
 import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
-import { IMG_QUESTIONS, VISUAL_SLIDES } from "./visuals";
+import { IMG_QUESTIONS, VISUAL_SLIDES, LESSON_IMAGES } from "./visuals";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -129,9 +129,18 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
       // slaydsiz darsga rasmli kirish slaydi
       if (!patched.slides || patched.slides.length === 0) {
         const s = slideFor();
+        // Kitobdan kesilgan aniq rasm (har bir qismning o'z rasmi) — yo'q bo'lsa tizim rasmi.
+        const lessonImg = LESSON_IMAGES[lesson.id];
         patched = {
           ...patched,
-          slides: [{ title: lesson.title, text: lesson.description, img: s.img, cap: s.text }],
+          slides: [
+            {
+              title: lesson.title,
+              text: lesson.description,
+              img: lessonImg ?? s.img,
+              cap: lessonImg && lesson.source ? `${lesson.source.book}, ${lesson.source.page}-bet` : s.text,
+            },
+          ],
         };
       }
 

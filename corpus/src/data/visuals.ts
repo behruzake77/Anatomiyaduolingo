@@ -217,3 +217,36 @@ export const VISUAL_SLIDES: Record<string, { title: string; text: string; img: s
     img: "/img/atlas/neurocranium.jpg",
   },
 };
+
+/**
+ * Har bir darsga o'zining KITOBDAN rasmi (Ahmedov darsligi I jild, skanerlangan
+ * sahifadan kesilgan haqiqiy rasm) — umumiy skelet/orgaan rasmi emas.
+ * Kalit: dars id → rasm yo'li.
+ */
+export const LESSON_IMAGES: Record<string, string> = {
+  l1: "/img/book/l1.jpg",
+  l2: "/img/book/l2.jpg",
+  l3: "/img/book/l3.jpg",
+  l4: "/img/book/l4.jpg",
+  l5: "/img/book/l5.jpg",
+  l6: "/img/book/l6.jpg",
+  l7: "/img/book/l7.jpg",
+  l8: "/img/book/l8.jpg",
+  l9: "/img/book/l9.jpg",
+  l10: "/img/book/l10.jpg",
+  l11: "/img/book/l11.jpg",
+  l12: "/img/book/l12.jpg",
+  l13: "/img/book/l13.jpg",
+  l14: "/img/book/l14.jpg",
+  l15: "/img/book/l15.jpg",
+  l16: "/img/book/l16.jpg",
+  l17: "/img/book/l17.jpg",
+  l18: "/img/book/l18.jpg",
+  l19: "/img/book/l19.jpg",
+  l20: "/img/book/l20.jpg",
+  l21: "/img/book/l21.jpg",
+  l22: "/img/book/l22.jpg",
+  l23: "/img/book/l23.jpg",
+  l24: "/img/book/l24.jpg",
+  l25: "/img/book/l25.jpg",
+};
