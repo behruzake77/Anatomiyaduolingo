@@ -13,6 +13,7 @@ import { DIGESTIVE_DETAIL, RESPIRATORY_DETAIL, URINARY_DETAIL } from "./splanchn
 import { REPRODUCTIVE_DETAIL, ENDOCRINE_DETAIL } from "./glands";
 import { NECK_HEAD_MUSCLES, VESSELS_DETAIL } from "./neckvessels";
 import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
+import { IMG_QUESTIONS, VISUAL_SLIDES } from "./visuals";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -98,18 +99,63 @@ const BASE_SYSTEMS: ContentSystem[] = [
 ];
 
 /**
- * Yuqori saviyali (hard) savollarni har tizimning OXIRGI darsiga qo'shish —
- * talaba bo'limni yakunlash arafasida klinik/amaliy savollarga duch keladi.
+ * 1) Yuqori saviyali (hard) savollarni har tizimning OXIRGI darsiga qo'shish —
+ *    talaba bo'limni yakunlash arafasida klinik/amaliy savollarga duch keladi.
+ * 2) Rasmli (img) savollarni har tizimning BIRINCHI darsiga qo'shish.
+ * 3) Slaydi bo'lmagan har bir darsga rasmli kirish slaydi qo'shish (vizual).
  */
 export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
-  const hard = HARD_QUESTIONS[sys.id];
-  if (!hard || hard.length === 0 || sys.units.length === 0) return sys;
+  if (sys.units.length === 0) return sys;
+  const firstUnit = sys.units[0];
+  const firstLesson = firstUnit.lessons[0];
   const lastUnit = sys.units[sys.units.length - 1];
   const lastLesson = lastUnit.lessons[lastUnit.lessons.length - 1];
-  if (!lastLesson) return sys;
-  const patchedLesson: Lesson = { ...lastLesson, questions: [...lastLesson.questions, ...hard] };
-  const patchedUnit: SystemUnit = { ...lastUnit, lessons: [...lastUnit.lessons.slice(0, -1), patchedLesson] };
-  return { ...sys, units: [...sys.units.slice(0, -1), patchedUnit] };
+
+  // vizual slayd (tizim rasmi) — toza rasmi bor tizimlar uchun kirishda
+  const visualSlide = VISUAL_SLIDES[sys.id];
+  const defaultSlide = {
+    title: sys.name,
+    text: `${sys.latin} — rasmdagi tuzilmalarni o'rganing.`,
+    img: sys.image,
+  };
+  const slideFor = () => (visualSlide ? { ...visualSlide } : { ...defaultSlide });
+
+  // har bir darsga slayd (yo'q bo'lsa) va rasmli savollarni birinchi darsga qo'shish
+  const withVisuals = sys.units.map((unit, ui) => ({
+    ...unit,
+    lessons: unit.lessons.map((lesson, li) => {
+      let patched: Lesson = lesson;
+
+      // slaydsiz darsga rasmli kirish slaydi
+      if (!patched.slides || patched.slides.length === 0) {
+        const s = slideFor();
+        patched = {
+          ...patched,
+          slides: [{ title: lesson.title, text: lesson.description, img: s.img, cap: s.text }],
+        };
+      }
+
+      // rasmli savollar — tizimning birinchi darsiga
+      const imgs = IMG_QUESTIONS[sys.id];
+      if (ui === 0 && li === 0 && imgs && imgs.length) {
+        patched = { ...patched, questions: [...imgs, ...patched.questions] };
+      }
+      return patched;
+    }),
+  }));
+
+  // hard savollar — oxirgi darsga
+  const hard = HARD_QUESTIONS[sys.id];
+  let units = withVisuals;
+  if (hard && hard.length && lastLesson) {
+    const lastUnitIdx = units.length - 1;
+    const lu = units[lastUnitIdx];
+    const ll = lu.lessons[lu.lessons.length - 1];
+    const patchedLesson: Lesson = { ...ll, questions: [...ll.questions, ...hard] };
+    units = [...units.slice(0, -1), { ...lu, lessons: [...lu.lessons.slice(0, -1), patchedLesson] }];
+  }
+
+  return { ...sys, units };
 });
 
 export const ALL_LESSONS: Lesson[] = CONTENT_SYSTEMS.flatMap((s) => s.units).flatMap((u) => u.lessons);
