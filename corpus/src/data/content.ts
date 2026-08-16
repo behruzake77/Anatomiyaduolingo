@@ -12,6 +12,7 @@ import { NEUROLOGY_DETAIL, SENSORY_DETAIL } from "./neuro";
 import { DIGESTIVE_DETAIL, RESPIRATORY_DETAIL, URINARY_DETAIL } from "./splanchno";
 import { REPRODUCTIVE_DETAIL, ENDOCRINE_DETAIL } from "./glands";
 import { NECK_HEAD_MUSCLES, VESSELS_DETAIL } from "./neckvessels";
+import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -76,7 +77,7 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "nervous", name: "Asab tizimi", latin: "Systema nervosum", en: "Nervous System",
-    icon: "brain", color: "#8B6CFF", image: "/img/atlas/miya.jpg", units: [...(EXTRA_UNITS.nervous ?? []), ...NEUROLOGY_DETAIL],
+    icon: "brain", color: "#8B6CFF", image: "/img/atlas/miya.jpg", units: [...(EXTRA_UNITS.nervous ?? []), ...NEUROLOGY_DETAIL, ...PLEXUS_DETAIL],
   },
   {
     id: "urinary", name: "Siydik tizimi", latin: "Systema urinarium", en: "Urinary System",
@@ -92,7 +93,7 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "sensory", name: "Sezgi a'zolari", latin: "Organa sensuum", en: "Sensory Organs",
-    icon: "sparkles", color: "#20D9C5", image: "/img/atlas/neurocranium.jpg", units: [...(EXTRA_UNITS.sensory ?? []), ...SENSORY_DETAIL],
+    icon: "sparkles", color: "#20D9C5", image: "/img/atlas/neurocranium.jpg", units: [...(EXTRA_UNITS.sensory ?? []), ...SENSORY_DETAIL, ...SKIN_DETAIL],
   },
 ];
 

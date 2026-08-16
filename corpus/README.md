@@ -7,7 +7,7 @@ medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, i
 
 Kontent **A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi + "Odam anatomiyasi Atlas"** dan olinadi — ixtiro qilinmagan.
 
-**Jami: 11 tizim · 32 bo'lim · 76 dars · 901 savol** (butun kitob).
+**Jami: 11 tizim · 34 bo'lim · 80 dars · 945 savol** (butun kitob).
 
 | Tizim | Bo'limlar | Darslar |
 |---|---|---|
@@ -20,8 +20,8 @@ Kontent **A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi + "Odam ana
 | 👥 Jinsiy tizim | 2 | 3 |
 | ⚡ Endokrin bezlar | 2 | 3 |
 | ❤️ Yurak-qon tomir | 3 | 7 |
-| 🧠 Asab tizimi | 3 | 8 |
-| ✨ Sezgi a'zolari | 2 | 4 |
+| 🧠 Asab tizimi | 4 | 10 |
+| ✨ Sezgi a'zolari | 3 | 6 |
 
 **8 xil savol turi**: test (quiz) · rasmni aniqlash (img) · moslashtirish (match) · atama yig'ish (build) · to'g'ri/noto'g'ri (tf) · tartiblash (order) · bo'sh joyni to'ldirish (fill) · tuzilma→vazifa (func)
 
