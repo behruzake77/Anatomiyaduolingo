@@ -11,6 +11,7 @@ import { ARTROLOGY_DETAIL, MYOLOGY_DETAIL, ANGIOLOGY_DETAIL } from "./detail";
 import { NEUROLOGY_DETAIL, SENSORY_DETAIL } from "./neuro";
 import { DIGESTIVE_DETAIL, RESPIRATORY_DETAIL, URINARY_DETAIL } from "./splanchno";
 import { REPRODUCTIVE_DETAIL, ENDOCRINE_DETAIL } from "./glands";
+import { NECK_HEAD_MUSCLES, VESSELS_DETAIL } from "./neckvessels";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -59,7 +60,7 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "muscular", name: "Mushaklar tizimi", latin: "Systema musculare", en: "Muscular System",
-    icon: "activity", color: "#EC4899", image: "/img/atlas/myologia.jpg", units: [...(EXTRA_UNITS.muscular ?? []), ...MYOLOGY_DETAIL],
+    icon: "activity", color: "#EC4899", image: "/img/atlas/myologia.jpg", units: [...(EXTRA_UNITS.muscular ?? []), ...MYOLOGY_DETAIL, ...NECK_HEAD_MUSCLES],
   },
   {
     id: "digestive", name: "Hazm tizimi", latin: "Systema digestorium", en: "Digestive System",
@@ -71,7 +72,7 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "circulatory", name: "Yurak-qon tomir tizimi", latin: "Systema cardiovasculare", en: "Circulatory System",
-    icon: "heart", color: "#EF4444", image: "/img/atlas/yurak.jpg", units: [...(EXTRA_UNITS.circulatory ?? []), ...ANGIOLOGY_DETAIL],
+    icon: "heart", color: "#EF4444", image: "/img/atlas/yurak.jpg", units: [...(EXTRA_UNITS.circulatory ?? []), ...ANGIOLOGY_DETAIL, ...VESSELS_DETAIL],
   },
   {
     id: "nervous", name: "Asab tizimi", latin: "Systema nervosum", en: "Nervous System",
