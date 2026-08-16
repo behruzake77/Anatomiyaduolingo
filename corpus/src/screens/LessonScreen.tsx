@@ -184,9 +184,10 @@ function SlideView(props: {
             setZoom(false);
             setFind(null);
           }}
-          labels={{ close: t.zoomClose, zoomIn: t.zoomIn, zoomOut: t.zoomOut, reset: t.zoomReset }}
+          labels={{ close: t.zoomClose, zoomIn: t.zoomIn, zoomOut: t.zoomOut, reset: t.zoomReset, list: t.legendList }}
           banner={findName ? t.findPart.replace("{n}", find ?? "").replace("{name}", findName) : undefined}
           markers={markers}
+          legend={slide.legend}
         />
       )}
 

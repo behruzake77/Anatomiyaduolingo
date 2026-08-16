@@ -81,6 +81,7 @@ export const STR: Record<Lang, Strings> = {
     imageParts: "Rasm qismlari (raqamlar)",
     tapToFind: "qismni bossangiz, rasmda topishga yordam beradi",
     findPart: "№{n} — {name} ni rasmda toping",
+    legendList: "Ro'yxat",
 
     greatJob: "Ajoyib natija!",
     xpEarned: "XP to'plandi",
@@ -208,6 +209,7 @@ export const STR: Record<Lang, Strings> = {
     imageParts: "Labeled parts",
     tapToFind: "tap a part to locate it on the image",
     findPart: "Find №{n} — {name} on the image",
+    legendList: "List",
 
     greatJob: "Great Job!",
     xpEarned: "XP earned",
