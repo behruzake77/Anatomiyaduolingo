@@ -10,6 +10,7 @@ import { HARD_QUESTIONS } from "./hardQuestions";
 import { ARTROLOGY_DETAIL, MYOLOGY_DETAIL, ANGIOLOGY_DETAIL } from "./detail";
 import { NEUROLOGY_DETAIL, SENSORY_DETAIL } from "./neuro";
 import { DIGESTIVE_DETAIL, RESPIRATORY_DETAIL, URINARY_DETAIL } from "./splanchno";
+import { REPRODUCTIVE_DETAIL, ENDOCRINE_DETAIL } from "./glands";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -82,11 +83,11 @@ const BASE_SYSTEMS: ContentSystem[] = [
   },
   {
     id: "reproductive", name: "Jinsiy tizim", latin: "Systema genitale", en: "Reproductive System",
-    icon: "users", color: "#F472B6", image: "/img/atlas/jinsiy.jpg", units: EXTRA_UNITS.reproductive ?? [],
+    icon: "users", color: "#F472B6", image: "/img/atlas/jinsiy.jpg", units: [...(EXTRA_UNITS.reproductive ?? []), ...REPRODUCTIVE_DETAIL],
   },
   {
     id: "endocrine", name: "Endokrin bezlar", latin: "Systema endocrinum", en: "Endocrine System",
-    icon: "activity", color: "#F59E0B", image: "/img/atlas/endokrin.jpg", units: EXTRA_UNITS.endocrine ?? [],
+    icon: "activity", color: "#F59E0B", image: "/img/atlas/endokrin.jpg", units: [...(EXTRA_UNITS.endocrine ?? []), ...ENDOCRINE_DETAIL],
   },
   {
     id: "sensory", name: "Sezgi a'zolari", latin: "Organa sensuum", en: "Sensory Organs",
