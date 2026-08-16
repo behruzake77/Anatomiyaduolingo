@@ -38,6 +38,15 @@ export const IMG_QUESTIONS: Record<string, Question[]> = {
       difficulty: "easy",
       hint: "Organizmdagi eng katta bez",
     }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning kesmasi ko'rsatilgan?",
+      image: "/img/cross/tooth-cross.jpg",
+      options: ["Tish (dens)", "Suyak", "Tirnoq", "Tog'ay"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Emal, dentin va pulpa qatlamlari rang bilan ajratilgan",
+    }),
   ],
   respiratory: [
     q({
@@ -60,6 +69,15 @@ export const IMG_QUESTIONS: Record<string, Question[]> = {
       difficulty: "easy",
       hint: "Loviyasimon, qonni filtrlaydi",
     }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zoning kesmasi ko'rsatilgan?",
+      image: "/img/cross/kidney-cross.jpg",
+      options: ["Buyrak (Ren)", "Jigar", "Taloq", "O'pka"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Po'stloq, mag'iz va jom (pelvis) rang bilan ajratilgan",
+    }),
   ],
   circulatory: [
     q({
@@ -70,6 +88,15 @@ export const IMG_QUESTIONS: Record<string, Question[]> = {
       answer: 1,
       difficulty: "easy",
       hint: "Qon aylanish tizimining markaziy a'zosi",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning ko'ndalang kesmasi ko'rsatilgan?",
+      image: "/img/cross/artery-cross.jpg",
+      options: ["Arteriya (qon tomir)", "Bronx", "Qizilo'ngach", "Siydik nayi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Devor uch qavatli — qatlamlar rang bilan ajratilgan",
     }),
   ],
   nervous: [
@@ -82,6 +109,15 @@ export const IMG_QUESTIONS: Record<string, Question[]> = {
       difficulty: "easy",
       hint: "Asab tizimining boshqaruv markazi",
     }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning ko'ndalang kesmasi ko'rsatilgan?",
+      image: "/img/cross/spinal-cord-cross.jpg",
+      options: ["Orqa miya (medulla spinalis)", "Bosh miya", "Periferik nerv", "Miyacha"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Kulrang modda «H» shaklida — rang bilan ajratilgan",
+    }),
   ],
   skeletal: [
     q({
@@ -92,6 +128,68 @@ export const IMG_QUESTIONS: Record<string, Question[]> = {
       answer: 1,
       difficulty: "easy",
       hint: "Suyaklardan tashkil topgan tayanch",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning ko'ndalang kesmasi ko'rsatilgan?",
+      image: "/img/cross/bone-cross.jpg",
+      options: ["Uzun suyak (os longum)", "Mushak", "Qon tomir", "Asab"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Kompakt va g'ovak modda, markazida ilik — rang bilan ajratilgan",
+    }),
+  ],
+  arthrology: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilma ko'rsatilgan?",
+      image: "/img/cross/joint-cross.jpg",
+      options: ["Bo'g'im (articulatio)", "Suyak", "Chok (sutura)", "Pay (tendo)"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Bo'g'im tog'ayi, xalta va bo'shliq — rang bilan ajratilgan",
+    }),
+  ],
+  reproductive: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tizim ko'rsatilgan?",
+      image: "/img/atlas/jinsiy.jpg",
+      options: ["Jinsiy a'zolar tizimi", "Siydik tizimi", "Hazm tizimi", "Nafas tizimi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Ko'payish vazifasini bajaradi",
+    }),
+  ],
+  endocrine: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi bez ko'rsatilgan?",
+      image: "/img/atlas/endokrin.jpg",
+      options: ["Gipofiz (hypophysis)", "Qalqonsimon bez", "Oshqozon osti bezi", "Buyrak usti bezi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Endokrin tizimning markaziy bezi",
+    }),
+  ],
+  sensory: [
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi a'zoning kesmasi ko'rsatilgan?",
+      image: "/img/cross/eye-cross.jpg",
+      options: ["Ko'z (oculus)", "Quloq", "Miya", "Burun"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Gavhar (lens) va shishasimon tana — rang bilan ajratilgan",
+    }),
+    q({
+      type: "img",
+      prompt: "Rasmda qaysi tuzilmaning kesmasi ko'rsatilgan?",
+      image: "/img/cross/skin-cross.jpg",
+      options: ["Teri (cutis)", "Shilliq parda", "Plevra", "Mushak pardasi"],
+      answer: 0,
+      difficulty: "easy",
+      hint: "Epidermis, dermis va teri osti — rang bilan ajratilgan",
     }),
   ],
 };

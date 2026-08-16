@@ -356,6 +356,7 @@ export const u6: OsteologyUnit = {
       minutes: 10,
       source: { book: "Anatomiya I jild", page: "51–71" },
       questions: [
+        q({ type: "img", prompt: "Rasmda qaysi skelet qismi ko'rsatilgan?", image: "/img/atlas/membrum_superius.jpg", options: ["Qo'l skeleti (membrum superius)", "Oyoq skeleti", "Ko'krak qafasi", "Chanoq"], answer: 0, difficulty: "easy", hint: "Yelka kamari va qo'lning erkin qismi" }),
         q({ type: "quiz", prompt: "Yelka kamari qaysi suyaklardan tashkil topgan?", options: ["Clavicula va scapula", "Humerus va radius", "Sternum va costa", "Os coxae va femur"], answer: 0 }),
         q({ type: "quiz", prompt: "O'mrov suyagi lotinchada qanday ataladi?", options: ["Clavicula", "Scapula", "Costa", "Clavis"], answer: 0 }),
         q({ type: "quiz", prompt: "Kurak suyagi lotinchada qanday ataladi?", options: ["Clavicula", "Scapula", "Sternum", "Sacrum"], answer: 1 }),
@@ -600,6 +601,7 @@ export const u9: OsteologyUnit = {
       minutes: 10,
       source: { book: "Anatomiya I jild", page: "94–148" },
       questions: [
+        q({ type: "img", prompt: "Rasmda qaysi skelet qismi ko'rsatilgan?", image: "/img/atlas/viscerocranium.jpg", options: ["Kallaning yuz qismi (viscerocranium)", "Kallaning miya qismi", "Bo'yin umurtqalari", "Qovurg'alar"], answer: 0, difficulty: "easy", hint: "Ustki va pastki jag' suyaklari" }),
         q({ type: "quiz", prompt: "Ustki jag' suyagi lotinchada qanday ataladi?", options: ["Maxilla", "Mandibula", "Zygomaticum", "Palatinum"], answer: 0 }),
         q({ type: "quiz", prompt: "Ustki jag' suyagidagi eng katta havo bo'shlig'i (burun yonida)?", options: ["Sinus maxillaris", "Sinus frontalis", "Sinus sphenoidalis", "Sinus ethmoidalis"], answer: 0, hint: "Highmori bo'shlig'i" }),
         q({ type: "quiz", prompt: "Sinus maxillaris yana kimning nomi bilan ataladi?", options: ["Highmori", "Ludovici", "Fallopiy", "Vartoni"], answer: 0 }),
