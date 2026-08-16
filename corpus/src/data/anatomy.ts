@@ -1,7 +1,7 @@
 /**
- * Anatomiya tizimlari (metadata) + interaktiv atlas ob'yektlari.
- * Darslar va savollar `osteology.ts`da (suyaklar — to'liq), qolgan tizimlar
- * keyingi bosqichlarda to'ldiriladi.
+ * Anatomiya tizimlari (metadata) + interaktiv atlas ob'yektlari (Study Mode).
+ * Rasm manbai — Odam anatomiyasi Atlas (N.K. Ahmedov); ta'rif/vazifa matni
+ * Anatomiya I/II jild darsligidan olinadi.
  */
 
 export interface AtlasObject {

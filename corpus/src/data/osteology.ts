@@ -25,6 +25,7 @@ export const u1: OsteologyUnit = {
       description: "Umurtqa pog'onasining bo'limlari va lotincha atamalari",
       xp: 20,
       minutes: 7,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "img", prompt: "Rasmda odam organizmining qaysi tuzilmasi ko\u2018rsatilgan?", image: "/img/skeleton.jpg", options: ["Odam skeleti", "Mushaklar tizimi", "Nafas a\u2019zolari", "Qon aylanish tizimi"], answer: 0, hint: "Suyaklar majmuasi — tayanch vazifasini bajaradi" }),
 
@@ -45,6 +46,7 @@ export const u1: OsteologyUnit = {
       description: "Umurtqaning asosiy tuzilmalari",
       xp: 20,
       minutes: 8,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "img", prompt: "Rasmda YASHIL rangda ko'rsatilgan tuzilma nomi?", image: "/img/corpus.jpg", options: ["Corpus vertebrae", "Arcus vertebrae", "Processus spinosus", "Foramen vertebrale"], answer: 0, hint: "Corpus — tana" }),
         q({ type: "quiz", prompt: "«Corpus vertebrae» nimani anglatadi?", options: ["Umurtqa ravog'i", "Umurtqa tanasi", "Umurtqa teshigi", "Umurtqa o'simtasi"], answer: 1 }),
@@ -64,6 +66,7 @@ export const u1: OsteologyUnit = {
       description: "Umurtqa o'simtalari (processus)",
       xp: 20,
       minutes: 8,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Umurtqada nechta turdagi o'simta (processus) bor?", options: ["2", "3", "4", "5"], answer: 2, hint: "Spinosus, transversus, articularis superior va inferior" }),
         q({ type: "img", prompt: "Rasmda qaysi tuzilmalar YASHIL rangda ko'rsatilgan?", image: "/img/proc_transversus.jpg", options: ["Processus spinosus", "Processus transversus", "Processus articularis", "Corpus vertebrae"], answer: 1, hint: "Transversus — ko'ndalang" }),
@@ -93,6 +96,7 @@ export const u2: OsteologyUnit = {
       description: "Tipik bo'yin umurtqasi belgilari",
       xp: 20,
       minutes: 7,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Bo'yin umurtqalari tuzilishiga ko'ra qanday turlarga bo'linadi?", options: ["Katta va kichik", "Tipik va atipik", "Oldingi va orqa", "Yuqori va pastki"], answer: 1 }),
         q({ type: "quiz", prompt: "Bo'yin umurtqasini boshqa umurtqalardan ajratib turadigan MAXSUS teshik?", options: ["Foramen vertebrale", "Foramen intervertebrale", "Foramen transversarium", "Foramen sacrale"], answer: 2, hint: "Ko'ndalang o'simtadagi teshik" }),
@@ -111,6 +115,7 @@ export const u2: OsteologyUnit = {
       description: "Atlas (C1) tuzilishi",
       xp: 25,
       minutes: 8,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Birinchi bo'yin umurtqasi qanday nomlanadi?", options: ["Axis", "Atlas", "Vertebra prominens", "Promontorium"], answer: 1, hint: "Yunon afsonasidagi osmoni ko'targan pahlavon" }),
         q({ type: "img", prompt: "Rasmda YASHIL rangda ko'rsatilgan umurtqa?", image: "/img/atlas_green.jpg", options: ["Axis (C2)", "Atlas (C1)", "C7", "Th1"], answer: 1 }),
@@ -130,6 +135,7 @@ export const u2: OsteologyUnit = {
       description: "Axis (C2) va tish",
       xp: 25,
       minutes: 7,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Ikkinchi bo'yin umurtqasi qanday nomlanadi?", options: ["Atlas", "Axis", "Prominens", "Sacrum"], answer: 1, hint: "Axis — o'q" }),
         q({ type: "img", prompt: "Axisning eng xarakterli tuzilmasi — tanadan yuqoriga ko'tarilgan «tish». Lotincha nomi?", image: "/img/axis_green.jpg", options: ["Dens", "Apex", "Cornu", "Crista"], answer: 0 }),
@@ -148,6 +154,7 @@ export const u2: OsteologyUnit = {
       description: "C3–C7, uyqu do'mboqchasi, prominens",
       xp: 25,
       minutes: 7,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "6-bo'yin umurtqasining oldingi do'mboqchasi alohida nomga ega. U qanday ataladi?", options: ["Tuberculum posterius", "Tuberculum caroticum", "Tuberculum majus", "Promontorium"], answer: 1, hint: "Uyqu arteriyasini bosib qon oqishini to'xtatish mumkin" }),
         q({ type: "quiz", prompt: "Tuberculum caroticum o'zbekchada…", options: ["Uyqu do'mboqchasi", "Bo'yin do'mboqchasi", "Orqa do'mboqcha", "Tish do'mboqchasi"], answer: 0 }),
@@ -176,6 +183,7 @@ export const u3: OsteologyUnit = {
       description: "Ko'krak umurtqalari va qovurg'a chuqurchalari",
       xp: 25,
       minutes: 7,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Ko'krak umurtqalarini boshqalardan ajratib turuvchi asosiy belgi?", options: ["Foramen transversarium", "Qovurg'a chuqurchalari (fovea costales)", "Dens", "Massae laterales"], answer: 1, hint: "Qovurg'alar bilan bo'g'im hosil qiladi" }),
         q({ type: "img", prompt: "Rasmda ko'rsatilgan qovurg'a boshi birikadigan chuqurchalar qanday ataladi?", image: "/img/thoracic_fovea.jpg", options: ["Fovea dentis", "Fovea costalis superior et inferior", "Fovea articularis", "Foramen costale"], answer: 1 }),
@@ -194,6 +202,7 @@ export const u3: OsteologyUnit = {
       description: "Bel umurtqalarining xususiyatlari",
       xp: 25,
       minutes: 7,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Bel umurtqalarining eng katta ajralib turuvchi belgisi?", options: ["Eng kichik tanasi", "Eng katta va massiv tanasi", "Foramen transversarium", "Fovea costales"], answer: 1 }),
         q({ type: "quiz", prompt: "Bel umurtqasidagi qovurg'a rudimenti bo'lgan o'simta?", options: ["Processus costarius", "Processus mamillaris", "Processus accessorius", "Processus spinosus"], answer: 0, hint: "Costa — qovurg'a" }),
@@ -222,6 +231,7 @@ export const u4: OsteologyUnit = {
       description: "Dumg'aza suyagining asosiy qismlari",
       xp: 25,
       minutes: 8,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Os sacrum nechta umurtqaning qo'shilishidan hosil bo'ladi?", options: ["3", "4", "5", "7"], answer: 2 }),
         q({ type: "img", prompt: "Dumg'azaning keng yuqori qismi qanday ataladi?", image: "/img/sacrum_basis.jpg", options: ["Apex ossis sacri", "Basis ossis sacri", "Ala ossis sacri", "Cornu sacrale"], answer: 1, hint: "Basis — asos" }),
@@ -241,6 +251,7 @@ export const u4: OsteologyUnit = {
       description: "Dumg'aza qirralari va kanali",
       xp: 25,
       minutes: 8,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Dumg'azaning orqa yuzasidagi O'RTA qirra qanday ataladi?", options: ["Crista sacralis lateralis", "Crista sacralis mediana", "Crista sacralis intermedia", "Crista iliaca"], answer: 1, hint: "Mediana — o'rta" }),
         q({ type: "quiz", prompt: "Crista sacralis mediana nimaning qo'shilishidan hosil bo'lgan?", options: ["Ko'ndalang o'simtalar", "Processus spinosus'lar", "Bo'g'im o'simtalari", "Qovurg'alar"], answer: 1 }),
@@ -260,6 +271,7 @@ export const u4: OsteologyUnit = {
       description: "Dum suyagi (os coccygis)",
       xp: 20,
       minutes: 6,
+      source: { book: "Anatomiya I jild", page: "33–45" },
       questions: [
         q({ type: "quiz", prompt: "Os coccygis — bu…", options: ["Dumg'aza suyagi", "Dum suyagi", "Yonbosh suyagi", "Qov suyagi"], answer: 1 }),
         q({ type: "img", prompt: "Dum suyagining yuqoriga yo'nalgan shoxchalari qanday ataladi?", image: "/img/coccyx_green.jpg", options: ["Cornua sacralia", "Cornua coccygea", "Processus transversi", "Alae coccygea"], answer: 1 }),
@@ -287,6 +299,7 @@ export const u5: OsteologyUnit = {
       description: "Qovurg'alar tuzilishi va turlari",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "46–50" },
       questions: [
         q({ type: "img", prompt: "Rasmda qaysi suyaklar ko\u2018rsatilgan?", image: "/img/ribs.jpg", options: ["Qovurg\u2018alar (Costae)", "O\u2018mrov suyagi (Clavicula)", "Kurak suyagi (Scapula)", "Bilak suyaklari"], answer: 0, hint: "12 juft bo\u2018lib, ko\u2018krak qafasini hosil qiladi" }),
 
@@ -310,6 +323,7 @@ export const u5: OsteologyUnit = {
       description: "To'sh suyagi (sternum)",
       xp: 20,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "46–50" },
       questions: [
         q({ type: "quiz", prompt: "To'sh suyagi lotinchada qanday ataladi?", options: ["Sternum", "Sacrum", "Scapula", "Stapes"], answer: 0 }),
         q({ type: "quiz", prompt: "To'sh suyagi qanday qismlardan iborat?", options: ["Manubrium, corpus, processus xiphoideus", "Caput, collum, corpus", "Basis, apex, ala", "Squama, corpus, ramus"], answer: 0 }),
@@ -340,6 +354,7 @@ export const u6: OsteologyUnit = {
       description: "Yelka kamari: kurak va o'mrov suyaklari",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "51–71" },
       questions: [
         q({ type: "quiz", prompt: "Yelka kamari qaysi suyaklardan tashkil topgan?", options: ["Clavicula va scapula", "Humerus va radius", "Sternum va costa", "Os coxae va femur"], answer: 0 }),
         q({ type: "quiz", prompt: "O'mrov suyagi lotinchada qanday ataladi?", options: ["Clavicula", "Scapula", "Costa", "Clavis"], answer: 0 }),
@@ -361,6 +376,7 @@ export const u6: OsteologyUnit = {
       description: "Yelka suyagi (humerus)",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "51–71" },
       questions: [
         q({ type: "quiz", prompt: "Yelka suyagi lotinchada qanday ataladi?", options: ["Humerus", "Femur", "Radius", "Ulna"], answer: 0 }),
         q({ type: "quiz", prompt: "Yelka suyagining boshi qanday ataladi?", options: ["Caput humeri", "Collum humeri", "Tuberculum", "Condylus"], answer: 0 }),
@@ -382,6 +398,7 @@ export const u6: OsteologyUnit = {
       description: "Bilak va kaft suyaklari",
       xp: 30,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "51–71" },
       questions: [
         q({ type: "quiz", prompt: "Bilak suyaklari qaysilar?", options: ["Radius va ulna", "Tibia va fibula", "Humerus va scapula", "Femur va patella"], answer: 0 }),
         q({ type: "quiz", prompt: "Bosh barmoq tomonidagi bilak suyagi?", options: ["Ulna", "Radius", "Humerus", "Fibula"], answer: 1, hint: "Radius — tashqi tomonda" }),
@@ -414,6 +431,7 @@ export const u7: OsteologyUnit = {
       description: "Chanoq kamari (os coxae)",
       xp: 30,
       minutes: 12,
+      source: { book: "Anatomiya I jild", page: "72–93" },
       questions: [
         q({ type: "img", prompt: "Rasmda qaysi tuzilma ko\u2018rsatilgan?", image: "/img/pelvis.jpg", options: ["Chanoq (Pelvis)", "Bosh suyagi (Cranium)", "Ko\u2018krak qafasi (Thorax)", "Yelka kamari"], answer: 0, hint: "Tana bilan oyoqlarni bog\u2018lovchi halqa" }),
 
@@ -440,6 +458,7 @@ export const u7: OsteologyUnit = {
       description: "Son va boldir suyaklari",
       xp: 30,
       minutes: 12,
+      source: { book: "Anatomiya I jild", page: "72–93" },
       questions: [
         q({ type: "img", prompt: "Rasmda qaysi suyak ko\u2018rsatilgan?", image: "/img/femur.jpg", options: ["Son suyagi (Femur)", "Yelka suyagi (Humerus)", "Katta boldir (Tibia)", "Bilak suyagi (Radius)"], answer: 0, hint: "Tanadagi eng uzun va mustahkam suyak" }),
 
@@ -466,6 +485,7 @@ export const u7: OsteologyUnit = {
       description: "Oyoq panjasi suyaklari",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "72–93" },
       questions: [
         q({ type: "quiz", prompt: "Oyoq panjasining orqa qismidagi suyaklar (ossa tarsi) nechta?", options: ["5", "7", "8", "14"], answer: 1 }),
         q({ type: "quiz", prompt: "Oshiq suyagi lotinchada qanday ataladi?", options: ["Talus", "Calcaneus", "Naviculare", "Cuboideum"], answer: 0 }),
@@ -498,6 +518,7 @@ export const u8: OsteologyUnit = {
       description: "Miya qismi suyaklari umumiy",
       xp: 20,
       minutes: 8,
+      source: { book: "Anatomiya I jild", page: "94–148" },
       questions: [
         q({ type: "img", prompt: "Rasmda qaysi tuzilma ko\u2018rsatilgan?", image: "/img/skull.jpg", options: ["Bosh suyagi (Cranium)", "Chanoq (Pelvis)", "Ko\u2018krak qafasi (Thorax)", "Umurtqa pog\u2018onasi"], answer: 0, hint: "Bosh miyani himoya qiladi" }),
 
@@ -519,6 +540,7 @@ export const u8: OsteologyUnit = {
       description: "Ensa, tepa va peshona suyaklari",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "94–148" },
       questions: [
         q({ type: "quiz", prompt: "Ensa suyagi lotinchada qanday ataladi?", options: ["Os occipitale", "Os frontale", "Os parietale", "Os temporale"], answer: 0 }),
         q({ type: "quiz", prompt: "Ensa suyagidagi eng katta teshik (orqa miya o'tadi)?", options: ["Foramen magnum", "Foramen ovale", "Foramen rotundum", "Foramen lacerum"], answer: 0 }),
@@ -541,6 +563,7 @@ export const u8: OsteologyUnit = {
       description: "G'alvirsimon, ponasimon va chakka",
       xp: 25,
       minutes: 12,
+      source: { book: "Anatomiya I jild", page: "94–148" },
       questions: [
         q({ type: "quiz", prompt: "G'alvirsimon suyak lotinchada qanday ataladi?", options: ["Os ethmoidale", "Os sphenoidale", "Os temporale", "Os palatinum"], answer: 0 }),
         q({ type: "quiz", prompt: "G'alvirsimon suyakning teshikli plastinkasi (hid nervlari o'tadi)?", options: ["Lamina cribrosa", "Lamina perpendicularis", "Lamina papyracea", "Lamina horizontalis"], answer: 0 }),
@@ -575,6 +598,7 @@ export const u9: OsteologyUnit = {
       description: "Ustki jag' va tanglay suyagi",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "94–148" },
       questions: [
         q({ type: "quiz", prompt: "Ustki jag' suyagi lotinchada qanday ataladi?", options: ["Maxilla", "Mandibula", "Zygomaticum", "Palatinum"], answer: 0 }),
         q({ type: "quiz", prompt: "Ustki jag' suyagidagi eng katta havo bo'shlig'i (burun yonida)?", options: ["Sinus maxillaris", "Sinus frontalis", "Sinus sphenoidalis", "Sinus ethmoidalis"], answer: 0, hint: "Highmori bo'shlig'i" }),
@@ -596,6 +620,7 @@ export const u9: OsteologyUnit = {
       description: "Pastki jag', yonoq va butun kalla",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "94–148" },
       questions: [
         q({ type: "quiz", prompt: "Pastki jag' suyagi lotinchada qanday ataladi?", options: ["Mandibula", "Maxilla", "Zygomaticum", "Vomer"], answer: 0 }),
         q({ type: "quiz", prompt: "Mandibula kallaning qanday suyagi?", options: ["Yagona harakatchan suyagi", "Eng katta miya suyagi", "Juft suyak", "Ichki quloq suyagi"], answer: 0 }),

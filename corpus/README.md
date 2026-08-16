@@ -5,9 +5,11 @@ medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, i
 
 ## Tibbiyot talabalari uchun — to'liq kontent
 
-Kontent **A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi + "Odam anatomiyasi Atlas"** dan olinadi — ixtiro qilinmagan.
+**Manba siyosati:**
+- **Ma'lumot manbai — faqat A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi.** Barcha darslar, savollar, izohlar va faktlar shu kitobdan olinadi — ixtiro qilinmaydi. Har bir darsda `source: { book, page }` kitob sahifasi ko'rsatiladi.
+- **"Odam anatomiyasi Atlas" (N.K. Ahmedov) — faqat rasm manbai.** Atlas faqat darslikda rasm yetishmaganda tasvir uchun ishlatiladi; undan ma'lumot/fakt olinmaydi.
 
-**Jami: 11 tizim · 34 bo'lim · 83 dars · 953 savol** (butun kitob).
+**Jami: 11 tizim · 34 bo'lim · 83 dars · 953 savol** (butun kitob, 83/83 dars manbali).
 
 **Vizual qamrov**: har bir darsda rasmli kirish slaydi (haqiqiy atlas yoki toza illyustratsiya) + rasmli savollar (img turi) — tasavvurni kuchaytirish uchun. Har bir rasmni bosib **to'liq ekranda kattalashtirib o'qish** mumkin (chimchilab zoom, surib ko'chirish, ikki marta bosish, sichqoncha g'ildiragi, +/− tugmalari, ESC yopish).
 

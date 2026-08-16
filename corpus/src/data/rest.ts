@@ -15,6 +15,7 @@ export const r_u10: SystemUnit = {
       description: "Bo‘g‘im tuzilishi va turlari",
       xp: 20,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "149–210" },
       questions: [
         q({ type: "quiz", prompt: "Bo'g'im lotinchada qanday ataladi?", options: ["Articulatio", "Sutura", "Symphysis", "Synchondrosis"], answer: 0 }),
         q({ type: "quiz", prompt: "Suyaklarning qo'shilishini o'rganuvchi bo'lim?", options: ["Osteologiya", "Artrologiya", "Miologiya", "Splanxnologiya"], answer: 1, hint: "Arthron — bo'g'im" }),
@@ -35,6 +36,7 @@ export const r_u10: SystemUnit = {
       description: "Asosiy bo‘g‘imlar (yelka, tirsak, tizza)",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "149–210" },
       questions: [
         q({ type: "quiz", prompt: "Yelka bo'g'imi lotinchada qanday ataladi?", options: ["Articulatio humeri", "Articulatio cubiti", "Articulatio coxae", "Articulatio genus"], answer: 0 }),
         q({ type: "quiz", prompt: "Tirsak bo'g'imi lotinchada qanday ataladi?", options: ["Articulatio cubiti", "Articulatio humeri", "Articulatio genus", "Articulatio radiocarpea"], answer: 0 }),
@@ -66,6 +68,7 @@ export const r_u11: SystemUnit = {
       description: "Mushak tuzilishi va turlari",
       xp: 20,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "211–312" },
       questions: [
         q({ type: "quiz", prompt: "Mushak lotinchada qanday ataladi?", options: ["Musculus", "Articulatio", "Os", "Nervus"], answer: 0 }),
         q({ type: "quiz", prompt: "Mushaklar haqidagi fan qanday ataladi?", options: ["Miologiya", "Osteologiya", "Artrologiya", "Splanxnologiya"], answer: 0, hint: "Mys — mushak" }),
@@ -86,6 +89,7 @@ export const r_u11: SystemUnit = {
       description: "Tana mushaklari (orqa, qorin, diafragma)",
       xp: 25,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "211–312" },
       questions: [
         q({ type: "quiz", prompt: "Orqaning eng keng (yuzaki) mushagi?", options: ["Musculus latissimus dorsi", "Musculus trapezius", "Musculus pectoralis major", "Diaphragma"], answer: 0 }),
         q({ type: "quiz", prompt: "Trapetsiyasimon mushak qanday ataladi?", options: ["Musculus trapezius", "Musculus latissimus dorsi", "Musculus deltoideus", "Musculus rectus abdominis"], answer: 0 }),
@@ -106,6 +110,7 @@ export const r_u11: SystemUnit = {
       description: "Qo‘l va oyoq mushaklari",
       xp: 25,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "211–312" },
       questions: [
         q({ type: "quiz", prompt: "Yelkaning ikki boshli mushagi?", options: ["Musculus biceps brachii", "Musculus triceps brachii", "Musculus deltoideus", "Musculus brachialis"], answer: 0 }),
         q({ type: "quiz", prompt: "Yelkaning uch boshli mushagi?", options: ["Musculus triceps brachii", "Musculus biceps brachii", "Musculus deltoideus", "Musculus coracobrachialis"], answer: 0 }),
@@ -136,6 +141,7 @@ export const r_u12: SystemUnit = {
       description: "Og‘iz bo‘shlig‘i va tishlar",
       xp: 20,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "314–391" },
       questions: [
         q({ type: "quiz", prompt: "Hazm a'zolari tizimi lotinchada qanday ataladi?", options: ["Systema digestorium", "Systema respiratorium", "Systema nervosum", "Systema cardiovasculare"], answer: 0 }),
         q({ type: "quiz", prompt: "Og'iz bo'shlig'i qanday ataladi?", options: ["Cavitas oris", "Cavitas nasi", "Pharynx", "Larynx"], answer: 0 }),
@@ -156,6 +162,7 @@ export const r_u12: SystemUnit = {
       description: "Halqum, qizilo‘ngach, oshqozon",
       xp: 25,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "314–391" },
       questions: [
         q({ type: "quiz", prompt: "Halqum lotinchada qanday ataladi?", options: ["Pharynx", "Larynx", "Trachea", "Oesophagus"], answer: 0 }),
         q({ type: "quiz", prompt: "Qizilo'ngach lotinchada qanday ataladi?", options: ["Oesophagus", "Pharynx", "Gaster", "Duodenum"], answer: 0 }),
@@ -176,6 +183,7 @@ export const r_u12: SystemUnit = {
       description: "Ichaklar, jigar va bezlar",
       xp: 25,
       minutes: 10,
+      source: { book: "Anatomiya I jild", page: "314–391" },
       questions: [
         q({ type: "quiz", prompt: "Ingichka ichak lotinchada qanday ataladi?", options: ["Intestinum tenue", "Intestinum crassum", "Colon", "Rectum"], answer: 0 }),
         q({ type: "quiz", prompt: "Yo'g'on ichak lotinchada qanday ataladi?", options: ["Intestinum crassum", "Intestinum tenue", "Duodenum", "Ileum"], answer: 0 }),
@@ -207,6 +215,7 @@ export const r_u13: SystemUnit = {
       description: "Burun va hiqildoq",
       xp: 20,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "392–424" },
       questions: [
         q({ type: "quiz", prompt: "Nafas a'zolari tizimi lotinchada qanday ataladi?", options: ["Systema respiratorium", "Systema digestorium", "Systema nervosum", "Systema urinarium"], answer: 0 }),
         q({ type: "quiz", prompt: "Burun bo'shlig'i qanday ataladi?", options: ["Cavitas nasi", "Cavitas oris", "Sinus", "Pharynx"], answer: 0 }),
@@ -227,6 +236,7 @@ export const r_u13: SystemUnit = {
       description: "Kekirdak, o‘pka va plevra",
       xp: 25,
       minutes: 9,
+      source: { book: "Anatomiya I jild", page: "392–424" },
       questions: [
         q({ type: "quiz", prompt: "Kekirdak lotinchada qanday ataladi?", options: ["Trachea", "Larynx", "Bronchus", "Pulmo"], answer: 0 }),
         q({ type: "quiz", prompt: "Kekirdak nechta asosiy bronxga bo'linadi?", options: ["2", "3", "4", "1"], answer: 0 }),
@@ -257,7 +267,7 @@ export const r_u14: SystemUnit = {
       description: "Buyrak (Ren)",
       xp: 25,
       minutes: 7,
-      source: { book: "p2", page: "7–19" },
+      source: { book: "Anatomiya II jild", page: "7–19" },
       slides: [
         { title: "Buyrak — Ren", text: "Buyrak loviyasimon juft a'zo bo'lib, qorin bo'shlig'ining orqa devorida joylashgan. U qonni filtrlash orqali siydik hosil qiladi.", img: "/img/atlas/buyrak.jpg" },
         { title: "Buyrak tuzilishi", text: "Buyrak po'stloq (cortex) va mag'iz (medulla) moddalardan tashkil topgan. Siydik buyrak jomiga (pelvis renalis) yig'iladi.", cap: "Manba: Anatomiya II jild, 7–19-bet" },
@@ -280,7 +290,7 @@ export const r_u14: SystemUnit = {
       description: "Siydik yo‘llari",
       xp: 20,
       minutes: 7,
-      source: { book: "p2", page: "20–26" },
+      source: { book: "Anatomiya II jild", page: "20–26" },
       questions: [
         q({ type: "quiz", prompt: "Siydik nayi lotinchada qanday ataladi?", options: ["Ureter", "Urethra", "Uterus", "Uvula"], answer: 0 }),
         q({ type: "quiz", prompt: "Siydik qopi (qovuq) lotinchada qanday ataladi?", options: ["Vesica urinaria", "Vesica biliaris", "Vesica seminalis", "Ureter"], answer: 0 }),
@@ -309,7 +319,7 @@ export const r_u15: SystemUnit = {
       description: "Jinsiy a’zolar asoslari",
       xp: 25,
       minutes: 8,
-      source: { book: "p2", page: "27–60" },
+      source: { book: "Anatomiya II jild", page: "27–60" },
       questions: [
         q({ type: "quiz", prompt: "Jinsiy a'zolar tizimi lotinchada qanday ataladi?", options: ["Systema genitale", "Systema urinarium", "Systema digestorium", "Systema endocrinum"], answer: 0 }),
         q({ type: "quiz", prompt: "Erkak jinsiy bezi qanday ataladi?", options: ["Moyak (testis)", "Tuxumdon", "Prostata", "Epididymis"], answer: 0 }),
@@ -339,7 +349,7 @@ export const r_u16: SystemUnit = {
       description: "Ichki sekretsiya bezlari",
       xp: 25,
       minutes: 9,
-      source: { book: "p2", page: "62–72" },
+      source: { book: "Anatomiya II jild", page: "62–72" },
       questions: [
         q({ type: "quiz", prompt: "Endokrin bezlar qon oqimiga nima ajratadi?", options: ["Gormonlar", "Safro", "So'lak", "Fermentlar"], answer: 0 }),
         q({ type: "quiz", prompt: "Qalqonsimon bez lotinchada qanday ataladi?", options: ["Glandula thyroidea", "Glandula parathyroidea", "Glandula suprarenalis", "Hypophysis"], answer: 0 }),
@@ -370,7 +380,7 @@ export const r_u17: SystemUnit = {
       description: "Yurak (Cor)",
       xp: 30,
       minutes: 10,
-      source: { book: "p2", page: "77–92" },
+      source: { book: "Anatomiya II jild", page: "77–92" },
       slides: [
         { title: "Yurak — Cor", text: "Yurak muskuldan tuzilgan a'zo bo'lib, ko'krak qafasida joylashgan. U butun organizmga qon yetkazib beradi — qon aylanish tizimining markaziy a'zosi.", img: "/img/atlas/yurak.jpg" },
         { title: "Yurak kameralari", text: "Yurak 4 kameradan iborat: 2 bo'lmacha (atrium) va 2 qorincha (ventriculus).", cap: "Manba: Anatomiya II jild, 77–92-bet" },
@@ -386,7 +396,7 @@ export const r_u17: SystemUnit = {
         q({ type: "match", prompt: "Lotincha atamani o‘zbekcha tarjimasi bilan moslang", pairs: [["Cor", "Yurak"], ["Atrium", "Bo'lmacha"], ["Ventriculus", "Qorincha"], ["Pericardium", "Yurak xaltasi"]] }),
         q({ type: "build", prompt: "«Yurak xaltasi» atamasini yig'ing", answerText: "Pericardium", extra: ["pleura", "peritoneum"] }),
         q({ type: "tf", prompt: "Yurak qon aylanish tizimining markaziy a'zosidir.", statement: true }),
-        q({ type: "quiz", prompt: "O'rta yoshli odamning yuragi 1 daqiqada o'rtacha necha marta qisqaradi?", options: ["70–75", "30–40", "100–120", "150–180"], answer: 0, explanation: "Atlas ma'lumoti: 1 daqiqada 70–75 marta." }),
+        q({ type: "quiz", prompt: "O'rta yoshli odamning yuragi 1 daqiqada o'rtacha necha marta qisqaradi?", options: ["70–75", "30–40", "100–120", "150–180"], answer: 0, explanation: "Anatomiya II jild: 1 daqiqada 70–75 marta." }),
         q({ type: "func", prompt: "Yurakning asosiy vazifasi?", options: ["Qonni butun organizmga haydash", "Safro ajratish", "Kislorod yutish", "Ovqat hazm qilish"], answer: 0 }),
       ],
     },
@@ -396,7 +406,7 @@ export const r_u17: SystemUnit = {
       description: "Qon tomirlar (Angiologiya)",
       xp: 30,
       minutes: 9,
-      source: { book: "p2", page: "93–183" },
+      source: { book: "Anatomiya II jild", page: "93–183" },
       questions: [
         q({ type: "quiz", prompt: "Tomirlar haqidagi ta'limot qanday ataladi?", options: ["Angiologiya", "Nevrologiya", "Osteologiya", "Miologiya"], answer: 0 }),
         q({ type: "quiz", prompt: "Organizmdagi eng katta arteriya?", options: ["Aorta", "A. carotis", "A. femoralis", "A. pulmonalis"], answer: 0 }),
@@ -417,7 +427,7 @@ export const r_u17: SystemUnit = {
       description: "Limfa tizimi va taloq",
       xp: 25,
       minutes: 7,
-      source: { book: "p2", page: "185–212" },
+      source: { book: "Anatomiya II jild", page: "185–212" },
       questions: [
         q({ type: "quiz", prompt: "Limfa tizimi nimani qaytaradi?", options: ["To'qima suyuqligini (limfa)", "Qonni", "Safro", "Siydik"], answer: 0 }),
         q({ type: "quiz", prompt: "Taloq lotinchada qanday ataladi?", options: ["Lien", "Hepar", "Ren", "Thymus"], answer: 0 }),
@@ -446,7 +456,7 @@ export const r_u18: SystemUnit = {
       description: "Markaziy nerv tizimi",
       xp: 30,
       minutes: 10,
-      source: { book: "p2", page: "213–301" },
+      source: { book: "Anatomiya II jild", page: "213–301" },
       slides: [
         { title: "Nerv tizimi — Nevrologiya", text: "Nerv tizimi organizm faoliyatini boshqaradi va muvofiqlashtiradi. U markaziy (bosh va orqa miya) va periferik qismlarga bo'linadi.", img: "/img/atlas/miya.jpg" },
         { title: "Bosh miya", text: "Bosh miya (encephalon) katta yarim pallalar, miyacha va miya so'g'onidan iborat. Miyacha muvozanat va harakat muvofiqlashtirishni boshqaradi.", cap: "Manba: Anatomiya II jild, 213–301-bet" },
@@ -472,7 +482,7 @@ export const r_u18: SystemUnit = {
       description: "Periferik va avtonom nerv",
       xp: 25,
       minutes: 9,
-      source: { book: "p2", page: "302–371" },
+      source: { book: "Anatomiya II jild", page: "302–371" },
       questions: [
         q({ type: "quiz", prompt: "Periferik nerv tizimi nimalardan iborat?", options: ["Nervlar va chigallar", "Bosh va orqa miya", "Yurak va tomirlar", "Suyaklar"], answer: 0 }),
         q({ type: "quiz", prompt: "Orqa miya nervlari nechta juft?", options: ["31", "12", "24", "40"], answer: 0 }),
@@ -503,7 +513,7 @@ export const r_u19: SystemUnit = {
       description: "Ko‘rish va eshitish",
       xp: 30,
       minutes: 9,
-      source: { book: "p2", page: "372–405" },
+      source: { book: "Anatomiya II jild", page: "372–405" },
       questions: [
         q({ type: "quiz", prompt: "Ko'z lotinchada qanday ataladi?", options: ["Oculus", "Auris", "Nasus", "Cutis"], answer: 0 }),
         q({ type: "quiz", prompt: "Ko'z gavhari lotinchada qanday ataladi?", options: ["Lens", "Cornea", "Retina", "Sclera"], answer: 0 }),
@@ -524,7 +534,7 @@ export const r_u19: SystemUnit = {
       description: "Teri, hid va ta’m",
       xp: 20,
       minutes: 8,
-      source: { book: "p2", page: "406–409" },
+      source: { book: "Anatomiya II jild", page: "406–409" },
       questions: [
         q({ type: "quiz", prompt: "Teri lotinchada qanday ataladi?", options: ["Cutis", "Derma", "Epidermis", "Pilis"], answer: 0 }),
         q({ type: "quiz", prompt: "Terining hosilalariga nimalar kiradi?", options: ["Soch, tirnoq va bezlar", "Suyaklar", "Mushaklar", "Tomirlar"], answer: 0 }),

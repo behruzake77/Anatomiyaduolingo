@@ -136,7 +136,7 @@ export const HARD_QUESTIONS: Record<string, Question[]> = {
       options: ["30–40", "70–75", "100–120", "150–180"],
       answer: 1,
       difficulty: "hard",
-      explanation: "O'rtacha 70–75 marta (Atlas ma'lumoti).",
+      explanation: "O'rtacha 70–75 marta (Anatomiya II jild).",
     },
   ],
   nervous: [
