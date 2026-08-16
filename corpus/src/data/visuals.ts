@@ -249,4 +249,10 @@ export const LESSON_IMAGES: Record<string, string> = {
   l23: "/img/book/l23.jpg",
   l24: "/img/book/l24.jpg",
   l25: "/img/book/l25.jpg",
+  l26: "/img/book/l26.jpg",
+  l27: "/img/book/l27.jpg",
+  l47: "/img/book/l47.jpg",
+  l48: "/img/book/l48.jpg",
+  l49: "/img/book/l49.jpg",
+  l50: "/img/book/l50.jpg",
 };
