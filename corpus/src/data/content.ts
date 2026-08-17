@@ -15,6 +15,7 @@ import { NECK_HEAD_MUSCLES, VESSELS_DETAIL } from "./neckvessels";
 import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
 import { IMG_QUESTIONS, VISUAL_SLIDES, LESSON_IMAGES } from "./visuals";
 import { LESSON_LEGENDS } from "./labels";
+import { FIGURE_LESSONS } from "./figureLessons";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -68,9 +69,10 @@ function shuffleArr<T>(arr: T[]): T[] {
  */
 export function partQuestions(lessonId: string): Question[] {
   const legend = LESSON_LEGENDS[lessonId];
-  const img = LESSON_IMAGES[lessonId];
-  if (!legend || !img) return [];
-  if (!img.startsWith("/img/book/")) return []; // raqam bosilgan faqat kitob rasmlarida
+  if (!legend) return [];
+  // Faqat izohsiz (faqat rasm+raqam) kesimi tayyor bo'lgan darslarda — javob ko'rinib qolmasligi uchun.
+  if (!FIGURE_LESSONS.has(lessonId)) return [];
+  const img = `/img/fig/${lessonId}.jpg`;
   const items = legend.filter((it) => /^\d+$/.test(it.n));
   if (items.length < 4) return [];
 
