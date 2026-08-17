@@ -269,6 +269,7 @@ export const LESSON_IMAGES: Record<string, string> = {
   l43: "/img/book/l43.jpg",
   l44: "/img/book/l44.jpg",
   l45: "/img/book/l45.jpg",
+  l46: "/img/cross/taste-cross.jpg",
   l47: "/img/book/l47.jpg",
   l48: "/img/book/l48.jpg",
   l49: "/img/book/l49.jpg",
@@ -304,4 +305,6 @@ export const LESSON_IMAGES: Record<string, string> = {
   l79: "/img/book/l79.jpg",
   l80: "/img/book/l80.jpg",
   l81: "/img/book/l81.jpg",
+  l82: "/img/cross/skin-cross.jpg",
+  l83: "/img/cross/smell-cross.jpg",
 };

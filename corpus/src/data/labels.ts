@@ -1391,4 +1391,33 @@ export const LESSON_LEGENDS: Record<string, LegendItem[]> = {
     { n: "6", name: "Meatus acusticus externus" },
     { n: "7", name: "Auricula" },
   ],
+
+  // ================= TERI, HID VA TA'M (II jild — kitobda rasm yo'q) =================
+  // Quyidagi rasmlar rangli illyustratsiya; atamalar kitob matnidan (406–407-betlar).
+
+  // Ta'm sezish — til so'rg'ichlari (Teri, hid va ta'm)
+  l46: [
+    { n: "1", name: "Til (lingua)" },
+    { n: "2", name: "Ta'm so'rg'ichlari (papillae gustatoriae)" },
+    { n: "3", name: "Ta'm kurtaklari (caliculi gustatorii)" },
+    { n: "4", name: "Ta'm sezish nerv tolalari" },
+  ],
+  // Teri qavatlari va hosilalari
+  l82: [
+    { n: "1", name: "Epidermis — ustki qavat" },
+    { n: "2", name: "Dermis (corium) — o'rta qavat" },
+    { n: "3", name: "Teri osti (tela subcutanea)" },
+    { n: "4", name: "Soch (pilus)" },
+    { n: "5", name: "Ter bezi (glandula sudorifera)" },
+    { n: "6", name: "Yog' bezi (glandula sebacea)" },
+    { n: "7", name: "Sut bezi (mamma)" },
+  ],
+  // Hid sezish — burun bo'shlig'i shilliq pardasi
+  l83: [
+    { n: "1", name: "Hid sezuv epiteliy (burun shilliq pardasi)" },
+    { n: "2", name: "Hid sezuv hujayralar (retseptorlar)" },
+    { n: "3", name: "Hid biluv nervi (n. olfactorius)" },
+    { n: "4", name: "Hidlov so'g'oni (bulbus olfactorius)" },
+    { n: "5", name: "Hid sezish markazi (gyrus parahippocampalis va uncus)" },
+  ],
 };
