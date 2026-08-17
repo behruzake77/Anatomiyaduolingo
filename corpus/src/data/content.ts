@@ -126,21 +126,33 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
     ...unit,
     lessons: unit.lessons.map((lesson, li) => {
       let patched: Lesson = lesson;
+      const lessonImg = LESSON_IMAGES[lesson.id];
 
-      // slaydsiz darsga rasmli kirish slaydi
-      if (!patched.slides || patched.slides.length === 0) {
+      if (lessonImg) {
+        // Kitobdan kesilgan aniq rasm — USTUVOR: birinchi slaydga kitob rasmi + raqamli ro'yxat qo'yiladi.
+        const bookSlide = {
+          title: lesson.title,
+          text: lesson.description,
+          img: lessonImg,
+          cap: lesson.source ? `${lesson.source.book}, ${lesson.source.page}-bet` : undefined,
+          legend: LESSON_LEGENDS[lesson.id],
+        };
+        if (!patched.slides || patched.slides.length === 0) {
+          patched = { ...patched, slides: [bookSlide] };
+        } else {
+          patched = { ...patched, slides: [bookSlide, ...patched.slides] };
+        }
+      } else if (!patched.slides || patched.slides.length === 0) {
+        // Slaydsiz darsga tizim rasmi bilan kirish slaydi.
         const s = slideFor();
-        // Kitobdan kesilgan aniq rasm (har bir qismning o'z rasmi) — yo'q bo'lsa tizim rasmi.
-        const lessonImg = LESSON_IMAGES[lesson.id];
         patched = {
           ...patched,
           slides: [
             {
               title: lesson.title,
               text: lesson.description,
-              img: lessonImg ?? s.img,
-              cap: lessonImg && lesson.source ? `${lesson.source.book}, ${lesson.source.page}-bet` : s.text,
-              legend: LESSON_LEGENDS[lesson.id],
+              img: s.img,
+              cap: s.text,
             },
           ],
         };
