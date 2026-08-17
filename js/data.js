@@ -20,6 +20,9 @@ const COURSE = {
           id: "l1",
           title: "Bo'limlar bilan tanishuv",
           xp: 20,
+          slides: [
+            { title: "Umurtqa pog'onasi — Columna vertebralis", text: "Umurtqa pog'onasi (columna vertebralis) tananing o'q skeleti bo'lib, 33–34 umurtqadan tashkil topadi: 7 bo'yin (vertebrae cervicales), 12 ko'krak (vertebrae thoracicae), 5 bel (vertebrae lumbales), 5 dumg'aza (os sacrum — qo'shilgan umurtqalar) va 3–5 dum (os coccygis) umurtqasi. Har bir bo'limni keyingi darslarda alohida o'rganamiz.", img: "assets/img/illu/skeleton.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "«Columna vertebralis» o'zbekchada nimani anglatadi?", opts: ["Umurtqa pog'onasi", "Ko'krak qafasi", "Chanoq suyagi", "Elka kamari"], a: 0, hint: "Columna — ustun, vertebralis — umurtqaga oid" },
             { t: "quiz", q: "Bo'yin umurtqalari lotinchada qanday ataladi?", opts: ["Vertebrae thoracicae", "Vertebrae cervicales", "Vertebrae lumbales", "Os sacrum"], a: 1, hint: "Cervix — bo'yin" },
@@ -36,6 +39,12 @@ const COURSE = {
           id: "l2",
           title: "Umurtqaning tuzilishi",
           xp: 20,
+          slides: [
+            { title: "Umurtqa tanasi — Corpus vertebrae", text: "Umurtqa tanasi (corpus vertebrae) — umurtqaning oldingi, yirik tayanch qismi. Qo'shni tanachalar orasida umurtqalararo disk (discus intervertebralis) joylashadi. Rasmda yashil ajratilgan qismlarga bosing — nomi chiqadi.", img: "assets/img/corpus.jpg", parts: [ { x: 62.4, y: 53.9, label: "Corpus vertebrae" }, { x: 46.6, y: 86.2, label: "Corpus vertebrae" } ] },
+            { title: "Umurtqa ravog'i — Arcus vertebrae", text: "Umurtqa ravog'i (arcus vertebrae) tanadan orqaga qarab yoy hosil qiladi va u oyoqcha (pediculus) hamda plastinka (lamina)dan iborat.", img: "assets/img/arcus.jpg", parts: [ { x: 46.5, y: 60.5, label: "Arcus vertebrae" } ] },
+            { title: "Ravoq oyoqchasi — Pediculus", text: "Pediculus arcus vertebrae — ravoqning tanaga birikadigan oyoqchasi. Ustida va ostida umurtqa o'yiqlari bo'lib, qo'shni umurtqalarda foramen intervertebrale hosil qiladi.", img: "assets/img/pediculus.jpg", parts: [ { x: 65.9, y: 46.9, label: "Pediculus arcus vertebrae" }, { x: 32.4, y: 47.2, label: "Pediculus arcus vertebrae" } ] },
+            { title: "Umurtqa teshigi — Foramen vertebrale", text: "Foramen vertebrale — ravoq ichidagi teshik. Barcha umurtqa teshiklari qo'shilib umurtqa kanalini (canalis vertebralis) hosil qiladi — undan orqa miya o'tadi.", img: "assets/img/foramen_vertebrale.jpg", parts: [ { x: 48.0, y: 50.8, label: "Foramen vertebrale" } ] }
+          ],
           ex: [
             { t: "img", q: "Rasmda YASHIL rangda ko'rsatilgan tuzilma nomi?", img: "assets/img/corpus.jpg", opts: ["Corpus vertebrae", "Arcus vertebrae", "Processus spinosus", "Foramen vertebrale"], a: 0, hint: "Corpus — tana" },
             { t: "quiz", q: "«Corpus vertebrae» nimani anglatadi?", opts: ["Umurtqa ravog'i", "Umurtqa tanasi", "Umurtqa teshigi", "Umurtqa o'simtasi"], a: 1 },
@@ -54,6 +63,12 @@ const COURSE = {
           id: "l3",
           title: "O'simtalar (Processus)",
           xp: 20,
+          slides: [
+            { title: "Qirrali o'simta — Processus spinosus", text: "Processus spinosus — ravoqdan orqaga yo'nalgan o'simta. U teri ostida sezilib turadi (orqa tomondagi o'rta chiziqda).", img: "assets/img/proc_spinosus.jpg", parts: [ { x: 46.8, y: 70.5, label: "Processus spinosus" } ] },
+            { title: "Ko'ndalang o'simtalar — Processus transversi", text: "Processus transversi — ravoqdan ikki yonga yo'nalgan juft o'simtalar. Ularga qovurg'alar va mushaklar birikadi.", img: "assets/img/proc_transversus.jpg", parts: [ { x: 15.5, y: 66.0, label: "Processus transversus" }, { x: 83.5, y: 65.8, label: "Processus transversus" } ] },
+            { title: "Bo'g'im o'simtalari — Processus articulares", text: "Processus articulares superiores et inferiores — qo'shni umurtqalar bilan bo'g'im (articulatio) hosil qiluvchi juft o'simtalar.", img: "assets/img/proc_articularis.jpg", parts: [ { x: 60.8, y: 50.7, label: "Processus articularis superior" }, { x: 60.8, y: 60.6, label: "Processus articularis inferior" } ] },
+            { title: "Umurtqalararo teshik — Foramen intervertebrale", text: "Foramen intervertebrale — qo'shni umurtqalar orasida hosil bo'ladi. Undan orqa miya nervi (n. spinalis) va tomirlar chiqadi.", img: "assets/img/foramen_intervertebrale.jpg", parts: [ { x: 28.7, y: 33.3, label: "Foramen intervertebrale" }, { x: 35.6, y: 54.1, label: "Foramen intervertebrale" } ] }
+          ],
           ex: [
             { t: "quiz", q: "Umurtqada nechta turdagi o'simta (processus) bor?", opts: ["2", "3", "4", "5"], a: 2, hint: "Spinosus, transversus, articularis superior va inferior" },
             { t: "img", q: "Rasmda qaysi tuzilmalar YASHIL rangda ko'rsatilgan?", img: "assets/img/proc_transversus.jpg", opts: ["Processus spinosus", "Processus transversus", "Processus articularis", "Corpus vertebrae"], a: 1, hint: "Transversus — ko'ndalang" },
@@ -80,6 +95,14 @@ const COURSE = {
           id: "l4",
           title: "Tipik bo'yin umurtqasi",
           xp: 20,
+          slides: [
+            { title: "Bo'yin umurtqasi tanasi — Corpus vertebrae", text: "Bo'yin umurtqalarining tanasi kichik, cho'ziq-oval shaklda bo'ladi. Yon qirralarida oldinga chiqqan ilgaksimon qirralar (uncus corporis) bor.", img: "assets/img/cervical_corpus.jpg", parts: [ { x: 47.9, y: 28.6, label: "Corpus vertebrae" }, { x: 50.7, y: 35.9, label: "Corpus vertebrae" }, { x: 53.6, y: 44.1, label: "Corpus vertebrae" } ] },
+            { title: "Ko'ndalang teshik — Foramen transversarium", text: "Foramen transversarium — ko'ndalang o'simtadagi teshik; faqat bo'yin umurtqalariga xos. Undan umurtqa arteriyasi (a. vertebralis) o'tadi.", img: "assets/img/foramen_transversarium.jpg", parts: [ { x: 23.2, y: 28.4, label: "Foramen transversarium" }, { x: 76.2, y: 28.9, label: "Foramen transversarium" } ] },
+            { title: "Oldingi do'mboqcha — Tuberculum anterius", text: "Tuberculum anterius — ko'ndalang o'simtaning oldingi do'mboqchasi. C6 da u kattalashib tuberculum caroticum ni hosil qiladi.", img: "assets/img/tuberculum_anterius.jpg", parts: [ { x: 9.6, y: 23.2, label: "Tuberculum anterius" }, { x: 90.3, y: 26.3, label: "Tuberculum anterius" } ] },
+            { title: "Orqa do'mboqcha — Tuberculum posterius", text: "Tuberculum posterius — ko'ndalang o'simtaning orqa do'mboqchasi (bo'yin umurtqalarida qovurg'a rudimentining o'rni).", img: "assets/img/tuberculum_posterius.jpg", parts: [ { x: 15.5, y: 16.6, label: "Tuberculum posterius" }, { x: 85.0, y: 17.5, label: "Tuberculum posterius" } ] },
+            { title: "Qirrali o'simta — Processus spinosus (bifidus)", text: "C2–C6 qirrali o'simtalari uchi ikkiga ayrilgan (bifidus). Rasmda bo'yin umurtqalarining barcha bifidus o'simtalari ajratilgan.", img: "assets/img/cervical_spinosus.jpg", parts: [ { x: 50.6, y: 26.9, label: "Processus spinosus (bifidus)" }, { x: 50.6, y: 37.4, label: "Processus spinosus (bifidus)" }, { x: 50.6, y: 48.5, label: "Processus spinosus (bifidus)" }, { x: 50.6, y: 59.2, label: "Processus spinosus (bifidus)" }, { x: 50.4, y: 70.1, label: "Processus spinosus (bifidus)" }, { x: 50.9, y: 82.3, label: "Processus spinosus (bifidus)" } ] },
+            { title: "Bo'yin umurtqalari — Vertebrae cervicales", text: "Bo'yin bo'limida 7 ta umurtqa (C1–C7) bor. Ularga xos belgilar: kichik tana, foramen transversarium va ikkiga ayrilgan qirrali o'simta.", img: "assets/img/cervical_overview.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "Bo'yin umurtqalari tuzilishiga ko'ra qanday turlarga bo'linadi?", opts: ["Katta va kichik", "Tipik va atipik", "Oldingi va orqa", "Yuqori va pastki"], a: 1 },
             { t: "quiz", q: "Bo'yin umurtqasini boshqa umurtqalardan ajratib turadigan MAXSUS teshik?", opts: ["Foramen vertebrale", "Foramen intervertebrale", "Foramen transversarium", "Foramen sacrale"], a: 2, hint: "Ko'ndalang o'simtadagi teshik" },
@@ -100,6 +123,10 @@ const COURSE = {
           id: "l5",
           title: "Atlas (C1)",
           xp: 25,
+          slides: [
+            { title: "Atlas (C1)", text: "Birinchi bo'yin umurtqasi — atlas. Uning tanasi yo'q: oldingi va orqa ravoq hamda yon massalar (massae laterales)dan iborat. Rasmda ajratilgan qismga bosing.", img: "assets/img/atlas_green.jpg", parts: [ { x: 44.7, y: 29.6, label: "Atlas (C1)" } ] },
+            { title: "Fovea articularis superior", text: "Atlasning yuqori bo'g'im chuqurchalari — foveae articulares superiores — bosh suyagining condylus occipitalis bilan bo'g'im hosil qiladi (atlanto-oksipital bo'g'im).", img: "assets/img/atlas_labeled.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "Birinchi bo'yin umurtqasi qanday nomlanadi?", opts: ["Axis", "Atlas", "Vertebra prominens", "Promontorium"], a: 1, hint: "Yunon afsonasidagi osmoni ko'targan pahlavon" },
             { t: "img", q: "Rasmda YASHIL rangda ko'rsatilgan umurtqa?", img: "assets/img/atlas_green.jpg", opts: ["Axis (C2)", "Atlas (C1)", "C7", "Th1"], a: 1 },
@@ -117,6 +144,10 @@ const COURSE = {
           id: "l6",
           title: "Axis (C2)",
           xp: 25,
+          slides: [
+            { title: "Dens axis (tish)", text: "Axisning xarakterli tuzilmasi — tanadan yuqoriga ko'tarilgan tish (dens). U atlasning fovea dentis'i bilan bo'g'im hosil qilib, boshni burish harakatini ta'minlaydi.", img: "assets/img/axis_green.jpg", parts: [ { x: 51.9, y: 25.3, label: "Dens axis (tish)" } ] },
+            { title: "Axis (C2)", text: "Ikkinchi bo'yin umurtqasi — axis. Tish (dens)dan tashqari unda tana, ravoq va o'simtalar to'liq rivojlangan. Densning uchi — apex dentis, bo'yni — collum dentis.", img: "assets/img/axis_labeled.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "Ikkinchi bo'yin umurtqasi qanday nomlanadi?", opts: ["Atlas", "Axis", "Prominens", "Sacrum"], a: 1, hint: "Axis — o'q" },
             { t: "img", q: "Axisning eng xarakterli tuzilmasi — tanadan yuqoriga ko'tarilgan «tish». Lotincha nomi?", img: "assets/img/axis_green.jpg", opts: ["Dens", "Apex", "Cornu", "Crista"], a: 0 },
@@ -133,6 +164,10 @@ const COURSE = {
           id: "l7",
           title: "C3–C7 umurtqalar",
           xp: 25,
+          slides: [
+            { title: "Tuberculum caroticum (C6)", text: "C6 ko'ndalang o'simtasining oldingi do'mboqchasi kattalashib tuberculum caroticum ni hosil qiladi. Unga a. carotis communis bosilsa qon oqimi to'xtaydi — shuning uchun «caroticum» (uyqu) deb ataladi.", img: "assets/img/caroticum.jpg", parts: [ { x: 20.0, y: 68.4, label: "Tuberculum caroticum" } ] },
+            { title: "C3–C7 umurtqalari", text: "C3–C6 — tipik bo'yin umurtqalari; C7 (vertebra prominens) uzun qirrali o'simtasi bilan bo'rtib turadi. Tuberculum caroticum aynan C6 da joylashgan.", img: "assets/img/cervical_labeled.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "6-bo'yin umurtqasining oldingi do'mboqchasi alohida nomga ega. U qanday ataladi?", opts: ["Tuberculum posterius", "Tuberculum caroticum", "Tuberculum majus", "Promontorium"], a: 1, hint: "Uyqu arteriyasini bosib qon oqishini to'xtatish mumkin" },
             { t: "quiz", q: "Tuberculum caroticum o'zbekchada…", opts: ["Uyqu do'mboqchasi", "Bo'yin do'mboqchasi", "Orqa do'mboqcha", "Tish do'mboqchasi"], a: 0 },
@@ -158,6 +193,10 @@ const COURSE = {
           id: "l8",
           title: "Ko'krak umurtqalari",
           xp: 25,
+          slides: [
+            { title: "Qovurg'a chuqurchalari — Foveae costales", text: "Ko'krak umurtqalari tanasining yonida qovurg'a boshi birikadigan chuqurchalar bor: fovea costalis superior (yuqorida) va fovea costalis inferior (pastda).", img: "assets/img/fovea_costales.jpg", parts: [ { x: 47.5, y: 28.5, label: "Fovea costalis superior" }, { x: 47.5, y: 50.5, label: "Fovea costalis inferior" } ] },
+            { title: "Ko'krak umurtqalari — Vertebrae thoracicae", text: "12 ta ko'krak umurtqasi (Th1–Th12). Xos belgilari: qovurg'a chuqurchalari (foveae costales) va uzun, pastga cherepitsasimon qiya yo'nalgan qirrali o'simta.", img: "assets/img/thoracic_labeled.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "Ko'krak umurtqalarini boshqalardan ajratib turuvchi asosiy belgi?", opts: ["Foramen transversarium", "Qovurg'a chuqurchalari (fovea costales)", "Dens", "Massae laterales"], a: 1, hint: "Qovurg'alar bilan bo'g'im hosil qiladi" },
             { t: "img", q: "Rasmda YASHIL rangda ko'rsatilgan qovurg'a boshi birikadigan chuqurchalar qanday ataladi?", img: "assets/img/fovea_costales.jpg", opts: ["Fovea dentis", "Fovea costalis superior et inferior", "Fovea articularis", "Foramen costale"], a: 1, hint: "Fovea — chuqurcha" },
@@ -174,6 +213,9 @@ const COURSE = {
           id: "l9",
           title: "Bel umurtqalari",
           xp: 25,
+          slides: [
+            { title: "Bel umurtqalari — Vertebrae lumbales", text: "5 ta bel umurtqasi (L1–L5). Ularning tanasi eng yirik va buyraksimon; qirrali o'simtasi keng, yassi, gorizontal. Qo'shimcha o'simtalar: processus costarius, accessorius va mamillaris.", img: "assets/img/lumbar_labeled.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "Bel umurtqalarining eng katta ajralib turuvchi belgisi?", opts: ["Eng kichik tanasi", "Eng katta va massiv tanasi", "Foramen transversarium", "Fovea costales"], a: 1 },
             { t: "quiz", q: "Bel umurtqasidagi qovurg'a rudimenti bo'lgan o'simta?", opts: ["Processus costarius", "Processus mamillaris", "Processus accessorius", "Processus spinosus"], a: 0, hint: "Costa — qovurg'a" },
@@ -198,6 +240,12 @@ const COURSE = {
           id: "l10",
           title: "Os sacrum — asosiy qismlar",
           xp: 25,
+          slides: [
+            { title: "Dumg'aza asosi — Basis ossis sacri", text: "Basis ossis sacri — dumg'azaning keng yuqori qismi. U L5 bilan bo'g'im hosil qiladi; oldinga chiqqan qirrasi — promontorium.", img: "assets/img/sacrum_basis.jpg", parts: [ { x: 48.8, y: 23.7, label: "Basis ossis sacri" } ] },
+            { title: "Dumg'aza uchi — Apex ossis sacri", text: "Apex ossis sacri — dumg'azaning pastki tor uchi. U dum suyagi (os coccygis) bilan tutashadi.", img: "assets/img/apex_sacri.jpg", parts: [ { x: 51.2, y: 76.6, label: "Apex ossis sacri" } ] },
+            { title: "Yon qismlar — Pars lateralis", text: "Pars lateralis — dumg'azaning keng yon qismlari. Ularda quloqsimon yuza (facies auricularis) — chanoq suyagi bilan bo'g'im hosil qiladigan joy.", img: "assets/img/sacrum_green.jpg", parts: [ { x: 18.0, y: 21.7, label: "Pars lateralis" }, { x: 87.1, y: 21.9, label: "Pars lateralis" }, { x: 73.8, y: 53.8, label: "Pars lateralis" }, { x: 30.9, y: 58.6, label: "Pars lateralis" } ] },
+            { title: "Chanoq yuzasi teshiklari — Foramina sacralia pelvina", text: "Dumg'azaning oldingi (chanoq) yuzasida 4 juft teshik — foramina sacralia pelvina (anteriora). Ulardan sakral nervlar va tomirlar chiqadi.", img: "assets/img/sacrum_labeled.jpg" }
+          ],
           ex: [
             { t: "quiz", q: "Os sacrum nechta umurtqaning qo'shilishidan hosil bo'ladi?", opts: ["3", "4", "5", "7"], a: 2 },
             { t: "img", q: "Dumg'azaning keng yuqori qismi qanday ataladi?", img: "assets/img/sacrum_basis.jpg", opts: ["Apex ossis sacri", "Basis ossis sacri", "Ala ossis sacri", "Cornu sacrale"], a: 1, hint: "Basis — asos" },
@@ -217,6 +265,15 @@ const COURSE = {
           id: "l11",
           title: "Os sacrum — qirralar va kanal",
           xp: 25,
+          slides: [
+            { title: "O'rta qirra — Crista sacralis mediana", text: "Crista sacralis mediana — qirrali o'simtalar (processus spinosi) qo'shilishidan hosil bo'lgan o'rta chiziqdagi tizma.", img: "assets/img/crista_mediana.jpg", parts: [ { x: 53.9, y: 53.8, label: "Crista sacralis mediana" } ] },
+            { title: "Oraliq qirralar — Cristae sacrales intermediae", text: "Crista sacralis intermedia — bo'g'im o'simtalari (processus articulares) qo'shilishidan hosil bo'lgan qirra; o'rta qirraning yonida joylashgan.", img: "assets/img/crista_intermedia.jpg", parts: [ { x: 44.5, y: 28.8, label: "Crista sacralis intermedia" }, { x: 52.2, y: 28.1, label: "Crista sacralis intermedia" } ] },
+            { title: "Yon qirralar — Cristae sacrales laterales", text: "Crista sacralis lateralis — ko'ndalang o'simtalar qo'shilishidan hosil bo'lgan eng tashqi tizmalar.", img: "assets/img/crista_lateralis.jpg", parts: [ { x: 39.8, y: 29.8, label: "Crista sacralis lateralis" }, { x: 56.6, y: 28.6, label: "Crista sacralis lateralis" } ] },
+            { title: "Yuqorigi bo'g'im o'simtalari — Processus articulares superiores", text: "Dumg'azaning yuqorigi bo'g'im o'simtalari L5 ning pastki bo'g'im o'simtalari bilan bo'g'im hosil qiladi.", img: "assets/img/proc_articularis_sacri.jpg", parts: [ { x: 42.2, y: 18.9, label: "Processus articularis superior" }, { x: 54.6, y: 18.7, label: "Processus articularis superior" } ] },
+            { title: "Orqa teshiklar — Foramina sacralia dorsalia", text: "Dumg'azaning orqa yuzasida ham 4 juft teshik — foramina sacralia dorsalia (posteriora) — bo'lib, ulardan orqa shoxchalar (rami dorsales) chiqadi.", img: "assets/img/sacrum_foramina.jpg", parts: [ { x: 35.5, y: 53.9, label: "Foramen sacrale dorsale" }, { x: 38.4, y: 71.5, label: "Foramen sacrale dorsale" }, { x: 40.0, y: 85.1, label: "Foramen sacrale dorsale" }, { x: 63.8, y: 71.3, label: "Foramen sacrale dorsale" }, { x: 63.7, y: 84.8, label: "Foramen sacrale dorsale" }, { x: 67.4, y: 54.0, label: "Foramen sacrale dorsale" } ] },
+            { title: "Dumg'aza tirqishi — Hiatus sacralis", text: "Hiatus sacralis — sakral kanalning pastki ochiq qismi. Uning yon tomonlarida shoxchalar — cornua sacralia — joylashgan.", img: "assets/img/hiatus_sacralis.jpg", parts: [ { x: 21.6, y: 78.7, label: "Hiatus sacralis" } ] },
+            { title: "Shoxchalar — Cornua sacralia", text: "Cornua sacralia — hiatus sacralis yonidagi shoxchalar; V-sakral umurtqa ravog'ining qoldig'i. Ular dum suyagining cornua coccygea bilan birikadi.", img: "assets/img/sacrum_cornu.jpg", parts: [ { x: 19.0, y: 79.2, label: "Cornua sacralia" }, { x: 28.5, y: 79.1, label: "Cornua sacralia" } ] }
+          ],
           ex: [
             { t: "quiz", q: "Dumg'azaning orqa yuzasidagi O'RTA qirra qanday ataladi?", opts: ["Crista sacralis lateralis", "Crista sacralis mediana", "Crista sacralis intermedia", "Crista iliaca"], a: 1, hint: "Mediana — o'rta" },
             { t: "quiz", q: "Crista sacralis mediana nimaning qo'shilishidan hosil bo'lgan?", opts: ["Ko'ndalang o'simtalar", "Processus spinosus'lar", "Bo'g'im o'simtalari", "Qovurg'alar"], a: 1 },
@@ -239,6 +296,9 @@ const COURSE = {
           id: "l12",
           title: "Os coccygis",
           xp: 20,
+          slides: [
+            { title: "Dum suyagi shoxchalari — Cornua coccygea", text: "Os coccygis 3–5 ta birlashgan rudimentar umurtqadan iborat. Uning yuqoriga yo'nalgan shoxchalari — cornua coccygea — dumg'azaning cornua sacralia bilan tutashadi.", img: "assets/img/coccyx_green.jpg", parts: [ { x: 18.6, y: 80.6, label: "Cornua coccygea" }, { x: 28.5, y: 80.1, label: "Cornua coccygea" } ] }
+          ],
           ex: [
             { t: "quiz", q: "Os coccygis — bu…", opts: ["Dumg'aza suyagi", "Dum suyagi", "Yonbosh suyagi", "Qov suyagi"], a: 1 },
             { t: "img", q: "Dum suyagining yuqoriga yo'nalgan shoxchalari qanday ataladi?", img: "assets/img/coccyx_green.jpg", opts: ["Cornua sacralia", "Cornua coccygea", "Processus transversi", "Alae coccygea"], a: 1 },
@@ -262,6 +322,10 @@ const COURSE = {
           id: "l13",
           title: "Qovurg'alar (Costae)",
           xp: 25,
+          slides: [
+            { title: "Qovurg'alar — Costae", text: "Qovurg'alar (costae) — 12 juft yoysimon suyak. Ular orqa tomonda ko'krak umurtqalari bilan, oldinda to'sh suyagi bilan bog'lanadi. Har bir qovurg'ada bosh (caput costae), bo'yin (collum costae), do'mboqcha (tuberculum costae) va tana (corpus costae) farqlanadi.", img: "assets/img/atlas/costae_sternum.jpg" },
+            { title: "Qovurg'a turlari", text: "Chin qovurg'alar (costae verae, I–VII) to'sh suyagiga bevosita birikadi. Soxta qovurg'alar (costae spuriae, VIII–X) tog'ay orqali birikadi. Erkin qovurg'alar (costae fluctuantes, XI–XII) oldinda erkin tugaydi.", cap: "Manba: Anatomiya I jild, 46–50-bet" }
+          ],
           ex: [
             { t: "quiz", q: "Qovurg'alar lotinchada qanday ataladi?", opts: ["Costae", "Sternum", "Clavicula", "Scapula"], a: 0 },
             { t: "quiz", q: "Odamda necha juft qovurg'a bor?", opts: ["10", "11", "12", "14"], a: 2 },
@@ -281,6 +345,10 @@ const COURSE = {
           id: "l14",
           title: "To'sh suyagi (Sternum)",
           xp: 20,
+          slides: [
+            {"title":"To'sh suyagi — Sternum","text":"To'sh suyagi (sternum) ko'krak qafasining oldingi devoridagi yassi suyak bo'lib, uch qismdan iborat: dasta (manubrium sterni), tana (corpus sterni) va xanjar o'simta (processus xiphoideus).","img":"assets/img/atlas/costae_sternum.jpg"},
+            {"title":"Dasta va burchak","text":"Manubriumning yuqori chetida bo'yinturuq o'ymasi (incisura jugularis) va o'mrov o'ymalari (incisurae claviculares) bor. Dasta bilan tana chegarasidagi burchak — angulus sterni (II qovurg'a darajasida) — klinik orientir hisoblanadi.","cap":"Manba: Anatomiya I jild, 46–50-bet"}
+          ],
           ex: [
             { t: "quiz", q: "To'sh suyagi lotinchada qanday ataladi?", opts: ["Sternum", "Sacrum", "Scapula", "Stapes"], a: 0 },
             { t: "quiz", q: "To'sh suyagi qanday qismlardan iborat?", opts: ["Manubrium, corpus, processus xiphoideus", "Caput, collum, corpus", "Basis, apex, ala", "Squama, corpus, ramus"], a: 0 },
@@ -307,6 +375,10 @@ const COURSE = {
           id: "l15",
           title: "Yelka kamari (Scapula · Clavicula)",
           xp: 25,
+          slides: [
+            {"title":"Yelka kamari — Scapula · Clavicula","text":"Yelka kamari o'mrov suyagi (clavicula) va kurak suyagi (scapula)dan iborat. Kurak suyagida bo'g'im chuqurchasi (cavitas glenoidalis), qirra (spina scapulae), akromion (yelka uchki o'simtasi) va tumshuqsimon o'simta (processus coracoideus) ajratiladi.","img":"assets/img/atlas/membrum_superius.jpg"},
+            {"title":"Cavitas glenoidalis","text":"Cavitas glenoidalis — yelka suyagining boshi bilan bo'g'im hosil qiladigan chuqurcha. Kurak suyagining qovurg'alarga qaragan yuzasi — fossa subscapularis.","cap":"Manba: Anatomiya I jild, 51–71-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Yelka kamari qaysi suyaklardan tashkil topgan?", opts: ["Clavicula va scapula", "Humerus va radius", "Sternum va costa", "Os coxae va femur"], a: 0 },
             { t: "quiz", q: "O'mrov suyagi lotinchada qanday ataladi?", opts: ["Clavicula", "Scapula", "Costa", "Clavis"], a: 0 },
@@ -326,6 +398,10 @@ const COURSE = {
           id: "l16",
           title: "Yelka suyagi (Humerus)",
           xp: 25,
+          slides: [
+            {"title":"Yelka suyagi — Humerus","text":"Yelka suyagi (humerus) qo'lning yelka va tirsak bo'g'imlari orasidagi suyagi. Yuqori uchida bosh (caput humeri), katta va kichik do'mboqchalar (tuberculum majus et minus) hamda do'mboqchalararo egat (sulcus intertubercularis) bor.","img":"assets/img/atlas/membrum_superius.jpg"},
+            {"title":"Pastki uch","text":"Yelka suyagining pastki uchida radius bilan bo'g'im qiluvchi capitulum humeri va tirsak suyagi bilan bo'g'im qiluvchi trochlea humeri joylashgan. Anatomik bo'yin (collum anatomicum) bosh atrofida, jarrohlik bo'yni (collum chirurgicum) undan pastda — sinishlar ko'p uchraydigan joy.","cap":"Manba: Anatomiya I jild, 51–71-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Yelka suyagi lotinchada qanday ataladi?", opts: ["Humerus", "Femur", "Radius", "Ulna"], a: 0 },
             { t: "quiz", q: "Yelka suyagining boshi qanday ataladi?", opts: ["Caput humeri", "Collum humeri", "Tuberculum", "Condylus"], a: 0 },
@@ -345,6 +421,10 @@ const COURSE = {
           id: "l17",
           title: "Bilak va kaft suyaklari",
           xp: 30,
+          slides: [
+            {"title":"Bilak suyaklari — Radius · Ulna","text":"Bilakda ikkita suyak bor: radius (bosh barmoq tomonida) va ulna (kichik barmoq tomonida). Ulna yuqori uchida tirsak suyanchig'i (olecranon) bilan tugaydi; radiusning pastki uchida bigizsimon o'simta (processus styloideus) bor.","img":"assets/img/atlas/membrum_superius.jpg"},
+            {"title":"Kaft skeleti","text":"Kaft skeleti: ossa carpi (8 ta kaft ildizi suyagi, ikki qatorda), ossa metacarpi (5 ta kaft suyagi) va barmoq falangalari (14 ta). Bosh barmoq — pollex.","cap":"Manba: Anatomiya I jild, 51–71-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Bilak suyaklari qaysilar?", opts: ["Radius va ulna", "Tibia va fibula", "Humerus va scapula", "Femur va patella"], a: 0 },
             { t: "quiz", q: "Bosh barmoq tomonidagi bilak suyagi?", opts: ["Ulna", "Radius", "Humerus", "Fibula"], a: 1, hint: "Radius — tashqi tomonda" },
@@ -373,6 +453,10 @@ const COURSE = {
           id: "l18",
           title: "Chanoq kamari (Os coxae)",
           xp: 30,
+          slides: [
+            {"title":"Chanoq suyagi — Os coxae","text":"Chanoq suyagi (os coxae) uchta suyakning qo'shilishidan hosil bo'ladi: yonbosh (os ilium), quymich (os ischii) va qov (os pubis). Uchala suyak markazda bo'g'im chuqurchasi — acetabulum — ni hosil qiladi, unga son suyagining boshi kiradi.","img":"assets/img/atlas/membrum_inferius.jpg"},
+            {"title":"Muhim tuzilmalar","text":"Yonbosh suyagining yuqori qirrasi — crista iliaca; oldingi-ustki bo'rtig'i — spina iliaca anterior superior (klinik orientir). Qov suyaklari oldinda symphysis pubica orqali birikadi. Quymich va qov suyaklari orasida foramen obturatum bor.","cap":"Manba: Anatomiya I jild, 72–93-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Chanoq suyagi lotinchada qanday ataladi?", opts: ["Os coxae", "Os sacrum", "Os ilium", "Femur"], a: 0 },
             { t: "quiz", q: "Os coxae nechta suyakning qo'shilishidan hosil bo'ladi?", opts: ["2", "3", "4", "5"], a: 1, hint: "Ilium, ischium, pubis" },
@@ -395,6 +479,10 @@ const COURSE = {
           id: "l19",
           title: "Son va boldir suyaklari",
           xp: 30,
+          slides: [
+            {"title":"Son suyagi — Femur","text":"Son suyagi (femur) — tanadagi eng uzun va mustahkam suyak. Yuqori uchida bosh (caput femoris), bo'yin (collum femoris) hamda katta va kichik do'mboqlar (trochanter major et minor) bor. Orqa yuzasida mushaklar birikadigan qo'pol qirra — linea aspera.","img":"assets/img/atlas/membrum_inferius.jpg"},
+            {"title":"Boldir suyaklari","text":"Boldirda katta boldir suyagi (tibia) va kichik boldir suyagi (fibula) bor. Tizza qopqog'i — patella. Tibianing oldingi yuzasida pay birikadigan do'mboqlik (tuberositas tibiae); tibia pastki uchida ichki to'piq (malleolus medialis), fibula esa tashqi to'piq (malleolus lateralis) hosil qiladi.","cap":"Manba: Anatomiya I jild, 72–93-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Son suyagi lotinchada qanday ataladi?", opts: ["Femur", "Humerus", "Fibula", "Patella"], a: 0 },
             { t: "quiz", q: "Femurning boshi qanday ataladi?", opts: ["Caput femoris", "Collum femoris", "Trochanter major", "Condylus"], a: 0 },
@@ -417,6 +505,10 @@ const COURSE = {
           id: "l20",
           title: "Oyoq panjasi (Ossa pedis)",
           xp: 25,
+          slides: [
+            {"title":"Oyoq panjasi — Ossa pedis","text":"Oyoq panjasi uch qismdan iborat: orqada 7 ta tovon suyaklari (ossa tarsi) — oshiq (talus), tovon (calcaneus), qayiqsimon (os naviculare), 3 ta ponasimon va kubsimon (os cuboideum); o'rtada 5 ta oyoq kafti suyagi (ossa metatarsi); oldinda 14 ta barmoq falangasi. Bosh barmoq — hallux.","img":"assets/img/atlas/membrum_inferius.jpg"},
+            {"title":"Tovon va gumbaz","text":"Talus boldir suyaklari bilan to'piq bo'g'imini hosil qiladi. Tovon suyagining orqa do'mbog'i (tuber calcanei)ga Axill payi birikadi. Oyoqning bo'rtib turgan uzunasiga yoyi — arcus pedis (oyoq gumbazi).","cap":"Manba: Anatomiya I jild, 72–93-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Oyoq panjasining orqa qismidagi suyaklar (ossa tarsi) nechta?", opts: ["5", "7", "8", "14"], a: 1 },
             { t: "quiz", q: "Oshiq suyagi lotinchada qanday ataladi?", opts: ["Talus", "Calcaneus", "Naviculare", "Cuboideum"], a: 0 },
@@ -445,6 +537,10 @@ const COURSE = {
           id: "l21",
           title: "Miya qismi suyaklari (umumiy)",
           xp: 20,
+          slides: [
+            {"title":"Kalla skeleti — Cranium","text":"Kalla skeleti (cranium) miya qismi (neurocranium) va yuz qismi (viscerocranium)dan iborat. Neurocranium 8 ta suyakdan tashkil topgan: 4 ta toq (peshona — os frontale, ensa — os occipitale, ponasimon — os sphenoidale, g'alvirsimon — os ethmoidale) va 2 juft (tepa — os parietale, chakka — os temporale).","img":"assets/img/atlas/neurocranium.jpg"},
+            {"title":"Gumbaz va asos","text":"Kalla gumbazi — calvaria, asosi — basis cranii. Kalla suyaklari choklar (suturae) orqali harakatsiz birikkan.","cap":"Manba: Anatomiya I jild, 94–148-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Kalla skeleti lotinchada qanday ataladi?", opts: ["Cranium", "Thorax", "Pelvis", "Columna"], a: 0 },
             { t: "quiz", q: "Kallaning miya qismi qanday ataladi?", opts: ["Neurocranium", "Viscerocranium", "Calvaria", "Splanchnocranium"], a: 0 },
@@ -462,6 +558,10 @@ const COURSE = {
           id: "l22",
           title: "Ensa, tepa va peshona suyaklari",
           xp: 25,
+          slides: [
+            {"title":"Ensa suyagi — Os occipitale","text":"Ensa suyagi (os occipitale) kalla asosining orqa qismida joylashgan. Undagi eng katta teshik — foramen magnum — orqali bosh miya orqa miyaga o'tadi. Teshik yonida atlas bilan bo'g'im hosil qiluvchi kondilalar (condyli occipitales) bor.","img":"assets/img/atlas/neurocranium.jpg"},
+            {"title":"Tepa va peshona suyaklari","text":"Tepa suyaklari (os parietale) kalla gumbazining yon-yuqori devorini hosil qiladi. Peshona suyagi (os frontale) peshonani hosil qilib, ichida havo bo'shlig'i — sinus frontalis — bor. Qoshlar orasidagi tekis maydon — glabella.","cap":"Manba: Anatomiya I jild, 94–148-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Ensa suyagi lotinchada qanday ataladi?", opts: ["Os occipitale", "Os frontale", "Os parietale", "Os temporale"], a: 0 },
             { t: "quiz", q: "Ensa suyagidagi eng katta teshik (orqa miya o'tadi)?", opts: ["Foramen magnum", "Foramen ovale", "Foramen rotundum", "Foramen lacerum"], a: 0 },
@@ -482,6 +582,10 @@ const COURSE = {
           id: "l23",
           title: "G'alvirsimon, ponasimon va chakka",
           xp: 25,
+          slides: [
+            {"title":"G'alvirsimon suyak — Os ethmoidale","text":"G'alvirsimon suyak (os ethmoidale) burun bo'shlig'i bilan kalla o'rtasida joylashgan. Uning teshikli plastinkasi (lamina cribrosa) orqali hid nervlari o'tadi; ustida xo'roz tojisimon o'simta (crista galli) ko'tariladi.","img":"assets/img/atlas/neurocranium.jpg"},
+            {"title":"Ponasimon va chakka suyaklari","text":"Ponasimon suyak (os sphenoidale) kalla asosining markazida joylashgan; tanasida gipofiz joylashadigan turk egari (sella turcica) bor. Chakka suyagida (os temporale) eshitish va muvozanat a'zosi joylashgan toshsimon qism (pars petrosa) hamda so'rg'ichsimon o'simta (processus mastoideus) bor.","cap":"Manba: Anatomiya I jild, 94–148-bet"}
+          ],
           ex: [
             { t: "quiz", q: "G'alvirsimon suyak lotinchada qanday ataladi?", opts: ["Os ethmoidale", "Os sphenoidale", "Os temporale", "Os palatinum"], a: 0 },
             { t: "quiz", q: "G'alvirsimon suyakning teshikli plastinkasi (hid nervlari o'tadi)?", opts: ["Lamina cribrosa", "Lamina perpendicularis", "Lamina papyracea", "Lamina horizontalis"], a: 0 },
@@ -512,6 +616,10 @@ const COURSE = {
           id: "l24",
           title: "Ustki jag' va tanglay suyagi",
           xp: 25,
+          slides: [
+            {"title":"Ustki jag' suyagi — Maxilla","text":"Ustki jag' suyagi (maxilla) yuz skeletining markaziy suyagi. Unda tishlar joylashadigan o'simta (processus alveolaris), yirik havo bo'shlig'i — yuqori jag' bo'shlig'i (sinus maxillaris, Highmori bo'shlig'i) — va ko'z ostidagi teshik (foramen infraorbitale) bor.","img":"assets/img/atlas/viscerocranium.jpg"},
+            {"title":"Tanglay suyagi — Os palatinum","text":"Tanglay suyagi (os palatinum) qattiq tanglayning orqa qismini hosil qiladi va gorizontal hamda perpendikulyar plastinkalardan iborat.","cap":"Manba: Anatomiya I jild, 94–148-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Ustki jag' suyagi lotinchada qanday ataladi?", opts: ["Maxilla", "Mandibula", "Zygomaticum", "Palatinum"], a: 0 },
             { t: "quiz", q: "Ustki jag' suyagidagi eng katta havo bo'shlig'i (burun yonida)?", opts: ["Sinus maxillaris", "Sinus frontalis", "Sinus sphenoidalis", "Sinus ethmoidalis"], a: 0, hint: "Highmori bo'shlig'i" },
@@ -531,6 +639,10 @@ const COURSE = {
           id: "l25",
           title: "Pastki jag', yonoq va butun kalla",
           xp: 25,
+          slides: [
+            {"title":"Pastki jag' suyagi — Mandibula","text":"Pastki jag' suyagi (mandibula) kalla skeletining yagona harakatchan suyagi. U tana (corpus mandibulae) va shox (ramus mandibulae)dan iborat; shoxning oldingi o'simtasi — processus coronoideus, orqasi — processus condylaris (chakka suyagi bilan chakka-jag' bo'g'imini hosil qiladi).","img":"assets/img/atlas/viscerocranium.jpg"},
+            {"title":"Yonoq suyagi va liqildoqlar","text":"Yonoq suyagi (os zygomaticum) yuzning yon devorini hosil qiladi. Yangi tug'ilgan chaqaloq kallasida suyaklar orasida liqildoqlar (fonticuli) bo'ladi — eng kattasi katta liqildoq (fonticulus anterior), peshona va tepa suyaklari chegarasida.","cap":"Manba: Anatomiya I jild, 94–148-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Pastki jag' suyagi lotinchada qanday ataladi?", opts: ["Mandibula", "Maxilla", "Zygomaticum", "Vomer"], a: 0 },
             { t: "quiz", q: "Mandibula kallaning qanday suyagi?", opts: ["Yagona harakatchan suyagi", "Eng katta miya suyagi", "Juft suyak", "Ichki quloq suyagi"], a: 0 },
@@ -559,6 +671,10 @@ const COURSE = {
           id: "l26",
           title: "Bo'g'imlar haqida tushuncha",
           xp: 20,
+          slides: [
+            {"title":"Bo'g'im — Articulatio","text":"Bo'g'im (articulatio) — suyaklarning harakatchan birikishi. Chin (sinovial) bo'g'imning asosiy elementlari: bo'g'im yuzalari (facies articulares), bo'g'im tog'ayi (cartilago articularis), bo'g'im xaltasi (capsula articularis), bo'g'im bo'shlig'i (cavitas articularis) va bog'lamlar (ligamenta).","img":"assets/img/atlas/arthrologia.jpg"},
+            {"title":"Birikish turlari","text":"Suyaklarning birikish turlari: uzluksiz (chok — sutura, tog'ay — synchondrosis), yarimharakatchan (symphysis) va uzilgan (chin bo'g'im — articulatio).","cap":"Manba: Anatomiya I jild, 149–159-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Bo'g'im lotinchada qanday ataladi?", opts: ["Articulatio", "Sutura", "Symphysis", "Synchondrosis"], a: 0 },
             { t: "quiz", q: "Suyaklarning qo'shilishini o'rganuvchi bo'lim?", opts: ["Osteologiya", "Artrologiya", "Miologiya", "Splanxnologiya"], a: 1, hint: "Arthron — bo'g'im" },
@@ -577,6 +693,10 @@ const COURSE = {
           id: "l27",
           title: "Asosiy bo'g'imlar",
           xp: 25,
+          slides: [
+            {"title":"Asosiy bo'g'imlar","text":"Asosiy bo'g'imlar: yelka (articulatio humeri) — eng harakatchan sharsimon bo'g'im; tirsak (articulatio cubiti); chanoq-son (articulatio coxae); tizza (articulatio genus) — tarkibida yarimoysimon tog'aylar (menisci) bor; to'piq (articulatio talocruralis).","img":"assets/img/atlas/arthrologia.jpg"},
+            {"title":"Chakka-pastki jag' bo'g'imi","text":"Chakka-pastki jag' bo'g'imi (articulatio temporomandibularis) ikkala tomonda birga ishlaydi. Bo'g'imlarni mustahkamlovchi tuzilmalar — bog'lamlar (ligamenta).","cap":"Manba: Anatomiya I jild, 160–210-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Yelka bo'g'imi lotinchada qanday ataladi?", opts: ["Articulatio humeri", "Articulatio cubiti", "Articulatio coxae", "Articulatio genus"], a: 0 },
             { t: "quiz", q: "Tirsak bo'g'imi lotinchada qanday ataladi?", opts: ["Articulatio cubiti", "Articulatio humeri", "Articulatio genus", "Articulatio radiocarpea"], a: 0 },
@@ -604,6 +724,10 @@ const COURSE = {
           id: "l28",
           title: "Mushak haqida tushuncha",
           xp: 20,
+          slides: [
+            {"title":"Mushak — Musculus","text":"Mushak (musculus) — harakat a'zosi. Uch turi bor: skelet (ko'ndalang-targ'il), silliq (ichki a'zolar devorida) va yurak mushagi. Skelet mushagi qorin (venter) va pay (tendo)dan iborat; tashqaridan mushak pardasi — fassiya — bilan o'ralgan.","img":"assets/img/atlas/myologia.jpg"},
+            {"title":"Mushak xossalari","text":"Mushaklarning asosiy xossalari — qo'zg'aluvchanlik va qisqaruvchanlik. Mushaklar suyakka pay orqali birikadi.","cap":"Manba: Anatomiya I jild, 211–312-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Mushak lotinchada qanday ataladi?", opts: ["Musculus", "Articulatio", "Os", "Nervus"], a: 0 },
             { t: "quiz", q: "Mushaklar haqidagi fan qanday ataladi?", opts: ["Miologiya", "Osteologiya", "Artrologiya", "Splanxnologiya"], a: 0, hint: "Mys — mushak" },
@@ -622,6 +746,10 @@ const COURSE = {
           id: "l29",
           title: "Tana mushaklari",
           xp: 25,
+          slides: [
+            {"title":"Orqa va ko'krak mushaklari","text":"Orqa mushaklari: keng orqa mushagi (m. latissimus dorsi), trapetsiyasimon mushak (m. trapezius). Ko'krak: katta ko'krak mushagi (m. pectoralis major). Asosiy nafas olish mushagi — diafragma (ko'krak va qorin bo'shliqlari chegarasida).","img":"assets/img/atlas/myologia.jpg"},
+            {"title":"Qorin mushaklari","text":"Qorin old devori: to'g'ri qorin mushagi (m. rectus abdominis), qiya mushaklar (m. obliquus externus et internus) va ko'ndalang qorin mushagi (m. transversus abdominis). Qovurg'alararo mushaklar — musculi intercostales.","cap":"Manba: Anatomiya I jild, 211–312-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Orqaning eng keng (yuzaki) mushagi?", opts: ["Musculus latissimus dorsi", "Musculus trapezius", "Musculus pectoralis major", "Diaphragma"], a: 0 },
             { t: "quiz", q: "Trapetsiyasimon mushak qanday ataladi?", opts: ["Musculus trapezius", "Musculus latissimus dorsi", "Musculus deltoideus", "Musculus rectus abdominis"], a: 0 },
@@ -640,6 +768,10 @@ const COURSE = {
           id: "l30",
           title: "Qo'l va oyoq mushaklari",
           xp: 25,
+          slides: [
+            {"title":"Qo'l mushaklari","text":"Qo'l mushaklari: ikki boshli yelka mushagi (m. biceps brachii — bilakni bukadi), uch boshli yelka mushagi (m. triceps brachii — bilakni yozadi), delta mushak (m. deltoideus — yelkani yumaloqlaydi).","img":"assets/img/atlas/myologia.jpg"},
+            {"title":"Oyoq mushaklari","text":"Oyoq mushaklari: to'rt boshli son mushagi (m. quadriceps femoris — tizzani yozadi), ikki boshli son mushagi (m. biceps femoris — boldirni bukadi), uch boshli boldir mushagi (m. triceps surae — Axill payini hosil qilib, tovon do'mbog'iga birikadi).","cap":"Manba: Anatomiya I jild, 211–312-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Yelkaning ikki boshli mushagi?", opts: ["Musculus biceps brachii", "Musculus triceps brachii", "Musculus deltoideus", "Musculus brachialis"], a: 0 },
             { t: "quiz", q: "Yelkaning uch boshli mushagi?", opts: ["Musculus triceps brachii", "Musculus biceps brachii", "Musculus deltoideus", "Musculus coracobrachialis"], a: 0 },
@@ -666,6 +798,10 @@ const COURSE = {
           id: "l31",
           title: "Og'iz bo'shlig'i va tishlar",
           xp: 20,
+          slides: [
+            {"title":"Og'iz bo'shlig'i — Cavitas oris","text":"Hazm a'zolari tizimi (systema digestorium) og'iz bo'shlig'idan (cavitas oris) boshlanadi. Og'iz bo'shlig'ida til (lingua), tishlar (dentes) va so'lak bezlari (glandulae salivariae) joylashgan.","img":"assets/img/atlas/digestorium.jpg"},
+            {"title":"Tishlar","text":"Katta yoshli odamda 32 ta doimiy tish bor (sut tishlari 20 ta). Tishlar: kesuvchilar (dentes incisivi), qoziq tishlar (dentes canini), kichik oziq tishlar (dentes premolares) va katta oziq tishlar (dentes molares).","cap":"Manba: Anatomiya I jild, 314–391-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Hazm a'zolari tizimi lotinchada qanday ataladi?", opts: ["Systema digestorium", "Systema respiratorium", "Systema nervosum", "Systema cardiovasculare"], a: 0 },
             { t: "quiz", q: "Og'iz bo'shlig'i qanday ataladi?", opts: ["Cavitas oris", "Cavitas nasi", "Pharynx", "Larynx"], a: 0 },
@@ -684,6 +820,10 @@ const COURSE = {
           id: "l32",
           title: "Halqum, qizilo'ngach, oshqozon",
           xp: 25,
+          slides: [
+            {"title":"Halqum va qizilo'ngach","text":"Halqum (pharynx) — og'iz va burun bo'shliqlaridan boshlanuvchi muskul nay; ovqat undan qizilo'ngachga (oesophagus) o'tadi, qizilo'ngach esa ovqatni oshqozonga (gaster) yetkazadi.","img":"assets/img/atlas/digestorium.jpg"},
+            {"title":"Oshqozon — Gaster","text":"Oshqozon qismlari: kirish (cardia), gumbaz (fundus gastricus), tana (corpus gastricum) va chiqish (pylorus). Oshqozonda oqsillarni parchalovchi pepsinli me'da shirasi (xlorid kislota bilan) ajraladi.","cap":"Manba: Anatomiya I jild, 314–391-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Halqum lotinchada qanday ataladi?", opts: ["Pharynx", "Larynx", "Trachea", "Oesophagus"], a: 0 },
             { t: "quiz", q: "Qizilo'ngach lotinchada qanday ataladi?", opts: ["Oesophagus", "Pharynx", "Gaster", "Duodenum"], a: 0 },
@@ -702,6 +842,10 @@ const COURSE = {
           id: "l33",
           title: "Ichaklar, jigar va bezlar",
           xp: 25,
+          slides: [
+            {"title":"Ichaklar","text":"Ingichka ichak (intestinum tenue): o'n ikki barmoqli (duodenum), och (jejunum) va yonbosh (ileum) ichaklardan iborat. Yo'g'on ichak (intestinum crassum): ko'r (caecum), chambar (colon) va to'g'ri (rectum) ichak.","img":"assets/img/atlas/digestorium.jpg"},
+            {"title":"Jigar va bezlar","text":"Jigar (hepar) — organizmdagi eng katta bez; u safro (o't) ishlab chiqaradi, safro o't pufagida (vesica biliaris) to'planadi. Oshqozon osti bezi (pancreas) — aralash bez. Qorin bo'shlig'i ichidan peritoneum pardasi bilan qoplangan.","img":"assets/img/illu/liver.svg","cap":"Manba: Anatomiya I jild, 314–391-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Ingichka ichak lotinchada qanday ataladi?", opts: ["Intestinum tenue", "Intestinum crassum", "Colon", "Rectum"], a: 0 },
             { t: "quiz", q: "Yo'g'on ichak lotinchada qanday ataladi?", opts: ["Intestinum crassum", "Intestinum tenue", "Duodenum", "Ileum"], a: 0 },
@@ -729,6 +873,10 @@ const COURSE = {
           id: "l34",
           title: "Burun va hiqildoq",
           xp: 20,
+          slides: [
+            {"title":"Nafas tizimi — Systema respiratorium","text":"Nafas a'zolari tizimi: burun bo'shlig'i (cavitas nasi), hiqildoq (larynx), kekirdak (trachea), bronxlar va o'pka (pulmo).","img":"assets/img/atlas/respiratorium.jpg"},
+            {"title":"Hiqildoq — Larynx","text":"Hiqildoqda ovoz boylamlari joylashgan. Uning tog'aylari: qalqonsimon (cartilago thyroidea — eng kattasi), halqasimon (cartilago cricoidea), cho'qisimon (cartilagines arytenoideae) va yutish paytida hiqildoq kirishini berkitadigan epiglottis.","cap":"Manba: Anatomiya I jild, 392–424-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Nafas a'zolari tizimi lotinchada qanday ataladi?", opts: ["Systema respiratorium", "Systema digestorium", "Systema nervosum", "Systema urinarium"], a: 0 },
             { t: "quiz", q: "Burun bo'shlig'i qanday ataladi?", opts: ["Cavitas nasi", "Cavitas oris", "Sinus", "Pharynx"], a: 0 },
@@ -747,6 +895,10 @@ const COURSE = {
           id: "l35",
           title: "Kekirdak, o'pka va plevra",
           xp: 25,
+          slides: [
+            {"title":"Kekirdak va o'pka","text":"Kekirdak (trachea) ikkita asosiy bronxga bo'linadi. O'pka (pulmo) — juft a'zo; o'ng o'pka 3 bo'lakdan, chap o'pka 2 bo'lakdan iborat. Gaz almashinuvi (kislorod / CO₂) alveolalarda sodir bo'ladi.","img":"assets/img/atlas/respiratorium.jpg"},
+            {"title":"Plevra","text":"O'pka tashqaridan plevra pardasi bilan o'ralgan. Chap o'pka yurak uchun o'yiq (incisura cardiaca)ga ega, shuning uchun u kichikroq.","img":"assets/img/illu/lungs.jpg","cap":"Manba: Anatomiya I jild, 392–424-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Kekirdak lotinchada qanday ataladi?", opts: ["Trachea", "Larynx", "Bronchus", "Pulmo"], a: 0 },
             { t: "quiz", q: "Kekirdak nechta asosiy bronxga bo'linadi?", opts: ["2", "3", "4", "1"], a: 0 },
@@ -795,6 +947,9 @@ const COURSE = {
           title: "Siydik yo'llari",
           xp: 20,
           source: { book: "p2", page: "20–26" },
+          slides: [
+            {"title":"Siydik yo'llari","text":"Siydik yo'llari: buyrak jomi (pelvis renalis) → siydik nayi (ureter) → siydik qopi (vesica urinaria) → siydik chiqarish nayi (urethra). Qovuq siydikni vaqtincha to'playdi.","img":"assets/img/illu/kidney.svg","cap":"Manba: Anatomiya II jild, 20–26-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Siydik nayi lotinchada qanday ataladi?", opts: ["Ureter", "Urethra", "Uterus", "Uvula"], a: 0 },
             { t: "quiz", q: "Siydik qopi (qovuq) lotinchada qanday ataladi?", opts: ["Vesica urinaria", "Vesica biliaris", "Vesica seminalis", "Ureter"], a: 0 },
@@ -820,6 +975,10 @@ const COURSE = {
           title: "Jinsiy a'zolar asoslari",
           xp: 25,
           source: { book: "p2", page: "27–60" },
+          slides: [
+            {"title":"Jinsiy a'zolar tizimi — Systema genitale","text":"Erkak jinsiy bezlari — moyaklar (testes), ularning chiqarish yo'llari va prostata bezi. Ayol jinsiy bezlari — tuxumdonlar (ovaria); ichki a'zolari: bachadon (uterus), bachadon naylari (tubae uterinae) va qin (vagina).","img":"assets/img/illu/pelvis.jpg"},
+            {"title":"Tuxumdon — Ovarium","text":"Tuxumdon (ovarium) ayol jinsiy hujayralari va gormonlar ishlab chiqaradi; bachadon nayi (tuba uterina) orqali bachadonga bog'langan.","cap":"Manba: Anatomiya II jild, 27–60-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Jinsiy a'zolar tizimi lotinchada qanday ataladi?", opts: ["Systema genitale", "Systema urinarium", "Systema digestorium", "Systema endocrinum"], a: 0 },
             { t: "quiz", q: "Erkak jinsiy bezi qanday ataladi?", opts: ["Moyak (testis)", "Tuxumdon", "Prostata", "Epididymis"], a: 0 },
@@ -846,6 +1005,10 @@ const COURSE = {
           title: "Ichki sekretsiya bezlari",
           xp: 25,
           source: { book: "p2", page: "62–72" },
+          slides: [
+            {"title":"Ichki sekretsiya bezlari","text":"Ichki sekretsiya (endokrin) bezlari gormonlarni to'g'ridan-to'g'ri qonga ajratadi. Asosiy bezlar: gipofiz (hypophysis — ponasimon suyakning sella turcica'sida), qalqonsimon bez (glandula thyroidea), qalqon oldi bezlari (glandulae parathyroideae), buyrak usti bezi (glandula suprarenalis) va ayrisimon bez (thymus)."},
+            {"title":"Oshqozon osti bezining orolchalari","text":"Oshqozon osti bezining endokrin qismi — orolchalar (insulae pancreaticae) — qon shakarini boshqaruvchi insulin gormonini ishlab chiqaradi.","cap":"Manba: Anatomiya II jild, 62–72-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Endokrin bezlar qon oqimiga nima ajratadi?", opts: ["Gormonlar", "Safro", "So'lak", "Fermentlar"], a: 0 },
             { t: "quiz", q: "Qalqonsimon bez lotinchada qanday ataladi?", opts: ["Glandula thyroidea", "Glandula parathyroidea", "Glandula suprarenalis", "Hypophysis"], a: 0 },
@@ -897,6 +1060,10 @@ const COURSE = {
           title: "Qon tomirlar (Angiologiya)",
           xp: 30,
           source: { book: "p2", page: "93–183" },
+          slides: [
+            {"title":"Qon tomirlar — Angiologiya","text":"Qon tomirlari uch turga bo'linadi: arteriyalar (yurakdan a'zolarga), venalar (a'zolardan yurakka) va kapillarlar (qon bilan to'qimalar orasida moddalar almashinuvi). Organizmdagi eng katta arteriya — aorta.","img":"assets/img/atlas/yurak.jpg"},
+            {"title":"Katta va kichik qon aylanish doiralari","text":"Kichik qon aylanish doirasi o'pka orqali, katta doira esa butun tanadan o'tadi. Yuqori kavak vena (v. cava superior) va pastki kavak vena (v. cava inferior) qonni yurakka qaytaradi.","cap":"Manba: Anatomiya II jild, 93–183-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Tomirlar haqidagi ta'limot qanday ataladi?", opts: ["Angiologiya", "Nevrologiya", "Osteologiya", "Miologiya"], a: 0 },
             { t: "quiz", q: "Organizmdagi eng katta arteriya?", opts: ["Aorta", "A. carotis", "A. femoralis", "A. pulmonalis"], a: 0 },
@@ -916,6 +1083,10 @@ const COURSE = {
           title: "Limfa tizimi va taloq",
           xp: 25,
           source: { book: "p2", page: "185–212" },
+          slides: [
+            {"title":"Limfa tizimi","text":"Limfa tizimi to'qima suyuqligi (limfa)ni qonga qaytaradi. Tarkibiga limfa tomirlari, limfa tugunlari (nodi lymphatici), taloq (lien) va ayrisimon bez (thymus) kiradi."},
+            {"title":"Taloq — Lien","text":"Taloq immun nazorat va eskirgan qon hujayralarini parchalashda qatnashadi. Timus va suyak iligi — immun tizimining markaziy a'zolari, taloq va limfa tugunlari — periferik a'zolari.","cap":"Manba: Anatomiya II jild, 185–212-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Limfa tizimi nimani qaytaradi?", opts: ["To'qima suyuqligini (limfa)", "Qonni", "Safro", "Siydik"], a: 0 },
             { t: "quiz", q: "Taloq lotinchada qanday ataladi?", opts: ["Lien", "Hepar", "Ren", "Thymus"], a: 0 },
@@ -965,6 +1136,10 @@ const COURSE = {
           title: "Periferik va avtonom nerv tizimi",
           xp: 25,
           source: { book: "p2", page: "302–371" },
+          slides: [
+            {"title":"Periferik nerv tizimi","text":"Periferik nerv tizimi nervlar va chigallardan (plexus) iborat. Orqa miya nervlari 31 juft, bosh miya nervlari 12 juft. Asosiy chigallar: bo'yin (plexus cervicalis), yelka (plexus brachialis), bel (plexus lumbalis) va dumg'aza (plexus sacralis).","img":"assets/img/illu/brain.jpg"},
+            {"title":"Avtonom nerv tizimi","text":"Avtonom (vegetativ) nerv tizimi ichki a'zolarni ixtiyorsiz boshqaradi; simpatik va parasimpatik qismlardan iborat. Adashgan nerv (n. vagus) — eng katta parasimpatik nerv.","cap":"Manba: Anatomiya II jild, 302–371-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Periferik nerv tizimi nimalardan iborat?", opts: ["Nervlar va chigallar", "Bosh va orqa miya", "Yurak va tomirlar", "Suyaklar"], a: 0 },
             { t: "quiz", q: "Orqa miya nervlari nechta juft?", opts: ["31", "12", "24", "40"], a: 0 },
@@ -992,6 +1167,10 @@ const COURSE = {
           title: "Ko'rish va eshitish a'zolari",
           xp: 30,
           source: { book: "p2", page: "372–405" },
+          slides: [
+            {"title":"Ko'rish a'zosi — Oculus","text":"Ko'rish a'zosi — ko'z (oculus). Nur sindiruvchi apparatga shox parda (cornea), gavhar (lens) va shishasimon tana kiradi. Ko'z olmasining tashqi oq pardasi — sclera."},
+            {"title":"Eshitish va muvozanat a'zosi","text":"Eshitish va muvozanat a'zosi (organum vestibulocochleare) uch qismdan iborat: tashqi, o'rta va ichki quloq. Ichki quloqda chig'anoq (cochlea) va dahliz (vestibulum) joylashgan.","cap":"Manba: Anatomiya II jild, 373–405-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Ko'z lotinchada qanday ataladi?", opts: ["Oculus", "Auris", "Nasus", "Cutis"], a: 0 },
             { t: "quiz", q: "Ko'z gavhari lotinchada qanday ataladi?", opts: ["Lens", "Cornea", "Retina", "Sclera"], a: 0 },
@@ -1011,6 +1190,10 @@ const COURSE = {
           title: "Teri, hid va ta'm",
           xp: 20,
           source: { book: "p2", page: "406–409" },
+          slides: [
+            {"title":"Teri — Cutis","text":"Teri (cutis) — tanani himoya qiluvchi, issiqlik boshqaruvi va sezishda qatnashuvchi a'zo. Terining hosilalari: soch (pili), tirnoqlar (ungues) va bezlar (ter, yog')."},
+            {"title":"Hid va ta'm sezuv a'zolari","text":"Hid sezuv a'zosi burun bo'shlig'ida, ta'm sezuv a'zosi esa tilda joylashgan.","cap":"Manba: Anatomiya II jild, 406–409-bet"}
+          ],
           ex: [
             { t: "quiz", q: "Teri lotinchada qanday ataladi?", opts: ["Cutis", "Derma", "Epidermis", "Pilis"], a: 0 },
             { t: "quiz", q: "Terining hosilalariga nimalar kiradi?", opts: ["Soch, tirnoq va bezlar", "Suyaklar", "Mushaklar", "Tomirlar"], a: 0 },
