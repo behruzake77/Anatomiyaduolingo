@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { Toggle } from "@/components/ui/Toggle";
 import { useAppStore } from "@/store/useAppStore";
 import { useInstallPrompt } from "@/hooks/useInstallPrompt";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useStrings } from "@/i18n";
 
 export function SettingsScreen() {
@@ -15,6 +16,24 @@ export function SettingsScreen() {
   const logout = useAppStore((s) => s.logout);
   const t = useStrings();
   const { canInstall, isInstalled, install } = useInstallPrompt();
+  const { requestPermission } = useNotifications();
+
+  const onToggle = async (key: "notifications" | "darkMode" | "sound") => {
+    if (key === "notifications" && !settings.notifications) {
+      // Yoqilayotganda brauzerdan ruxsat so'rash.
+      const granted = await requestPermission();
+      toggleSetting(key);
+      if (granted) {
+        try {
+          new Notification(t.notifWelcome, { body: t.notifReminder });
+        } catch {
+          /* no-op */
+        }
+      }
+    } else {
+      toggleSetting(key);
+    }
+  };
 
   const rows = [
     { key: "notifications" as const, label: t.notifications, icon: Bell },
@@ -40,7 +59,7 @@ export function SettingsScreen() {
               <r.icon className="h-5 w-5" aria-hidden />
             </span>
             <span className="flex-1 text-base font-medium">{r.label}</span>
-            <Toggle checked={settings[r.key]} onChange={() => toggleSetting(r.key)} label={r.label} />
+            <Toggle checked={settings[r.key]} onChange={() => onToggle(r.key)} label={r.label} />
           </div>
         ))}
 

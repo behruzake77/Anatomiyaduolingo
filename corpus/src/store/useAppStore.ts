@@ -67,6 +67,8 @@ const freshProgress = {
   xpHistory: {} as Record<string, number>, // "YYYY-MM-DD" -> XP
   srs: {} as Record<string, SRSCard>, // savol kaliti -> SRS kartasi
   bookmarks: [] as string[], // xatcho'p qilingan savol kalitlari
+  lastActiveDay: "", // oxirgi faol kun "YYYY-MM-DD" (seriya hisobi uchun)
+  lastActiveAt: 0, // oxirgi faollik vaqti (ms) — maskot kayfiyati uchun
   settings: {
     darkMode: false,
     sound: true,
@@ -106,6 +108,8 @@ interface AppState {
   xpHistory: Record<string, number>;
   srs: Record<string, SRSCard>;
   bookmarks: string[];
+  lastActiveDay: string;
+  lastActiveAt: number;
 
   // settings
   settings: Settings;
@@ -121,6 +125,7 @@ interface AppState {
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
   recordAnswer: (key: string, correct: boolean) => void;
   toggleBookmark: (key: string) => void;
+  touchActivity: () => void;
   resetProgress: () => void;
 }
 
@@ -268,10 +273,22 @@ export const useAppStore = create<AppState>()(
 
         const result: LessonResult = { lessonId, score, total: totalQ, earned };
         const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+
+        // Seriya (streak): yangi kunda birinchi faollik — kecha faol bo'lgan bo'lsa +1, aks holda 1.
+        let streak = s.streak;
+        let lastActiveDay = s.lastActiveDay;
+        if (lastActiveDay !== today) {
+          streak = lastActiveDay === yesterday ? streak + 1 : 1;
+          lastActiveDay = today;
+        }
 
         set({
           xp: s.xp + earned,
           dailyXp: s.dailyXp + earned,
+          streak,
+          lastActiveDay,
+          lastActiveAt: Date.now(),
           correct: s.correct + score,
           total: s.total + totalQ,
           completedLessons,
@@ -282,6 +299,9 @@ export const useAppStore = create<AppState>()(
         });
         return result;
       },
+
+      touchActivity: () =>
+        set((s) => ({ lastActiveAt: Date.now() })),
 
       recordAnswer: (key, correct) => {
         const s = get();
@@ -315,11 +335,22 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "corpus-storage",
-      version: 3,
+      version: 4,
       migrate: (persisted, version) => {
-        const p = (persisted ?? {}) as Partial<AppState> & { srs?: Record<string, SRSCard>; bookmarks?: string[] };
-        // v1/v2 → v3: SRS va bookmarks maydonlarini qo'shish (mavjud progress saqlanadi).
-        return { ...p, srs: p.srs ?? {}, bookmarks: p.bookmarks ?? [] };
+        const p = (persisted ?? {}) as Partial<AppState> & {
+          srs?: Record<string, SRSCard>;
+          bookmarks?: string[];
+          lastActiveDay?: string;
+          lastActiveAt?: number;
+        };
+        // v1..v3 → v4: SRS, bookmarks, lastActive maydonlarini qo'shish (mavjud progress saqlanadi).
+        return {
+          ...p,
+          srs: p.srs ?? {},
+          bookmarks: p.bookmarks ?? [],
+          lastActiveDay: p.lastActiveDay ?? "",
+          lastActiveAt: p.lastActiveAt ?? 0,
+        };
       },
       storage: createJSONStorage(() => rawStorage),
       partialize: (s) => ({
@@ -336,6 +367,8 @@ export const useAppStore = create<AppState>()(
         xpHistory: s.xpHistory,
         srs: s.srs,
         bookmarks: s.bookmarks,
+        lastActiveDay: s.lastActiveDay,
+        lastActiveAt: s.lastActiveAt,
         settings: s.settings,
       }),
     },

@@ -156,6 +156,19 @@ export const STR: Record<Lang, Strings> = {
     bookmarkEmptyHint: "Savoldagi belgi tugmasi bilan qiyin savollarni saqlang",
     bookmarkOpenLesson: "Darsga o'tish",
 
+    mascotFire: "Ajoyib! {n} kunlik seriya — davom eting! 🔥",
+    mascotHappy: "Seriya davom etmoqda, barakalla!",
+    mascotNeutral: "Salom! Bugun nima o'rganamiz?",
+    mascotSad: "Seriya uzildi — yangidan boshlang!",
+    mascotAngry: "Jahlim chiqyapti! {n} kundan beri kirmadingiz!",
+    mascotSleeping: "Men sizni sog'indim... qayting, davom etamiz!",
+    mascotLabel: "CORPUS maskoti",
+
+    notifWelcome: "Xush kelibsiz!",
+    notifStreak: "Seriya {n} kunga yetdi!",
+    notifGoal: "Bugungi maqsad bajarildi!",
+    notifReminder: "O'rganish vaqti keldi!",
+
     installTitle: "Ilovani o'rnating",
     installHint: "Telefoningizga qo'shing — internetsiz ham ishlaydi",
     installBtn: "O'rnatish",
@@ -331,6 +344,19 @@ export const STR: Record<Lang, Strings> = {
     bookmarkEmpty: "No bookmarks yet",
     bookmarkEmptyHint: "Save hard questions with the bookmark button",
     bookmarkOpenLesson: "Go to lesson",
+
+    mascotFire: "Amazing! {n}-day streak — keep going! 🔥",
+    mascotHappy: "Streak going strong, great job!",
+    mascotNeutral: "Hi! What shall we learn today?",
+    mascotSad: "Streak broke — start again!",
+    mascotAngry: "I'm getting angry! {n} days since you left!",
+    mascotSleeping: "I missed you... come back!",
+    mascotLabel: "CORPUS mascot",
+
+    notifWelcome: "Welcome back!",
+    notifStreak: "Streak reached {n} days!",
+    notifGoal: "Daily goal complete!",
+    notifReminder: "Time to learn!",
 
     installTitle: "Install the app",
     installHint: "Add to your phone — works offline",

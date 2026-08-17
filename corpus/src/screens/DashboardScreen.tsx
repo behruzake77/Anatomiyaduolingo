@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight, GraduationCap, Library } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
@@ -13,6 +14,9 @@ import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
 import { dueCount } from "@/utils/srs";
+import { mascotState, mascotMessageKey } from "@/utils/mascot";
+import { Mascot } from "@/components/Mascot";
+import { useNotifications } from "@/hooks/useNotifications";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
 
@@ -31,12 +35,23 @@ export function DashboardScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
   const srs = useAppStore((s) => s.srs);
+  const lastActiveAt = useAppStore((s) => s.lastActiveAt);
   const navigate = useAppStore((s) => s.navigate);
   const setTab = useAppStore((s) => s.setTab);
   const openLesson = useAppStore((s) => s.openLesson);
   const t = useStrings();
 
   const reviewDue = dueCount(srs);
+  const mascot = mascotState(streak, lastActiveAt);
+  const { notify } = useNotifications();
+
+  // Uzoq kirmagan bo'lsa — qaytib kelganda bir marta bildirishnoma.
+  useEffect(() => {
+    if (mascot.daysAway >= 1) {
+      notify(t.notifWelcome, fmt(t[mascotMessageKey(mascot)], { n: streak }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
@@ -57,6 +72,16 @@ export function DashboardScreen() {
 
       {/* PWA o'rnatish taklifi */}
       <InstallBanner />
+
+      {/* maskot (Duolingo uslubida kayfiyat) */}
+      <div className="mt-4 flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 shadow-card">
+        <Mascot mood={mascot.mood} size={84} />
+        <div className="flex-1">
+          <p className="text-sm font-semibold leading-snug">
+            {fmt(t[mascotMessageKey(mascot)], { n: streak })}
+          </p>
+        </div>
+      </div>
 
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
