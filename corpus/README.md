@@ -111,6 +111,7 @@ corpus/
 - **Gamifikatsiya** — XP, levels (Boshlang'ich → Ekspert), kunlik maqsad, seriya, 6 badge
 - **Premium logo** — split-face (suyak/anatomiya), binafsha gradient, halqa + laurel aksent
 - **Dark mode** — no-flash init script + reactive class toggle
+- **Spaced Repetition (SRS)** — xato qilingan savollar avtomatik qaytadi: interval 0 → 1 → 3 → 7 → 16 → 35 kun (5 marta to'g'ri javob = o'zlashtirildi). Dashboard'da "Takrorlash" tugmasi nechta savol kutayotganini ko'rsatadi
 - **Haptics** — Vibration API with graceful fallback
 - **Confetti** — canvas-based, respects `prefers-reduced-motion`
 - **Responsive** — verified 360 → 1440px (no horizontal overflow); centered `max-w-md` shell

@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { evaluateAchievements } from "@/utils/achievements";
+import { reviewCard, SRS_MASTERED_BOX, type SRSCard } from "@/utils/srs";
 import {
   getCurrent,
   register as authRegister,
@@ -20,6 +21,7 @@ export type ScreenId =
   | "topics"
   | "lessons"
   | "lesson"
+  | "review"
   | "result-correct"
   | "result-wrong"
   | "profile"
@@ -60,6 +62,7 @@ const freshProgress = {
   achievements: [] as string[],
   lastResult: null as LessonResult | null,
   xpHistory: {} as Record<string, number>, // "YYYY-MM-DD" -> XP
+  srs: {} as Record<string, SRSCard>, // savol kaliti -> SRS kartasi
   settings: {
     darkMode: false,
     sound: true,
@@ -97,6 +100,7 @@ interface AppState {
   achievements: string[];
   lastResult: LessonResult | null;
   xpHistory: Record<string, number>;
+  srs: Record<string, SRSCard>;
 
   // settings
   settings: Settings;
@@ -110,6 +114,7 @@ interface AppState {
   openLesson: (lessonId: string) => void;
   openSystem: (systemId: string) => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
+  recordAnswer: (key: string, correct: boolean) => void;
   resetProgress: () => void;
 }
 
@@ -272,6 +277,22 @@ export const useAppStore = create<AppState>()(
         return result;
       },
 
+      recordAnswer: (key, correct) => {
+        const s = get();
+        const card = s.srs[key];
+        // Yangi karta faqat XATO javobdan yaratiladi; karta bo'lmasa to'g'ri javob no-op.
+        if (!card && correct) return;
+        const updated = reviewCard(card, correct);
+        // O'zlashtirilgan (yuqori qutidan to'g'ri) — kartani takrorlashdan chiqarish.
+        if (correct && updated.box >= SRS_MASTERED_BOX) {
+          const next = { ...s.srs };
+          delete next[key];
+          set({ srs: next });
+          return;
+        }
+        set({ srs: { ...s.srs, [key]: updated } });
+      },
+
       resetProgress: () =>
         set((s) => ({
           ...freshProgress,
@@ -281,7 +302,12 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "corpus-storage",
-      version: 1,
+      version: 2,
+      migrate: (persisted, version) => {
+        const p = (persisted ?? {}) as Partial<AppState> & { srs?: Record<string, SRSCard> };
+        // v1 → v2: SRS maydonini qo'shish (mavjud progress saqlanadi).
+        return { ...p, srs: p.srs ?? {} };
+      },
       storage: createJSONStorage(() => rawStorage),
       partialize: (s) => ({
         onboardingDone: s.onboardingDone,
@@ -295,6 +321,7 @@ export const useAppStore = create<AppState>()(
         completedTopics: s.completedTopics,
         achievements: s.achievements,
         xpHistory: s.xpHistory,
+        srs: s.srs,
         settings: s.settings,
       }),
     },

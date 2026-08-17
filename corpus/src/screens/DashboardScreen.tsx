@@ -1,6 +1,6 @@
 "use client";
 
-import { Flame, Zap, TrendingUp, Sun } from "lucide-react";
+import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
@@ -11,6 +11,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
+import { dueCount } from "@/utils/srs";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
 
@@ -28,11 +29,13 @@ export function DashboardScreen() {
   const streak = useAppStore((s) => s.streak);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
+  const srs = useAppStore((s) => s.srs);
   const navigate = useAppStore((s) => s.navigate);
   const setTab = useAppStore((s) => s.setTab);
   const openLesson = useAppStore((s) => s.openLesson);
   const t = useStrings();
 
+  const reviewDue = dueCount(srs);
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
@@ -107,6 +110,31 @@ export function DashboardScreen() {
           </div>
         </Card>
       </div>
+
+      {/* Spaced repetition — xatolarni qaytarish */}
+      <button
+        type="button"
+        onClick={() => navigate("review")}
+        className="mt-5 flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-colors active:bg-surface2"
+      >
+        <div
+          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${reviewDue > 0 ? "bg-accent/15 text-accent" : "bg-primary/10 text-primary"}`}
+        >
+          <RotateCcw className="h-6 w-6" aria-hidden />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold leading-tight">{t.reviewTitle}</p>
+          <p className="mt-0.5 text-xs text-muted">
+            {reviewDue > 0 ? fmt(t.reviewCount, { n: reviewDue }) : t.reviewEmpty}
+          </p>
+        </div>
+        {reviewDue > 0 && (
+          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1.5 text-xs font-bold text-white">
+            {reviewDue}
+          </span>
+        )}
+        <ChevronRight className="h-5 w-5 text-muted" aria-hidden />
+      </button>
 
       {/* Continue learning */}
       <section className="mt-6">
