@@ -118,7 +118,7 @@ corpus/
 - **Imtihon rejimi** — aralash (tasodifiy) savollar, vaqt o'lchovi, foizli natija (10/20/30/50 savol)
 - **Lotincha talaffuz (TTS)** — brauzer ovozi bilan atamalarni o'qish (lug'at, rasm qismlari, xatcho'plar)
 - **Xatcho'plar** — qiyin savollarni saqlash, alohida ro'yxat, javobi bilan
-- **Offline PWA** — o'rnatiladigan ilova: manifest + service worker, internetsiz ishlaydi
+- **Offline PWA** — o'rnatiladigan ilova: manifest + service worker, internetsiz ishlaydi. Dashboard'da **"O'rnatish" banneri** (Android tugma / iOS ko'rsatma) foydalanuvchini "Bosh ekranga qo'shish"ga undaydi
 - **Haptics** — Vibration API with graceful fallback
 - **Confetti** — canvas-based, respects `prefers-reduced-motion`
 - **Responsive** — verified 360 → 1440px (no horizontal overflow); centered `max-w-md` shell

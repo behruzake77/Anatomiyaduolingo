@@ -156,6 +156,13 @@ export const STR: Record<Lang, Strings> = {
     bookmarkEmptyHint: "Savoldagi belgi tugmasi bilan qiyin savollarni saqlang",
     bookmarkOpenLesson: "Darsga o'tish",
 
+    installTitle: "Ilovani o'rnating",
+    installHint: "Telefoningizga qo'shing — internetsiz ham ishlaydi",
+    installBtn: "O'rnatish",
+    installIosTitle: "Bosh ekranga qo'shing",
+    installIosHint1: "Boshing:",
+    installIosHint2: "\"Bosh ekranga qo'shish\"",
+
     progressTitle: "Progress tahlili",
     thisWeek: "Bu hafta",
     month: "Oy",
@@ -324,6 +331,13 @@ export const STR: Record<Lang, Strings> = {
     bookmarkEmpty: "No bookmarks yet",
     bookmarkEmptyHint: "Save hard questions with the bookmark button",
     bookmarkOpenLesson: "Go to lesson",
+
+    installTitle: "Install the app",
+    installHint: "Add to your phone — works offline",
+    installBtn: "Install",
+    installIosTitle: "Add to Home Screen",
+    installIosHint1: "Tap",
+    installIosHint2: "then \"Add to Home Screen\"",
 
     progressTitle: "Progress Analytics",
     thisWeek: "This Week",

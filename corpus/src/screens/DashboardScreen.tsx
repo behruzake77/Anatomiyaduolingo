@@ -3,6 +3,7 @@
 import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight, GraduationCap, Library } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
+import { InstallBanner } from "@/components/InstallBanner";
 import { Avatar } from "@/components/ui/Avatar";
 import { Donut } from "@/components/ui/Donut";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -53,6 +54,9 @@ export function DashboardScreen() {
           {t.brand}
         </span>
       </header>
+
+      {/* PWA o'rnatish taklifi */}
+      <InstallBanner />
 
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
