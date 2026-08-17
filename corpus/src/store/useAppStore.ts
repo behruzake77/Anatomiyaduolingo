@@ -29,7 +29,10 @@ export type ScreenId =
   | "study"
   | "progress"
   | "settings"
-  | "models3d";
+  | "models3d"
+  | "glossary"
+  | "exam"
+  | "bookmarks";
 
 export type Tab = "home" | "learn" | "profile" | "settings";
 
@@ -63,6 +66,7 @@ const freshProgress = {
   lastResult: null as LessonResult | null,
   xpHistory: {} as Record<string, number>, // "YYYY-MM-DD" -> XP
   srs: {} as Record<string, SRSCard>, // savol kaliti -> SRS kartasi
+  bookmarks: [] as string[], // xatcho'p qilingan savol kalitlari
   settings: {
     darkMode: false,
     sound: true,
@@ -101,6 +105,7 @@ interface AppState {
   lastResult: LessonResult | null;
   xpHistory: Record<string, number>;
   srs: Record<string, SRSCard>;
+  bookmarks: string[];
 
   // settings
   settings: Settings;
@@ -115,6 +120,7 @@ interface AppState {
   openSystem: (systemId: string) => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
   recordAnswer: (key: string, correct: boolean) => void;
+  toggleBookmark: (key: string) => void;
   resetProgress: () => void;
 }
 
@@ -293,6 +299,13 @@ export const useAppStore = create<AppState>()(
         set({ srs: { ...s.srs, [key]: updated } });
       },
 
+      toggleBookmark: (key) =>
+        set((s) => ({
+          bookmarks: s.bookmarks.includes(key)
+            ? s.bookmarks.filter((k) => k !== key)
+            : [...s.bookmarks, key],
+        })),
+
       resetProgress: () =>
         set((s) => ({
           ...freshProgress,
@@ -302,11 +315,11 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "corpus-storage",
-      version: 2,
+      version: 3,
       migrate: (persisted, version) => {
-        const p = (persisted ?? {}) as Partial<AppState> & { srs?: Record<string, SRSCard> };
-        // v1 → v2: SRS maydonini qo'shish (mavjud progress saqlanadi).
-        return { ...p, srs: p.srs ?? {} };
+        const p = (persisted ?? {}) as Partial<AppState> & { srs?: Record<string, SRSCard>; bookmarks?: string[] };
+        // v1/v2 → v3: SRS va bookmarks maydonlarini qo'shish (mavjud progress saqlanadi).
+        return { ...p, srs: p.srs ?? {}, bookmarks: p.bookmarks ?? [] };
       },
       storage: createJSONStorage(() => rawStorage),
       partialize: (s) => ({
@@ -322,6 +335,7 @@ export const useAppStore = create<AppState>()(
         achievements: s.achievements,
         xpHistory: s.xpHistory,
         srs: s.srs,
+        bookmarks: s.bookmarks,
         settings: s.settings,
       }),
     },

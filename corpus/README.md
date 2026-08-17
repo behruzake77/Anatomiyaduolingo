@@ -114,6 +114,11 @@ corpus/
 - **Premium logo** — split-face (suyak/anatomiya), binafsha gradient, halqa + laurel aksent
 - **Dark mode** — no-flash init script + reactive class toggle
 - **Spaced Repetition (SRS)** — xato qilingan savollar avtomatik qaytadi: interval 0 → 1 → 3 → 7 → 16 → 35 kun (5 marta to'g'ri javob = o'zlashtirildi). Dashboard'da "Takrorlash" tugmasi nechta savol kutayotganini ko'rsatadi
+- **Atamalar lug'ati** — ~1134 atama (lotincha + ma'nosi), qidiruv, ovoz bilan talaffuz, har atama qaysi darsda ekaniga havola
+- **Imtihon rejimi** — aralash (tasodifiy) savollar, vaqt o'lchovi, foizli natija (10/20/30/50 savol)
+- **Lotincha talaffuz (TTS)** — brauzer ovozi bilan atamalarni o'qish (lug'at, rasm qismlari, xatcho'plar)
+- **Xatcho'plar** — qiyin savollarni saqlash, alohida ro'yxat, javobi bilan
+- **Offline PWA** — o'rnatiladigan ilova: manifest + service worker, internetsiz ishlaydi
 - **Haptics** — Vibration API with graceful fallback
 - **Confetti** — canvas-based, respects `prefers-reduced-motion`
 - **Responsive** — verified 360 → 1440px (no horizontal overflow); centered `max-w-md` shell

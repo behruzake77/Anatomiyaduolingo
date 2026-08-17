@@ -135,6 +135,7 @@ export function ReviewScreen() {
           <QuestionCard
             key={`${item!.key}-${idx}`}
             q={item!.q}
+            qKey={item!.key}
             onCorrect={() => {
               setCorrect((c) => c + 1);
               recordAnswer(item!.key, true);

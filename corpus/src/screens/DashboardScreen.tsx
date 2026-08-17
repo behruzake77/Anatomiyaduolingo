@@ -1,6 +1,6 @@
 "use client";
 
-import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight } from "lucide-react";
+import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight, GraduationCap, Library } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
@@ -135,6 +135,36 @@ export function DashboardScreen() {
         )}
         <ChevronRight className="h-5 w-5 text-muted" aria-hidden />
       </button>
+
+      {/* Imtihon + Lug'at */}
+      <div className="mt-3 grid grid-cols-2 gap-4">
+        <button
+          type="button"
+          onClick={() => navigate("exam")}
+          className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 text-left shadow-card transition-colors active:bg-surface2"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning">
+            <GraduationCap className="h-5 w-5" aria-hidden />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold leading-tight">{t.examTitle}</p>
+            <p className="truncate text-xs text-muted">{t.examShort}</p>
+          </div>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate("glossary")}
+          className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 text-left shadow-card transition-colors active:bg-surface2"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-success/10 text-success">
+            <Library className="h-5 w-5" aria-hidden />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold leading-tight">{t.glossaryTitle}</p>
+            <p className="truncate text-xs text-muted">{t.glossaryShort}</p>
+          </div>
+        </button>
+      </div>
 
       {/* Continue learning */}
       <section className="mt-6">

@@ -21,6 +21,9 @@ import { StudyModeScreen } from "@/screens/StudyModeScreen";
 import { Models3DScreen } from "@/screens/Models3DScreen";
 import { ProgressScreen } from "@/screens/ProgressScreen";
 import { SettingsScreen } from "@/screens/SettingsScreen";
+import { GlossaryScreen } from "@/screens/GlossaryScreen";
+import { ExamScreen } from "@/screens/ExamScreen";
+import { BookmarksScreen } from "@/screens/BookmarksScreen";
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -39,6 +42,9 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   models3d: Models3DScreen,
   progress: ProgressScreen,
   settings: SettingsScreen,
+  glossary: GlossaryScreen,
+  exam: ExamScreen,
+  bookmarks: BookmarksScreen,
 };
 
 /** Screens that show the bottom navigation bar. */

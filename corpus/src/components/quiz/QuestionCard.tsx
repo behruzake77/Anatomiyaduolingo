@@ -8,9 +8,10 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Check, ZoomIn } from "lucide-react";
+import { Check, ZoomIn, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Lightbox } from "@/components/ui/Lightbox";
+import { useAppStore } from "@/store/useAppStore";
 import { difficultyOf, type Question, type Difficulty } from "@/data/content";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
@@ -73,13 +74,19 @@ function DifficultyBadge({ q }: { q: Question }) {
 /* ---------- Savol bloki ---------- */
 export function QuestionCard(props: {
   q: Question;
+  qKey?: string;
   onCorrect: () => void;
   onWrong?: () => void;
   onNext: () => void;
   isLast: boolean;
   haptic: (p: number | number[]) => void;
 }) {
-  const { q } = props;
+  const { q, qKey } = props;
+  const bookmarks = useAppStore((s) => s.bookmarks);
+  const toggleBookmark = useAppStore((s) => s.toggleBookmark);
+  const t = useStrings();
+  const bookmarked = qKey ? bookmarks.includes(qKey) : false;
+
   let body: React.ReactNode;
   if (q.type === "match") body = <MatchUI {...props} />;
   else if (q.type === "build") body = <BuildUI {...props} />;
@@ -90,8 +97,20 @@ export function QuestionCard(props: {
 
   return (
     <>
-      <div className="mt-3">
+      <div className="mt-3 flex items-center justify-between">
         <DifficultyBadge q={q} />
+        {qKey && (
+          <button
+            onClick={() => toggleBookmark(qKey)}
+            aria-label={bookmarked ? t.bookmarkRemove : t.bookmarkAdd}
+            className={cn(
+              "flex h-8 w-8 items-center justify-center rounded-lg border transition-colors",
+              bookmarked ? "border-accent bg-accent/15 text-accent" : "border-line text-muted",
+            )}
+          >
+            <Bookmark className={cn("h-4 w-4", bookmarked && "fill-current")} aria-hidden />
+          </button>
+        )}
       </div>
       {body}
     </>

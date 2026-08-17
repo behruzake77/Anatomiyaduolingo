@@ -89,6 +89,7 @@ export function LessonScreen() {
         <QuestionCard
           key={`${lesson.id}-${idx}`}
           q={q}
+          qKey={questionKey(lesson.id, idx)}
           onCorrect={() => {
             setScore((s) => s + 1);
             // Agar bu savol avval xato bo'lgan bo'lsa — kartani bir quti yuqoriga ko'tarish.
