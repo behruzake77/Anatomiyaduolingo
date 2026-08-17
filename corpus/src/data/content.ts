@@ -52,6 +52,49 @@ export function sortByDifficulty(questions: Question[]): Question[] {
   return [...questions].sort((a, b) => RANK[difficultyOf(a)] - RANK[difficultyOf(b)]);
 }
 
+function shuffleArr<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/**
+ * Har bir raqamlangan qismga rasmli savol (kitob rasmi + raqam → nom).
+ * Faqat kitobdan kesilgan (raqam bosilgan) rasmlar va sonli raqamlar uchun.
+ * Manba: kitobdagi rasm izohi (raqam → nom) — ixtiro qilinmaydi.
+ */
+export function partQuestions(lessonId: string): Question[] {
+  const legend = LESSON_LEGENDS[lessonId];
+  const img = LESSON_IMAGES[lessonId];
+  if (!legend || !img) return [];
+  if (!img.startsWith("/img/book/")) return []; // raqam bosilgan faqat kitob rasmlarida
+  const items = legend.filter((it) => /^\d+$/.test(it.n));
+  if (items.length < 4) return [];
+
+  const names = items.map((i) => i.name);
+  const out: Question[] = [];
+  items.forEach((item) => {
+    const others = [...new Set(names.filter((n) => n !== item.name))];
+    if (others.length < 3) return;
+    const distractors = shuffleArr(others).slice(0, 3);
+    const options = shuffleArr([item.name, ...distractors]);
+    const answer = options.indexOf(item.name);
+    out.push({
+      type: "img",
+      prompt: `Rasmda №${item.n} bilan qaysi qism ko'rsatilgan?`,
+      image: img,
+      options,
+      answer,
+      difficulty: "medium",
+      hint: item.name,
+    });
+  });
+  return out;
+}
+
 const BASE_SYSTEMS: ContentSystem[] = [
   {
     id: "skeletal", name: "Suyaklar tizimi", latin: "Systema skeletale", en: "Skeletal System",
@@ -162,6 +205,12 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
       const imgs = IMG_QUESTIONS[sys.id];
       if (ui === 0 && li === 0 && imgs && imgs.length) {
         patched = { ...patched, questions: [...imgs, ...patched.questions] };
+      }
+
+      // har bir raqamlangan qismga rasmli savol (kitob rasmi: №N → nom)
+      const parts = partQuestions(lesson.id);
+      if (parts.length) {
+        patched = { ...patched, questions: [...patched.questions, ...parts] };
       }
       return patched;
     }),
