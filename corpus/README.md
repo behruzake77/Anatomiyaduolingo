@@ -119,8 +119,12 @@ corpus/
 - **Lotincha talaffuz (TTS)** — brauzer ovozi bilan atamalarni o'qish (lug'at, rasm qismlari, xatcho'plar)
 - **Xatcho'plar** — qiyin savollarni saqlash, alohida ro'yxat, javobi bilan
 - **Offline PWA** — o'rnatiladigan ilova: manifest + service worker, internetsiz ishlaydi. Dashboard'da **"O'rnatish" banneri** (Android tugma / iOS ko'rsatma) foydalanuvchini "Bosh ekranga qo'shish"ga undaydi
-- **Maskot (Duolingo uslubida)** — kayfiyati vaziyatga qarab o'zgaradi: seriya 7+ = olovda 🔥, 3-6 = xursand, 1-2 = neytral, seriya uzildi = xafa, 2+ kun kirmadi = **jahli chiqadi 💢**, 7+ kun = uxlab qoladi 💤. So'z pufakchasi bilan
+- **Anatomy Tutor (re-engagement)** — 8 holatli o'quv yordamchisi (IDLE · HAPPY · CURIOUS · THINKING · ENCOURAGING · CONCERNED · CELEBRATING · WELCOME_BACK), faollikka qarab: 1 kun = qiziquvchan, 2-3 kun = xushmuomala tashvish, 7+ = motivatsion, 14+ = do'stona welcome-back (ayblamaydi). Yagona izchil vizual tizim, faqat CSS motion
+- **Welcome-back modal** — uzoq kirmagan foydalanuvchi qaytib kelganda qisqa comeback ketma-ketligi (tutor → anatomiya animatsiyasi → xabar → progress → tavsiya dars → harakatlar), dismissable, kuniga bir marta, lazy yuklanadi
+- **Kunlik sinov** — kunga qarab 5 toifadan biri (miya/yurak/o'pka/skelet/DNK), har biri vizual farqli
+- **Streak milestone** — 7/30/50/100 kunlik seriyada yumshoq nishonlash (confetti overload emas)
 - **Bildirishnomalar** — Notification API: ruxsat so'rash (Sozlamalar), qaytib kelganda kutib olish, seriya bosqichlari. (Ilova yopiq paytda push uchun Web Push serveri kerak — Render'da qo'shimcha qatlam)
+- **Asset registry** — `docs/ASSETS.md` (litsenziya + manba + ishlatilishi)
 - **Haptics** — Vibration API with graceful fallback
 - **Confetti** — canvas-based, respects `prefers-reduced-motion`
 - **Responsive** — verified 360 → 1440px (no horizontal overflow); centered `max-w-md` shell

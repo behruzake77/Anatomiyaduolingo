@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight, GraduationCap, Library } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
@@ -14,11 +15,19 @@ import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
 import { dueCount } from "@/utils/srs";
-import { mascotState, mascotMessageKey } from "@/utils/mascot";
-import { Mascot } from "@/components/Mascot";
+import { activityState } from "@/utils/activity";
+import { ReengagementCard } from "@/components/reengage/ReengagementCard";
+import { StreakCelebration } from "@/components/reengage/StreakCelebration";
+import { DailyChallengeCard } from "@/components/reengage/DailyChallengeCard";
 import { useNotifications } from "@/hooks/useNotifications";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
+
+// Welcome-back modal — lazy (faqat kerak bo'lganda yuklanadi).
+const WelcomeBackModal = dynamic(
+  () => import("@/components/reengage/WelcomeBackModal").then((m) => m.WelcomeBackModal),
+  { ssr: false },
+);
 
 const QUICK_TOPICS = [
   { id: "bones", labelKey: "bones" as const, icon: "bone", color: "#6C5CE7" },
@@ -42,16 +51,33 @@ export function DashboardScreen() {
   const t = useStrings();
 
   const reviewDue = dueCount(srs);
-  const mascot = mascotState(streak, lastActiveAt);
+  const activity = activityState(streak, lastActiveAt);
   const { notify } = useNotifications();
+  const [showWelcomeBack, setShowWelcomeBack] = useState(false);
 
-  // Uzoq kirmagan bo'lsa — qaytib kelganda bir marta bildirishnoma.
+  // Uzoq kirmagan bo'lsa — qaytib kelganda bildirishnoma + comeback modal (kuniga bir marta).
   useEffect(() => {
-    if (mascot.daysAway >= 1) {
-      notify(t.notifWelcome, fmt(t[mascotMessageKey(mascot)], { n: streak }));
+    if (activity.daysAway >= 1) {
+      notify(t.notifWelcome, fmt(t[activity.messageKey], { n: streak }));
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        if (sessionStorage.getItem("corpus-wb-seen-" + today) !== "1") setShowWelcomeBack(true);
+      } catch {
+        /* no-op */
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const closeWelcomeBack = () => {
+    setShowWelcomeBack(false);
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      sessionStorage.setItem("corpus-wb-seen-" + today, "1");
+    } catch {
+      /* no-op */
+    }
+  };
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
   const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
@@ -73,15 +99,14 @@ export function DashboardScreen() {
       {/* PWA o'rnatish taklifi */}
       <InstallBanner />
 
-      {/* maskot (Duolingo uslubida kayfiyat) */}
-      <div className="mt-4 flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 shadow-card">
-        <Mascot mood={mascot.mood} size={84} />
-        <div className="flex-1">
-          <p className="text-sm font-semibold leading-snug">
-            {fmt(t[mascotMessageKey(mascot)], { n: streak })}
-          </p>
-        </div>
-      </div>
+      {/* re-engagement: tutor + xabar + CTA */}
+      <ReengagementCard
+        activity={activity}
+        streak={streak}
+        onContinue={() => openLesson(nextLesson.id)}
+        onChallenge={() => navigate("exam")}
+      />
+      <StreakCelebration streak={streak} />
 
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
@@ -226,6 +251,9 @@ export function DashboardScreen() {
         </Card>
       </section>
 
+      {/* Kunlik sinov (re-engagement) */}
+      <DailyChallengeCard onStart={() => navigate("exam")} />
+
       {/* Quick topics */}
       <section className="mt-6">
         <div className="flex items-center justify-between">
@@ -252,6 +280,22 @@ export function DashboardScreen() {
           ))}
         </div>
       </section>
+
+      {/* comeback modal (lazy) */}
+      {showWelcomeBack && (
+        <WelcomeBackModal
+          daysAway={activity.daysAway}
+          onClose={closeWelcomeBack}
+          onContinue={() => {
+            closeWelcomeBack();
+            openLesson(nextLesson.id);
+          }}
+          onChallenge={() => {
+            closeWelcomeBack();
+            navigate("exam");
+          }}
+        />
+      )}
     </Screen>
   );
 }
