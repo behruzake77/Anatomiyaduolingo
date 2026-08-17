@@ -85,6 +85,7 @@ interface AppState {
   history: ScreenId[];
   navigate: (screen: ScreenId) => void;
   back: () => void;
+  resetTo: (screen: ScreenId, backTo?: ScreenId[]) => void;
   setTab: (tab: Tab) => void;
 
   // auth
@@ -186,6 +187,8 @@ export const useAppStore = create<AppState>()(
           const prev = history.pop();
           return { screen: prev ?? "dashboard", history };
         }),
+      resetTo: (screen, backTo) =>
+        set({ screen, history: backTo ? [...backTo] : [] }),
       setTab: (tab) => {
         const screen: Record<Tab, ScreenId> = {
           home: "dashboard",

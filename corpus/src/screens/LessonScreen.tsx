@@ -17,6 +17,7 @@ import { useStrings } from "@/i18n";
  */
 export function LessonScreen() {
   const navigate = useAppStore((s) => s.navigate);
+  const back = useAppStore((s) => s.back);
   const activeLessonId = useAppStore((s) => s.activeLessonId);
   const completeLesson = useAppStore((s) => s.completeLesson);
   const recordAnswer = useAppStore((s) => s.recordAnswer);
@@ -34,7 +35,7 @@ export function LessonScreen() {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
         <p className="text-muted">{t.errEmpty}</p>
-        <Button onClick={() => navigate("lessons")}>« {t.backToTopics}</Button>
+        <Button onClick={() => back()}>« {t.backToTopics}</Button>
       </div>
     );
   }
@@ -58,7 +59,7 @@ export function LessonScreen() {
       {/* header */}
       <header className="flex items-center gap-4">
         <button
-          onClick={() => navigate("lessons")}
+          onClick={() => back()}
           aria-label={t.quitLesson}
           className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-surface text-muted"
         >
@@ -83,7 +84,7 @@ export function LessonScreen() {
           slideNo={slideIdx + 1}
           slideTotal={slides.length}
           onNext={() => setSlideIdx((i) => i + 1)}
-          onQuit={() => navigate("lessons")}
+          onQuit={() => back()}
         />
       ) : (
         <QuestionCard

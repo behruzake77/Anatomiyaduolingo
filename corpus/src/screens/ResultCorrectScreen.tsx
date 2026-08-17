@@ -9,7 +9,7 @@ import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 
 export function ResultCorrectScreen() {
-  const navigate = useAppStore((s) => s.navigate);
+  const resetTo = useAppStore((s) => s.resetTo);
   const lastResult = useAppStore((s) => s.lastResult);
   const t = useStrings();
 
@@ -58,7 +58,7 @@ export function ResultCorrectScreen() {
         ))}
       </div>
 
-      <Button className="w-full max-w-xs" size="lg" onClick={() => navigate("dashboard")}>
+      <Button className="w-full max-w-xs" size="lg" onClick={() => resetTo("lessons", ["topics"])}>
         {t.continue}
       </Button>
     </div>

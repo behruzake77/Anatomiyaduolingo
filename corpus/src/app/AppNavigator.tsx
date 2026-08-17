@@ -50,6 +50,9 @@ const SCREENS: Record<ScreenId, ComponentType> = {
 /** Screens that show the bottom navigation bar. */
 const TABS: ScreenId[] = ["dashboard", "topics", "profile", "settings"];
 
+/** Bo'limlar (darslar ro'yxati) ham pastki menyu bilan — foydalanuvchi bosh menyuga qayta olsin. */
+const NAV_SCREENS: ScreenId[] = [...TABS, "lessons"];
+
 const TAB_SCREEN: Record<Tab, ScreenId> = {
   home: "dashboard",
   learn: "topics",
@@ -76,7 +79,7 @@ export function AppNavigator() {
   }, [screen, tab]);
 
   const Screen = SCREENS[screen];
-  const showNav = TABS.includes(screen);
+  const showNav = NAV_SCREENS.includes(screen);
 
   return (
     <div className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">
