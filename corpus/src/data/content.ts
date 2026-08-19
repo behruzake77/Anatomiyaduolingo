@@ -16,6 +16,7 @@ import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
 import { IMG_QUESTIONS, VISUAL_SLIDES, LESSON_IMAGES } from "./visuals";
 import { LESSON_LEGENDS } from "./labels";
 import { FIGURE_LESSONS } from "./figureLessons";
+import { COLOR_DIAGRAMS } from "./colorDiagrams";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -201,6 +202,18 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
             },
           ],
         };
+      }
+
+      // Rangli diagramma — qismlarni rang bilan ajratib ko'rsatish (o'rganish uchun).
+      const colorImg = COLOR_DIAGRAMS[lesson.id];
+      if (colorImg) {
+        const colorSlide = {
+          title: "Rangli diagramma",
+          text: "Qismlar rang bilan ajratilgan — ro'yxatdagi rangga qarang.",
+          img: colorImg,
+          legend: LESSON_LEGENDS[lesson.id],
+        };
+        patched = { ...patched, slides: [...(patched.slides ?? []), colorSlide] };
       }
 
       // rasmli savollar — tizimning birinchi darsiga

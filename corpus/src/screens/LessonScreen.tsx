@@ -9,6 +9,7 @@ import { QuestionCard } from "@/components/quiz/QuestionCard";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
 import { lessonById, unitOfLesson, sortByDifficulty, type Lesson } from "@/data/content";
+import { colorForLegendN } from "@/data/colorDiagrams";
 import { questionKey } from "@/utils/srs";
 import { useStrings } from "@/i18n";
 
@@ -123,6 +124,8 @@ function SlideView(props: {
   const isLast = slideNo >= slideTotal;
   const [zoom, setZoom] = useState(false);
   const [find, setFind] = useState<string | null>(null);
+  // Rangli diagramma slaydi — legend qatorlari rangli bo'ladi.
+  const isColor = (slide.img ?? "").startsWith("/img/color/");
 
   const findName = find ? (slide.legend?.find((l) => l.n === find)?.name ?? find) : null;
 
@@ -152,27 +155,39 @@ function SlideView(props: {
       {slide.legend && slide.legend.length > 0 && (
         <div className="mt-4 rounded-2xl border border-line bg-surface2 p-3">
           <p className="mb-2 text-xs font-bold uppercase tracking-wider text-primary">
-            {t.imageParts}
-            <span className="ml-1 font-normal normal-case text-muted">— {t.tapToFind}</span>
+            {isColor ? t.colorLegend : t.imageParts}
+            <span className="ml-1 font-normal normal-case text-muted">— {isColor ? t.colorLegendHint : t.tapToFind}</span>
           </p>
           <ul className="grid max-h-52 grid-cols-1 gap-1 overflow-y-auto pr-1">
-            {slide.legend.map((it, i) => (
-              <li key={i}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFind(it.n);
-                    setZoom(true);
-                  }}
-                  className="flex w-full items-start gap-2 rounded-lg px-1 py-0.5 text-left text-[13px] leading-snug transition-colors hover:bg-primary/10"
-                >
-                  <span className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md bg-primary/15 px-1 text-[11px] font-bold text-primary">
-                    {it.n}
-                  </span>
-                  <span className="text-ink">{it.name}</span>
-                </button>
-              </li>
-            ))}
+            {slide.legend.map((it, i) => {
+              const color = isColor ? colorForLegendN(it.n) : null;
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFind(it.n);
+                      setZoom(true);
+                    }}
+                    className="flex w-full items-start gap-2 rounded-lg px-1 py-0.5 text-left text-[13px] leading-snug transition-colors hover:bg-primary/10"
+                  >
+                    {color ? (
+                      <span
+                        className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md px-1 text-[11px] font-bold text-white"
+                        style={{ background: color }}
+                      >
+                        {it.n}
+                      </span>
+                    ) : (
+                      <span className="mt-0.5 flex h-5 min-w-5 shrink-0 items-center justify-center rounded-md bg-primary/15 px-1 text-[11px] font-bold text-primary">
+                        {it.n}
+                      </span>
+                    )}
+                    <span className="text-ink">{it.name}</span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
