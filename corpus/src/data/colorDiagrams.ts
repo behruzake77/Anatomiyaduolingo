@@ -20,11 +20,29 @@ export const COLOR_PALETTE = [
   "#EAB308", // 12 oltingugurt
 ];
 
+/** Rang nomlari (savollarda ishlatiladi) — palitra tartibida. */
+export const COLOR_NAMES = [
+  "qizil",
+  "to'q sariq",
+  "sariq",
+  "och yashil",
+  "yashil",
+  "havorang",
+  "ko'k",
+  "binafsha",
+  "pushti-binafsha",
+  "pushti",
+  "to'q firuza",
+  "oltingugurt",
+];
+
 /** Rangli diagrammasi tayyor bo'lgan darslar (bosqichma-bosqich to'ldiriladi). */
 export const COLOR_DIAGRAMS: Record<string, string> = {
   l4: "/img/color/l4.jpg", // Tipik bo'yin umurtqasi (C3–C7)
   l5: "/img/color/l5.jpg", // Atlas (C1)
   l6: "/img/color/l6.jpg", // Axis (C2)
+  l8: "/img/color/l8.jpg", // Ko'krak umurtqasi
+  l9: "/img/color/l9.jpg", // Bel umurtqasi
 };
 
 /** Legend raqami → rang (palitradan indeks bo'yicha). */
