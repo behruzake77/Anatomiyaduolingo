@@ -154,7 +154,7 @@ export const IMG_QUESTIONS: Record<string, Question[]> = {
     q({
       type: "img",
       prompt: "Rasmda qaysi tizim ko'rsatilgan?",
-      image: "/img/atlas/jinsiy.jpg",
+      image: "/img/cross/reproductive.jpg",
       options: ["Jinsiy a'zolar tizimi", "Siydik tizimi", "Hazm tizimi", "Nafas tizimi"],
       answer: 0,
       difficulty: "easy",
@@ -165,7 +165,7 @@ export const IMG_QUESTIONS: Record<string, Question[]> = {
     q({
       type: "img",
       prompt: "Rasmda qaysi bez ko'rsatilgan?",
-      image: "/img/atlas/endokrin.jpg",
+      image: "/img/cross/pituitary.jpg",
       options: ["Gipofiz (hypophysis)", "Qalqonsimon bez", "Oshqozon osti bezi", "Buyrak usti bezi"],
       answer: 0,
       difficulty: "easy",
