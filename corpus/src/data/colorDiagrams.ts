@@ -49,6 +49,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l13: "/img/color/l13.jpg", // Qovurg'a (costa)
   l14: "/img/color/l14.jpg", // To'sh suyagi (sternum)
   l15: "/img/color/l15.jpg", // Yelka kamari — o'mrov suyagi (clavicula)
+  l16: "/img/color/l16.jpg", // Yelka suyagi (humerus)
 };
 
 /**
@@ -178,6 +179,20 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "7": "/img/color/l15_7.jpg", // Tuberculum conoideum
     "8": "/img/color/l15_8.jpg", // Linea trapezoidea
     "9": "/img/color/l15_9.jpg", // Extremitas acromialis
+  },
+  l16: {
+    "1": "/img/color/l16_1.jpg", // Collum anatomicum
+    "2": "/img/color/l16_2.jpg", // Caput humeri
+    "3": "/img/color/l16_3.jpg", // Tuberculum minus
+    "4": "/img/color/l16_4.jpg", // Collum chirurgicum
+    "5": "/img/color/l16_5.jpg", // Crista tuberculi minoris
+    "6": "/img/color/l16_6.jpg", // Corpus humeri
+    "7": "/img/color/l16_7.jpg", // Facies anteromedialis
+    "8": "/img/color/l16_8.jpg", // Margo medialis
+    "9": "/img/color/l16_9.jpg", // Fossa coronoidea
+    "10": "/img/color/l16_10.jpg", // Epicondylus medialis
+    "11": "/img/color/l16_11.jpg", // Trochlea humeri
+    "12": "/img/color/l16_12.jpg", // Capitulum humeri
   },
 };
 
