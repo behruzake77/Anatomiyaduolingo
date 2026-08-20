@@ -30,10 +30,10 @@ const WelcomeBackModal = dynamic(
 );
 
 const QUICK_TOPICS = [
-  { id: "bones", labelKey: "bones" as const, icon: "bone", color: "#6C5CE7" },
-  { id: "muscles", labelKey: "muscles" as const, icon: "activity", color: "#FD79A8" },
-  { id: "organs", labelKey: "organs" as const, icon: "apple", color: "#00B894" },
-  { id: "nerves", labelKey: "nerves" as const, icon: "brain", color: "#A29BFE" },
+  { id: "bones", labelKey: "bones" as const, icon: "bone", color: "#6C5CE7", img: "/img/sys/skeletal.jpg" },
+  { id: "muscles", labelKey: "muscles" as const, icon: "activity", color: "#FD79A8", img: "/img/sys/muscular.jpg" },
+  { id: "organs", labelKey: "organs" as const, icon: "apple", color: "#00B894", img: "/img/quick/organs.jpg" },
+  { id: "nerves", labelKey: "nerves" as const, icon: "brain", color: "#A29BFE", img: "/img/sys/nervous.jpg" },
 ];
 
 export function DashboardScreen() {
@@ -270,10 +270,14 @@ export function DashboardScreen() {
               className="flex items-center gap-3 p-4"
             >
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-xl"
+                className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl"
                 style={{ background: `${q.color}1f`, color: q.color }}
               >
-                <Icon name={q.icon} className="h-6 w-6" />
+                {q.img ? (
+                  <img src={q.img} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <Icon name={q.icon} className="h-6 w-6" />
+                )}
               </div>
               <span className="text-sm font-semibold">{t[q.labelKey]}</span>
             </Card>
