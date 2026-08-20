@@ -52,6 +52,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l16: "/img/color/l16.jpg", // Yelka suyagi (humerus)
   l17: "/img/color/l17.jpg", // Bilak suyagi (radius)
   l18: "/img/color/l18.jpg", // Chanoq suyagi (os coxae)
+  l19: "/img/color/l19.jpg", // Son suyagi (femur)
 };
 
 /**
@@ -237,6 +238,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "20": "/img/color/l18_20.jpg", // Spina ischiadica
     "21": "/img/color/l18_21.jpg", // Incisura ischiadica major
     "22": "/img/color/l18_22.jpg", // Spina iliaca posterior inferior
+    "23": "/img/color/l18_23.jpg", // Spina iliaca posterior superior
+    "24": "/img/color/l18_24.jpg", // Linea glutea posterior
+    "25": "/img/color/l18_25.jpg", // Linea intermedia cristae iliacae
+    "26": "/img/color/l18_26.jpg", // Linea glutea anterior
+    "27": "/img/color/l18_27.jpg", // Labium externum cristae iliacae
+    "28": "/img/color/l18_28.jpg", // Ala ossis ilii
+    "29": "/img/color/l18_29.jpg", // Crista iliaca
+  },
+  l19: {
+    "1": "/img/color/l19_1.jpg", // Caput femoris
+    "2": "/img/color/l19_2.jpg", // Fovea capitis femoris
   },
 };
 
