@@ -40,6 +40,7 @@ export const COLOR_NAMES = [
 export const COLOR_DIAGRAMS: Record<string, string> = {
   l1: "/img/color/l1.jpg", // Umurtqa pog'onasi bo'limlari
   l2: "/img/color/l2.jpg", // Umurtqa, ust tomondan
+  l3: "/img/color/l2.jpg", // O'simtalar (l2 bilan bir xil rasm)
   l4: "/img/color/l4.jpg", // Tipik bo'yin umurtqasi (C3–C7)
   l5: "/img/color/l5.jpg", // Atlas (C1)
   l6: "/img/color/l6.jpg", // Axis (C2)
@@ -80,6 +81,27 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "1": "/img/color/l2_1.jpg", // Corpus vertebrae
     "2": "/img/color/l2_2.jpg", // Fovea costalis superior
     "3": "/img/color/l2_3.jpg", // Pedunculus arcus vertebrae
+    "4": "/img/color/l2_4.jpg", // Facies articularis superior
+    "5": "/img/color/l2_5.jpg", // Fovea costalis processus transversi
+    "6": "/img/color/l2_6.jpg", // Processus transversus
+    "7": "/img/color/l2_7.jpg", // Arcus vertebrae
+    "8": "/img/color/l2_8.jpg", // Processus spinosus
+    "9": "/img/color/l2_9.jpg", // Foramen vertebrale
+    "10": "/img/color/l2_10.jpg", // Processus articularis superior
+    "11": "/img/color/l2_11.jpg", // Pedunculus arcus vertebrae
+  },
+  l3: {
+    "1": "/img/color/l2_1.jpg", // Corpus vertebrae
+    "2": "/img/color/l2_2.jpg", // Fovea costalis superior
+    "3": "/img/color/l2_3.jpg", // Pedunculus arcus vertebrae
+    "4": "/img/color/l2_4.jpg", // Facies articularis superior
+    "5": "/img/color/l2_5.jpg", // Fovea costalis processus transversi
+    "6": "/img/color/l2_6.jpg", // Processus transversus
+    "7": "/img/color/l2_7.jpg", // Arcus vertebrae
+    "8": "/img/color/l2_8.jpg", // Processus spinosus
+    "9": "/img/color/l2_9.jpg", // Foramen vertebrale
+    "10": "/img/color/l2_10.jpg", // Processus articularis superior
+    "11": "/img/color/l2_11.jpg", // Pedunculus arcus vertebrae
   },
   l7: {
     "1": "/img/color/l4_1.jpg", // Corpus vertebrae
