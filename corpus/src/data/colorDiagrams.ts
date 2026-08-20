@@ -48,6 +48,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l12: "/img/color/l12.jpg", // Dum suyagi (coccyx)
   l13: "/img/color/l13.jpg", // Qovurg'a (costa)
   l14: "/img/color/l14.jpg", // To'sh suyagi (sternum)
+  l15: "/img/color/l15.jpg", // Yelka kamari — o'mrov suyagi (clavicula)
 };
 
 /**
@@ -160,6 +161,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l14_4.jpg", // Incisura costalis II
     "5": "/img/color/l14_5.jpg", // Incisura costalis III
     "6": "/img/color/l14_6.jpg", // Incisura costalis IV
+    "7": "/img/color/l14_7.jpg", // Incisura costalis V
+    "8": "/img/color/l14_8.jpg", // Incisura costalis VI
+    "9": "/img/color/l14_9.jpg", // Incisura costalis VII
+    "10": "/img/color/l14_10.jpg", // Processus xiphoideus
+    "11": "/img/color/l14_11.jpg", // Corpus sterni
+    "12": "/img/color/l14_12.jpg", // Manubrium sterni
+  },
+  l15: {
+    "1": "/img/color/l15_1.jpg", // Facies articularis acromialis
+    "2": "/img/color/l15_2.jpg", // Facies articularis sternalis
+    "3": "/img/color/l15_3.jpg", // Extremitas sternalis
   },
 };
 
