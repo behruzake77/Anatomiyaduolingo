@@ -15,7 +15,7 @@ export const SYSTEM_ICON_IMAGES: Record<string, string> = {
   urinary: "/img/sys/urinary.jpg", // Siydik tizimi
   reproductive: "/img/sys/reproductive.jpg", // Jinsiy tizim
   endocrine: "/img/sys/endocrine.jpg", // Endokrin bezlar
-  // sensory: "/img/sys/sensory.jpg", // Sezgi a'zolari (navbatdagi)
+  sensory: "/img/sys/sensory.jpg", // Sezgi a'zolari
 };
 
 /** Tizim uchun rasm-ikoncha yo'lini qaytaradi (yo'q bo'lsa undefined). */
