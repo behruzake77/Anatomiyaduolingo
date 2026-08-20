@@ -105,6 +105,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l9_4.jpg", // Processus articularis superior
     "5": "/img/color/l9_5.jpg", // Processus spinosus
     "6": "/img/color/l9_6.jpg", // Arcus vertebrae
+    "7": "/img/color/l9_7.jpg", // Facies articularis superior
+    "8": "/img/color/l9_8.jpg", // Processus mamillaris
+    "9": "/img/color/l9_9.jpg", // Processus accessorius
+    "10": "/img/color/l9_10.jpg", // Foramen vertebrale
+  },
+  l10: {
+    "1": "/img/color/l10_1.jpg", // Basis ossis sacri
+    "2": "/img/color/l10_2.jpg", // Processus articulares superiores
+    "3": "/img/color/l10_3.jpg", // Pars lateralis
+    "4": "/img/color/l10_4.jpg", // Foramina sacralia anteriora
+    "5": "/img/color/l10_5.jpg", // Apex ossis sacri
   },
 };
 
