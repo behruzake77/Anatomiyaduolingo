@@ -249,6 +249,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l19: {
     "1": "/img/color/l19_1.jpg", // Caput femoris
     "2": "/img/color/l19_2.jpg", // Fovea capitis femoris
+    "3": "/img/color/l19_3.jpg", // Collum femoris
+    "4": "/img/color/l19_4.jpg", // Trochanter minor
+    "5": "/img/color/l19_5.jpg", // Trochanter major
+    "6": "/img/color/l19_6.jpg", // Crista intertrochanterica
+    "7": "/img/color/l19_7.jpg", // Tuberositas glutea
+    "8": "/img/color/l19_8.jpg", // Linea pectinea
+    "9": "/img/color/l19_9.jpg", // Corpus femoris
+    "10": "/img/color/l19_10.jpg", // Linea aspera
+    "11": "/img/color/l19_11.jpg", // Labium laterale lineae asperae
+    "12": "/img/color/l19_12.jpg", // Labium mediale lineae asperae
   },
 };
 
