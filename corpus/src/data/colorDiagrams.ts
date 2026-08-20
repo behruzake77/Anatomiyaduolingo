@@ -116,6 +116,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l10_3.jpg", // Pars lateralis
     "4": "/img/color/l10_4.jpg", // Foramina sacralia anteriora
     "5": "/img/color/l10_5.jpg", // Apex ossis sacri
+    "6": "/img/color/l10_6.jpg", // Os coccygis
+    "7": "/img/color/l10_7.jpg", // Lineae transversae
+  },
+  l11: {
+    "1": "/img/color/l11_1.jpg", // Processus articulares superiores
+    "2": "/img/color/l11_2.jpg", // Canalis sacralis
+    "3": "/img/color/l11_3.jpg", // Tuberositas ossis sacri
+    "4": "/img/color/l11_4.jpg", // Crista sacralis medialis
+    "5": "/img/color/l11_5.jpg", // Crista sacralis mediana
+    "6": "/img/color/l11_6.jpg", // Hiatus sacralis
+    "7": "/img/color/l11_7.jpg", // Cornu sacrale
   },
 };
 
