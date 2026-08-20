@@ -347,6 +347,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "1": "/img/color/l23_1.jpg", // Margo parietalis
     "2": "/img/color/l23_2.jpg", // Pars squamosa
     "3": "/img/color/l23_3.jpg", // Margo sphenoidalis
+    "4": "/img/color/l23_4.jpg", // Processus zygomaticus
+    "5": "/img/color/l23_5.jpg", // Tuberculum articulare
+    "6": "/img/color/l23_6.jpg", // Fossa mandibularis
+    "7": "/img/color/l23_7.jpg", // Fissura petrosquamosa
+    "8": "/img/color/l23_8.jpg", // Fissura petrotympanica
+    "9": "/img/color/l23_9.jpg", // Pars tympanica
+    "10": "/img/color/l23_10.jpg", // Processus styloideus
+    "11": "/img/color/l23_11.jpg", // Meatus acusticus externus
+    "12": "/img/color/l23_12.jpg", // Processus mastoideus
+    "13": "/img/color/l23_13.jpg", // Fissura tympanomastoidea
   },
 };
 
