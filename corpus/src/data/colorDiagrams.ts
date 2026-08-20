@@ -50,6 +50,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l14: "/img/color/l14.jpg", // To'sh suyagi (sternum)
   l15: "/img/color/l15.jpg", // Yelka kamari — o'mrov suyagi (clavicula)
   l16: "/img/color/l16.jpg", // Yelka suyagi (humerus)
+  l17: "/img/color/l17.jpg", // Bilak suyagi (radius)
 };
 
 /**
@@ -193,6 +194,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "10": "/img/color/l16_10.jpg", // Epicondylus medialis
     "11": "/img/color/l16_11.jpg", // Trochlea humeri
     "12": "/img/color/l16_12.jpg", // Capitulum humeri
+    "13": "/img/color/l16_13.jpg", // Epicondylus lateralis
+    "14": "/img/color/l16_14.jpg", // Fossa radialis
+    "15": "/img/color/l16_15.jpg", // Margo lateralis
+    "16": "/img/color/l16_16.jpg", // Facies anterolateralis
+    "17": "/img/color/l16_17.jpg", // Crista tuberculi majoris
+    "18": "/img/color/l16_18.jpg", // Sulcus intertubercularis
+    "19": "/img/color/l16_19.jpg", // Tuberculum majus
+  },
+  l17: {
+    "1": "/img/color/l17_1.jpg", // Caput radii
+    "2": "/img/color/l17_2.jpg", // Collum radii
   },
 };
 
