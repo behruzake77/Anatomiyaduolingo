@@ -51,6 +51,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l15: "/img/color/l15.jpg", // Yelka kamari — o'mrov suyagi (clavicula)
   l16: "/img/color/l16.jpg", // Yelka suyagi (humerus)
   l17: "/img/color/l17.jpg", // Bilak suyagi (radius)
+  l18: "/img/color/l18.jpg", // Chanoq suyagi (os coxae)
 };
 
 /**
@@ -205,6 +206,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l17: {
     "1": "/img/color/l17_1.jpg", // Caput radii
     "2": "/img/color/l17_2.jpg", // Collum radii
+    "3": "/img/color/l17_3.jpg", // Tuberositas radii
+    "4": "/img/color/l17_4.jpg", // Margo interossea
+    "5": "/img/color/l17_5.jpg", // Processus styloideus
+    "6": "/img/color/l17_6.jpg", // Margo anterior
+    "7": "/img/color/l17_7.jpg", // Facies anterior
+    "8": "/img/color/l17_8.jpg", // Foramen nutricium
+    "9": "/img/color/l17_9.jpg", // Circumferentia articularis
+  },
+  l18: {
+    "1": "/img/color/l18_1.jpg", // Facies glutea
+    "2": "/img/color/l18_2.jpg", // Spina iliaca anterior superior
   },
 };
 
