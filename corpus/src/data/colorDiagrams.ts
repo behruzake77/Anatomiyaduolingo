@@ -217,6 +217,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l18: {
     "1": "/img/color/l18_1.jpg", // Facies glutea
     "2": "/img/color/l18_2.jpg", // Spina iliaca anterior superior
+    "3": "/img/color/l18_3.jpg", // Linea glutea inferior
+    "4": "/img/color/l18_4.jpg", // Spina iliaca anterior inferior
+    "5": "/img/color/l18_5.jpg", // Corpus ossis ilii
+    "6": "/img/color/l18_6.jpg", // Facies lunata
+    "7": "/img/color/l18_7.jpg", // Fossa acetabuli
+    "8": "/img/color/l18_8.jpg", // Corpus ossis pubis
+    "9": "/img/color/l18_9.jpg", // Ramus superior ossis pubis
+    "10": "/img/color/l18_10.jpg", // Tuberculum pubicum
+    "11": "/img/color/l18_11.jpg", // Os pubis
+    "12": "/img/color/l18_12.jpg", // Ramus inferior ossis pubis
   },
 };
 
