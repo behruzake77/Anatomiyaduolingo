@@ -94,6 +94,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l8_5.jpg", // Processus articularis inferior
     "6": "/img/color/l8_6.jpg", // Processus spinosus
     "7": "/img/color/l8_7.jpg", // Facies articularis inferior
+    "8": "/img/color/l8_8.jpg", // Incisura vertebralis inferior
+    "9": "/img/color/l8_9.jpg", // Fovea costalis inferior
+    "10": "/img/color/l8_10.jpg", // Corpus vertebrae
+  },
+  l9: {
+    "1": "/img/color/l9_1.jpg", // Corpus vertebrae
+    "2": "/img/color/l9_2.jpg", // Incisura vertebralis superior
+    "3": "/img/color/l9_3.jpg", // Processus costalis
+    "4": "/img/color/l9_4.jpg", // Processus articularis superior
+    "5": "/img/color/l9_5.jpg", // Processus spinosus
+    "6": "/img/color/l9_6.jpg", // Arcus vertebrae
   },
 };
 
