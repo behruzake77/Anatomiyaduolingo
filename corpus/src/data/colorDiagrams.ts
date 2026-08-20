@@ -62,6 +62,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l6_4.jpg", // Processus spinosus
     "5": "/img/color/l6_5.jpg", // Corpus vertebrae
   },
+  l4: {
+    "1": "/img/color/l4_1.jpg", // Corpus vertebrae
+    "2": "/img/color/l4_2.jpg", // Processus transversus
+    "3": "/img/color/l4_3.jpg", // Facies articularis superior
+    "4": "/img/color/l4_4.jpg", // Arcus vertebrae
+    "5": "/img/color/l4_5.jpg", // Processus spinosus
+    "6": "/img/color/l4_6.jpg", // Foramen vertebrale
+    "7": "/img/color/l4_7.jpg", // Processus articularis superior
+    "8": "/img/color/l4_8.jpg", // Tuberculum posterius
+  },
 };
 
 /** Legend raqami → rang (palitradan indeks bo'yicha). */
