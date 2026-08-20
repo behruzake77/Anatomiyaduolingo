@@ -54,6 +54,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l18: "/img/color/l18.jpg", // Chanoq suyagi (os coxae)
   l19: "/img/color/l19.jpg", // Son suyagi (femur)
   l20: "/img/color/l20.jpg", // Oyoq panjasi suyaklari
+  l21: "/img/color/l21.jpg", // Kalla suyaklari (old tomondan)
 };
 
 /**
@@ -286,11 +287,22 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "11": "/img/color/l20_11.jpg", // Phalanx proximalis
     "12": "/img/color/l20_12.jpg", // Phalanx distalis
     "13": "/img/color/l20_13.jpg", // Tuberositas phalangis distalis
-    "14": "/img/color/l20_14.jpg", // Phalanx media
-    "15": "/img/color/l20_15.jpg", // Caput phalangis
-    "16": "/img/color/l20_16.jpg", // Corpus phalangis
-    "17": "/img/color/l20_17.jpg", // Basis phalangis
-    "18": "/img/color/l20_18.jpg", // Ossa metatarsi
+    "14": "/img/color/l20_12.jpg", // Phalanx distalis (takror)
+    "15": "/img/color/l20_14.jpg", // Phalanx media
+    "16": "/img/color/l20_11.jpg", // Phalanx proximalis (takror)
+    "17": "/img/color/l20_15.jpg", // Caput phalangis
+    "18": "/img/color/l20_16.jpg", // Corpus phalangis
+    "19": "/img/color/l20_17.jpg", // Basis phalangis
+    "20": "/img/color/l20_18.jpg", // Ossa metatarsi
+    "21": "/img/color/l20_19.jpg", // Tuberositas ossis metatarsi V
+    "22": "/img/color/l20_20.jpg", // Os cuboideum
+    "23": "/img/color/l20_21.jpg", // Os cuneiforme laterale
+  },
+  l21: {
+    "1": "/img/color/l21_1.jpg", // Squama frontalis
+    "2": "/img/color/l21_2.jpg", // Os nasale
+    "3": "/img/color/l21_3.jpg", // Foramen supraorbitale
+    "4": "/img/color/l21_4.jpg", // Os parietale
   },
 };
 
