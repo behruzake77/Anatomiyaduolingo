@@ -259,6 +259,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "10": "/img/color/l19_10.jpg", // Linea aspera
     "11": "/img/color/l19_11.jpg", // Labium laterale lineae asperae
     "12": "/img/color/l19_12.jpg", // Labium mediale lineae asperae
+    "13": "/img/color/l19_13.jpg", // Facies poplitea
+    "14": "/img/color/l19_14.jpg", // Linea intercondylaris
+    "15": "/img/color/l19_15.jpg", // Condylus lateralis
+    "16": "/img/color/l19_16.jpg", // Fossa intercondylaris
+    "17": "/img/color/l19_17.jpg", // Condylus medialis
+    "18": "/img/color/l19_18.jpg", // Epicondylus medialis
+    "19": "/img/color/l19_19.jpg", // Facies patellaris
+    "20": "/img/color/l19_20.jpg", // Epicondylus lateralis
+    "21": "/img/color/l19_21.jpg", // Facies anterior
+    "22": "/img/color/l19_22.jpg", // Trochanter major
   },
 };
 
