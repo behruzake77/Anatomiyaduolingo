@@ -5,32 +5,56 @@ import { Box, RotateCw } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
-import { MODELS_3D, type Model3D } from "@/data/models3d";
+import { modelsByCategory, type Model3D, type ModelCategory } from "@/data/models3d";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
+const TABS: { id: ModelCategory; labelKey: "bones" | "organs" }[] = [
+  { id: "bones", labelKey: "bones" },
+  { id: "organs", labelKey: "organs" },
+];
+
 /**
- * Haqiqiy interaktiv 3D modellar (Sketchfab / AnatomyTOOL).
+ * Haqiqiy interaktiv 3D modellar (Sketchfab / AnatomyTOOL / Z-Anatomy).
  * Har bir model faqat ochilganda (lazy) yuklanadi.
  */
 export function Models3DScreen() {
   const t = useStrings();
   const [active, setActive] = useState<Model3D | null>(null);
+  const [tab, setTab] = useState<ModelCategory>("bones");
 
   if (active) {
     return <Model3DViewer model={active} onBack={() => setActive(null)} />;
   }
 
+  const models = modelsByCategory(tab);
+
   return (
     <Screen padded={false}>
-      <TopBar title="3D modellar" />
+      <TopBar title={t.models3d} />
       <div className="px-5 pb-28">
         <p className="text-sm text-muted">
-          Suyaklarni haqiqiy 3D ko'rinishda aylantirib, kattalashtirib o'rganing.
+          Suyak va a'zolarni haqiqiy 3D ko'rinishda aylantirib, kattalashtirib o'rganing.
         </p>
 
+        {/* kategoriya tanlash */}
+        <div className="mt-4 flex gap-2 rounded-2xl border border-line bg-surface p-1">
+          {TABS.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setTab(c.id)}
+              className={cn(
+                "flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition",
+                tab === c.id ? "bg-primary text-white shadow-soft" : "text-muted",
+              )}
+            >
+              {t[c.labelKey]}
+            </button>
+          ))}
+        </div>
+
         <div className="mt-4 flex flex-col gap-3">
-          {MODELS_3D.map((m) => (
+          {models.map((m) => (
             <Card key={m.id} onClick={() => setActive(m)} className="p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
