@@ -138,6 +138,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "2": "/img/color/l12_2.jpg", // Processus articulares superiores
     "3": "/img/color/l12_3.jpg", // Pars lateralis
     "4": "/img/color/l12_4.jpg", // Foramina sacralia anteriora
+    "5": "/img/color/l12_5.jpg", // Apex ossis sacri
+    "6": "/img/color/l12_6.jpg", // Os coccygis
+    "7": "/img/color/l12_7.jpg", // Lineae transversae
+  },
+  l13: {
+    "1": "/img/color/l13_1.jpg", // Angulus costae
+    "2": "/img/color/l13_2.jpg", // Tuberculum costae
+    "3": "/img/color/l13_3.jpg", // Collum costae
+    "4": "/img/color/l13_4.jpg", // Caput costae
+    "5": "/img/color/l13_5.jpg", // Facies articularis capitis costae
+    "6": "/img/color/l13_6.jpg", // Crista capitis costae
   },
 };
 
