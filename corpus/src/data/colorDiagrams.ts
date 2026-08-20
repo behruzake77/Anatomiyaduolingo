@@ -227,6 +227,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "10": "/img/color/l18_10.jpg", // Tuberculum pubicum
     "11": "/img/color/l18_11.jpg", // Os pubis
     "12": "/img/color/l18_12.jpg", // Ramus inferior ossis pubis
+    "13": "/img/color/l18_13.jpg", // Ramus ossis ischii
+    "14": "/img/color/l18_14.jpg", // Os ischii
+    "15": "/img/color/l18_15.jpg", // Tuber ischiadicum
+    "16": "/img/color/l18_16.jpg", // Foramen obturatum
+    "17": "/img/color/l18_17.jpg", // Incisura acetabuli
+    "18": "/img/color/l18_18.jpg", // Corpus ossis ischii
+    "19": "/img/color/l18_19.jpg", // Incisura ischiadica minor
+    "20": "/img/color/l18_20.jpg", // Spina ischiadica
+    "21": "/img/color/l18_21.jpg", // Incisura ischiadica major
+    "22": "/img/color/l18_22.jpg", // Spina iliaca posterior inferior
   },
 };
 
