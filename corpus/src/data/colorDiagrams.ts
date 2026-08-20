@@ -53,6 +53,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l17: "/img/color/l17.jpg", // Bilak suyagi (radius)
   l18: "/img/color/l18.jpg", // Chanoq suyagi (os coxae)
   l19: "/img/color/l19.jpg", // Son suyagi (femur)
+  l20: "/img/color/l20.jpg", // Oyoq panjasi suyaklari
 };
 
 /**
@@ -269,6 +270,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "20": "/img/color/l19_20.jpg", // Epicondylus lateralis
     "21": "/img/color/l19_21.jpg", // Facies anterior
     "22": "/img/color/l19_22.jpg", // Trochanter major
+    "23": "/img/color/l19_23.jpg", // Linea intertrochanterica
+  },
+  l20: {
+    "1": "/img/color/l20_1.jpg", // Calcaneus
+    "2": "/img/color/l20_2.jpg", // Talus
+    "3": "/img/color/l20_3.jpg", // Trochlea tali
+    "4": "/img/color/l20_4.jpg", // Os naviculare
+    "5": "/img/color/l20_5.jpg", // Os cuneiforme intermedium
+    "6": "/img/color/l20_6.jpg", // Os cuneiforme mediale
+    "7": "/img/color/l20_7.jpg", // Basis ossis metatarsi I
+    "8": "/img/color/l20_8.jpg", // Os metatarsi I
   },
 };
 
