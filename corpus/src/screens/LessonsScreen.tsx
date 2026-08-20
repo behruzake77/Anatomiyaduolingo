@@ -11,6 +11,7 @@ import { Icon } from "@/components/ui/Icon";
 import { useAppStore } from "@/store/useAppStore";
 import { systemById, unitProgress, isLessonUnlocked } from "@/data/content";
 import { unitIconImage } from "@/data/unitIcons";
+import { systemIconImage } from "@/data/systemIcons";
 import { useStrings, fmt } from "@/i18n";
 import { cn } from "@/utils/cn";
 
@@ -56,8 +57,12 @@ export function LessonsScreen() {
         {/* umumiy progress */}
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl" style={{ background: `${sys.color}1f`, color: sys.color }}>
-              <Icon name={sys.icon} className="h-6 w-6" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl" style={{ background: `${sys.color}1f`, color: sys.color }}>
+              {systemIconImage(sys.id) ? (
+                <img src={systemIconImage(sys.id)} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <Icon name={sys.icon} className="h-6 w-6" />
+              )}
             </div>
             <div className="flex-1">
               <div className="flex items-baseline justify-between">

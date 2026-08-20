@@ -7,6 +7,7 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Icon } from "@/components/ui/Icon";
 import { useAppStore } from "@/store/useAppStore";
 import { CONTENT_SYSTEMS, systemProgress } from "@/data/content";
+import { systemIconImage } from "@/data/systemIcons";
 import { useStrings, fmt } from "@/i18n";
 
 export function TopicsScreen() {
@@ -48,10 +49,14 @@ export function TopicsScreen() {
             <Card key={sys.id} onClick={() => openSystem(sys.id)}>
               <div className="flex items-center gap-4 p-4">
                 <div
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
+                  className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl"
                   style={{ background: `${sys.color}1f`, color: sys.color }}
                 >
-                  <Icon name={sys.icon} className="h-7 w-7" />
+                  {systemIconImage(sys.id) ? (
+                    <img src={systemIconImage(sys.id)} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <Icon name={sys.icon} className="h-7 w-7" />
+                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-2">
