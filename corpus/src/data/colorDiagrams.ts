@@ -391,6 +391,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l25_6.jpg", // Sulcus mylohyoideus
     "7": "/img/color/l25_7.jpg", // Angulus mandibulae
     "8": "/img/color/l25_8.jpg", // Tuberositas pterygoidea
+    "9": "/img/color/l25_9.jpg", // Fovea submandibularis
+    "10": "/img/color/l25_10.jpg", // Fossa digastrica
+    "11": "/img/color/l25_11.jpg", // Spina mentalis
+    "12": "/img/color/l25_12.jpg", // Tuberositas masseterica
+    "13": "/img/color/l25_13.jpg", // Ramus mandibulae
+    "14": "/img/color/l25_14.jpg", // Fossa sublingualis
   },
 };
 
