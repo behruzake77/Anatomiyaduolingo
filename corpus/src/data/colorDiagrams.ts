@@ -38,9 +38,12 @@ export const COLOR_NAMES = [
 
 /** Rangli diagrammasi tayyor bo'lgan darslar (bosqichma-bosqich to'ldiriladi). */
 export const COLOR_DIAGRAMS: Record<string, string> = {
+  l1: "/img/color/l1.jpg", // Umurtqa pog'onasi bo'limlari
+  l2: "/img/color/l2.jpg", // Umurtqa, ust tomondan
   l4: "/img/color/l4.jpg", // Tipik bo'yin umurtqasi (C3–C7)
   l5: "/img/color/l5.jpg", // Atlas (C1)
   l6: "/img/color/l6.jpg", // Axis (C2)
+  l7: "/img/color/l4.jpg", // C3–C7 umurtqalar (l4 bilan bir xil rasm)
   l8: "/img/color/l8.jpg", // Ko'krak umurtqasi
   l9: "/img/color/l9.jpg", // Bel umurtqasi
   l10: "/img/color/l10.jpg", // Dumg'aza — old (chanoq) yuzasi
@@ -66,6 +69,31 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
  * ko'rsatilgan, qolgan qismlar xira (kulrang). Kalit: dars → qism raqami → rasm.
  */
 export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
+  l1: {
+    "1": "/img/color/l1_1.jpg", // Bo'yin qismi (Pars cervicalis)
+    "2": "/img/color/l1_2.jpg", // Ko'krak qismi (Pars thoracica)
+    "3": "/img/color/l1_3.jpg", // Bel qismi (Pars lumbalis)
+    "4": "/img/color/l1_4.jpg", // Dumg'aza qismi (Os sacrum)
+    "5": "/img/color/l1_5.jpg", // Dum qismi (Os coccygis)
+  },
+  l2: {
+    "1": "/img/color/l2_1.jpg", // Corpus vertebrae
+    "2": "/img/color/l2_2.jpg", // Fovea costalis superior
+    "3": "/img/color/l2_3.jpg", // Pedunculus arcus vertebrae
+  },
+  l7: {
+    "1": "/img/color/l4_1.jpg", // Corpus vertebrae
+    "2": "/img/color/l4_2.jpg", // Processus transversus
+    "3": "/img/color/l4_3.jpg", // Facies articularis superior
+    "4": "/img/color/l4_4.jpg", // Arcus vertebrae
+    "5": "/img/color/l4_5.jpg", // Processus spinosus
+    "6": "/img/color/l4_6.jpg", // Foramen vertebrale
+    "7": "/img/color/l4_7.jpg", // Processus articularis superior
+    "8": "/img/color/l4_8.jpg", // Tuberculum posterius
+    "9": "/img/color/l4_9.jpg", // Sulcus nervi spinalis
+    "10": "/img/color/l4_10.jpg", // Tuberculum anterius
+    "11": "/img/color/l4_11.jpg", // Foramen transversarium
+  },
   l6: {
     "1": "/img/color/l6_1.jpg", // Apex dentis
     "2": "/img/color/l6_2.jpg", // Dens
