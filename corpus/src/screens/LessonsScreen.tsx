@@ -10,6 +10,7 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Icon } from "@/components/ui/Icon";
 import { useAppStore } from "@/store/useAppStore";
 import { systemById, unitProgress, isLessonUnlocked } from "@/data/content";
+import { unitIconImage } from "@/data/unitIcons";
 import { useStrings, fmt } from "@/i18n";
 import { cn } from "@/utils/cn";
 
@@ -81,8 +82,12 @@ export function LessonsScreen() {
                   onClick={() => setOpen(isOpen ? null : u.id)}
                   className="flex w-full items-center gap-3 p-4 text-left"
                 >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Icon name={u.icon} className="h-5 w-5" />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary/10 text-primary">
+                    {unitIconImage(u.id) ? (
+                      <img src={unitIconImage(u.id)} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <Icon name={u.icon} className="h-5 w-5" />
+                    )}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold leading-tight">{u.title}</p>
