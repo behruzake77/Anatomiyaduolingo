@@ -307,12 +307,22 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l21_6.jpg", // Facies temporalis alae majoris ossis sphenoidalis
     "7": "/img/color/l21_7.jpg", // Facies orbitalis alae majoris ossis sphenoidalis
     "8": "/img/color/l21_8.jpg", // Pars squamosa ossis temporalis
-    "9": "/img/color/l21_9.jpg", // Fissura orbitalis inferior
-    "10": "/img/color/l21_10.jpg", // Foramen zygomaticofaciale
-    "11": "/img/color/l21_11.jpg", // Os zygomaticum
-    "12": "/img/color/l21_12.jpg", // Concha nasalis inferior
-    "13": "/img/color/l21_13.jpg", // Maxilla
-    "14": "/img/color/l21_14.jpg", // Spina nasalis anterior
+    "10": "/img/color/l21_9.jpg", // Fissura orbitalis inferior
+    "11": "/img/color/l21_10.jpg", // Foramen zygomaticofaciale
+    "12": "/img/color/l21_11.jpg", // Os zygomaticum
+    "14": "/img/color/l21_12.jpg", // Concha nasalis inferior
+    "15": "/img/color/l21_13.jpg", // Maxilla
+    "16": "/img/color/l21_14.jpg", // Spina nasalis anterior
+    "17": "/img/color/l21_17.jpg", // Ramus mandibulae
+    "18": "/img/color/l21_18.jpg", // Tuberositas masseterica
+    "19": "/img/color/l21_19.jpg", // Angulus mandibulae
+    "20": "/img/color/l21_20.jpg", // Juga alveolaria
+    "21": "/img/color/l21_21.jpg", // Foramen mentale
+    "22": "/img/color/l21_22.jpg", // Tuberculum mentale
+    "23": "/img/color/l21_23.jpg", // Corpus mandibulae
+    "24": "/img/color/l21_24.jpg", // Vomer
+    "25": "/img/color/l21_25.jpg", // Lamina perpendicularis ossis ethmoidalis
+    "26": "/img/color/l21_26.jpg", // Margo infraorbitalis
   },
 };
 
