@@ -127,6 +127,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l11_5.jpg", // Crista sacralis mediana
     "6": "/img/color/l11_6.jpg", // Hiatus sacralis
     "7": "/img/color/l11_7.jpg", // Cornu sacrale
+    "8": "/img/color/l11_8.jpg", // Cornu coccygeum
+    "9": "/img/color/l11_9.jpg", // Os coccygis
+    "10": "/img/color/l11_10.jpg", // Foramina sacralia posteriora
+    "11": "/img/color/l11_11.jpg", // Crista sacralis lateralis
+    "12": "/img/color/l11_12.jpg", // Facies auricularis
+  },
+  l12: {
+    "1": "/img/color/l12_1.jpg", // Basis ossis sacri
+    "2": "/img/color/l12_2.jpg", // Processus articulares superiores
+    "3": "/img/color/l12_3.jpg", // Pars lateralis
+    "4": "/img/color/l12_4.jpg", // Foramina sacralia anteriora
   },
 };
 
