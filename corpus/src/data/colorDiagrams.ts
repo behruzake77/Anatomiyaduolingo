@@ -149,6 +149,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l13_4.jpg", // Caput costae
     "5": "/img/color/l13_5.jpg", // Facies articularis capitis costae
     "6": "/img/color/l13_6.jpg", // Crista capitis costae
+    "7": "/img/color/l13_7.jpg", // Facies articularis tuberculi costae
+    "8": "/img/color/l13_8.jpg", // Corpus costae
+    "9": "/img/color/l13_9.jpg", // Sulcus costae
+  },
+  l14: {
+    "1": "/img/color/l14_1.jpg", // Incisura clavicularis
+    "2": "/img/color/l14_2.jpg", // Incisura jugularis
+    "3": "/img/color/l14_3.jpg", // Incisura costalis I
+    "4": "/img/color/l14_4.jpg", // Incisura costalis II
+    "5": "/img/color/l14_5.jpg", // Incisura costalis III
+    "6": "/img/color/l14_6.jpg", // Incisura costalis IV
   },
 };
 
