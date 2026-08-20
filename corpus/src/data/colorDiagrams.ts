@@ -57,6 +57,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l21: "/img/color/l21.jpg", // Kalla suyaklari (old tomondan)
   l22: "/img/color/l22.jpg", // Ensa suyagi (os occipitale)
   l23: "/img/color/l23.jpg", // Chakka suyagi (os temporale)
+  l24: "/img/color/l24.jpg", // Ustki jag' suyagi (maxilla)
 };
 
 /**
@@ -357,6 +358,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "11": "/img/color/l23_11.jpg", // Meatus acusticus externus
     "12": "/img/color/l23_12.jpg", // Processus mastoideus
     "13": "/img/color/l23_13.jpg", // Fissura tympanomastoidea
+    "14": "/img/color/l23_14.jpg", // Incisura mastoidea
+    "15": "/img/color/l23_15.jpg", // Foramen mastoideum
+    "16": "/img/color/l23_16.jpg", // Spina suprameatum
+    "17": "/img/color/l23_17.jpg", // Incisura parietalis
+    "18": "/img/color/l23_18.jpg", // Sulcus arteriae temporalis mediae
+  },
+  l24: {
+    "1": "/img/color/l24_1.jpg", // Processus frontalis
+    "2": "/img/color/l24_2.jpg", // Margo infraorbitalis
+    "3": "/img/color/l24_3.jpg", // Incisura nasalis
+    "4": "/img/color/l24_4.jpg", // Canalis infraorbitalis
   },
 };
 
