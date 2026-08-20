@@ -172,6 +172,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "1": "/img/color/l15_1.jpg", // Facies articularis acromialis
     "2": "/img/color/l15_2.jpg", // Facies articularis sternalis
     "3": "/img/color/l15_3.jpg", // Extremitas sternalis
+    "4": "/img/color/l15_4.jpg", // Impressio ligamenti costoclavicularis
+    "5": "/img/color/l15_5.jpg", // Corpus claviculae
+    "6": "/img/color/l15_6.jpg", // Sulcus musculi subclavii
+    "7": "/img/color/l15_7.jpg", // Tuberculum conoideum
+    "8": "/img/color/l15_8.jpg", // Linea trapezoidea
+    "9": "/img/color/l15_9.jpg", // Extremitas acromialis
   },
 };
 
