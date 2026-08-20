@@ -29,10 +29,21 @@ export const UNIT_ICON_IMAGES: Record<string, string> = {
   "ne-2": "/img/icon/ne-2.jpg", // Bosh miya nervlari — batafsil
   // Sezgi a'zolari
   "sk-1": "/img/icon/sk-1.jpg", // Teri, hid va ta'm — batafsil
+  "se-1": "/img/icon/se-1.jpg", // Ko'rish a'zosi — batafsil
   // Jinsiy tizim
   "rp-1": "/img/icon/rp-1.jpg", // Erkak jinsiy a'zolari — batafsil
   // Endokrin bezlar
   "en-1": "/img/icon/en-1.jpg", // Endokrin bezlar — batafsil
+  // Umumiy (intro) bo'limlar
+  u10: "/img/icon/u10.jpg", // Suyaklarning birlashuvi
+  u11: "/img/icon/u11.jpg", // Mushaklar tizimi
+  u12: "/img/icon/u12.jpg", // Hazm tizimi
+  u13: "/img/icon/u13.jpg", // Nafas tizimi
+  u14: "/img/icon/u14.jpg", // Siydik tizimi
+  u15: "/img/icon/u15.jpg", // Jinsiy tizim
+  u16: "/img/icon/u16.jpg", // Endokrin bezlar
+  u17: "/img/icon/u17.jpg", // Yurak va tomirlar
+  u18: "/img/icon/u18.jpg", // Nerv tizimi
 };
 
 /** Bo'lim uchun rasm-ikoncha yo'lini qaytaradi (yo'q bo'lsa undefined). */
