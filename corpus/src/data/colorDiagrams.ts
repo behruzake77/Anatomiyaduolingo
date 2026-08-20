@@ -281,6 +281,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l20_6.jpg", // Os cuneiforme mediale
     "7": "/img/color/l20_7.jpg", // Basis ossis metatarsi I
     "8": "/img/color/l20_8.jpg", // Os metatarsi I
+    "9": "/img/color/l20_9.jpg", // Corpus ossis metatarsi
+    "10": "/img/color/l20_10.jpg", // Caput ossis metatarsi
+    "11": "/img/color/l20_11.jpg", // Phalanx proximalis
+    "12": "/img/color/l20_12.jpg", // Phalanx distalis
+    "13": "/img/color/l20_13.jpg", // Tuberositas phalangis distalis
+    "14": "/img/color/l20_14.jpg", // Phalanx media
+    "15": "/img/color/l20_15.jpg", // Caput phalangis
+    "16": "/img/color/l20_16.jpg", // Corpus phalangis
+    "17": "/img/color/l20_17.jpg", // Basis phalangis
+    "18": "/img/color/l20_18.jpg", // Ossa metatarsi
   },
 };
 
