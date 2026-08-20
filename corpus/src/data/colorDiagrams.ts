@@ -71,6 +71,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l4_6.jpg", // Foramen vertebrale
     "7": "/img/color/l4_7.jpg", // Processus articularis superior
     "8": "/img/color/l4_8.jpg", // Tuberculum posterius
+    "9": "/img/color/l4_9.jpg", // Sulcus nervi spinalis
+    "10": "/img/color/l4_10.jpg", // Tuberculum anterius
+    "11": "/img/color/l4_11.jpg", // Foramen transversarium
+  },
+  l5: {
+    "1": "/img/color/l5_1.jpg", // Tuberculum anterius
+    "2": "/img/color/l5_2.jpg", // Arcus anterior atlantis
+    "3": "/img/color/l5_3.jpg", // Facies articularis superior
+    "4": "/img/color/l5_4.jpg", // Processus transversus
+    "5": "/img/color/l5_5.jpg", // Foramen transversarium
+    "6": "/img/color/l5_6.jpg", // Tuberculum posterius
+    "7": "/img/color/l5_7.jpg", // Arcus posterior atlantis
   },
 };
 
