@@ -56,6 +56,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l20: "/img/color/l20.jpg", // Oyoq panjasi suyaklari
   l21: "/img/color/l21.jpg", // Kalla suyaklari (old tomondan)
   l22: "/img/color/l22.jpg", // Ensa suyagi (os occipitale)
+  l23: "/img/color/l23.jpg", // Chakka suyagi (os temporale)
 };
 
 /**
@@ -335,6 +336,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "2": "/img/color/l22_2.jpg", // Protuberantia occipitalis externa
     "3": "/img/color/l22_3.jpg", // Linea nuchae superior
     "4": "/img/color/l22_4.jpg", // Linea nuchae inferior
+    "5": "/img/color/l22_5.jpg", // Foramen magnum
+    "6": "/img/color/l22_6.jpg", // Condylus occipitalis
+    "7": "/img/color/l22_7.jpg", // Pars basilaris
+    "8": "/img/color/l22_8.jpg", // Tuberculum pharyngeum
+    "9": "/img/color/l22_9.jpg", // Incisura jugularis
+    "10": "/img/color/l22_10.jpg", // Canalis condylaris
+  },
+  l23: {
+    "1": "/img/color/l23_1.jpg", // Margo parietalis
+    "2": "/img/color/l23_2.jpg", // Pars squamosa
+    "3": "/img/color/l23_3.jpg", // Margo sphenoidalis
   },
 };
 
