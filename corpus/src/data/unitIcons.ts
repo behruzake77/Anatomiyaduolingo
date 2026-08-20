@@ -17,6 +17,22 @@ export const UNIT_ICON_IMAGES: Record<string, string> = {
   u9: "/img/icon/u9.jpg", // Kalla — yuz qismi
   // Bo'g'imlar
   "ar-1": "/img/icon/ar-1.jpg", // Bo'g'imlar — batafsil
+  // Mushaklar
+  "my-1": "/img/icon/my-1.jpg", // Mushaklar — batafsil
+  "nh-1": "/img/icon/nh-1.jpg", // Bo'yin mushaklari — batafsil
+  // Tomirlar
+  "ang-1": "/img/icon/ang-1.jpg", // Tomirlar — batafsil
+  "vs-1": "/img/icon/vs-1.jpg", // Arteriyalar — batafsil
+  // Nerv tizimi
+  "px-1": "/img/icon/px-1.jpg", // Nerv chigallari — batafsil
+  "ne-1": "/img/icon/ne-1.jpg", // Markaziy nerv tizimi — batafsil
+  "ne-2": "/img/icon/ne-2.jpg", // Bosh miya nervlari — batafsil
+  // Sezgi a'zolari
+  "sk-1": "/img/icon/sk-1.jpg", // Teri, hid va ta'm — batafsil
+  // Jinsiy tizim
+  "rp-1": "/img/icon/rp-1.jpg", // Erkak jinsiy a'zolari — batafsil
+  // Endokrin bezlar
+  "en-1": "/img/icon/en-1.jpg", // Endokrin bezlar — batafsil
 };
 
 /** Bo'lim uchun rasm-ikoncha yo'lini qaytaradi (yo'q bo'lsa undefined). */
