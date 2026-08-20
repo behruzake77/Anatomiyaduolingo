@@ -43,6 +43,11 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l6: "/img/color/l6.jpg", // Axis (C2)
   l8: "/img/color/l8.jpg", // Ko'krak umurtqasi
   l9: "/img/color/l9.jpg", // Bel umurtqasi
+  l10: "/img/color/l10.jpg", // Dumg'aza — old (chanoq) yuzasi
+  l11: "/img/color/l11.jpg", // Dumg'aza — orqa yuzasi
+  l12: "/img/color/l12.jpg", // Dum suyagi (coccyx)
+  l13: "/img/color/l13.jpg", // Qovurg'a (costa)
+  l14: "/img/color/l14.jpg", // To'sh suyagi (sternum)
 };
 
 /** Legend raqami → rang (palitradan indeks bo'yicha). */
