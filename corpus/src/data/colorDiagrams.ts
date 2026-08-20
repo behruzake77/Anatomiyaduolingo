@@ -55,6 +55,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l19: "/img/color/l19.jpg", // Son suyagi (femur)
   l20: "/img/color/l20.jpg", // Oyoq panjasi suyaklari
   l21: "/img/color/l21.jpg", // Kalla suyaklari (old tomondan)
+  l22: "/img/color/l22.jpg", // Ensa suyagi (os occipitale)
 };
 
 /**
@@ -323,6 +324,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "24": "/img/color/l21_24.jpg", // Vomer
     "25": "/img/color/l21_25.jpg", // Lamina perpendicularis ossis ethmoidalis
     "26": "/img/color/l21_26.jpg", // Margo infraorbitalis
+    "27": "/img/color/l21_27.jpg", // Concha nasalis media
+    "28": "/img/color/l21_28.jpg", // Os lacrimale
+    "29": "/img/color/l21_29.jpg", // Fissura orbitalis superior
+    "30": "/img/color/l21_30.jpg", // Margo supraorbitalis
+    "31": "/img/color/l21_31.jpg", // Incisura supraorbitalis
+  },
+  l22: {
+    "1": "/img/color/l22_1.jpg", // Crista occipitalis externa
+    "2": "/img/color/l22_2.jpg", // Protuberantia occipitalis externa
+    "3": "/img/color/l22_3.jpg", // Linea nuchae superior
+    "4": "/img/color/l22_4.jpg", // Linea nuchae inferior
   },
 };
 
