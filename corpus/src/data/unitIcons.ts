@@ -44,6 +44,11 @@ export const UNIT_ICON_IMAGES: Record<string, string> = {
   u16: "/img/icon/u16.jpg", // Endokrin bezlar
   u17: "/img/icon/u17.jpg", // Yurak va tomirlar
   u18: "/img/icon/u18.jpg", // Nerv tizimi
+  u19: "/img/icon/u19.jpg", // Sezuv a'zolari
+  // Splanxnologiya — batafsil
+  "di-1": "/img/icon/di-1.jpg", // Og'iz bo'shlig'i va tishlar — batafsil
+  "re-1": "/img/icon/re-1.jpg", // Hiqildoq va kekirdak — batafsil
+  "ur-1": "/img/icon/ur-1.jpg", // Buyrak — batafsil
 };
 
 /** Bo'lim uchun rasm-ikoncha yo'lini qaytaradi (yo'q bo'lsa undefined). */
