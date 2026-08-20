@@ -369,6 +369,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "2": "/img/color/l24_2.jpg", // Margo infraorbitalis
     "3": "/img/color/l24_3.jpg", // Incisura nasalis
     "4": "/img/color/l24_4.jpg", // Canalis infraorbitalis
+    "5": "/img/color/l24_5.jpg", // Fossa canina
+    "6": "/img/color/l24_6.jpg", // Spina nasalis anterior
+    "7": "/img/color/l24_7.jpg", // Juga alveolaria
+    "8": "/img/color/l24_8.jpg", // Arcus alveolaris
+    "9": "/img/color/l24_9.jpg", // Foramina alveolaria
+    "10": "/img/color/l24_10.jpg", // Tuber maxillae
+    "11": "/img/color/l24_11.jpg", // Processus zygomaticus
+    "12": "/img/color/l24_12.jpg", // Sulcus infraorbitalis
+    "13": "/img/color/l24_13.jpg", // Facies orbitalis
+    "14": "/img/color/l24_14.jpg", // Sulcus lacrimalis
   },
 };
 
