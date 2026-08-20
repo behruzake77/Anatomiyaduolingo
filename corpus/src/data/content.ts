@@ -16,7 +16,7 @@ import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
 import { IMG_QUESTIONS, VISUAL_SLIDES, LESSON_IMAGES } from "./visuals";
 import { LESSON_LEGENDS } from "./labels";
 import { FIGURE_LESSONS } from "./figureLessons";
-import { COLOR_DIAGRAMS, COLOR_NAMES } from "./colorDiagrams";
+import { COLOR_DIAGRAMS, COLOR_HIGHLIGHTS } from "./colorDiagrams";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -99,21 +99,23 @@ export function partQuestions(lessonId: string): Question[] {
 }
 
 /**
- * Rangli diagramma savollari — yozuvsiz rangli rasmda qismni rang bo'yicha aniqlash.
- * Manba: Ahmedov kitobidagi qismlar; rang faqat vizual yordam (javob yozilmagan).
+ * Rangli diagramma savollari — faqat O'SHA qism bo'yalgan + strelka bilan ko'rsatilgan,
+ * qolgan qismlar xira. Javob variantlarida nomlar.
+ * Manba: Ahmedov kitobidagi qismlar; rang/strelka faqat vizual yordam.
  */
 export function colorQuestions(lessonId: string): Question[] {
-  const img = COLOR_DIAGRAMS[lessonId];
+  const baseImg = COLOR_DIAGRAMS[lessonId];
+  const highlights = COLOR_HIGHLIGHTS[lessonId];
   const legend = LESSON_LEGENDS[lessonId];
-  if (!img || !legend) return [];
+  if (!baseImg || !highlights || !legend) return [];
   const items = legend.filter((it) => /^\d+$/.test(it.n));
   if (items.length < 4) return [];
 
   const names = items.map((i) => i.name);
   const out: Question[] = [];
   items.forEach((item) => {
-    const num = Number(item.n);
-    const colorName = COLOR_NAMES[(num - 1) % COLOR_NAMES.length];
+    const img = highlights[item.n];
+    if (!img) return;
     const others = [...new Set(names.filter((n) => n !== item.name))];
     if (others.length < 3) return;
     const distractors = shuffleArr(others).slice(0, 3);
@@ -121,7 +123,7 @@ export function colorQuestions(lessonId: string): Question[] {
     const answer = options.indexOf(item.name);
     out.push({
       type: "img",
-      prompt: `Rasmda ${colorName} rangda ko'rsatilgan qism qanday ataladi?`,
+      prompt: `Rasmda strelka bilan ko'rsatilgan qism qanday ataladi?`,
       image: img,
       options,
       answer,

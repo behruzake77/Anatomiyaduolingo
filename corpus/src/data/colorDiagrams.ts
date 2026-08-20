@@ -50,6 +50,20 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l14: "/img/color/l14.jpg", // To'sh suyagi (sternum)
 };
 
+/**
+ * Savol uchun alohida rasmlar: faqat O'SHA qism bo'yalgan + strelka bilan
+ * ko'rsatilgan, qolgan qismlar xira (kulrang). Kalit: dars → qism raqami → rasm.
+ */
+export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
+  l6: {
+    "1": "/img/color/l6_1.jpg", // Apex dentis
+    "2": "/img/color/l6_2.jpg", // Dens
+    "3": "/img/color/l6_3.jpg", // Facies articularis superior
+    "4": "/img/color/l6_4.jpg", // Processus spinosus
+    "5": "/img/color/l6_5.jpg", // Corpus vertebrae
+  },
+};
+
 /** Legend raqami → rang (palitradan indeks bo'yicha). */
 export function colorForIndex(index: number): string {
   return COLOR_PALETTE[index % COLOR_PALETTE.length];
