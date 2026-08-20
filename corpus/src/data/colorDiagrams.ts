@@ -83,6 +83,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l5_5.jpg", // Foramen transversarium
     "6": "/img/color/l5_6.jpg", // Tuberculum posterius
     "7": "/img/color/l5_7.jpg", // Arcus posterior atlantis
+    "8": "/img/color/l5_8.jpg", // Massa lateralis atlantis
+    "9": "/img/color/l5_9.jpg", // Fovea dentis
+  },
+  l8: {
+    "1": "/img/color/l8_1.jpg", // Fovea costalis superior
+    "2": "/img/color/l8_2.jpg", // Processus articularis superior
+    "3": "/img/color/l8_3.jpg", // Fovea costalis processus transversi
+    "4": "/img/color/l8_4.jpg", // Processus transversus
+    "5": "/img/color/l8_5.jpg", // Processus articularis inferior
+    "6": "/img/color/l8_6.jpg", // Processus spinosus
+    "7": "/img/color/l8_7.jpg", // Facies articularis inferior
   },
 };
 
