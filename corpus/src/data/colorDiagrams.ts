@@ -58,6 +58,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l22: "/img/color/l22.jpg", // Ensa suyagi (os occipitale)
   l23: "/img/color/l23.jpg", // Chakka suyagi (os temporale)
   l24: "/img/color/l24.jpg", // Ustki jag' suyagi (maxilla)
+  l25: "/img/color/l25.jpg", // Pastki jag' suyagi (mandibula) — ichki tomondan
 };
 
 /**
@@ -379,6 +380,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "12": "/img/color/l24_12.jpg", // Sulcus infraorbitalis
     "13": "/img/color/l24_13.jpg", // Facies orbitalis
     "14": "/img/color/l24_14.jpg", // Sulcus lacrimalis
+    "15": "/img/color/l24_15.jpg", // Crista lacrimalis anterior
+  },
+  l25: {
+    "1": "/img/color/l25_1.jpg", // Processus coronoideus
+    "2": "/img/color/l25_2.jpg", // Incisura mandibulae
+    "3": "/img/color/l25_3.jpg", // Caput mandibulae
+    "4": "/img/color/l25_4.jpg", // Processus condylaris
+    "5": "/img/color/l25_5.jpg", // Foramen mandibulae
+    "6": "/img/color/l25_6.jpg", // Sulcus mylohyoideus
+    "7": "/img/color/l25_7.jpg", // Angulus mandibulae
+    "8": "/img/color/l25_8.jpg", // Tuberositas pterygoidea
   },
 };
 
