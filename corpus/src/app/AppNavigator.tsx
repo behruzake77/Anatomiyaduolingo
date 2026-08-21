@@ -50,7 +50,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
 };
 
 /** Screens that show the bottom navigation bar. */
-const TABS: ScreenId[] = ["dashboard", "topics", "profile", "settings"];
+const TABS: ScreenId[] = ["dashboard", "topics", "library", "profile"];
 
 /** Bo'limlar (darslar ro'yxati) ham pastki menyu bilan — foydalanuvchi bosh menyuga qayta olsin. */
 const NAV_SCREENS: ScreenId[] = [...TABS, "lessons"];
@@ -58,8 +58,8 @@ const NAV_SCREENS: ScreenId[] = [...TABS, "lessons"];
 const TAB_SCREEN: Record<Tab, ScreenId> = {
   home: "dashboard",
   learn: "topics",
+  library: "library",
   profile: "profile",
-  settings: "settings",
 };
 
 export function AppNavigator() {

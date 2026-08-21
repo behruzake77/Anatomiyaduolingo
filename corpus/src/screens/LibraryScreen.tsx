@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, BookMarked, Download, ExternalLink, ChevronRight } from "lucide-react";
+import { BookOpen, BookMarked, Download, ChevronRight } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
@@ -80,20 +80,7 @@ function BookReader({ book, onBack }: { book: Book; onBack: () => void }) {
   const t = useStrings();
   return (
     <Screen padded={false}>
-      <TopBar
-        title={book.title}
-        right={
-          <a
-            href={book.file}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={t.downloadBook}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-surface text-muted"
-          >
-            <ExternalLink className="h-4 w-4" aria-hidden />
-          </a>
-        }
-      />
+      <TopBar title={book.title} />
       <div className="flex flex-col gap-3 px-5 pb-28">
         <div className="flex items-center justify-between text-xs text-muted">
           <span className="italic">{book.latin}</span>

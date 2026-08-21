@@ -35,7 +35,7 @@ export type ScreenId =
   | "bookmarks"
   | "library";
 
-export type Tab = "home" | "learn" | "profile" | "settings";
+export type Tab = "home" | "learn" | "library" | "profile";
 
 export interface Settings {
   darkMode: boolean;
@@ -194,8 +194,8 @@ export const useAppStore = create<AppState>()(
         const screen: Record<Tab, ScreenId> = {
           home: "dashboard",
           learn: "topics",
+          library: "library",
           profile: "profile",
-          settings: "settings",
         };
         set({ tab, screen: screen[tab], history: [] });
       },

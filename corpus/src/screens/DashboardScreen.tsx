@@ -2,21 +2,16 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight } from "lucide-react";
+import { Sun, Zap } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
-import { InstallBanner } from "@/components/InstallBanner";
 import { Avatar } from "@/components/ui/Avatar";
-import { Donut } from "@/components/ui/Donut";
-import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
+import { AdBanner } from "@/components/AdBanner";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
-import { dueCount } from "@/utils/srs";
 import { activityState } from "@/utils/activity";
-import { ReengagementCard } from "@/components/reengage/ReengagementCard";
 import { StreakCelebration } from "@/components/reengage/StreakCelebration";
 import { useNotifications } from "@/hooks/useNotifications";
 import { levelFromXp, levelTier } from "@/utils/levels";
@@ -28,28 +23,16 @@ const WelcomeBackModal = dynamic(
   { ssr: false },
 );
 
-const QUICK_TOPICS = [
-  { id: "bones", labelKey: "bones" as const, icon: "bone", color: "#6C5CE7", img: "/img/sys/skeletal.jpg" },
-  { id: "muscles", labelKey: "muscles" as const, icon: "activity", color: "#FD79A8", img: "/img/sys/muscular.jpg" },
-  { id: "library", labelKey: "library" as const, icon: "book", color: "#00B894", img: "/img/quick/library.jpg" },
-  { id: "nerves", labelKey: "nerves" as const, icon: "brain", color: "#A29BFE", img: "/img/sys/nervous.jpg" },
-];
-
 export function DashboardScreen() {
   const xp = useAppStore((s) => s.xp);
-  const dailyXp = useAppStore((s) => s.dailyXp);
-  const dailyGoal = useAppStore((s) => s.dailyGoal);
   const streak = useAppStore((s) => s.streak);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
-  const srs = useAppStore((s) => s.srs);
   const lastActiveAt = useAppStore((s) => s.lastActiveAt);
   const navigate = useAppStore((s) => s.navigate);
-  const setTab = useAppStore((s) => s.setTab);
   const openLesson = useAppStore((s) => s.openLesson);
   const t = useStrings();
 
-  const reviewDue = dueCount(srs);
   const activity = activityState(streak, lastActiveAt);
   const { notify } = useNotifications();
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
@@ -79,7 +62,6 @@ export function DashboardScreen() {
   };
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
-  const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
   const doneCount = completedLessons.filter((id) => ALL_LESSONS.some((l) => l.id === id)).length;
   const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
   const nextSystem = systemOfLesson(nextLesson.id);
@@ -95,18 +77,6 @@ export function DashboardScreen() {
         </span>
       </header>
 
-      {/* PWA o'rnatish taklifi */}
-      <InstallBanner />
-
-      {/* re-engagement: tutor + xabar + CTA */}
-      <ReengagementCard
-        activity={activity}
-        streak={streak}
-        onContinue={() => openLesson(nextLesson.id)}
-        onChallenge={() => navigate("exam")}
-      />
-      <StreakCelebration streak={streak} />
-
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
         <Avatar name={name} size={44} />
@@ -121,73 +91,10 @@ export function DashboardScreen() {
         </span>
       </header>
 
-      {/* Daily goal */}
-      <Card className="mt-5 flex items-center gap-4 p-4">
-        <Donut value={goalPct} size={92} stroke={11}>
-          <div className="text-center">
-            <p className="text-lg font-bold leading-none">{dailyXp}</p>
-            <p className="text-[10px] text-muted">XP</p>
-          </div>
-        </Donut>
-        <div className="flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted">{t.todayGoal}</p>
-          <p className="mt-1 text-xl font-bold">
-            {dailyXp}
-            <span className="text-sm font-medium text-muted"> / {dailyGoal} XP</span>
-          </p>
-          <ProgressBar value={goalPct} className="mt-2" />
-          <p className="mt-1.5 text-xs text-muted">{fmt(t.goalPercent, { pct: goalPct })}</p>
-        </div>
-      </Card>
+      <StreakCelebration streak={streak} />
 
-      {/* streak + level */}
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <Card className="flex items-center gap-3 p-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-warning/10 text-warning">
-            <Flame className="h-6 w-6" aria-hidden />
-          </div>
-          <div>
-            <p className="text-xl font-bold leading-none">
-              {streak} {t.days}
-            </p>
-            <p className="mt-1 text-xs text-muted">{t.streak}</p>
-          </div>
-        </Card>
-        <Card className="flex items-center gap-3 p-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <TrendingUp className="h-6 w-6" aria-hidden />
-          </div>
-          <div>
-            <p className="text-xl font-bold leading-none">{xp} XP</p>
-            <p className="mt-1 text-xs text-muted">{t.totalEarned}</p>
-          </div>
-        </Card>
-      </div>
-
-      {/* Spaced repetition — xatolarni qaytarish */}
-      <button
-        type="button"
-        onClick={() => navigate("review")}
-        className="mt-5 flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-colors active:bg-surface2"
-      >
-        <div
-          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${reviewDue > 0 ? "bg-accent/15 text-accent" : "bg-primary/10 text-primary"}`}
-        >
-          <RotateCcw className="h-6 w-6" aria-hidden />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold leading-tight">{t.reviewTitle}</p>
-          <p className="mt-0.5 text-xs text-muted">
-            {reviewDue > 0 ? fmt(t.reviewCount, { n: reviewDue }) : t.reviewEmpty}
-          </p>
-        </div>
-        {reviewDue > 0 && (
-          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1.5 text-xs font-bold text-white">
-            {reviewDue}
-          </span>
-        )}
-        <ChevronRight className="h-5 w-5 text-muted" aria-hidden />
-      </button>
+      {/* Reklama banneri */}
+      <AdBanner />
 
       {/* Continue learning */}
       <section className="mt-6">
@@ -218,37 +125,6 @@ export function DashboardScreen() {
             </Button>
           </div>
         </Card>
-      </section>
-
-      {/* Quick topics */}
-      <section className="mt-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">{t.quickTopics}</h2>
-          <button onClick={() => setTab("learn")} className="text-sm font-semibold text-primary">
-            {t.seeAll}
-          </button>
-        </div>
-        <div className="mt-3 grid grid-cols-2 gap-4">
-          {QUICK_TOPICS.map((q) => (
-            <Card
-              key={q.id}
-              onClick={() => (q.id === "library" ? navigate("library") : setTab("learn"))}
-              className="flex items-center gap-3 p-4"
-            >
-              <div
-                className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl"
-                style={{ background: `${q.color}1f`, color: q.color }}
-              >
-                {q.img ? (
-                  <img src={q.img} alt="" className="h-full w-full object-cover" />
-                ) : (
-                  <Icon name={q.icon} className="h-6 w-6" />
-                )}
-              </div>
-              <span className="text-sm font-semibold">{t[q.labelKey]}</span>
-            </Card>
-          ))}
-        </div>
       </section>
 
       {/* comeback modal (lazy) */}

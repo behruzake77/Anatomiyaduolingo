@@ -1,6 +1,6 @@
 "use client";
 
-import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library } from "lucide-react";
+import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { Card } from "@/components/ui/Card";
@@ -23,7 +23,9 @@ export function ProfileScreen() {
   const menu = [
     { id: "exam", label: t.examTitle, icon: GraduationCap, screen: "exam" as const },
     { id: "challenge", label: t.dailyChallenge, icon: Zap, screen: "exam" as const },
+    { id: "review", label: t.reviewTitle, icon: RotateCcw, screen: "review" as const },
     { id: "glossary", label: t.glossaryTitle, icon: Library, screen: "glossary" as const },
+    { id: "models3d", label: t.models3d, icon: Box, screen: "models3d" as const },
     { id: "achievements", label: t.achievements, icon: Trophy, screen: "achievements" as const },
     { id: "bookmarks", label: t.bookmarks, icon: Bookmark, screen: "bookmarks" as const },
     { id: "progress", label: t.progress, icon: TrendingUp, screen: "progress" as const },
