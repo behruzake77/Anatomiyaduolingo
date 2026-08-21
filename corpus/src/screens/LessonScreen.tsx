@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Lightbox } from "@/components/ui/Lightbox";
+import { FlashcardDeck } from "@/components/FlashcardDeck";
 import { QuestionCard } from "@/components/quiz/QuestionCard";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
@@ -33,6 +34,7 @@ export function LessonScreen() {
   const [slideIdx, setSlideIdx] = useState(0);
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
+  const [flashDone, setFlashDone] = useState(false);
 
   if (!lesson || !unit) {
     return (
@@ -44,7 +46,9 @@ export function LessonScreen() {
   }
 
   const slides = lesson.slides ?? [];
-  const inSlides = slideIdx < slides.length;
+  const hasFlash = !!lesson.flashcards && lesson.flashcards.length > 0;
+  const inFlash = hasFlash && !flashDone;
+  const inSlides = !inFlash && slideIdx < slides.length;
   // Savollar oson → o'rta → qiyin tartibida gradatsiyalanadi.
   const questions = useMemo(() => sortByDifficulty(lesson.questions), [lesson]);
   const total = questions.length;
@@ -76,11 +80,13 @@ export function LessonScreen() {
           />
         </div>
         <span className="text-sm font-semibold text-muted">
-          {inSlides ? 0 : idx + 1}/{total}
+          {inFlash ? t.flashTitle : inSlides ? 0 : `${idx + 1}/${total}`}
         </span>
       </header>
 
-      {inSlides ? (
+      {inFlash ? (
+        <FlashcardDeck cards={lesson.flashcards!} onDone={() => setFlashDone(true)} />
+      ) : inSlides ? (
         <SlideView
           lesson={lesson}
           slide={slides[slideIdx]}

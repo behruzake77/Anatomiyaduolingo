@@ -44,6 +44,8 @@ export interface Lesson {
     /** rangli diagramma: qism raqami → faqat shu qism rangli rasm (interaktiv) */
     highlights?: Record<string, string>;
   }[];
+  /** o'rganish fazaси учун флеш-карталар (саволдан олдин) */
+  flashcards?: { n: string; name: string; img: string }[];
 }
 
 export interface SystemUnit {

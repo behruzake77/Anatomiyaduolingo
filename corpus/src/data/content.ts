@@ -210,14 +210,36 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
       let patched: Lesson = lesson;
       const lessonImg = LESSON_IMAGES[lesson.id];
 
-      if (lessonImg) {
+      const colorImg = COLOR_DIAGRAMS[lesson.id];
+      const legend = LESSON_LEGENDS[lesson.id];
+
+      if (colorImg && legend) {
+        // Rangli diagrammali dars — kитоб бети o'rniga FLASH-KARTALAR + rangli diagramma.
+        // Har bir qism = bitta flesh-karta (oldingi tomoni: strelkali rasm, orqasi: nomi).
+        const flashcards = legend
+          .filter((it) => /^\d+$/.test(it.n))
+          .map((it) => ({
+            n: it.n,
+            name: it.name,
+            img: COLOR_HIGHLIGHTS[lesson.id]?.[it.n] ?? colorImg,
+          }));
+
+        const colorSlide = {
+          title: "Rangli diagramma",
+          text: "Rasm ustiga bosing — nomi chiqadi va o'sha qism rangli ko'rinadi.",
+          img: colorImg,
+          legend,
+          highlights: COLOR_HIGHLIGHTS[lesson.id],
+        };
+        patched = { ...patched, slides: [colorSlide], flashcards };
+      } else if (lessonImg) {
         // Kitobdan kesilgan aniq rasm — USTUVOR: birinchi slaydga kitob rasmi + raqamli ro'yxat qo'yiladi.
         const bookSlide = {
           title: lesson.title,
           text: lesson.description,
           img: lessonImg,
           cap: lesson.source ? `${lesson.source.book}, ${lesson.source.page}-bet` : undefined,
-          legend: LESSON_LEGENDS[lesson.id],
+          legend,
         };
         if (!patched.slides || patched.slides.length === 0) {
           patched = { ...patched, slides: [bookSlide] };
@@ -238,19 +260,6 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
             },
           ],
         };
-      }
-
-      // Rangli diagramma — qismlarni rang bilan ajratib ko'rsatish (o'rganish uchun).
-      const colorImg = COLOR_DIAGRAMS[lesson.id];
-      if (colorImg) {
-        const colorSlide = {
-          title: "Rangli diagramma",
-          text: "Ro'yxatdagi qismni bosing — rasmda faqat o'sha qism rangli ko'rinadi.",
-          img: colorImg,
-          legend: LESSON_LEGENDS[lesson.id],
-          highlights: COLOR_HIGHLIGHTS[lesson.id],
-        };
-        patched = { ...patched, slides: [...(patched.slides ?? []), colorSlide] };
       }
 
       // rasmli savollar — tizimning birinchi darsiga
