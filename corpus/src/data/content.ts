@@ -245,9 +245,10 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
       if (colorImg) {
         const colorSlide = {
           title: "Rangli diagramma",
-          text: "Qismlar rang bilan ajratilgan — ro'yxatdagi rangga qarang.",
+          text: "Ro'yxatdagi qismni bosing — rasmda faqat o'sha qism rangli ko'rinadi.",
           img: colorImg,
           legend: LESSON_LEGENDS[lesson.id],
+          highlights: COLOR_HIGHLIGHTS[lesson.id],
         };
         patched = { ...patched, slides: [...(patched.slides ?? []), colorSlide] };
       }

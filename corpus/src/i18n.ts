@@ -87,7 +87,7 @@ export const STR: Record<Lang, Strings> = {
     imageParts: "Rasm qismlari (raqamlar)",
     tapToFind: "qismni bossangiz, rasmda topishga yordam beradi",
     colorLegend: "Rangli qismlar",
-    colorLegendHint: "har bir qism rang bilan ajratilgan",
+    colorLegendHint: "qismni bosing — rasmda faqat o'sha qism rangli bo'ladi",
     findPart: "№{n} — {name} ni rasmda toping",
     legendList: "Ro'yxat",
 
@@ -305,7 +305,7 @@ export const STR: Record<Lang, Strings> = {
     imageParts: "Labeled parts",
     tapToFind: "tap a part to locate it on the image",
     colorLegend: "Color-coded parts",
-    colorLegendHint: "each part is highlighted in a distinct color",
+    colorLegendHint: "tap a part — only that part is colored",
     findPart: "Find №{n} — {name} on the image",
     legendList: "List",
 

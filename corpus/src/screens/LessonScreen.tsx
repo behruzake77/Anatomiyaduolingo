@@ -12,6 +12,7 @@ import { lessonById, unitOfLesson, sortByDifficulty, type Lesson } from "@/data/
 import { colorForLegendN } from "@/data/colorDiagrams";
 import { questionKey } from "@/utils/srs";
 import { useStrings } from "@/i18n";
+import { cn } from "@/utils/cn";
 
 /**
  * Dars ekrani: kirish slaydlari → savollar (8 tur) → natija.
@@ -113,7 +114,14 @@ export function LessonScreen() {
 /* ---------- Slayd (kirish) ---------- */
 function SlideView(props: {
   lesson: Lesson;
-  slide: { title: string; text: string; img?: string; cap?: string; legend?: { n: string; name: string }[] };
+  slide: {
+    title: string;
+    text: string;
+    img?: string;
+    cap?: string;
+    legend?: { n: string; name: string }[];
+    highlights?: Record<string, string>;
+  };
   slideNo: number;
   slideTotal: number;
   onNext: () => void;
@@ -124,10 +132,23 @@ function SlideView(props: {
   const isLast = slideNo >= slideTotal;
   const [zoom, setZoom] = useState(false);
   const [find, setFind] = useState<string | null>(null);
-  // Rangli diagramma slaydi — legend qatorlari rangli bo'ladi.
+  const [selected, setSelected] = useState<string | null>(null);
+  // Rangli diagramma slaydi — legend qatorlari rangli bo'ladi va bosilgan qism ajratib ko'rsatiladi.
   const isColor = (slide.img ?? "").startsWith("/img/color/");
 
-  const findName = find ? (slide.legend?.find((l) => l.n === find)?.name ?? find) : null;
+  // Tanlangan qism bo'lsa — faqat o'sha qism rangli rasm, aks holda to'liq rangli diagramma.
+  const displayImg = selected && slide.highlights?.[selected] ? slide.highlights[selected] : slide.img;
+  const activeN = isColor ? selected : find;
+  const activeName = activeN ? (slide.legend?.find((l) => l.n === activeN)?.name ?? null) : null;
+
+  const onLegendTap = (n: string) => {
+    if (isColor) {
+      setSelected((cur) => (cur === n ? null : n)); // qayta bossa — to'liq rasmga qaytadi
+    } else {
+      setFind(n);
+      setZoom(true);
+    }
+  };
 
   return (
     <div className="flex flex-1 flex-col">
@@ -136,7 +157,7 @@ function SlideView(props: {
         <h1 className="mt-2 text-2xl font-semibold leading-snug">{slide.title}</h1>
       </div>
 
-      {slide.img && (
+      {displayImg && (
         <button
           type="button"
           onClick={() => setZoom(true)}
@@ -144,11 +165,29 @@ function SlideView(props: {
           className="group relative mt-4 block w-full overflow-hidden rounded-2xl border border-line bg-white shadow-card"
         >
           <span className="relative mx-auto block w-fit max-w-full">
-            <img src={slide.img} alt={slide.title} className="max-h-56 max-w-full object-contain" />
+            <img src={displayImg} alt={slide.title} className="max-h-56 max-w-full object-contain" />
             <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors group-hover:bg-primary">
               <ZoomIn className="h-4 w-4" aria-hidden />
             </span>
           </span>
+        </button>
+      )}
+
+      {/* tanlangan qism belgisi */}
+      {isColor && selected && (
+        <button
+          type="button"
+          onClick={() => setSelected(null)}
+          className="mt-2 inline-flex items-center gap-2 self-start rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary"
+        >
+          <span
+            className="flex h-4 min-w-4 items-center justify-center rounded px-1 text-[10px] font-bold text-white"
+            style={{ background: colorForLegendN(selected) ?? "#6C5CE7" }}
+          >
+            {selected}
+          </span>
+          {activeName}
+          <X className="h-3.5 w-3.5" aria-hidden />
         </button>
       )}
 
@@ -161,15 +200,16 @@ function SlideView(props: {
           <ul className="grid max-h-52 grid-cols-1 gap-1 overflow-y-auto pr-1">
             {slide.legend.map((it, i) => {
               const color = isColor ? colorForLegendN(it.n) : null;
+              const isSelected = isColor && selected === it.n;
               return (
                 <li key={i}>
                   <button
                     type="button"
-                    onClick={() => {
-                      setFind(it.n);
-                      setZoom(true);
-                    }}
-                    className="flex w-full items-start gap-2 rounded-lg px-1 py-0.5 text-left text-[13px] leading-snug transition-colors hover:bg-primary/10"
+                    onClick={() => onLegendTap(it.n)}
+                    className={cn(
+                      "flex w-full items-start gap-2 rounded-lg px-1 py-0.5 text-left text-[13px] leading-snug transition-colors hover:bg-primary/10",
+                      isSelected && "bg-primary/15 ring-1 ring-primary",
+                    )}
                   >
                     {color ? (
                       <span
@@ -192,16 +232,16 @@ function SlideView(props: {
         </div>
       )}
 
-      {zoom && slide.img && (
+      {zoom && displayImg && (
         <Lightbox
-          src={slide.img}
+          src={displayImg}
           alt={slide.title}
           onClose={() => {
             setZoom(false);
             setFind(null);
           }}
           labels={{ close: t.zoomClose, zoomIn: t.zoomIn, zoomOut: t.zoomOut, reset: t.zoomReset, list: t.legendList }}
-          banner={findName ? t.findPart.replace("{n}", find ?? "").replace("{name}", findName) : undefined}
+          banner={activeName ? t.findPart.replace("{n}", activeN ?? "").replace("{name}", activeName) : undefined}
           legend={slide.legend}
         />
       )}
