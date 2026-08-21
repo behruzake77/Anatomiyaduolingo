@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera } from "lucide-react";
+import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { AvatarPicker } from "@/components/AvatarPicker";
@@ -10,7 +10,7 @@ import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY } from "@/i18n";
 
-type MenuAction = { screen?: "exam" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings"; info?: "about" };
+type MenuAction = { screen?: "premium" | "exam" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings"; info?: "about" };
 
 export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
@@ -18,6 +18,7 @@ export function ProfileScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons.length);
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
+  const isPremium = useAppStore((s) => s.isPremium);
   const navigate = useAppStore((s) => s.navigate);
   const openInfo = useAppStore((s) => s.openInfo);
   const t = useStrings();
@@ -28,6 +29,7 @@ export function ProfileScreen() {
   const name = currentUser ?? t.name;
 
   const menu: { id: string; label: string; icon: typeof Trophy; action: MenuAction }[] = [
+    { id: "premium", label: t.premium, icon: Crown, action: { screen: "premium" } },
     { id: "exam", label: t.examTitle, icon: GraduationCap, action: { screen: "exam" } },
     { id: "challenge", label: t.dailyChallenge, icon: Zap, action: { screen: "exam" } },
     { id: "review", label: t.reviewTitle, icon: RotateCcw, action: { screen: "review" } },
@@ -60,7 +62,14 @@ export function ProfileScreen() {
           </span>
         </button>
         <div className="w-full min-w-0">
-          <h1 className="break-words text-2xl font-semibold leading-tight">{name}</h1>
+          <h1 className="flex items-center justify-center gap-2 break-words text-2xl font-semibold leading-tight">
+            {name}
+            {isPremium && (
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-2 py-0.5 text-[11px] font-bold text-[#1a1230]">
+                <Crown className="h-3 w-3" aria-hidden /> PRO
+              </span>
+            )}
+          </h1>
           <p className="mt-0.5 text-sm text-muted">
             {t.level} {level} • {tier}
           </p>

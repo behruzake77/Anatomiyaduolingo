@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Sun, Zap } from "lucide-react";
+import { Sun, Zap, Crown } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
@@ -29,6 +29,7 @@ export function DashboardScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
+  const isPremium = useAppStore((s) => s.isPremium);
   const lastActiveAt = useAppStore((s) => s.lastActiveAt);
   const navigate = useAppStore((s) => s.navigate);
   const openLesson = useAppStore((s) => s.openLesson);
@@ -76,6 +77,11 @@ export function DashboardScreen() {
         <span className="text-lg font-bold tracking-tight">
           {t.brand}
         </span>
+        {isPremium && (
+          <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-2.5 py-1 text-[11px] font-bold text-[#1a1230]">
+            <Crown className="h-3 w-3" aria-hidden /> PRO
+          </span>
+        )}
       </header>
 
       {/* greeting */}
@@ -94,8 +100,8 @@ export function DashboardScreen() {
 
       <StreakCelebration streak={streak} />
 
-      {/* Reklama banneri */}
-      <AdBanner />
+      {/* Reklama banneri — faqat bepul foydalanuvchilarga */}
+      {!isPremium && <AdBanner />}
 
       {/* Continue learning */}
       <section className="mt-6">

@@ -8,10 +8,12 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Megaphone, ChevronRight } from "lucide-react";
+import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 
 export function AdBanner() {
   const t = useStrings();
+  const navigate = useAppStore((s) => s.navigate);
 
   const slides = [
     { icon: "🚀", title: t.adTitle, text: t.adText },
@@ -64,13 +66,14 @@ export function AdBanner() {
           </AnimatePresence>
         </div>
 
-        <motion.span
+        <motion.button
+          onClick={() => navigate("premium")}
           className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-white shadow-soft"
           animate={{ scale: [1, 1.06, 1] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
         >
           {t.adCta} <ChevronRight className="h-3.5 w-3.5" aria-hidden />
-        </motion.span>
+        </motion.button>
       </div>
 
       {/* nuqta indikatorlar */}

@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { evaluateAchievements } from "@/utils/achievements";
 import { reviewCard, SRS_MASTERED_BOX, type SRSCard } from "@/utils/srs";
+import { isValidPremiumCode } from "@/data/premium";
 import {
   getCurrent,
   register as authRegister,
@@ -34,7 +35,8 @@ export type ScreenId =
   | "exam"
   | "bookmarks"
   | "library"
-  | "info";
+  | "info"
+  | "premium";
 
 export type Tab = "home" | "learn" | "library" | "profile";
 
@@ -81,6 +83,7 @@ const freshProgress = {
     language: "uz",
   } as Settings,
   avatar: null as string | null,
+  isPremium: false,
 };
 
 interface AppState {
@@ -127,6 +130,11 @@ interface AppState {
   setAvatar: (dataUrl: string | null) => void;
   infoSection: InfoSection;
   openInfo: (section: InfoSection) => void;
+
+  // premium
+  isPremium: boolean;
+  activatePremium: (code: string) => boolean;
+  deactivatePremium: () => void;
 
   // actions
   finishOnboarding: () => void;
@@ -261,6 +269,14 @@ export const useAppStore = create<AppState>()(
         get().navigate("info");
       },
 
+      isPremium: false,
+      activatePremium: (code) => {
+        if (!isValidPremiumCode(code)) return false;
+        set({ isPremium: true });
+        return true;
+      },
+      deactivatePremium: () => set({ isPremium: false }),
+
       finishOnboarding: () => set({ onboardingDone: true }),
 
       activeLessonId: null,
@@ -357,7 +373,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "corpus-storage",
-      version: 5,
+      version: 6,
       migrate: (persisted, version) => {
         const p = (persisted ?? {}) as Partial<AppState> & {
           srs?: Record<string, SRSCard>;
@@ -365,8 +381,9 @@ export const useAppStore = create<AppState>()(
           lastActiveDay?: string;
           lastActiveAt?: number;
           avatar?: string | null;
+          isPremium?: boolean;
         };
-        // v1..v5: yangi maydonlar (SRS, bookmarks, lastActive, avatar) qo'shiladi — progress saqlanadi.
+        // v1..v6: yangi maydonlar (SRS, bookmarks, lastActive, avatar, isPremium) qo'shiladi — progress saqlanadi.
         return {
           ...p,
           srs: p.srs ?? {},
@@ -374,6 +391,7 @@ export const useAppStore = create<AppState>()(
           lastActiveDay: p.lastActiveDay ?? "",
           lastActiveAt: p.lastActiveAt ?? 0,
           avatar: p.avatar ?? null,
+          isPremium: p.isPremium ?? false,
         };
       },
       storage: createJSONStorage(() => rawStorage),
@@ -395,6 +413,7 @@ export const useAppStore = create<AppState>()(
         lastActiveAt: s.lastActiveAt,
         settings: s.settings,
         avatar: s.avatar,
+        isPremium: s.isPremium,
       }),
     },
   ),
