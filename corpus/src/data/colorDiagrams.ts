@@ -63,6 +63,8 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l23: "/img/color/l23.jpg", // Chakka suyagi (os temporale)
   l24: "/img/color/l24.jpg", // Ustki jag' suyagi (maxilla)
   l25: "/img/color/l25.jpg", // Pastki jag' suyagi (mandibula) — ichki tomondan
+  l26: "/img/color/l26.jpg", // Bo'g'im tuzilishi (kesma)
+  l27: "/img/color/l27.jpg", // Yelka bo'g'imi
 };
 
 /**
@@ -447,6 +449,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "12": "/img/color/l25_12.jpg", // Tuberositas masseterica
     "13": "/img/color/l25_13.jpg", // Ramus mandibulae
     "14": "/img/color/l25_14.jpg", // Fossa sublingualis
+  },
+  l26: {
+    "1": "/img/color/l26_1.jpg", // Membrana synovialis
+    "2": "/img/color/l26_2.jpg", // Fissura articularis
+    "3": "/img/color/l26_3.jpg", // Cavum articulare
+    "4": "/img/color/l26_4.jpg", // Os
+    "5": "/img/color/l26_5.jpg", // Cartilago articularis
+    "6": "/img/color/l26_6.jpg", // Periosteum
+  },
+  l27: {
+    "1": "/img/color/l27_1.jpg", // Labrum glenoidale
+    "2": "/img/color/l27_2.jpg", // Processus coracoideus
   },
 };
 
