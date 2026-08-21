@@ -68,6 +68,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l48: "/img/color/l48.jpg", // Tirsak bo'g'imi
   l49: "/img/color/l49.jpg", // Tizza bo'g'imi
   l50: "/img/color/l50.jpg", // Oyoq panjasi bo'g'imlari
+  l31: "/img/color/l31.jpg", // Hazm tizimi (umumiy)
 };
 
 /**
@@ -506,6 +507,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "2": "/img/color/l50_2.jpg", // Articulatio talocruralis
     "3": "/img/color/l50_3.jpg", // Lig. mediale
     "4": "/img/color/l50_4.jpg", // Lig. talonaviculare
+  },
+  l31: {
+    "1": "/img/color/l31_1.jpg", // Glandula parotis
+    "2": "/img/color/l31_2.jpg", // Lingua
+    "3": "/img/color/l31_3.jpg", // Esophagus
+    "4": "/img/color/l31_4.jpg", // Gaster
+    "5": "/img/color/l31_5.jpg", // Pancreas
+    "6": "/img/color/l31_6.jpg", // Jejunum
+    "7": "/img/color/l31_7.jpg", // Colon transversum
+    "8": "/img/color/l31_8.jpg", // Colon descendens
+    "9": "/img/color/l31_9.jpg", // Colon sigmoideum
   },
 };
 
