@@ -32,7 +32,8 @@ export type ScreenId =
   | "models3d"
   | "glossary"
   | "exam"
-  | "bookmarks";
+  | "bookmarks"
+  | "library";
 
 export type Tab = "home" | "learn" | "profile" | "settings";
 

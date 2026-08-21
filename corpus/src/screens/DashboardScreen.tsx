@@ -32,7 +32,7 @@ const WelcomeBackModal = dynamic(
 const QUICK_TOPICS = [
   { id: "bones", labelKey: "bones" as const, icon: "bone", color: "#6C5CE7", img: "/img/sys/skeletal.jpg" },
   { id: "muscles", labelKey: "muscles" as const, icon: "activity", color: "#FD79A8", img: "/img/sys/muscular.jpg" },
-  { id: "organs", labelKey: "organs" as const, icon: "apple", color: "#00B894", img: "/img/quick/organs.jpg" },
+  { id: "library", labelKey: "library" as const, icon: "book", color: "#00B894", img: "/img/quick/library.jpg" },
   { id: "nerves", labelKey: "nerves" as const, icon: "brain", color: "#A29BFE", img: "/img/sys/nervous.jpg" },
 ];
 
@@ -266,7 +266,7 @@ export function DashboardScreen() {
           {QUICK_TOPICS.map((q) => (
             <Card
               key={q.id}
-              onClick={() => (q.id === "organs" ? navigate("study") : setTab("learn"))}
+              onClick={() => (q.id === "library" ? navigate("library") : setTab("learn"))}
               className="flex items-center gap-3 p-4"
             >
               <div
