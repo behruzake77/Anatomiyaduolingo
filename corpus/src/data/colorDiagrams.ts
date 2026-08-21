@@ -478,12 +478,22 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l48_6.jpg", // Circumferentia articularis
     "7": "/img/color/l48_7.jpg", // Lig. anulare radii
     "8": "/img/color/l48_8.jpg", // Lig. collaterale radiale
+    "9": "/img/color/l48_9.jpg", // Epicondylus lateralis
     "10": "/img/color/l48_10.jpg", // Humerus
   },
   l49: {
     "1": "/img/color/l49_1.jpg", // Facies patellaris
     "2": "/img/color/l49_2.jpg", // Condylus medialis
     "3": "/img/color/l49_3.jpg", // Lig. cruciatum posterius
+    "4": "/img/color/l49_4.jpg", // Lig. meniscofemorale anterius
+    "5": "/img/color/l49_5.jpg", // Meniscus medialis
+    "6": "/img/color/l49_6.jpg", // Lig. collaterale tibiale
+    "7": "/img/color/l49_7.jpg", // Lig. patellae
+    "8": "/img/color/l49_8.jpg", // Facies articularis patellae
+    "9": "/img/color/l49_9.jpg", // Membrana interossea cruris
+    "10": "/img/color/l49_10.jpg", // Caput fibulae
+    "11": "/img/color/l49_11.jpg", // Lig. capitis fibulae
+    "12": "/img/color/l49_12.jpg", // Meniscus lateralis
   },
 };
 
