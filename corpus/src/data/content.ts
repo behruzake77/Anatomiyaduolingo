@@ -228,7 +228,7 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
 
         const colorSlide = {
           title: "Rangli diagramma",
-          text: "Rasm ustiga bosing — nomi chiqadi va o'sha qism rangli ko'rinadi.",
+          text: "Qismlar raqamlangan — pastdagi ro'yxatdan nomini toping yoki rasmga bosing.",
           img: colorImg,
           legend,
           highlights: COLOR_HIGHLIGHTS[lesson.id],

@@ -137,8 +137,8 @@ export const STR: Record<Lang, Strings> = {
     zoomReset: "Asliga qaytarish",
     imageParts: "Rasm qismlari (raqamlar)",
     tapToFind: "qismni bossangiz, rasmda topishga yordam beradi",
-    colorLegend: "Rangli qismlar",
-    colorLegendHint: "rasm ustiga bosing — nomi chiqadi va o'sha qism rangli bo'ladi",
+    colorLegend: "Raqamlangan qismlar",
+    colorLegendHint: "rasmdagi raqam — pastdagi ro'yxatda o'sha nom",
     findPart: "№{n} — {name} ni rasmda toping",
     legendList: "Ro'yxat",
 
@@ -406,8 +406,8 @@ export const STR: Record<Lang, Strings> = {
     zoomReset: "Reset",
     imageParts: "Labeled parts",
     tapToFind: "tap a part to locate it on the image",
-    colorLegend: "Color-coded parts",
-    colorLegendHint: "tap the image — the name appears and that part is highlighted",
+    colorLegend: "Numbered parts",
+    colorLegendHint: "the number in the image matches the list below",
     findPart: "Find №{n} — {name} on the image",
     legendList: "List",
 
