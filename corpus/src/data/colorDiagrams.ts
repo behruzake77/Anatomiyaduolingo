@@ -67,6 +67,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l27: "/img/color/l27.jpg", // Yelka bo'g'imi
   l48: "/img/color/l48.jpg", // Tirsak bo'g'imi
   l49: "/img/color/l49.jpg", // Tizza bo'g'imi
+  l50: "/img/color/l50.jpg", // Oyoq panjasi bo'g'imlari
 };
 
 /**
@@ -494,6 +495,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "10": "/img/color/l49_10.jpg", // Caput fibulae
     "11": "/img/color/l49_11.jpg", // Lig. capitis fibulae
     "12": "/img/color/l49_12.jpg", // Meniscus lateralis
+    "13": "/img/color/l49_13.jpg", // Tendo m. bicipitis femoris
+    "14": "/img/color/l49_14.jpg", // Lig. collaterale fibulare
+    "15": "/img/color/l49_15.jpg", // Condylus lateralis
+    "16": "/img/color/l49_16.jpg", // Lig. transversum genus
+    "17": "/img/color/l49_17.jpg", // Lig. cruciatum anterius
+  },
+  l50: {
+    "1": "/img/color/l50_1.jpg", // Tibia
+    "2": "/img/color/l50_2.jpg", // Articulatio talocruralis
+    "3": "/img/color/l50_3.jpg", // Lig. mediale
+    "4": "/img/color/l50_4.jpg", // Lig. talonaviculare
   },
 };
 
