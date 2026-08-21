@@ -10,6 +10,13 @@ interface LegendItem {
   name: string;
 }
 
+interface Marker {
+  n: string;
+  name: string;
+  x: number; // natural koordinata (0..1)
+  y: number;
+}
+
 /** HEX rangni RGB ga aylantiradi. */
 function hexToRgb(hex: string): [number, number, number] {
   const h = hex.replace("#", "");
@@ -18,15 +25,12 @@ function hexToRgb(hex: string): [number, number, number] {
 
 const PALETTE_RGB = COLOR_PALETTE.map(hexToRgb);
 
-/** Pikselni eng yaqin palitra rangiga solishtiradi (indeks qaytaradi, mos bo'lmasa -1). */
+/** Pikselni eng yaqin palitra rangiga solishtiradi (indeks, mos bo'lmasa -1). */
 function nearestPaletteIndex(r: number, g: number, b: number): number {
-  // Oq fon (juda ochiq) — qism emas.
   if (r > 235 && g > 235 && b > 235) return -1;
-  // Kulrang/kuchsiz rang — qism emas.
   const mx = Math.max(r, g, b);
   const mn = Math.min(r, g, b);
   if (mx - mn < 28) return -1;
-
   let best = -1;
   let bestDist = Infinity;
   for (let i = 0; i < PALETTE_RGB.length; i++) {
@@ -37,43 +41,125 @@ function nearestPaletteIndex(r: number, g: number, b: number): number {
       best = i;
     }
   }
-  // Tolerantlik chegarasi — juda uzoq bo'lsa qism emas.
   return bestDist <= 110 ** 2 ? best : -1;
 }
 
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+/** Highlight rasmidan rangli (bo'yalgan) qismning og'irlik markazini topadi. */
+function coloredCentroid(img: HTMLImageElement): { x: number; y: number } | null {
+  const w = img.naturalWidth;
+  const h = img.naturalHeight;
+  if (!w || !h) return null;
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.drawImage(img, 0, 0);
+  let data: ImageData;
+  try {
+    data = ctx.getImageData(0, 0, w, h);
+  } catch {
+    return null;
+  }
+  const px = data.data;
+  let sx = 0;
+  let sy = 0;
+  let count = 0;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      const r = px[i];
+      const g = px[i + 1];
+      const b = px[i + 2];
+      const mx = Math.max(r, g, b);
+      const mn = Math.min(r, g, b);
+      // rangli (kulrang emas) va oq fon emas
+      if (mx - mn < 30) continue;
+      if (r > 240 && g > 240 && b > 240) continue;
+      sx += x;
+      sy += y;
+      count++;
+    }
+  }
+  if (count < 30) return null;
+  return { x: sx / count / w, y: sy / count / h };
+}
+
 /**
- * Interaktiv diagramma — rasmdagi qism ustiga bosilganda nomini ko'rsatadi.
- * Rasm har bir qism alohida rangda bo'yalgan bo'lishi kerak (rangli diagramma).
- * Piksel rangi → palitra → legend qismi aniqlanadi.
+ * Interaktiv diagramma — qismlarga RAQAM qo'yadi (ilova o'zi chizadi),
+ * bosilganda nomini ko'rsatadi va faqat o'sha qismni rangli qiladi.
  */
 export function InteractiveDiagram(props: {
   baseSrc: string;
   displaySrc: string;
   legend: LegendItem[];
+  highlights?: Record<string, string>;
   onPartTap: (n: string) => void;
   onZoom: () => void;
 }) {
-  const { baseSrc, displaySrc, legend, onPartTap, onZoom } = props;
+  const { baseSrc, displaySrc, legend, highlights, onPartTap, onZoom } = props;
 
   const imgRef = useRef<HTMLImageElement>(null);
   const offRef = useRef<HTMLCanvasElement | null>(null);
   const [label, setLabel] = useState<{ x: number; y: number; items: LegendItem[] } | null>(null);
+  const [markers, setMarkers] = useState<Marker[]>([]);
+  const [selected, setSelected] = useState(false);
   const labelTimer = useRef<number | null>(null);
 
-  // Asosiy (barcha qism rangli) rasmni yashirin canvasga chizamiz — piksel o'qish uchun.
+  // Asosiy rasmni yashirin canvasga (piksel o'qish uchun) + raqam markerlarini hisoblash.
   useEffect(() => {
-    const img = new Image();
-    img.src = baseSrc;
-    img.onload = () => {
-      const c = document.createElement("canvas");
-      c.width = img.naturalWidth;
-      c.height = img.naturalHeight;
-      const ctx = c.getContext("2d");
-      if (!ctx) return;
-      ctx.drawImage(img, 0, 0);
-      offRef.current = c;
+    let alive = true;
+    (async () => {
+      try {
+        const base = await loadImage(baseSrc);
+        if (!alive) return;
+        const c = document.createElement("canvas");
+        c.width = base.naturalWidth;
+        c.height = base.naturalHeight;
+        const ctx = c.getContext("2d", { willReadFrequently: true });
+        if (ctx) {
+          ctx.drawImage(base, 0, 0);
+          offRef.current = c;
+        }
+
+        // Har bir qismning joyini highlight rasmidan topamiz.
+        if (highlights) {
+          const ms: Marker[] = [];
+          for (const it of legend) {
+            const src = highlights[it.n];
+            if (!src) continue;
+            try {
+              const hi = await loadImage(src);
+              const ctr = coloredCentroid(hi);
+              if (ctr) ms.push({ n: it.n, name: it.name, x: ctr.x, y: ctr.y });
+            } catch {
+              /* no-op */
+            }
+          }
+          if (alive) setMarkers(ms);
+        }
+      } catch {
+        /* no-op */
+      }
+    })();
+    return () => {
+      alive = false;
     };
-  }, [baseSrc]);
+  }, [baseSrc, highlights, legend]);
+
+  useEffect(() => {
+    setSelected(displaySrc !== baseSrc);
+  }, [displaySrc, baseSrc]);
 
   const showLabel = (x: number, y: number, items: LegendItem[]) => {
     setLabel({ x, y, items });
@@ -85,20 +171,15 @@ export function InteractiveDiagram(props: {
     const img = imgRef.current;
     const off = offRef.current;
     if (!img || !off) return;
-
     const rect = img.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
-
-    // Ko'rsatilgan o'lchamdan tabiiy (canvas) pikselga o'tkazish.
     const sx = (e.clientX - rect.left) * (off.width / rect.width);
     const sy = (e.clientY - rect.top) * (off.height / rect.height);
     const ctx = off.getContext("2d");
     if (!ctx) return;
-
     const x = Math.max(0, Math.min(off.width - 1, Math.round(sx)));
     const y = Math.max(0, Math.min(off.height - 1, Math.round(sy)));
 
-    // 3×3 maydon o'rtachasi (shovqinni kamaytiradi).
     let bestIdx = -1;
     let bestScore = 0;
     const scores = new Map<number, number>();
@@ -119,19 +200,14 @@ export function InteractiveDiagram(props: {
         }
       }
     }
-
     if (bestIdx < 0) return;
 
-    // Palitra indeksi → legend qatorlari (rang 12 tadan takrorlanadi).
     const items = legend.filter((_, i) => i % 12 === bestIdx);
     if (items.length === 0) return;
 
-    // Yorliqni bosilgan joyda ko'rsatish (ekran koordinatasi).
     const relX = e.clientX - rect.left;
     const relY = e.clientY - rect.top;
     showLabel(relX, relY, items);
-
-    // Asosiy qismga o'tish (faqat o'sha qism rangli bo'ladi).
     onPartTap(items[0].n);
   };
 
@@ -147,16 +223,28 @@ export function InteractiveDiagram(props: {
         style={{ touchAction: "manipulation" }}
       />
 
-      {/* kattalashtirish tugmasi */}
+      {/* Raqam markerlari — faqat asos diagrammada */}
+      {!selected &&
+        markers.map((m) => (
+          <div
+            key={m.n}
+            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }}
+          >
+            <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-primary px-1 text-[12px] font-bold text-white shadow-soft ring-2 ring-white">
+              {m.n}
+            </span>
+          </div>
+        ))}
+
       <button
         onClick={onZoom}
         aria-label="zoom"
-        className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm"
+        className="absolute right-2 top-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm"
       >
         <ZoomIn className="h-4 w-4" aria-hidden />
       </button>
 
-      {/* chiqadigan nom yorlig'i */}
       <AnimatePresence>
         {label && (
           <motion.div
@@ -164,9 +252,9 @@ export function InteractiveDiagram(props: {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.95 }}
             transition={{ duration: 0.18 }}
-            className="pointer-events-none absolute z-10 max-w-[70%] rounded-xl bg-black/85 px-3 py-2 text-white shadow-pop"
+            className="pointer-events-none absolute z-30 max-w-[70%] rounded-xl bg-black/85 px-3 py-2 text-white shadow-pop"
             style={{
-              left: Math.min(label.x, 999) ,
+              left: Math.min(label.x, 999),
               top: Math.max(0, label.y - 12),
               transform: "translate(-50%, -100%)",
             }}

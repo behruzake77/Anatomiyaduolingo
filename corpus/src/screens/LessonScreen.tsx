@@ -170,6 +170,7 @@ function SlideView(props: {
             baseSrc={slide.img!}
             displaySrc={displayImg}
             legend={slide.legend}
+            highlights={slide.highlights}
             onPartTap={(n) => setSelected(n)}
             onZoom={() => setZoom(true)}
           />
