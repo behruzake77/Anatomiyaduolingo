@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight, GraduationCap, Library } from "lucide-react";
+import { Flame, Zap, TrendingUp, Sun, RotateCcw, ChevronRight } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { InstallBanner } from "@/components/InstallBanner";
@@ -18,7 +18,6 @@ import { dueCount } from "@/utils/srs";
 import { activityState } from "@/utils/activity";
 import { ReengagementCard } from "@/components/reengage/ReengagementCard";
 import { StreakCelebration } from "@/components/reengage/StreakCelebration";
-import { DailyChallengeCard } from "@/components/reengage/DailyChallengeCard";
 import { useNotifications } from "@/hooks/useNotifications";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
@@ -111,13 +110,13 @@ export function DashboardScreen() {
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
         <Avatar name={name} size={44} />
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-sm text-muted">
-            <Sun className="h-4 w-4 text-warning" aria-hidden /> {t.goodMorning}
+            <Sun className="h-4 w-4 shrink-0 text-warning" aria-hidden /> {t.goodMorning}
           </p>
-          <p className="text-base font-semibold leading-tight">{name}</p>
+          <p className="break-words text-base font-semibold leading-tight">{name}</p>
         </div>
-        <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
+        <span className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
           {t.level} {level} · {tier}
         </span>
       </header>
@@ -190,36 +189,6 @@ export function DashboardScreen() {
         <ChevronRight className="h-5 w-5 text-muted" aria-hidden />
       </button>
 
-      {/* Imtihon + Lug'at */}
-      <div className="mt-3 grid grid-cols-2 gap-4">
-        <button
-          type="button"
-          onClick={() => navigate("exam")}
-          className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 text-left shadow-card transition-colors active:bg-surface2"
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning">
-            <GraduationCap className="h-5 w-5" aria-hidden />
-          </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold leading-tight">{t.examTitle}</p>
-            <p className="truncate text-xs text-muted">{t.examShort}</p>
-          </div>
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate("glossary")}
-          className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 text-left shadow-card transition-colors active:bg-surface2"
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-success/10 text-success">
-            <Library className="h-5 w-5" aria-hidden />
-          </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold leading-tight">{t.glossaryTitle}</p>
-            <p className="truncate text-xs text-muted">{t.glossaryShort}</p>
-          </div>
-        </button>
-      </div>
-
       {/* Continue learning */}
       <section className="mt-6">
         <h2 className="text-lg font-semibold">{t.continueLearning}</h2>
@@ -250,9 +219,6 @@ export function DashboardScreen() {
           </div>
         </Card>
       </section>
-
-      {/* Kunlik sinov (re-engagement) */}
-      <DailyChallengeCard onStart={() => navigate("exam")} />
 
       {/* Quick topics */}
       <section className="mt-6">

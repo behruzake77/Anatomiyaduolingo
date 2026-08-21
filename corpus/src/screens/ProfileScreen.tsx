@@ -22,6 +22,7 @@ export function ProfileScreen() {
 
   const menu = [
     { id: "exam", label: t.examTitle, icon: GraduationCap, screen: "exam" as const },
+    { id: "challenge", label: t.dailyChallenge, icon: Zap, screen: "exam" as const },
     { id: "glossary", label: t.glossaryTitle, icon: Library, screen: "glossary" as const },
     { id: "achievements", label: t.achievements, icon: Trophy, screen: "achievements" as const },
     { id: "bookmarks", label: t.bookmarks, icon: Bookmark, screen: "bookmarks" as const },
@@ -34,10 +35,10 @@ export function ProfileScreen() {
   return (
     <Screen className="pt-6">
       {/* identity */}
-      <div className="flex flex-col items-center gap-3 text-center">
+      <div className="flex w-full flex-col items-center gap-3 text-center">
         <Avatar name={name} size={88} />
-        <div>
-          <h1 className="text-2xl font-semibold">{name}</h1>
+        <div className="w-full min-w-0">
+          <h1 className="break-words text-2xl font-semibold leading-tight">{name}</h1>
           <p className="mt-0.5 text-sm text-muted">
             {t.level} {level} • {tier}
           </p>
