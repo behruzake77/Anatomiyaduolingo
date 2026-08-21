@@ -65,6 +65,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l25: "/img/color/l25.jpg", // Pastki jag' suyagi (mandibula) — ichki tomondan
   l26: "/img/color/l26.jpg", // Bo'g'im tuzilishi (kesma)
   l27: "/img/color/l27.jpg", // Yelka bo'g'imi
+  l48: "/img/color/l48.jpg", // Tirsak bo'g'imi
 };
 
 /**
@@ -461,6 +462,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l27: {
     "1": "/img/color/l27_1.jpg", // Labrum glenoidale
     "2": "/img/color/l27_2.jpg", // Processus coracoideus
+    "3": "/img/color/l27_3.jpg", // Cavitas glenoidalis
+    "4": "/img/color/l27_4.jpg", // Lig. transversum humeri
+    "5": "/img/color/l27_5.jpg", // Collum anatomicum
+    "6": "/img/color/l27_6.jpg", // Caput humeri
+    "7": "/img/color/l27_7.jpg", // Ikki boshli mushakning uzun boshchasi payi
+  },
+  l48: {
+    "1": "/img/color/l48_1.jpg", // Capsula articularis
+    "2": "/img/color/l48_2.jpg", // Epicondylus medialis
+    "3": "/img/color/l48_3.jpg", // Lig. collaterale ulnare
+    "4": "/img/color/l48_4.jpg", // Tuberositas ulnae
   },
 };
 
