@@ -10,6 +10,7 @@ import { useHaptics } from "@/hooks/useHaptics";
 import { useAppStore } from "@/store/useAppStore";
 import { lessonById, unitOfLesson, sortByDifficulty, type Lesson } from "@/data/content";
 import { colorForLegendN } from "@/data/colorDiagrams";
+import { InteractiveDiagram } from "@/components/InteractiveDiagram";
 import { questionKey } from "@/utils/srs";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
@@ -158,19 +159,29 @@ function SlideView(props: {
       </div>
 
       {displayImg && (
-        <button
-          type="button"
-          onClick={() => setZoom(true)}
-          aria-label={t.zoomHint}
-          className="group relative mt-4 block w-full overflow-hidden rounded-2xl border border-line bg-white shadow-card"
-        >
-          <span className="relative mx-auto block w-fit max-w-full">
-            <img src={displayImg} alt={slide.title} className="max-h-56 max-w-full object-contain" />
-            <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors group-hover:bg-primary">
-              <ZoomIn className="h-4 w-4" aria-hidden />
+        isColor && slide.legend ? (
+          <InteractiveDiagram
+            baseSrc={slide.img!}
+            displaySrc={displayImg}
+            legend={slide.legend}
+            onPartTap={(n) => setSelected(n)}
+            onZoom={() => setZoom(true)}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setZoom(true)}
+            aria-label={t.zoomHint}
+            className="group relative mt-4 block w-full overflow-hidden rounded-2xl border border-line bg-white shadow-card"
+          >
+            <span className="relative mx-auto block w-fit max-w-full">
+              <img src={displayImg} alt={slide.title} className="max-h-56 max-w-full object-contain" />
+              <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors group-hover:bg-primary">
+                <ZoomIn className="h-4 w-4" aria-hidden />
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+        )
       )}
 
       {/* tanlangan qism belgisi */}
