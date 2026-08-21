@@ -291,6 +291,64 @@ export const TERMS_INFO: Record<string, string> = {
   "Os lacrimale": "Ko'z yoshi suyagi.",
   "Os zygomaticum": "Yonoq suyagi.",
   "Vomer": "Dimog' suyagi.",
+
+  // ===== Bo'g'im tuzilishi (I jild, 153–155-bet) =====
+  "Membrana synovialis": "Sinovial parda — bo'g'im xaltasining ichki qavati; bo'g'im ichidagi tog'aydan boshqa hamma narsani o'rab turadi. Qon, limfa tomirlari va nervlarga boy.",
+  "Fissura articularis": "Bo'g'im yorig'i — bo'g'im yuzalari orasidagi tor yoriq.",
+  "Cavum articulare": "Bo'g'im bo'shlig'i — sinovial parda bilan bo'g'im yuzalari o'rtasida tor yoriq shaklida bo'ladi.",
+  "Os": "Suyak — bo'g'im hosil bo'lishida ishtirok etadi.",
+  "Cartilago articularis": "Bo'g'im tog'ayi — tashqi yuzasi silliq, bo'g'im yuzalarining sirpanishiga yordam beradi va suyak uchlarini lat yeyishdan saqlaydi.",
+  "Periosteum": "Suyak usti pardasi — suyakni tashqaridan o'rab turadi.",
+
+  // ===== Yelka bo'g'imi (I jild, 176–177-bet) =====
+  "Bo'g'im chuquri qirg'og'i (labrum glenoidale)": "Bo'g'im chuquri labi — kurakning bo'g'im yuzasini chuqurlashtirib, yelka suyagining boshiga moslaydi.",
+  "Tumshuqsimon o'simta (processus coracoideus)": "Tumshuqsimon o'simta — kurak suyagida; bo'g'im xaltasining yuqori qismi undan boshlanadi.",
+  "Bo'g'im chuqurchasi (cavitas glenoidalis)": "Kurak suyagining bo'g'im chuqurchasi — yelka suyagi boshchasidan 3 barobar kichik, yassilashgan.",
+  "Yelkaning ko'ndalang boylami (lig. transversum humeri)": "Yelkaning ko'ndalang boylami.",
+  "Anatomik bo'yincha (collum anatomicum)": "Anatomik bo'yincha — yelka suyagida; bo'g'im xaltasi unga birikadi.",
+  "Yelka suyagining boshchasi (caput humeri)": "Yelka suyagining boshchasi — sharsimon bo'g'im yuzasi.",
+  "Ikki boshli mushakning uzun boshchasi payi": "Yelka ikki boshli mushagining uzun boshi payi — bo'g'im xaltasi ichida o'tadi.",
+
+  // ===== Tirsak bo'g'imi (I jild, 178–181-bet) =====
+  "Capsula articularis": "Bo'g'im xaltasi — suyaklarning bo'g'im hosil qiluvchi uchlari va ular orasidagi bo'shliqni atrofidan o'raydi, bo'g'imni germetik yopib turadi.",
+  "Lig. collaterale ulnare": "Tirsak kollateral boylami — yelka suyagining medial do'ng ustidan boshlanadi.",
+  "Tuberositas ulnae": "Tirsak suyagining g'adir-budur do'ngligi.",
+  "Lig. anulare radii": "Bilak suyagining halqasimon boylami — bilak suyagi bo'yinini halqa shaklida o'rab, tirsak suyagi bilak o'yig'iga birikadi.",
+  "Lig. collaterale radiale": "Bilak kollateral boylami — yelka suyagining lateral do'ng ustidan boshlanib, ikki dastaga bo'linadi.",
+  "Humerus": "Yelka suyagi — tirsak bo'g'imi hosil bo'lishida qatnashadi.",
+
+  // ===== Tizza bo'g'imi (I jild, 200–202-bet) =====
+  "Lig. cruciatum posterius": "Orqa xochsimon boylam — son suyagi medial do'ngligining lateral yuzasidan boshlanib, do'nglar orasidagi orqa maydonga birikadi.",
+  "Lig. meniscofemorale anterius": "Oldingi menisk-son boylami — medial meniskning oldingi qismidan boshlanib, son suyagi lateral do'ngligining medial yuzasiga birikadi.",
+  "Meniscus medialis": "Medial menisk.",
+  "Lig. collaterale tibiale": "Katta boldir yonlama boylami — son suyagining medial do'ng ustidan boshlanib, katta boldir suyagining medial chekkasiga birikadi.",
+  "Lig. patellae": "Tizza qopqog'ining boylami — qalin va kuchli; sonning to'rt boshli mushagi payi.",
+  "Facies articularis patellae": "Tizza qopqog'ining bo'g'im yuzasi.",
+  "Membrana interossea cruris": "Boldir suyaklararo pardasi.",
+  "Caput fibulae": "Kichik boldir suyagining boshchasi.",
+  "Lig. capitis fibulae": "Kichik boldir suyagi boshchasining boylami.",
+  "Meniscus lateralis": "Lateral menisk.",
+  "Tendo m. bicipitis femoris": "Sonning ikki boshli mushagi payi.",
+  "Lig. collaterale fibulare": "Kichik boldir yonlama boylami — son suyagining lateral do'ng ustidan boshlanib, kichik boldir suyagi boshchasida birikadi.",
+  "Lig. transversum genus": "Tizzaning ko'ndalang boylami.",
+  "Lig. cruciatum anterius": "Oldingi xochsimon boylam.",
+
+  // ===== Oyoq panjasi bo'g'imlari (I jild, 204–209-bet) =====
+  "Tibia": "Katta boldir suyagi.",
+  "Articulatio talocruralis": "Boldir-oyoq panja bo'g'imi — g'altaksimon bo'g'im; faqat frontal o'q atrofida bukish va yozish mumkin.",
+  "Lig. mediale": "Medial yonlama boylam — medial to'piqdan boshlanib pastga kengayib to'rt bo'lakka bo'linadi.",
+  "Lig. talonaviculare": "Oshiq-qayiqsimon boylam — oshiq suyak bo'yinining ustki yuzasi bilan qayiqsimon suyak o'rtasida; bo'g'imni ust tomondan mustahkamlaydi.",
+  "Lig. calcaneonaviculare": "Tovon-qayiqsimon boylam — oshiq suyak boshini ushlab turadi; cho'zilib ketsa, oyoq panjasi yassilashib qoladi.",
+  "Lig. calcaneocuboideum": "Tovon-kubsimon boylam — ayrisimon boylamning kubsimon suyakka birikadigan dastasi.",
+  "Ligg. cuneonavicularia dorsalia": "Orqa ponasimon-qayiqsimon boylamlar.",
+  "Capsula art. metatarsophalangeae": "Kaft-barmoq bo'g'imining xaltasi.",
+  "Capsula art. interphalangeae": "Barmoqlararo bo'g'imning xaltasi.",
+  "Ligg. collateralia": "Kollateral (yonlama) boylamlar.",
+  "Articulatio metatarsophalangeae": "Kaft-barmoq bo'g'imi.",
+  "Ligg. metatarsalia interossea": "Kaft suyaklariaro boylamlar.",
+  "Ligg. tarsometatarsalia dorsalia": "Orqa kaft usti-kaft boylamlari.",
+  "Lig. cuneocuboideum dorsale": "Orqa ponasimon-kubsimon boylam.",
+  "Lig. talocalcaneum interosseum": "Suyaklararo oshiq-tovon boylami — sinus tarsi ichida; juda pishiq, ikkala suyakni mustahkamlaydi.",
 };
 
 /** Atama ta'rifini qaytaradi (yo'q bo'lsa undefined). */
