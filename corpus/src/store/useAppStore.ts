@@ -33,9 +33,12 @@ export type ScreenId =
   | "glossary"
   | "exam"
   | "bookmarks"
-  | "library";
+  | "library"
+  | "info";
 
 export type Tab = "home" | "learn" | "library" | "profile";
+
+export type InfoSection = "about" | "terms" | "privacy";
 
 export interface Settings {
   darkMode: boolean;
@@ -77,6 +80,7 @@ const freshProgress = {
     haptics: true,
     language: "uz",
   } as Settings,
+  avatar: null as string | null,
 };
 
 interface AppState {
@@ -117,6 +121,12 @@ interface AppState {
   settings: Settings;
   toggleSetting: (key: keyof Settings) => void;
   setLanguage: (lang: "en" | "uz") => void;
+
+  // profil rasmi + ma'lumot ekrani
+  avatar: string | null;
+  setAvatar: (dataUrl: string | null) => void;
+  infoSection: InfoSection;
+  openInfo: (section: InfoSection) => void;
 
   // actions
   finishOnboarding: () => void;
@@ -243,6 +253,14 @@ export const useAppStore = create<AppState>()(
         set((s) => ({ settings: { ...s.settings, [key]: !s.settings[key] } })),
       setLanguage: (lang) => set((s) => ({ settings: { ...s.settings, language: lang } })),
 
+      avatar: null,
+      setAvatar: (dataUrl) => set({ avatar: dataUrl }),
+      infoSection: "about",
+      openInfo: (section) => {
+        set({ infoSection: section });
+        get().navigate("info");
+      },
+
       finishOnboarding: () => set({ onboardingDone: true }),
 
       activeLessonId: null,
@@ -339,21 +357,23 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "corpus-storage",
-      version: 4,
+      version: 5,
       migrate: (persisted, version) => {
         const p = (persisted ?? {}) as Partial<AppState> & {
           srs?: Record<string, SRSCard>;
           bookmarks?: string[];
           lastActiveDay?: string;
           lastActiveAt?: number;
+          avatar?: string | null;
         };
-        // v1..v3 → v4: SRS, bookmarks, lastActive maydonlarini qo'shish (mavjud progress saqlanadi).
+        // v1..v5: yangi maydonlar (SRS, bookmarks, lastActive, avatar) qo'shiladi — progress saqlanadi.
         return {
           ...p,
           srs: p.srs ?? {},
           bookmarks: p.bookmarks ?? [],
           lastActiveDay: p.lastActiveDay ?? "",
           lastActiveAt: p.lastActiveAt ?? 0,
+          avatar: p.avatar ?? null,
         };
       },
       storage: createJSONStorage(() => rawStorage),
@@ -374,6 +394,7 @@ export const useAppStore = create<AppState>()(
         lastActiveDay: s.lastActiveDay,
         lastActiveAt: s.lastActiveAt,
         settings: s.settings,
+        avatar: s.avatar,
       }),
     },
   ),

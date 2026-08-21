@@ -61,6 +61,26 @@ export const STR: Record<Lang, Strings> = {
     adLabel: "Reklama",
     adTitle: "CORPUS Premium",
     adText: "Reklamasiz, to'liq imkoniyatlar bilan o'rganing.",
+    adSlide2Title: "Tibbiyot talabalari uchun",
+    adSlide2Text: "83 dars · 2000+ savol · kitob asosida.",
+    adSlide3Title: "Har kuni o'rganing",
+    adSlide3Text: "Seriyani saqlang, darajangizni oshiring.",
+    adCta: "Batafsil",
+
+    avatarTitle: "Profil rasmi",
+    avatarEmoji: "Emoji",
+    avatarColor: "Rang",
+    avatarUpload: "Galeriyadan yuklash",
+    avatarRemove: "Rasmni olib tashlash",
+
+    infoVersion: "Versiya",
+    infoSource: "Manba: Ahmedov «Anatomiya I/II jild» (ma'lumot) · «Odam anatomiyasi Atlas» (rasm). Ixtiro qilinmagan — faqat kitobdan.",
+    aboutBody:
+      "CORPUS — tibbiyot talabalari uchun Duolingo-uslubidagi anatomiya o'rganish ilovasi.\n\nBarcha darslar, savollar va izohlar A. Ahmedovning «Anatomiya I/II jild» darsligidan olinadi; rasmlar uchun «Odam anatomiyasi Atlas»idan foydalaniladi. Hech qanday ma'lumot ixtiro qilinmaydi.\n\nIlovada 11 tizim, 34 bo'lim, 83 dars va 2000 dan ortiq savol bor. O'rganish oson → qiyin tartibida, takrorlash SRS (0/1/3/7/16/35 kun) tizimi bilan kuchaytiriladi.",
+    termsBody:
+      "CORPUS faqat ta'lim maqsadida yaratilgan bo'lib, tibbiy maslahat yoki tashxis o'rnini bosmaydi.\n\nKontent mualliflik huquqi himoyalangan — darslik va atlasdan faqat o'quv maqsadida foydalaniladi.\n\nIlovadan shaxsiy o'rganish uchun foydalanishingiz mumkin; kontentni tijorat maqsadida ko'paytirish taqiqlanadi.",
+    privacyBody:
+      "Barcha ma'lumotlaringiz (hisob, progress, sozlamalar, xatcho'plar) faqat qurilmangizda saqlanadi.\n\nHech qanday ma'lumot serverga yuborilmaydi, tashqi xizmatlarga uzatilmaydi.\n\nHisobingizni o'chirsangiz yoki ilovani tozalasangiz, barcha mahalliy ma'lumotlar ham o'chadi.",
     textbook: "Darslik",
     atlas: "Atlas",
     downloadBook: "Yuklab olish",
@@ -282,6 +302,26 @@ export const STR: Record<Lang, Strings> = {
     adLabel: "Ad",
     adTitle: "CORPUS Premium",
     adText: "Learn ad-free with all features.",
+    adSlide2Title: "For medical students",
+    adSlide2Text: "83 lessons · 2000+ questions · book-based.",
+    adSlide3Title: "Learn every day",
+    adSlide3Text: "Keep your streak and level up.",
+    adCta: "Details",
+
+    avatarTitle: "Profile photo",
+    avatarEmoji: "Emoji",
+    avatarColor: "Color",
+    avatarUpload: "Upload from gallery",
+    avatarRemove: "Remove photo",
+
+    infoVersion: "Version",
+    infoSource: "Source: Ahmedov «Anatomy I/II» (content) · «Human Anatomy Atlas» (images). Nothing invented — book only.",
+    aboutBody:
+      "CORPUS is a Duolingo-style anatomy learning app for medical students.\n\nAll lessons, questions and notes come from A. Ahmedov's «Anatomy I/II» textbook; images come from the «Human Anatomy Atlas». Nothing is invented.\n\nThe app has 11 systems, 34 sections, 83 lessons and 2000+ questions. Learning goes easy → hard, reinforced by spaced repetition (0/1/3/7/16/35 days).",
+    termsBody:
+      "CORPUS is made for educational purposes only and is not a substitute for medical advice or diagnosis.\n\nContent is copyright-protected — the textbook and atlas are used only for study.\n\nYou may use the app for personal learning; reproducing content commercially is prohibited.",
+    privacyBody:
+      "All your data (account, progress, settings, bookmarks) is stored only on your device.\n\nNothing is sent to a server or shared with third parties.\n\nDeleting your account or clearing the app also removes all local data.",
     textbook: "Textbook",
     atlas: "Atlas",
     downloadBook: "Download",

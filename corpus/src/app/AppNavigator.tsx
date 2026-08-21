@@ -25,6 +25,7 @@ import { GlossaryScreen } from "@/screens/GlossaryScreen";
 import { ExamScreen } from "@/screens/ExamScreen";
 import { BookmarksScreen } from "@/screens/BookmarksScreen";
 import { LibraryScreen } from "@/screens/LibraryScreen";
+import { InfoScreen } from "@/screens/InfoScreen";
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -47,6 +48,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   exam: ExamScreen,
   bookmarks: BookmarksScreen,
   library: LibraryScreen,
+  info: InfoScreen,
 };
 
 /** Screens that show the bottom navigation bar. */

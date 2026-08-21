@@ -1,10 +1,10 @@
 "use client";
 
-import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Download } from "lucide-react";
+import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Download, Info } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Toggle } from "@/components/ui/Toggle";
-import { useAppStore } from "@/store/useAppStore";
+import { useAppStore, type InfoSection } from "@/store/useAppStore";
 import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useStrings } from "@/i18n";
@@ -14,6 +14,7 @@ export function SettingsScreen() {
   const toggleSetting = useAppStore((s) => s.toggleSetting);
   const setLanguage = useAppStore((s) => s.setLanguage);
   const logout = useAppStore((s) => s.logout);
+  const openInfo = useAppStore((s) => s.openInfo);
   const t = useStrings();
   const { canInstall, isInstalled, install } = useInstallPrompt();
   const { requestPermission } = useNotifications();
@@ -55,24 +56,24 @@ export function SettingsScreen() {
             key={r.key}
             className={"flex items-center gap-3 px-4 py-3.5 " + (i > 0 ? "border-t border-line" : "")}
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <r.icon className="h-5 w-5" aria-hidden />
             </span>
-            <span className="flex-1 text-base font-medium">{r.label}</span>
+            <span className="min-w-0 flex-1 break-words text-base font-medium">{r.label}</span>
             <Toggle checked={settings[r.key]} onChange={() => onToggle(r.key)} label={r.label} />
           </div>
         ))}
 
         {/* language */}
         <div className="flex items-center gap-3 border-t border-line px-4 py-3.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Languages className="h-5 w-5" aria-hidden />
           </span>
-          <span className="flex-1 text-base font-medium">{t.language}</span>
+          <span className="min-w-0 flex-1 break-words text-base font-medium">{t.language}</span>
           <select
             value={settings.language}
             onChange={(e) => setLanguage(e.target.value as "en" | "uz")}
-            className="rounded-xl border border-line bg-surface2 px-3 py-1.5 text-sm font-medium"
+            className="max-w-[45%] shrink-0 rounded-xl border border-line bg-surface2 px-3 py-1.5 text-sm font-medium"
             aria-label={t.language}
           >
             <option value="uz">O&lsquo;zbekcha</option>
@@ -100,20 +101,22 @@ export function SettingsScreen() {
       {/* links */}
       <Card className="mt-4 overflow-hidden">
         {[
-          { label: t.privacy, icon: Shield },
-          { label: t.terms, icon: FileText },
+          { label: t.about, icon: Info, section: "about" as InfoSection },
+          { label: t.privacy, icon: Shield, section: "privacy" as InfoSection },
+          { label: t.terms, icon: FileText, section: "terms" as InfoSection },
         ].map((l, i) => (
           <button
-            key={l.label}
+            key={l.section}
+            onClick={() => openInfo(l.section)}
             className={
-              "flex w-full items-center gap-3 px-4 py-3.5 text-left " + (i > 0 ? "border-t border-line" : "")
+              "flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2 " + (i > 0 ? "border-t border-line" : "")
             }
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface2 text-muted">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
               <l.icon className="h-5 w-5" aria-hidden />
             </span>
-            <span className="flex-1 text-base font-medium">{l.label}</span>
-            <ChevronRight className="h-5 w-5 text-muted" aria-hidden />
+            <span className="min-w-0 flex-1 break-words text-base font-medium">{l.label}</span>
+            <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
           </button>
         ))}
         <button

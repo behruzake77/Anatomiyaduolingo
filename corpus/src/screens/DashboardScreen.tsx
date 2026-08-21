@@ -28,6 +28,7 @@ export function DashboardScreen() {
   const streak = useAppStore((s) => s.streak);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
+  const avatar = useAppStore((s) => s.avatar);
   const lastActiveAt = useAppStore((s) => s.lastActiveAt);
   const navigate = useAppStore((s) => s.navigate);
   const openLesson = useAppStore((s) => s.openLesson);
@@ -79,7 +80,7 @@ export function DashboardScreen() {
 
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
-        <Avatar name={name} size={44} />
+        <Avatar name={name} size={44} src={avatar?.startsWith("emoji:") || avatar?.startsWith("color:") ? null : avatar} />
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-sm text-muted">
             <Sun className="h-4 w-4 shrink-0 text-warning" aria-hidden /> {t.goodMorning}
