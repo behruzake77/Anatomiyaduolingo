@@ -201,6 +201,96 @@ export const TERMS_INFO: Record<string, string> = {
   "Caput phalangis": "Falanga boshi.",
   "Corpus phalangis": "Falanga tanasi.",
   "Tuberositas phalangis distalis": "Distal falanga do'ngligi — barmoq uchi yassilashib hosil qiladi.",
+
+  // ===== Kalla — ensa suyagi (I jild, 100–103-bet) =====
+  "Foramen magnum": "Katta teshik — ensa suyagi qismlari birikib, kalla bo'shlig'ini umurtqa kanali bilan qo'shadi.",
+  "Condylus occipitalis": "Ensa suyagining do'ngi — bo'g'im do'mbog'i.",
+  "Canalis condylaris": "Bo'g'im do'mbog'i kanali — do'ng chuqurchasining tubida.",
+  "Protuberantia occipitalis externa": "Ensa suyagining tashqi do'ngligi — palla tashqi yuzasida.",
+  "Crista occipitalis externa": "Ensa suyagining tashqi qirrasi — tashqi do'nglikdan katta teshikgacha yo'naladi.",
+  "Linea nuchae superior": "Ensaning yuqori bo'yin chizig'i — tashqi do'nglikdan yon tomonga qarab egilgan.",
+  "Linea nuchae inferior": "Ensaning pastki bo'yin chizig'i — yuqori chiziqqa parallel.",
+  "Pars basilaris": "Ensa suyagining asos qismi — to'rtburchak shaklda.",
+  "Tuberculum pharyngeum": "Halqum do'mboqchasi — asos qismning tashqi tomonida.",
+
+  // ===== Kalla — tepa suyagi (I jild, 103-bet) =====
+  "Os parietale": "Tepa suyagi — juft; kalla qopqog'ining yuqori yon qismlarini tashkil qiladi.",
+
+  // ===== Kalla — peshona suyagi (I jild, 104–105-bet) =====
+  "Squama frontalis": "Peshona suyagining pallasi — kalla gumbazini hosil qilishda qatnashadi.",
+  "Margo supraorbitalis": "Ko'z kosasining ustki qirrasi — pallani ko'z kosa qismidan ajratib turadi.",
+  "Foramen supraorbitale": "Ko'z kosasi ustki teshigi — kemtik teshikka aylangan.",
+  "Incisura supraorbitalis": "Ko'z kosasi ustki kemtigi — qirraning burun qismiga yaqin.",
+  "Margo parietalis": "Tepa qirrasi — tepa suyagi bilan birlashadi.",
+  "Margo sphenoidalis": "Ponasimon qirra.",
+
+  // ===== Kalla — chakka suyagi (I jild, 113–116-bet) =====
+  "Processus mastoideus": "So'rg'ichsimon o'simta — ichida so'rg'ichsimon katakchalar bor.",
+  "Incisura mastoidea": "So'rg'ichsimon o'yig'i.",
+  "Foramen mastoideum": "So'rg'ichsimon teshik — o'simtaning ensa suyagi bilan birikadigan joyida.",
+  "Meatus acusticus externus": "Tashqi eshituv yo'lagi — tashqi eshituv teshigidan nog'ora bo'shlig'igacha boradi.",
+  "Fossa mandibularis": "Pastki jag' chuqurchasi.",
+  "Tuberculum articulare": "Bo'g'im do'mboqchasi.",
+  "Processus zygomaticus": "Yonoq o'simtasi.",
+  "Spina suprameatum": "Eshituv yo'lagi ustidagi tik.",
+  "Sulcus arteriae temporalis mediae": "O'rta chakka arteriyasi egati.",
+  "Pars squamosa": "Chakka suyagining tanga qismi.",
+  "Pars tympanica": "Nog'ora qismi — nog'ora bo'shlig'ining lateral devorini hosil qilishda qatnashadi.",
+  "Fissura petrosquamosa": "Toshsimon-tanga yorig'i.",
+  "Fissura petrotympanica": "Toshsimon-nog'ora yorig'i.",
+  "Fissura tympanomastoidea": "Nog'ora-so'rg'ichsimon yorig'i.",
+  "Canalis opticus": "Ko'rish kanali.",
+
+  // ===== Kalla — ponasimon suyak (I jild, 99-bet) =====
+  "Fissura orbitalis superior": "Yuqorigi ko'z yorig'i.",
+  "Fissura orbitalis inferior": "Pastki ko'z yorig'i — ko'z kosasining ostki yorig'i.",
+  "Facies orbitalis alae majoris ossis sphenoidalis": "Ponasimon suyak katta qanotining ko'z kosasi yuzasi.",
+  "Facies temporalis alae majoris ossis sphenoidalis": "Ponasimon suyak katta qanotining chakka yuzasi.",
+
+  // ===== Kalla — g'alvirsimon suyak (I jild, 110-bet) =====
+  "Lamina perpendicularis ossis ethmoidalis": "G'alvirsimon suyakning tik plastinkasi.",
+  "Concha nasalis media": "O'rta burun chig'anog'i.",
+
+  // ===== Kalla — ustki jag' (I jild, 121–122-bet) =====
+  "Processus frontalis": "Ustki jag'ning peshona o'simtasi.",
+  "Margo infraorbitalis": "Ko'z kosasining pastki chekkasi.",
+  "Incisura nasalis": "Burun kemtigi — oldingi yuzani medial tomondan chegaralaydi.",
+  "Canalis infraorbitalis": "Ko'z kosasi ostidagi kanal.",
+  "Fossa canina": "Qoziq tish chuqurchasi.",
+  "Spina nasalis anterior": "Burunning oldingi o'tkir qirrasi.",
+  "Juga alveolaria": "Alveola do'mboqlari.",
+  "Arcus alveolaris": "Alveolali yoy.",
+  "Foramina alveolaria": "Alveola teshiklari.",
+  "Tuber maxillae": "Ustki jag' do'ngligi.",
+  "Sulcus infraorbitalis": "Ko'z kosasining ostki egati.",
+  "Facies orbitalis": "Ko'z kosasiga qaragan yuza — ko'z kosasining pastki devorini tashkil qiladi.",
+  "Sulcus lacrimalis": "Ko'z yoshi egati.",
+  "Crista lacrimalis anterior": "Oldingi ko'z yoshi qirrasi.",
+
+  // ===== Kalla — pastki jag' (I jild, 128–130-bet) =====
+  "Processus coronoideus": "Tojsimon o'simta — shoxning oldingi o'simtasi.",
+  "Incisura mandibulae": "Pastki jag' o'yig'i.",
+  "Caput mandibulae": "Pastki jag' boshchasi.",
+  "Processus condylaris": "Do'ngli o'siqcha — shoxning orqa o'siqchasi.",
+  "Foramen mandibulae": "Pastki jag' teshigi — shoxning ichki yuzasida; pastki jag' kanaliga davom etadi.",
+  "Sulcus mylohyoideus": "Jag'-til osti egati.",
+  "Angulus mandibulae": "Pastki jag' burchagi — tana shox bilan burchak hosil qilib birikadi.",
+  "Tuberositas pterygoidea": "Qanotsimon g'adir-budurlik — shoxning ichki yuzasida; qanotsimon mushak birikadi.",
+  "Fovea submandibularis": "Pastki jag' osti chuqurchasi.",
+  "Fossa digastrica": "Ikki qorinchali mushak chuqurchasi — pastki jag' asosida.",
+  "Spina mentalis": "Engakning o'tkir qirrasi — ichki yuzada.",
+  "Tuberositas masseterica": "Chaynov g'adir-budurligi — shoxning tashqi yuzasida.",
+  "Ramus mandibulae": "Pastki jag'ning shoxi — vertikal yo'nalgan.",
+  "Fossa sublingualis": "Til osti chuqurchasi — ustki chekkaning ikki tomonida.",
+  "Corpus mandibulae": "Pastki jag' tanasi — gorizontal joylashgan, taqasimon shaklda.",
+  "Foramen mentale": "Engak teshigi.",
+  "Concha nasalis inferior": "Pastki burun chig'anog'i.",
+  "Foramen zygomaticofaciale": "Yonoq-yuz teshigi.",
+  "Maxilla": "Ustki jag' suyagi — yuqorigi jag'.",
+  "Os nasale": "Burun suyagi.",
+  "Os lacrimale": "Ko'z yoshi suyagi.",
+  "Os zygomaticum": "Yonoq suyagi.",
+  "Vomer": "Dimog' suyagi.",
 };
 
 /** Atama ta'rifini qaytaradi (yo'q bo'lsa undefined). */
