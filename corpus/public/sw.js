@@ -2,9 +2,10 @@
  * Strategiya:
  *  - sahifalar (/) va statik resurslar: cache-first (o'rnatilgach internetsiz ishlaydi)
  *  - tasvir/font: cache-first, uzoq saqlanadi
+ *  - PDF kitoblar: SW umuman aralashmaydi (to'g'ridan-to'g'ri yuklanadi, keshga olinmaydi)
  *  - boshqa so'rovlar: network-first, muvaffaqiyatsiz bo'lsa keshdan
  */
-const CACHE = "corpus-v1";
+const CACHE = "corpus-v2";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -27,8 +28,15 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Navigatsiya → cache-first (app shell)
-  if (req.mode === "navigate") {
+  const pathname = url.pathname;
+
+  // PDF kitoblar — SW aralashmaydi (aks holda iframe ichida ilova ochilib ketadi).
+  if (/\.pdf($|\?)/i.test(pathname)) {
+    return;
+  }
+
+  // Navigatsiya → cache-first (app shell). Faqat HTML sahifa so'rovlari uchun.
+  if (req.mode === "navigate" && req.headers.get("accept")?.includes("text/html")) {
     event.respondWith(
       caches.match("/").then((cached) => cached || fetch(req).then((res) => {
         const copy = res.clone();
@@ -40,7 +48,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Statik (rasm/font) → cache-first
-  if (/\.(png|jpg|jpeg|svg|webp|woff2?|ico)$/.test(url.pathname)) {
+  if (/\.(png|jpg|jpeg|svg|webp|woff2?|ico)$/.test(pathname)) {
     event.respondWith(
       caches.match(req).then(
         (cached) =>

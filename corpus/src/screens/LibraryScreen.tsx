@@ -75,24 +75,24 @@ function BookRow({ book, onOpen }: { book: Book; onOpen: () => void }) {
   );
 }
 
-/** Bitta kitobning to'liq ekranli PDF o'quvchisi. */
+/** Bitta kitobning to'liq ekranli PDF o'quvchisi (butun ekranni egallaydi). */
 function BookReader({ book, onBack }: { book: Book; onBack: () => void }) {
   const t = useStrings();
   return (
-    <Screen padded={false}>
-      <TopBar title={book.title} />
-      <div className="flex flex-col gap-3 px-5 pb-28">
+    <div className="fixed inset-0 z-40 flex flex-col bg-bg">
+      <TopBar title={book.title} onBack={onBack} />
+      <div className="flex min-h-0 flex-1 flex-col gap-3 px-5 pb-6">
         <div className="flex items-center justify-between text-xs text-muted">
           <span className="italic">{book.latin}</span>
           <span>{book.pages}</span>
         </div>
 
-        {/* PDF ko'ruvchi */}
-        <div className="overflow-hidden rounded-2xl border border-line bg-surface2">
+        {/* PDF ko'ruvchi — butun ekran */}
+        <div className="min-h-0 flex-1 overflow-hidden rounded-2xl border border-line bg-surface2">
           <iframe
             title={book.title}
             src={book.file}
-            className="h-[calc(100dvh-160px)] w-full"
+            className="h-full w-full"
             style={{ border: 0 }}
           />
         </div>
@@ -104,8 +104,7 @@ function BookReader({ book, onBack }: { book: Book; onBack: () => void }) {
         >
           <Download className="h-4 w-4" aria-hidden /> {t.downloadBook}
         </a>
-        <p className="text-center text-[11px] text-muted">{t.readHint}</p>
       </div>
-    </Screen>
+    </div>
   );
 }

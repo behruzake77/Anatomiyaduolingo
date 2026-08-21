@@ -1,11 +1,10 @@
 "use client";
 
-import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Download, Info } from "lucide-react";
+import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Toggle } from "@/components/ui/Toggle";
 import { useAppStore, type InfoSection } from "@/store/useAppStore";
-import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useStrings } from "@/i18n";
 
@@ -16,7 +15,6 @@ export function SettingsScreen() {
   const logout = useAppStore((s) => s.logout);
   const openInfo = useAppStore((s) => s.openInfo);
   const t = useStrings();
-  const { canInstall, isInstalled, install } = useInstallPrompt();
   const { requestPermission } = useNotifications();
 
   const onToggle = async (key: "notifications" | "darkMode" | "sound") => {
@@ -81,22 +79,6 @@ export function SettingsScreen() {
           </select>
         </div>
       </Card>
-
-      {/* PWA o'rnatish */}
-      {!isInstalled && canInstall && (
-        <Card className="mt-4 overflow-hidden">
-          <button
-            onClick={() => install()}
-            className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Download className="h-5 w-5" aria-hidden />
-            </span>
-            <span className="flex-1 text-base font-medium">{t.installTitle}</span>
-            <ChevronRight className="h-5 w-5 text-muted" aria-hidden />
-          </button>
-        </Card>
-      )}
 
       {/* links */}
       <Card className="mt-4 overflow-hidden">
