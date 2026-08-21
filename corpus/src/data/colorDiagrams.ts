@@ -66,6 +66,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l26: "/img/color/l26.jpg", // Bo'g'im tuzilishi (kesma)
   l27: "/img/color/l27.jpg", // Yelka bo'g'imi
   l48: "/img/color/l48.jpg", // Tirsak bo'g'imi
+  l49: "/img/color/l49.jpg", // Tizza bo'g'imi
 };
 
 /**
@@ -473,6 +474,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "2": "/img/color/l48_2.jpg", // Epicondylus medialis
     "3": "/img/color/l48_3.jpg", // Lig. collaterale ulnare
     "4": "/img/color/l48_4.jpg", // Tuberositas ulnae
+    "5": "/img/color/l48_5.jpg", // Tuberositas radii
+    "6": "/img/color/l48_6.jpg", // Circumferentia articularis
+    "7": "/img/color/l48_7.jpg", // Lig. anulare radii
+    "8": "/img/color/l48_8.jpg", // Lig. collaterale radiale
+    "10": "/img/color/l48_10.jpg", // Humerus
+  },
+  l49: {
+    "1": "/img/color/l49_1.jpg", // Facies patellaris
+    "2": "/img/color/l49_2.jpg", // Condylus medialis
+    "3": "/img/color/l49_3.jpg", // Lig. cruciatum posterius
   },
 };
 
