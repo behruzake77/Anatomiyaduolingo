@@ -64,6 +64,66 @@ export const TERMS_INFO: Record<string, string> = {
   "Crista sacralis medialis": "O'rta chiziqdagi dumg'aza qirrasi — bo'g'im o'siqchalarining qo'shilishidan.",
   "Crista sacralis lateralis": "Yon dumg'aza qirrasi — ko'ndalang o'siqchalarning qo'shilishidan.",
   "Tuberositas ossis sacri": "Dumg'aza suyagining do'mboqligi.",
+
+  // ===== Qovurg'alar (I jild, 48–50-bet) =====
+  "Caput costae": "Qovurg'a boshchasi — orqa uchida bo'lib, ko'krak umurtqalari tanasidagi qovurg'a chuqurchasi bilan bo'g'im hosil qiladi.",
+  "Collum costae": "Qovurg'a bo'yinchasi — boshchadan keyin toraygan qism.",
+  "Corpus costae": "Qovurg'a tanasi — eng uzun qism; biroz bukilib qovurg'a burchagini hosil qiladi.",
+  "Tuberculum costae": "Qovurg'a do'mboqchasi — bo'yinchaning tanaga o'tish joyida.",
+  "Angulus costae": "Qovurg'a burchagi — qovurg'a tanasining bukilish joyi.",
+  "Sulcus costae": "Qovurg'a egati — ichki yuzada; undan tomirlar va nervlar o'tadi.",
+  "Crista capitis costae": "Qovurg'a boshchasining qirrasi — bo'g'im yuzasini ikkiga ajratib turadi (II–X qovurg'alarda).",
+  "Facies articularis capitis costae": "Qovurg'a boshchasining bo'g'im yuzasi — ko'krak umurtqasidagi chuqurcha bilan bo'g'im hosil qiladi.",
+  "Facies articularis tuberculi costae": "Qovurg'a do'mbog'idagi bo'g'im yuzasi — ko'ndalang o'siqchadagi qovurg'a chuqurchasi bilan bo'g'im hosil qiladi.",
+
+  // ===== To'sh suyagi (I jild, 51–52-bet) =====
+  "Manubrium sterni": "To'sh suyagi dastasi — kengaygan va qalin yuqorigi qismi.",
+  "Corpus sterni": "To'sh suyagi tanasi — o'rta qismi.",
+  "Processus xiphoideus": "Xanjarsimon o'siqcha — to'sh suyagining pastki qismi.",
+  "Incisura jugularis": "Bo'yinturuq kemtigi — dastaning yuqori chekkasidagi uncha chuqur bo'lmagan kemtik.",
+  "Incisura clavicularis": "O'mrov kemtigi — dastaning yon tomonlarida; o'mrov suyagi bilan bo'g'im hosil qiladi.",
+  "Incisura costalis I": "I qovurg'a kemtigi — qovurg'a tog'ayi birikadigan o'yiq.",
+  "Incisura costalis II": "II qovurg'a kemtigi — qovurg'a tog'ayi birikadigan o'yiq.",
+  "Incisura costalis III": "III qovurg'a kemtigi — qovurg'a tog'ayi birikadigan o'yiq.",
+  "Incisura costalis IV": "IV qovurg'a kemtigi — qovurg'a tog'ayi birikadigan o'yiq.",
+  "Incisura costalis V": "V qovurg'a kemtigi — qovurg'a tog'ayi birikadigan o'yiq.",
+  "Incisura costalis VI": "VI qovurg'a kemtigi — qovurg'a tog'ayi birikadigan o'yiq.",
+  "Incisura costalis VII": "VII qovurg'a kemtigi — qovurg'a tog'ayi birikadigan o'yiq.",
+
+  // ===== O'mrov suyagi (I jild, 54-bet) =====
+  "Extremitas sternalis": "O'mrovning to'shga qaragan uchi — oldinga turtib chiqqan va yo'g'onlashgan.",
+  "Extremitas acromialis": "O'mrovning akromion uchi — to'sh uchiga nisbatan keng va yupqa.",
+  "Corpus claviculae": "O'mrov suyagining tanasi.",
+  "Impressio ligamenti costoclavicularis": "Qovurg'a-o'mrov boylamining izi.",
+  "Tuberculum conoideum": "Konussimon do'mboqcha — tananing pastki yuzasida boylamlar birikadigan joy.",
+  "Linea trapezoidea": "Trapetsiyasimon chiziq — boylam birikadigan joy.",
+  "Sulcus musculi subclavii": "O'mrov osti mushagining egati.",
+  "Facies articularis acromialis": "Akromion bo'g'im yuzasi — kurak suyagining akromioni bilan birlashadigan yassi yuza.",
+  "Facies articularis sternalis": "To'sh bo'g'im yuzasi — to'sh suyagi bilan birikadigan yuza.",
+
+  // ===== Yelka suyagi (I jild, 59–60-bet) =====
+  "Caput humeri": "Yelka suyagining boshchasi — yuqorigi uchida ichkariga va biroz orqaga qaragan sharsimon bo'g'im yuzasi.",
+  "Collum anatomicum": "Anatomik bo'yincha — boshchani katta va kichik do'mboqchalardan ajratib turadigan egat.",
+  "Collum chirurgicum": "Xirurgik bo'yincha — do'mboqchalardan pastki xipcharoq qism; suyak ko'p sinadigan joy.",
+  "Corpus humeri": "Yelka suyagining tanasi — yuqori qismi silindr shaklida, pastki qismi uch qirrali.",
+  "Tuberculum majus": "Katta do'mboqcha — boshchadan lateralroq joylashgan.",
+  "Tuberculum minus": "Kichik do'mboqcha — katta do'mboqchadan oldinda joylashgan.",
+  "Crista tuberculi majoris": "Katta do'mboqchaning qirrasi — do'mboqchadan pastga qarab ketadi.",
+  "Crista tuberculi minoris": "Kichik do'mboqchaning qirrasi — do'mboqchadan pastga qarab ketadi.",
+  "Sulcus intertubercularis": "Do'mboqchalararo egat — ichida yelkaning ikki boshli mushagi uzun boshining payi o'tadi.",
+  "Capitulum humeri": "Yelka suyagi do'ngligining boshchasi — bilak suyagi bilan birlashadi.",
+  "Trochlea humeri": "Yelka suyagi g'altagi — tirsak suyagi bilan birlashadi.",
+  "Fossa radialis": "Bilak chuqurchasi.",
+  "Fossa coronoidea": "Tojsimon chuqurcha.",
+  "Epicondylus lateralis": "Lateral (tashqi) do'ng usti do'mboqchasi.",
+  "Epicondylus medialis": "Medial (ichki) do'ng usti do'mboqchasi.",
+
+  // ===== Bilak suyagi (I jild, 66–67-bet) =====
+  "Caput radii": "Bilak suyagining boshchasi — yuqorigi uchida joylashgan; ustida yelka suyagi bilan bo'g'im hosil qiladigan yassi chuqurcha bor.",
+  "Collum radii": "Bilak suyagining bo'yinchasi — boshchani tanasidan ajratib turadi.",
+  "Tuberositas radii": "Bilak suyagidagi g'adir-budur do'nglik — mushak birikadigan joy.",
+  "Circumferentia articularis": "Bo'g'im aylanasi — boshchaning yon tomonida; tirsak suyagi bilan bo'g'im hosil qiladi.",
+  "Processus styloideus": "Bigizsimon o'siqcha — bilak suyagi pastki uchining lateral tomonida.",
 };
 
 /** Atama ta'rifini qaytaradi (yo'q bo'lsa undefined). */
