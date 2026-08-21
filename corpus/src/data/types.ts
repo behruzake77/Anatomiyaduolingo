@@ -45,7 +45,7 @@ export interface Lesson {
     highlights?: Record<string, string>;
   }[];
   /** o'rganish fazaси учун флеш-карталар (саволдан олдин) */
-  flashcards?: { n: string; name: string; img: string }[];
+  flashcards?: { n: string; name: string; img: string; def?: string }[];
 }
 
 export interface SystemUnit {

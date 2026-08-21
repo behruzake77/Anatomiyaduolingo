@@ -99,6 +99,7 @@ export const STR: Record<Lang, Strings> = {
     flashAllKnown: "Barcha kartalar ko'rildi.",
     flashAgain: "{n} ta kartani yana takrorlash kerak.",
     flashStart: "Savollarga o'tish",
+    flashDef: "Ta'rif va vazifasi",
 
     infoVersion: "Versiya",
     infoSource: "Manba: Ahmedov «Anatomiya I/II jild» (ma'lumot) · «Odam anatomiyasi Atlas» (rasm). Ixtiro qilinmagan — faqat kitobdan.",
@@ -367,6 +368,7 @@ export const STR: Record<Lang, Strings> = {
     flashAllKnown: "All cards reviewed.",
     flashAgain: "{n} cards to review again.",
     flashStart: "Start questions",
+    flashDef: "Definition and function",
 
     infoVersion: "Version",
     infoSource: "Source: Ahmedov «Anatomy I/II» (content) · «Human Anatomy Atlas» (images). Nothing invented — book only.",

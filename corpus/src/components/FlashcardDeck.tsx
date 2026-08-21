@@ -12,6 +12,7 @@ export interface Flashcard {
   n: string;
   name: string;
   img: string;
+  def?: string;
 }
 
 /**
@@ -141,7 +142,13 @@ export function FlashcardDeck({ cards, onDone }: { cards: Flashcard[]; onDone: (
               >
                 {card.n}
               </span>
-              <p className="break-words text-2xl font-bold leading-snug">{card.name}</p>
+              <p className="break-words text-xl font-bold leading-snug">{card.name}</p>
+              {card.def && (
+                <div className="max-h-32 overflow-y-auto px-2">
+                  <p className="text-[10px] font-bold uppercase tracking-wider opacity-60">{t.flashDef}</p>
+                  <p className="mt-0.5 break-words text-sm leading-relaxed opacity-95">{card.def}</p>
+                </div>
+              )}
               <p className="flex items-center gap-1.5 text-xs opacity-70">
                 <Eye className="h-3.5 w-3.5" aria-hidden /> {t.flashFlip}
               </p>

@@ -17,6 +17,7 @@ import { IMG_QUESTIONS, VISUAL_SLIDES, LESSON_IMAGES } from "./visuals";
 import { LESSON_LEGENDS } from "./labels";
 import { FIGURE_LESSONS } from "./figureLessons";
 import { COLOR_DIAGRAMS, COLOR_HIGHLIGHTS } from "./colorDiagrams";
+import { termDef } from "./termsInfo";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -222,6 +223,7 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
             n: it.n,
             name: it.name,
             img: COLOR_HIGHLIGHTS[lesson.id]?.[it.n] ?? colorImg,
+            def: termDef(it.name),
           }));
 
         const colorSlide = {
