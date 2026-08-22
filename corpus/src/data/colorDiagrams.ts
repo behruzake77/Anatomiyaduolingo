@@ -660,6 +660,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l68_3.jpg", // Cornu majus ossis hyoidei
     "4": "/img/color/l68_4.jpg", // Cartilago triticea
     "5": "/img/color/l68_5.jpg", // Cornu superius cartilaginis thyroideae
+    "6": "/img/color/l68_6.jpg", // Tuberculum thyroideum superius
+    "7": "/img/color/l68_7.jpg", // Lamina sinistra cartilaginis thyroideae
+    "8": "/img/color/l68_8.jpg", // Tuberculum thyroideum inferius
+    "9": "/img/color/l68_9.jpg", // Cornu inferius cartilaginis thyroideae
+    "10": "/img/color/l68_10.jpg", // Arcus cartilaginis cricoideae
+    "11": "/img/color/l68_11.jpg", // Cartilagines tracheales
+    "12": "/img/color/l68_12.jpg", // Ligg. annularia
+    "13": "/img/color/l68_13.jpg", // Lig. cricotracheale
+    "14": "/img/color/l68_14.jpg", // Lig. ceratocricoideum anterius
+    "15": "/img/color/l68_15.jpg", // Lig. cricothyroideum medianum
   },
 };
 
