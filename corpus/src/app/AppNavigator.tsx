@@ -12,6 +12,7 @@ import { DashboardScreen } from "@/screens/DashboardScreen";
 import { TopicsScreen } from "@/screens/TopicsScreen";
 import { LessonsScreen } from "@/screens/LessonsScreen";
 import { LessonScreen } from "@/screens/LessonScreen";
+import { ReviewScreen } from "@/screens/ReviewScreen";
 import { ResultCorrectScreen } from "@/screens/ResultCorrectScreen";
 import { ResultWrongScreen } from "@/screens/ResultWrongScreen";
 import { ProfileScreen } from "@/screens/ProfileScreen";
@@ -20,6 +21,12 @@ import { StudyModeScreen } from "@/screens/StudyModeScreen";
 import { Models3DScreen } from "@/screens/Models3DScreen";
 import { ProgressScreen } from "@/screens/ProgressScreen";
 import { SettingsScreen } from "@/screens/SettingsScreen";
+import { GlossaryScreen } from "@/screens/GlossaryScreen";
+import { ExamScreen } from "@/screens/ExamScreen";
+import { BookmarksScreen } from "@/screens/BookmarksScreen";
+import { LibraryScreen } from "@/screens/LibraryScreen";
+import { InfoScreen } from "@/screens/InfoScreen";
+import { PremiumScreen } from "@/screens/PremiumScreen";
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -29,6 +36,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   topics: TopicsScreen,
   lessons: LessonsScreen,
   lesson: LessonScreen,
+  review: ReviewScreen,
   "result-correct": ResultCorrectScreen,
   "result-wrong": ResultWrongScreen,
   profile: ProfileScreen,
@@ -37,16 +45,25 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   models3d: Models3DScreen,
   progress: ProgressScreen,
   settings: SettingsScreen,
+  glossary: GlossaryScreen,
+  exam: ExamScreen,
+  bookmarks: BookmarksScreen,
+  library: LibraryScreen,
+  info: InfoScreen,
+  premium: PremiumScreen,
 };
 
 /** Screens that show the bottom navigation bar. */
-const TABS: ScreenId[] = ["dashboard", "topics", "profile", "settings"];
+const TABS: ScreenId[] = ["dashboard", "topics", "library", "profile"];
+
+/** Bo'limlar (darslar ro'yxati) ham pastki menyu bilan — foydalanuvchi bosh menyuga qayta olsin. */
+const NAV_SCREENS: ScreenId[] = [...TABS, "lessons"];
 
 const TAB_SCREEN: Record<Tab, ScreenId> = {
   home: "dashboard",
   learn: "topics",
+  library: "library",
   profile: "profile",
-  settings: "settings",
 };
 
 export function AppNavigator() {
@@ -68,7 +85,7 @@ export function AppNavigator() {
   }, [screen, tab]);
 
   const Screen = SCREENS[screen];
-  const showNav = TABS.includes(screen);
+  const showNav = NAV_SCREENS.includes(screen);
 
   return (
     <div className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">

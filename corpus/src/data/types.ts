@@ -35,7 +35,17 @@ export interface Lesson {
   /** kitob manbasi */
   source?: { book: string; page: string };
   /** dars boshidagi o'rganish slaydlari */
-  slides?: { title: string; text: string; img?: string; cap?: string; legend?: { n: string; name: string }[] }[];
+  slides?: {
+    title: string;
+    text: string;
+    img?: string;
+    cap?: string;
+    legend?: { n: string; name: string }[];
+    /** rangli diagramma: qism raqami → faqat shu qism rangli rasm (interaktiv) */
+    highlights?: Record<string, string>;
+  }[];
+  /** o'rganish fazaси учун флеш-карталар (саволдан олдин) */
+  flashcards?: { n: string; name: string; img: string; def?: string }[];
 }
 
 export interface SystemUnit {

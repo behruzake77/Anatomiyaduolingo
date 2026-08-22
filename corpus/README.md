@@ -9,9 +9,11 @@ medical-education feel inspired by Complete Anatomy. **O'zbekcha asosiy til**, i
 - **Ma'lumot manbai — faqat A. Ahmedov va boshq. "Anatomiya I/II jild" (2018) darsligi.** Barcha darslar, savollar, izohlar va faktlar shu kitobdan olinadi — ixtiro qilinmaydi. Har bir darsda `source: { book, page }` kitob sahifasi ko'rsatiladi.
 - **"Odam anatomiyasi Atlas" (N.K. Ahmedov) — faqat rasm manbai.** Atlas faqat darslikda rasm yetishmaganda tasvir uchun ishlatiladi; undan ma'lumot/fakt olinmaydi.
 
-**Jami: 11 tizim · 34 bo'lim · 83 dars · 953 savol** (butun kitob, 83/83 dars manbali).
+**Jami: 11 tizim · 34 bo'lim · 83 dars · 2065 savol** — 965 ta asosiy savol (butun kitob) + 1100 ta "qismni aniqlash" rasmli savoli (har bir raqamlangan qism uchun).
 
-**Vizual qamrov**: har bir darsda rasmli kirish slaydi + **46 ta rasmli savol** (img turi). **40 darsga kitobdan (Ahmedov I jild) kesilgan o'z rasmi** berilgan — suyaklar (25), bo'g'imlar (6) va mushaklar (9) — umumiy skelet emas, aynan o'rganilayotgan qism. **Har bir kitob rasmi raqamlangan qismlar ro'yxati bilan** keladi (masalan Atlas C1: 1-tuberculum anterius … 9-fovea dentis) — tibbiyot uchun har bir qism nomi raqam bilan ko'rsatiladi. **Topish rejimi**: har bir kitob rasmi **raqamlangan qismlar ro'yxati** bilan keladi (kitob izohining aniq nusxasi — masalan Atlas C1: 1-tuberculum anterius … 9-fovea dentis, chanoq: 29 qism). Ro'yxatdagi qismni bossangiz, rasm katta ochilib "№N — nomini rasmda toping" ko'rsatiladi va pastdagi "Ro'yxat" tugmasi bilan barcha nomlar ochiladi. Rasmda kitobning o'zi bosib chiqargan raqam bor — foydalanuvchi zoom qilib o'sha raqamni topadi. Shundan **8 tasi ko'ndalang kesma (rang bilan ajratilgan)**. Har bir rasmni bosib **to'liq ekranda kattalashtirib o'qish** mumkin (chimchilab zoom, surib ko'chirish, ikki marta bosish, sichqoncha g'ildiragi, +/− tugmalari, ESC yopish).
+**Vizual qamrov**: har bir darsda rasmli kirish slaydi + rasmli savollar. **Barcha 83 darsda o'z rasmi** bor: 80 tasi kitobdan (Ahmedov I/II jild) kesilgan — suyaklar (25), bo'g'imlar (6), mushaklar (9), hazm (6), nafas (4), siydik (4), jinsiy (3), endokrin (3), yurak-tomir (7), nerv (10), sezgi (3). Kitobda rasmi bo'lmagan **teri, hid, ta'm (3 dars)**ga rangli illyustratsiya berilgan — atamalar kitob matnidan.
+
+**Raqamlangan qismlar + har qismga savol**: har bir kitob rasmi raqamlangan qismlar ro'yxati bilan keladi (masalan Atlas C1: 1-tuberculum anterius … 9-fovea dentis). **Har bir qismga avtomatik rasmli savol** generatsiya qilinadi: "Rasmda №N bilan qaysi qism ko'rsatilgan?" (76 darsda, 1100 savol). Ro'yxatdagi qismni bossangiz "№N — nomini rasmda toping" ko'rsatiladi. Shundan 10 tasi ko'ndalang kesma (rang bilan ajratilgan). Har bir rasmni bosib **to'liq ekranda kattalashtirib o'qish** mumkin (chimchilab zoom, surib ko'chirish, ikki marta bosish, sichqoncha g'ildiragi, +/− tugmalari, ESC yopish).
 
 | Tizim | Bo'limlar | Darslar |
 |---|---|---|
@@ -111,6 +113,18 @@ corpus/
 - **Gamifikatsiya** — XP, levels (Boshlang'ich → Ekspert), kunlik maqsad, seriya, 6 badge
 - **Premium logo** — split-face (suyak/anatomiya), binafsha gradient, halqa + laurel aksent
 - **Dark mode** — no-flash init script + reactive class toggle
+- **Spaced Repetition (SRS)** — xato qilingan savollar avtomatik qaytadi: interval 0 → 1 → 3 → 7 → 16 → 35 kun (5 marta to'g'ri javob = o'zlashtirildi). Dashboard'da "Takrorlash" tugmasi nechta savol kutayotganini ko'rsatadi
+- **Atamalar lug'ati** — ~1134 atama (lotincha + ma'nosi), qidiruv, ovoz bilan talaffuz, har atama qaysi darsda ekaniga havola
+- **Imtihon rejimi** — aralash (tasodifiy) savollar, vaqt o'lchovi, foizli natija (10/20/30/50 savol)
+- **Lotincha talaffuz (TTS)** — brauzer ovozi bilan atamalarni o'qish (lug'at, rasm qismlari, xatcho'plar)
+- **Xatcho'plar** — qiyin savollarni saqlash, alohida ro'yxat, javobi bilan
+- **Offline PWA** — o'rnatiladigan ilova: manifest + service worker, internetsiz ishlaydi. Dashboard'da **"O'rnatish" banneri** (Android tugma / iOS ko'rsatma) foydalanuvchini "Bosh ekranga qo'shish"ga undaydi
+- **Anatomy Tutor (re-engagement)** — 8 holatli o'quv yordamchisi (IDLE · HAPPY · CURIOUS · THINKING · ENCOURAGING · CONCERNED · CELEBRATING · WELCOME_BACK), faollikka qarab: 1 kun = qiziquvchan, 2-3 kun = xushmuomala tashvish, 7+ = motivatsion, 14+ = do'stona welcome-back (ayblamaydi). Yagona izchil vizual tizim, faqat CSS motion
+- **Welcome-back modal** — uzoq kirmagan foydalanuvchi qaytib kelganda qisqa comeback ketma-ketligi (tutor → anatomiya animatsiyasi → xabar → progress → tavsiya dars → harakatlar), dismissable, kuniga bir marta, lazy yuklanadi
+- **Kunlik sinov** — kunga qarab 5 toifadan biri (miya/yurak/o'pka/skelet/DNK), har biri vizual farqli
+- **Streak milestone** — 7/30/50/100 kunlik seriyada yumshoq nishonlash (confetti overload emas)
+- **Bildirishnomalar** — Notification API: ruxsat so'rash (Sozlamalar), qaytib kelganda kutib olish, seriya bosqichlari. (Ilova yopiq paytda push uchun Web Push serveri kerak — Render'da qo'shimcha qatlam)
+- **Asset registry** — `docs/ASSETS.md` (litsenziya + manba + ishlatilishi)
 - **Haptics** — Vibration API with graceful fallback
 - **Confetti** — canvas-based, respects `prefers-reduced-motion`
 - **Responsive** — verified 360 → 1440px (no horizontal overflow); centered `max-w-md` shell

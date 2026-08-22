@@ -3,6 +3,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { evaluateAchievements } from "@/utils/achievements";
+import { reviewCard, SRS_MASTERED_BOX, type SRSCard } from "@/utils/srs";
+import { isValidPremiumCode } from "@/data/premium";
 import {
   getCurrent,
   register as authRegister,
@@ -20,6 +22,7 @@ export type ScreenId =
   | "topics"
   | "lessons"
   | "lesson"
+  | "review"
   | "result-correct"
   | "result-wrong"
   | "profile"
@@ -27,9 +30,17 @@ export type ScreenId =
   | "study"
   | "progress"
   | "settings"
-  | "models3d";
+  | "models3d"
+  | "glossary"
+  | "exam"
+  | "bookmarks"
+  | "library"
+  | "info"
+  | "premium";
 
-export type Tab = "home" | "learn" | "profile" | "settings";
+export type Tab = "home" | "learn" | "library" | "profile";
+
+export type InfoSection = "about" | "terms" | "privacy";
 
 export interface Settings {
   darkMode: boolean;
@@ -60,6 +71,10 @@ const freshProgress = {
   achievements: [] as string[],
   lastResult: null as LessonResult | null,
   xpHistory: {} as Record<string, number>, // "YYYY-MM-DD" -> XP
+  srs: {} as Record<string, SRSCard>, // savol kaliti -> SRS kartasi
+  bookmarks: [] as string[], // xatcho'p qilingan savol kalitlari
+  lastActiveDay: "", // oxirgi faol kun "YYYY-MM-DD" (seriya hisobi uchun)
+  lastActiveAt: 0, // oxirgi faollik vaqti (ms) — maskot kayfiyati uchun
   settings: {
     darkMode: false,
     sound: true,
@@ -67,6 +82,8 @@ const freshProgress = {
     haptics: true,
     language: "uz",
   } as Settings,
+  avatar: null as string | null,
+  isPremium: false,
 };
 
 interface AppState {
@@ -76,6 +93,7 @@ interface AppState {
   history: ScreenId[];
   navigate: (screen: ScreenId) => void;
   back: () => void;
+  resetTo: (screen: ScreenId, backTo?: ScreenId[]) => void;
   setTab: (tab: Tab) => void;
 
   // auth
@@ -97,11 +115,26 @@ interface AppState {
   achievements: string[];
   lastResult: LessonResult | null;
   xpHistory: Record<string, number>;
+  srs: Record<string, SRSCard>;
+  bookmarks: string[];
+  lastActiveDay: string;
+  lastActiveAt: number;
 
   // settings
   settings: Settings;
   toggleSetting: (key: keyof Settings) => void;
   setLanguage: (lang: "en" | "uz") => void;
+
+  // profil rasmi + ma'lumot ekrani
+  avatar: string | null;
+  setAvatar: (dataUrl: string | null) => void;
+  infoSection: InfoSection;
+  openInfo: (section: InfoSection) => void;
+
+  // premium
+  isPremium: boolean;
+  activatePremium: (code: string) => boolean;
+  deactivatePremium: () => void;
 
   // actions
   finishOnboarding: () => void;
@@ -110,6 +143,9 @@ interface AppState {
   openLesson: (lessonId: string) => void;
   openSystem: (systemId: string) => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
+  recordAnswer: (key: string, correct: boolean) => void;
+  toggleBookmark: (key: string) => void;
+  touchActivity: () => void;
   resetProgress: () => void;
 }
 
@@ -170,12 +206,14 @@ export const useAppStore = create<AppState>()(
           const prev = history.pop();
           return { screen: prev ?? "dashboard", history };
         }),
+      resetTo: (screen, backTo) =>
+        set({ screen, history: backTo ? [...backTo] : [] }),
       setTab: (tab) => {
         const screen: Record<Tab, ScreenId> = {
           home: "dashboard",
           learn: "topics",
+          library: "library",
           profile: "profile",
-          settings: "settings",
         };
         set({ tab, screen: screen[tab], history: [] });
       },
@@ -223,6 +261,22 @@ export const useAppStore = create<AppState>()(
         set((s) => ({ settings: { ...s.settings, [key]: !s.settings[key] } })),
       setLanguage: (lang) => set((s) => ({ settings: { ...s.settings, language: lang } })),
 
+      avatar: null,
+      setAvatar: (dataUrl) => set({ avatar: dataUrl }),
+      infoSection: "about",
+      openInfo: (section) => {
+        set({ infoSection: section });
+        get().navigate("info");
+      },
+
+      isPremium: false,
+      activatePremium: (code) => {
+        if (!isValidPremiumCode(code)) return false;
+        set({ isPremium: true });
+        return true;
+      },
+      deactivatePremium: () => set({ isPremium: false }),
+
       finishOnboarding: () => set({ onboardingDone: true }),
 
       activeLessonId: null,
@@ -257,10 +311,22 @@ export const useAppStore = create<AppState>()(
 
         const result: LessonResult = { lessonId, score, total: totalQ, earned };
         const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+
+        // Seriya (streak): yangi kunda birinchi faollik — kecha faol bo'lgan bo'lsa +1, aks holda 1.
+        let streak = s.streak;
+        let lastActiveDay = s.lastActiveDay;
+        if (lastActiveDay !== today) {
+          streak = lastActiveDay === yesterday ? streak + 1 : 1;
+          lastActiveDay = today;
+        }
 
         set({
           xp: s.xp + earned,
           dailyXp: s.dailyXp + earned,
+          streak,
+          lastActiveDay,
+          lastActiveAt: Date.now(),
           correct: s.correct + score,
           total: s.total + totalQ,
           completedLessons,
@@ -272,6 +338,32 @@ export const useAppStore = create<AppState>()(
         return result;
       },
 
+      touchActivity: () =>
+        set((s) => ({ lastActiveAt: Date.now() })),
+
+      recordAnswer: (key, correct) => {
+        const s = get();
+        const card = s.srs[key];
+        // Yangi karta faqat XATO javobdan yaratiladi; karta bo'lmasa to'g'ri javob no-op.
+        if (!card && correct) return;
+        const updated = reviewCard(card, correct);
+        // O'zlashtirilgan (yuqori qutidan to'g'ri) — kartani takrorlashdan chiqarish.
+        if (correct && updated.box >= SRS_MASTERED_BOX) {
+          const next = { ...s.srs };
+          delete next[key];
+          set({ srs: next });
+          return;
+        }
+        set({ srs: { ...s.srs, [key]: updated } });
+      },
+
+      toggleBookmark: (key) =>
+        set((s) => ({
+          bookmarks: s.bookmarks.includes(key)
+            ? s.bookmarks.filter((k) => k !== key)
+            : [...s.bookmarks, key],
+        })),
+
       resetProgress: () =>
         set((s) => ({
           ...freshProgress,
@@ -281,7 +373,27 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "corpus-storage",
-      version: 1,
+      version: 6,
+      migrate: (persisted, version) => {
+        const p = (persisted ?? {}) as Partial<AppState> & {
+          srs?: Record<string, SRSCard>;
+          bookmarks?: string[];
+          lastActiveDay?: string;
+          lastActiveAt?: number;
+          avatar?: string | null;
+          isPremium?: boolean;
+        };
+        // v1..v6: yangi maydonlar (SRS, bookmarks, lastActive, avatar, isPremium) qo'shiladi — progress saqlanadi.
+        return {
+          ...p,
+          srs: p.srs ?? {},
+          bookmarks: p.bookmarks ?? [],
+          lastActiveDay: p.lastActiveDay ?? "",
+          lastActiveAt: p.lastActiveAt ?? 0,
+          avatar: p.avatar ?? null,
+          isPremium: p.isPremium ?? false,
+        };
+      },
       storage: createJSONStorage(() => rawStorage),
       partialize: (s) => ({
         onboardingDone: s.onboardingDone,
@@ -295,7 +407,13 @@ export const useAppStore = create<AppState>()(
         completedTopics: s.completedTopics,
         achievements: s.achievements,
         xpHistory: s.xpHistory,
+        srs: s.srs,
+        bookmarks: s.bookmarks,
+        lastActiveDay: s.lastActiveDay,
+        lastActiveAt: s.lastActiveAt,
         settings: s.settings,
+        avatar: s.avatar,
+        isPremium: s.isPremium,
       }),
     },
   ),

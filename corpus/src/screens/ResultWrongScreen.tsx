@@ -8,6 +8,7 @@ import { useStrings } from "@/i18n";
 
 export function ResultWrongScreen() {
   const navigate = useAppStore((s) => s.navigate);
+  const resetTo = useAppStore((s) => s.resetTo);
   const t = useStrings();
 
   return (
@@ -28,10 +29,10 @@ export function ResultWrongScreen() {
       </p>
 
       <div className="flex w-full max-w-xs flex-col gap-3">
-        <Button size="lg" onClick={() => navigate("lesson")}>
+        <Button size="lg" onClick={() => resetTo("lesson", ["lessons"])}>
           {t.retry}
         </Button>
-        <Button size="lg" variant="ghost" onClick={() => navigate("topics")}>
+        <Button size="lg" variant="ghost" onClick={() => resetTo("topics")}>
           {t.backToTopics}
         </Button>
       </div>

@@ -1,41 +1,69 @@
 "use client";
 
-import { Flame, Zap, TrendingUp, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { Sun, Zap, Crown } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
-import { Donut } from "@/components/ui/Donut";
-import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
+import { AdBanner } from "@/components/AdBanner";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
+import { activityState } from "@/utils/activity";
+import { StreakCelebration } from "@/components/reengage/StreakCelebration";
+import { useNotifications } from "@/hooks/useNotifications";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
 
-const QUICK_TOPICS = [
-  { id: "bones", labelKey: "bones" as const, icon: "bone", color: "#6C5CE7" },
-  { id: "muscles", labelKey: "muscles" as const, icon: "activity", color: "#FD79A8" },
-  { id: "organs", labelKey: "organs" as const, icon: "apple", color: "#00B894" },
-  { id: "nerves", labelKey: "nerves" as const, icon: "brain", color: "#A29BFE" },
-];
+// Welcome-back modal — lazy (faqat kerak bo'lganda yuklanadi).
+const WelcomeBackModal = dynamic(
+  () => import("@/components/reengage/WelcomeBackModal").then((m) => m.WelcomeBackModal),
+  { ssr: false },
+);
 
 export function DashboardScreen() {
   const xp = useAppStore((s) => s.xp);
-  const dailyXp = useAppStore((s) => s.dailyXp);
-  const dailyGoal = useAppStore((s) => s.dailyGoal);
   const streak = useAppStore((s) => s.streak);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
+  const avatar = useAppStore((s) => s.avatar);
+  const isPremium = useAppStore((s) => s.isPremium);
+  const lastActiveAt = useAppStore((s) => s.lastActiveAt);
   const navigate = useAppStore((s) => s.navigate);
-  const setTab = useAppStore((s) => s.setTab);
   const openLesson = useAppStore((s) => s.openLesson);
   const t = useStrings();
 
+  const activity = activityState(streak, lastActiveAt);
+  const { notify } = useNotifications();
+  const [showWelcomeBack, setShowWelcomeBack] = useState(false);
+
+  // Uzoq kirmagan bo'lsa — qaytib kelganda bildirishnoma + comeback modal (kuniga bir marta).
+  useEffect(() => {
+    if (activity.daysAway >= 1) {
+      notify(t.notifWelcome, fmt(t[activity.messageKey], { n: streak }));
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        if (sessionStorage.getItem("corpus-wb-seen-" + today) !== "1") setShowWelcomeBack(true);
+      } catch {
+        /* no-op */
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const closeWelcomeBack = () => {
+    setShowWelcomeBack(false);
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      sessionStorage.setItem("corpus-wb-seen-" + today, "1");
+    } catch {
+      /* no-op */
+    }
+  };
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
-  const goalPct = Math.min(100, Math.round((dailyXp / dailyGoal) * 100));
   const doneCount = completedLessons.filter((id) => ALL_LESSONS.some((l) => l.id === id)).length;
   const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
   const nextSystem = systemOfLesson(nextLesson.id);
@@ -49,64 +77,31 @@ export function DashboardScreen() {
         <span className="text-lg font-bold tracking-tight">
           {t.brand}
         </span>
+        {isPremium && (
+          <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-2.5 py-1 text-[11px] font-bold text-[#1a1230]">
+            <Crown className="h-3 w-3" aria-hidden /> PRO
+          </span>
+        )}
       </header>
 
       {/* greeting */}
       <header className="mt-4 flex items-center gap-3">
-        <Avatar name={name} size={44} />
-        <div className="flex-1">
+        <Avatar name={name} size={44} src={avatar?.startsWith("emoji:") || avatar?.startsWith("color:") ? null : avatar} />
+        <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-sm text-muted">
-            <Sun className="h-4 w-4 text-warning" aria-hidden /> {t.goodMorning}
+            <Sun className="h-4 w-4 shrink-0 text-warning" aria-hidden /> {t.goodMorning}
           </p>
-          <p className="text-base font-semibold leading-tight">{name}</p>
+          <p className="break-words text-base font-semibold leading-tight">{name}</p>
         </div>
-        <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
+        <span className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
           {t.level} {level} · {tier}
         </span>
       </header>
 
-      {/* Daily goal */}
-      <Card className="mt-5 flex items-center gap-4 p-4">
-        <Donut value={goalPct} size={92} stroke={11}>
-          <div className="text-center">
-            <p className="text-lg font-bold leading-none">{dailyXp}</p>
-            <p className="text-[10px] text-muted">XP</p>
-          </div>
-        </Donut>
-        <div className="flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted">{t.todayGoal}</p>
-          <p className="mt-1 text-xl font-bold">
-            {dailyXp}
-            <span className="text-sm font-medium text-muted"> / {dailyGoal} XP</span>
-          </p>
-          <ProgressBar value={goalPct} className="mt-2" />
-          <p className="mt-1.5 text-xs text-muted">{fmt(t.goalPercent, { pct: goalPct })}</p>
-        </div>
-      </Card>
+      <StreakCelebration streak={streak} />
 
-      {/* streak + level */}
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <Card className="flex items-center gap-3 p-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-warning/10 text-warning">
-            <Flame className="h-6 w-6" aria-hidden />
-          </div>
-          <div>
-            <p className="text-xl font-bold leading-none">
-              {streak} {t.days}
-            </p>
-            <p className="mt-1 text-xs text-muted">{t.streak}</p>
-          </div>
-        </Card>
-        <Card className="flex items-center gap-3 p-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <TrendingUp className="h-6 w-6" aria-hidden />
-          </div>
-          <div>
-            <p className="text-xl font-bold leading-none">{xp} XP</p>
-            <p className="mt-1 text-xs text-muted">{t.totalEarned}</p>
-          </div>
-        </Card>
-      </div>
+      {/* Reklama banneri — faqat bepul foydalanuvchilarga */}
+      {!isPremium && <AdBanner />}
 
       {/* Continue learning */}
       <section className="mt-6">
@@ -139,32 +134,21 @@ export function DashboardScreen() {
         </Card>
       </section>
 
-      {/* Quick topics */}
-      <section className="mt-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">{t.quickTopics}</h2>
-          <button onClick={() => setTab("learn")} className="text-sm font-semibold text-primary">
-            {t.seeAll}
-          </button>
-        </div>
-        <div className="mt-3 grid grid-cols-2 gap-4">
-          {QUICK_TOPICS.map((q) => (
-            <Card
-              key={q.id}
-              onClick={() => (q.id === "organs" ? navigate("study") : setTab("learn"))}
-              className="flex items-center gap-3 p-4"
-            >
-              <div
-                className="flex h-11 w-11 items-center justify-center rounded-xl"
-                style={{ background: `${q.color}1f`, color: q.color }}
-              >
-                <Icon name={q.icon} className="h-6 w-6" />
-              </div>
-              <span className="text-sm font-semibold">{t[q.labelKey]}</span>
-            </Card>
-          ))}
-        </div>
-      </section>
+      {/* comeback modal (lazy) */}
+      {showWelcomeBack && (
+        <WelcomeBackModal
+          daysAway={activity.daysAway}
+          onClose={closeWelcomeBack}
+          onContinue={() => {
+            closeWelcomeBack();
+            openLesson(nextLesson.id);
+          }}
+          onChallenge={() => {
+            closeWelcomeBack();
+            navigate("exam");
+          }}
+        />
+      )}
     </Screen>
   );
 }

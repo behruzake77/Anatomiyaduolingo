@@ -1,10 +1,18 @@
 import type { Metadata, Viewport } from "next";
+import { PwaRegister } from "@/components/PwaRegister";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "CORPUS — Anatomiyani o'rgan. Hayotni boshqar.",
   description:
     "Anatomiyani Duolingo uslubida o'rganing: interaktiv darslar, aqlli testlar, 3D o'rganish rejimi va gamifikatsiya.",
+  manifest: "/manifest.json",
+  applicationName: "CORPUS",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "CORPUS",
+  },
   icons: {
     icon: "/logo/icon-192.png",
     apple: "/logo/icon-192.png",
@@ -31,7 +39,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
-      <body className="bg-bg text-ink antialiased">{children}</body>
+      <body className="bg-bg text-ink antialiased">
+        {children}
+        <PwaRegister />
+      </body>
     </html>
   );
 }
