@@ -69,6 +69,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l49: "/img/color/l49.jpg", // Tizza bo'g'imi
   l50: "/img/color/l50.jpg", // Oyoq panjasi bo'g'imlari
   l31: "/img/color/l31.jpg", // Hazm tizimi (umumiy)
+  l32: "/img/color/l32.jpg", // Oshqozon
 };
 
 /**
@@ -518,6 +519,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "7": "/img/color/l31_7.jpg", // Colon transversum
     "8": "/img/color/l31_8.jpg", // Colon descendens
     "9": "/img/color/l31_9.jpg", // Colon sigmoideum
+  },
+  l32: {
+    "1": "/img/color/l32_1.jpg", // Fundus gastricus
+    "2": "/img/color/l32_2.jpg", // Curvatura major
+    "3": "/img/color/l32_3.jpg", // Corpus gastricum
+    "4": "/img/color/l32_4.jpg", // Antrum pyloricum
   },
 };
 
