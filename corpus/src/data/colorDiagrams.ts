@@ -692,6 +692,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "13": "/img/color/l69_13.jpg", // Margo anterior
     "14": "/img/color/l69_14.jpg", // Facies diaphragmatica
     "15": "/img/color/l69_15.jpg", // Margo inferior
+    "16": "/img/color/l69_16.jpg", // Lobus inferior pulmonis dextri
+    "17": "/img/color/l69_17.jpg", // Lobus medius pulmonis dextri
+    "18": "/img/color/l69_18.jpg", // Fissura horizontalis pulmonis dextri
+    "19": "/img/color/l69_19.jpg", // Pulmo dexter
+    "20": "/img/color/l69_20.jpg", // Lobus superior pulmonis dextri
+    "21": "/img/color/l69_21.jpg", // Bifurcatio tracheae
   },
 };
 
