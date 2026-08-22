@@ -70,6 +70,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l50: "/img/color/l50.jpg", // Oyoq panjasi bo'g'imlari
   l31: "/img/color/l31.jpg", // Hazm tizimi (umumiy)
   l32: "/img/color/l32.jpg", // Oshqozon
+  l33: "/img/color/l33.jpg", // Qorin bo'shlig'i a'zolari
 };
 
 /**
@@ -545,6 +546,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "9": "/img/color/l32_9.jpg", // Ostium pyloricum
     "10": "/img/color/l32_10.jpg", // Incisura angularis
     "11": "/img/color/l32_11.jpg", // Curvatura minor
+    "12": "/img/color/l32_12.jpg", // Pars cardiaca
+    "13": "/img/color/l32_13.jpg", // Pars abdominalis esophagi
+    "14": "/img/color/l32_14.jpg", // Incisura cardiaca
+  },
+  l33: {
+    "1": "/img/color/l33_1.jpg", // Lig. hepatoduodenale
+    "2": "/img/color/l33_2.jpg", // Lig. hepatogastricum
+    "3": "/img/color/l33_3.jpg", // Hepar
+    "4": "/img/color/l33_4.jpg", // Omentum minus
+    "5": "/img/color/l33_5.jpg", // Curvatura minor
+    "6": "/img/color/l33_6.jpg", // Gaster
   },
 };
 
