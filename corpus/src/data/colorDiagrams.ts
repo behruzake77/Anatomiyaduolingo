@@ -72,6 +72,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l32: "/img/color/l32.jpg", // Oshqozon
   l33: "/img/color/l33.jpg", // Qorin bo'shlig'i a'zolari
   l65: "/img/color/l65.jpg", // Tish tuzilishi
+  l66: "/img/color/l66.jpg", // Qizilo'ngach devori
 };
 
 /**
@@ -579,6 +580,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l65_6.jpg", // Foramen apicis dentis
     "7": "/img/color/l65_7.jpg", // Radix dentis
     "8": "/img/color/l65_8.jpg", // Collum dentis
+    "9": "/img/color/l65_9.jpg", // Corona dentis
+  },
+  l66: {
+    "1": "/img/color/l66_1.jpg", // Tunica adventitia
+    "2": "/img/color/l66_2.jpg", // Stratum longitudinale
+    "3": "/img/color/l66_3.jpg", // Stratum circulare
+    "4": "/img/color/l66_4.jpg", // Tela submucosa
+    "5": "/img/color/l66_5.jpg", // Tunica mucosa
+    "6": "/img/color/l66_6.jpg", // Epithelium
+    "7": "/img/color/l66_7.jpg", // Qizilo'ngach bo'shlig'i
+    "8": "/img/color/l66_8.jpg", // Plicae tunicae mucosae
   },
 };
 
