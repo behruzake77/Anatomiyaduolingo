@@ -73,6 +73,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l33: "/img/color/l33.jpg", // Qorin bo'shlig'i a'zolari
   l65: "/img/color/l65.jpg", // Tish tuzilishi
   l66: "/img/color/l66.jpg", // Qizilo'ngach devori
+  l67: "/img/color/l67.jpg", // Oshqozon osti bezi
 };
 
 /**
@@ -591,6 +592,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l66_6.jpg", // Epithelium
     "7": "/img/color/l66_7.jpg", // Qizilo'ngach bo'shlig'i
     "8": "/img/color/l66_8.jpg", // Plicae tunicae mucosae
+  },
+  l67: {
+    "1": "/img/color/l67_1.jpg", // Ductus pancreaticus accessorius
+    "2": "/img/color/l67_2.jpg", // Margo superior
+    "3": "/img/color/l67_3.jpg", // Corpus pancreatis
+    "4": "/img/color/l67_4.jpg", // Cauda pancreatis
+    "5": "/img/color/l67_5.jpg", // Margo inferior
+    "6": "/img/color/l67_6.jpg", // Ductus pancreaticus
+    "7": "/img/color/l67_7.jpg", // Margo anterior
+    "8": "/img/color/l67_8.jpg", // Incisura pancreatis
+    "9": "/img/color/l67_9.jpg", // Processus uncinatus
   },
 };
 
