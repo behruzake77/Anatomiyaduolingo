@@ -557,6 +557,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l33_4.jpg", // Omentum minus
     "5": "/img/color/l33_5.jpg", // Curvatura minor
     "6": "/img/color/l33_6.jpg", // Gaster
+    "7": "/img/color/l33_7.jpg", // Colon descendens
+    "8": "/img/color/l33_8.jpg", // Colon sigmoideum
+    "9": "/img/color/l33_9.jpg", // Rectum
+    "10": "/img/color/l33_10.jpg", // Symphysis pubica
+    "11": "/img/color/l33_11.jpg", // Vesica urinaria
+    "12": "/img/color/l33_12.jpg", // Appendix vermiformis
+    "13": "/img/color/l33_13.jpg", // Mesenterium
+    "14": "/img/color/l33_14.jpg", // Colon ascendens
+    "15": "/img/color/l33_15.jpg", // Duodenum
+    "16": "/img/color/l33_16.jpg", // Foramen omentale
   },
 };
 
