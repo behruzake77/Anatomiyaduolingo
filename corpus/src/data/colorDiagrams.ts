@@ -626,6 +626,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l35_3.jpg", // Lamina visceralis fasciae
     "4": "/img/color/l35_4.jpg", // Tunica mucosa
     "5": "/img/color/l35_5.jpg", // Bronchus lobaris superior sinister
+    "6": "/img/color/l35_6.jpg", // Bronchus segmentalis apicoposterior
+    "7": "/img/color/l35_7.jpg", // Bronchus segmentalis anterior
+    "8": "/img/color/l35_8.jpg", // Bronchus lingularis superior
+    "9": "/img/color/l35_9.jpg", // Bronchus lingularis inferior
+    "10": "/img/color/l35_10.jpg", // Bronchus segmentalis superius
+    "11": "/img/color/l35_11.jpg", // Bronchus segmentalis basalis medialis
+    "12": "/img/color/l35_12.jpg", // Bronchus segmentalis basalis lateralis
+    "13": "/img/color/l35_13.jpg", // Bronchus segmentalis basalis posterior
+    "14": "/img/color/l35_14.jpg", // Bronchus lobaris inferior sinister
+    "15": "/img/color/l35_15.jpg", // Bronchus principalis sinister
     "30": "/img/color/l35_30.jpg", // Trachea
     "31": "/img/color/l35_31.jpg", // Cartilago cricoidea
   },
