@@ -519,6 +519,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "7": "/img/color/l31_7.jpg", // Colon transversum
     "8": "/img/color/l31_8.jpg", // Colon descendens
     "9": "/img/color/l31_9.jpg", // Colon sigmoideum
+    "10": "/img/color/l31_10.jpg", // Rectum
+    "11": "/img/color/l31_11.jpg", // Ileum
+    "12": "/img/color/l31_12.jpg", // Appendix vermiformis
+    "13": "/img/color/l31_13.jpg", // Caecum
+    "14": "/img/color/l31_14.jpg", // Colon ascendens
+    "15": "/img/color/l31_15.jpg", // Duodenum
+    "16": "/img/color/l31_16.jpg", // Ductus choledochus
+    "17": "/img/color/l31_17.jpg", // Vesica biliaris
+    "18": "/img/color/l31_18.jpg", // Lobus hepatis dexter
+    "19": "/img/color/l31_19.jpg", // Lobus hepatis sinister
   },
   l32: {
     "1": "/img/color/l32_1.jpg", // Fundus gastricus
