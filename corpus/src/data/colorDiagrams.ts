@@ -636,6 +636,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "13": "/img/color/l35_13.jpg", // Bronchus segmentalis basalis posterior
     "14": "/img/color/l35_14.jpg", // Bronchus lobaris inferior sinister
     "15": "/img/color/l35_15.jpg", // Bronchus principalis sinister
+    "16": "/img/color/l35_16.jpg", // Bronchus principalis dexter
+    "17": "/img/color/l35_17.jpg", // Bronchus segmentalis basalis posterior
+    "18": "/img/color/l35_18.jpg", // Bronchus segmentalis basalis lateralis
+    "19": "/img/color/l35_19.jpg", // Bronchus segmentalis basalis anterior
+    "20": "/img/color/l35_20.jpg", // Bronchus segmentalis basalis medialis
+    "21": "/img/color/l35_21.jpg", // Bronchus lobaris inferior dexter
+    "22": "/img/color/l35_22.jpg", // Bronchus segmentalis medialis
+    "23": "/img/color/l35_23.jpg", // Bronchus segmentalis lateralis
+    "24": "/img/color/l35_24.jpg", // Bronchus lobaris medius dexter
+    "25": "/img/color/l35_25.jpg", // Bronchus segmentalis superior
     "30": "/img/color/l35_30.jpg", // Trachea
     "31": "/img/color/l35_31.jpg", // Cartilago cricoidea
   },
