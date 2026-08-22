@@ -682,6 +682,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l69_3.jpg", // Apex pulmonis
     "4": "/img/color/l69_4.jpg", // Facies costalis
     "5": "/img/color/l69_5.jpg", // Lobus superior pulmonis sinistri
+    "6": "/img/color/l69_6.jpg", // Pulmo sinister
+    "7": "/img/color/l69_7.jpg", // Fissura obliqua
+    "8": "/img/color/l69_8.jpg", // Lobus inferior pulmonis sinistri
+    "9": "/img/color/l69_9.jpg", // Basis pulmonis
+    "10": "/img/color/l69_10.jpg", // Lingula pulmonis sinistri
+    "11": "/img/color/l69_11.jpg", // Incisura cardiaca pulmonis sinistri
+    "12": "/img/color/l69_12.jpg", // Margo posterior
+    "13": "/img/color/l69_13.jpg", // Margo anterior
+    "14": "/img/color/l69_14.jpg", // Facies diaphragmatica
+    "15": "/img/color/l69_15.jpg", // Margo inferior
   },
 };
 
