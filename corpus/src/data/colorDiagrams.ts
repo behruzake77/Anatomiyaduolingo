@@ -76,6 +76,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l67: "/img/color/l67.jpg", // Oshqozon osti bezi
   l34: "/img/color/l34.jpg", // Burun bo'shlig'i to'sig'i
   l35: "/img/color/l35.jpg", // Kekirdak va bronxlar
+  l68: "/img/color/l68.jpg", // Hiqildoq tog'aylari
 };
 
 /**
@@ -646,8 +647,19 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "23": "/img/color/l35_23.jpg", // Bronchus segmentalis lateralis
     "24": "/img/color/l35_24.jpg", // Bronchus lobaris medius dexter
     "25": "/img/color/l35_25.jpg", // Bronchus segmentalis superior
+    "26": "/img/color/l35_26.jpg", // Bronchus segmentalis anterior
+    "27": "/img/color/l35_27.jpg", // Bronchus segmentalis posterior
+    "28": "/img/color/l35_28.jpg", // Bronchus segmentalis apicalis
+    "29": "/img/color/l35_29.jpg", // Bronchus lobaris superior dexter
     "30": "/img/color/l35_30.jpg", // Trachea
     "31": "/img/color/l35_31.jpg", // Cartilago cricoidea
+  },
+  l68: {
+    "1": "/img/color/l68_1.jpg", // Corpus ossis hyoidei
+    "2": "/img/color/l68_2.jpg", // Cornu minus ossis hyoidei
+    "3": "/img/color/l68_3.jpg", // Cornu majus ossis hyoidei
+    "4": "/img/color/l68_4.jpg", // Cartilago triticea
+    "5": "/img/color/l68_5.jpg", // Cornu superius cartilaginis thyroideae
   },
 };
 
