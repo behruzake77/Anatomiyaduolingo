@@ -80,6 +80,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l69: "/img/color/l69.jpg", // O'pka va plevra
   l36: "/img/color/l36.jpg", // Buyrak
   l37: "/img/color/l37.jpg", // Siydik yo'llari
+  l70: "/img/color/l70.jpg", // Nefron
 };
 
 /**
@@ -721,6 +722,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l37_4.jpg", // Ampulla ductus deferentis
     "5": "/img/color/l37_5.jpg", // Ductus ejaculatorius
     "6": "/img/color/l37_6.jpg", // Glandula bulbourethralis
+    "7": "/img/color/l37_7.jpg", // M. transversus perinei profundus
+    "8": "/img/color/l37_8.jpg", // Os pubis
+    "9": "/img/color/l37_9.jpg", // Prostata
+    "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l70: {
+    "1": "/img/color/l70_1.jpg", // Corpusculum renale
+    "2": "/img/color/l70_2.jpg", // Glomerulum
+    "3": "/img/color/l70_3.jpg", // Capsula glomerularis
+    "4": "/img/color/l70_4.jpg", // A. interlobularis
+    "5": "/img/color/l70_5.jpg", // Arteriola glomerularis afferens
   },
 };
 
