@@ -77,6 +77,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l34: "/img/color/l34.jpg", // Burun bo'shlig'i to'sig'i
   l35: "/img/color/l35.jpg", // Kekirdak va bronxlar
   l68: "/img/color/l68.jpg", // Hiqildoq tog'aylari
+  l69: "/img/color/l69.jpg", // O'pka va plevra
 };
 
 /**
@@ -670,6 +671,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "13": "/img/color/l68_13.jpg", // Lig. cricotracheale
     "14": "/img/color/l68_14.jpg", // Lig. ceratocricoideum anterius
     "15": "/img/color/l68_15.jpg", // Lig. cricothyroideum medianum
+    "16": "/img/color/l68_16.jpg", // Lamina dextra cartilaginis thyroideae
+    "17": "/img/color/l68_17.jpg", // Incisura thyroidea superior
+    "18": "/img/color/l68_18.jpg", // Lig. thyrohyoideum medianum
+    "19": "/img/color/l68_19.jpg", // Lig. thyrohyoideum laterale
+  },
+  l69: {
+    "1": "/img/color/l69_1.jpg", // Larynx
+    "2": "/img/color/l69_2.jpg", // Trachea
+    "3": "/img/color/l69_3.jpg", // Apex pulmonis
+    "4": "/img/color/l69_4.jpg", // Facies costalis
+    "5": "/img/color/l69_5.jpg", // Lobus superior pulmonis sinistri
   },
 };
 
