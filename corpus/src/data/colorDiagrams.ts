@@ -733,6 +733,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l70_3.jpg", // Capsula glomerularis
     "4": "/img/color/l70_4.jpg", // A. interlobularis
     "5": "/img/color/l70_5.jpg", // Arteriola glomerularis afferens
+    "6": "/img/color/l70_6.jpg", // Arteriola glomerularis efferens
+    "7": "/img/color/l70_7.jpg", // Vasa interlobularia
+    "8": "/img/color/l70_8.jpg", // V. arcuata
+    "9": "/img/color/l70_9.jpg", // A. arcuata
+    "10": "/img/color/l70_10.jpg", // Ansa nephroni
+    "11": "/img/color/l70_11.jpg", // Rete capillare peritubulare
+    "12": "/img/color/l70_12.jpg", // Ductuli papillaris
+    "13": "/img/color/l70_13.jpg", // Tubuli renalis colligentes
+    "14": "/img/color/l70_14.jpg", // Tubuli conjunctivi
+    "15": "/img/color/l70_15.jpg", // Tubuli renalis contorti secunda
   },
 };
 
