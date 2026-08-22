@@ -529,12 +529,22 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "17": "/img/color/l31_17.jpg", // Vesica biliaris
     "18": "/img/color/l31_18.jpg", // Lobus hepatis dexter
     "19": "/img/color/l31_19.jpg", // Lobus hepatis sinister
+    "20": "/img/color/l31_20.jpg", // Glandula submandibularis
+    "21": "/img/color/l31_21.jpg", // Glandula sublingualis
+    "22": "/img/color/l31_22.jpg", // Cavitas oris
   },
   l32: {
     "1": "/img/color/l32_1.jpg", // Fundus gastricus
     "2": "/img/color/l32_2.jpg", // Curvatura major
     "3": "/img/color/l32_3.jpg", // Corpus gastricum
     "4": "/img/color/l32_4.jpg", // Antrum pyloricum
+    "5": "/img/color/l32_5.jpg", // Canalis pyloricus
+    "6": "/img/color/l32_6.jpg", // M. sphincter pyloricus
+    "7": "/img/color/l32_7.jpg", // Pilorik torayma
+    "8": "/img/color/l32_8.jpg", // Pars descendens duodeni
+    "9": "/img/color/l32_9.jpg", // Ostium pyloricum
+    "10": "/img/color/l32_10.jpg", // Incisura angularis
+    "11": "/img/color/l32_11.jpg", // Curvatura minor
   },
 };
 
