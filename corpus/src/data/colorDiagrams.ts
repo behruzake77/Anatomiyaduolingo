@@ -71,6 +71,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l31: "/img/color/l31.jpg", // Hazm tizimi (umumiy)
   l32: "/img/color/l32.jpg", // Oshqozon
   l33: "/img/color/l33.jpg", // Qorin bo'shlig'i a'zolari
+  l65: "/img/color/l65.jpg", // Tish tuzilishi
 };
 
 /**
@@ -567,6 +568,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "14": "/img/color/l33_14.jpg", // Colon ascendens
     "15": "/img/color/l33_15.jpg", // Duodenum
     "16": "/img/color/l33_16.jpg", // Foramen omentale
+    "17": "/img/color/l33_17.jpg", // Vesica biliaris
+  },
+  l65: {
+    "1": "/img/color/l65_1.jpg", // Enamelum
+    "2": "/img/color/l65_2.jpg", // Dentinum
+    "3": "/img/color/l65_3.jpg", // Cavum dentis
+    "4": "/img/color/l65_4.jpg", // Canalis radicis dentis
+    "5": "/img/color/l65_5.jpg", // Cementum
+    "6": "/img/color/l65_6.jpg", // Foramen apicis dentis
+    "7": "/img/color/l65_7.jpg", // Radix dentis
+    "8": "/img/color/l65_8.jpg", // Collum dentis
   },
 };
 
