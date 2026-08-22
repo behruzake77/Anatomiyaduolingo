@@ -78,6 +78,8 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l35: "/img/color/l35.jpg", // Kekirdak va bronxlar
   l68: "/img/color/l68.jpg", // Hiqildoq tog'aylari
   l69: "/img/color/l69.jpg", // O'pka va plevra
+  l36: "/img/color/l36.jpg", // Buyrak
+  l37: "/img/color/l37.jpg", // Siydik yo'llari
 };
 
 /**
@@ -698,6 +700,27 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "19": "/img/color/l69_19.jpg", // Pulmo dexter
     "20": "/img/color/l69_20.jpg", // Lobus superior pulmonis dextri
     "21": "/img/color/l69_21.jpg", // Bifurcatio tracheae
+  },
+  l36: {
+    "1": "/img/color/l36_1.jpg", // Columna renalis
+    "2": "/img/color/l36_2.jpg", // Calyces renales majores
+    "3": "/img/color/l36_3.jpg", // A. renalis
+    "4": "/img/color/l36_4.jpg", // V. renalis
+    "5": "/img/color/l36_5.jpg", // Pelvis renalis
+    "6": "/img/color/l36_6.jpg", // Ureter
+    "7": "/img/color/l36_7.jpg", // Calyces renales minores
+    "8": "/img/color/l36_8.jpg", // Sinus renalis
+    "9": "/img/color/l36_9.jpg", // Papilla renalis
+    "10": "/img/color/l36_10.jpg", // Cortex renis
+    "11": "/img/color/l36_11.jpg", // Pyramides renales
+  },
+  l37: {
+    "1": "/img/color/l37_1.jpg", // Ureter
+    "2": "/img/color/l37_2.jpg", // Ductus deferens
+    "3": "/img/color/l37_3.jpg", // Glandula seminalis
+    "4": "/img/color/l37_4.jpg", // Ampulla ductus deferentis
+    "5": "/img/color/l37_5.jpg", // Ductus ejaculatorius
+    "6": "/img/color/l37_6.jpg", // Glandula bulbourethralis
   },
 };
 
