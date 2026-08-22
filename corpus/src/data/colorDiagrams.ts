@@ -74,6 +74,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l65: "/img/color/l65.jpg", // Tish tuzilishi
   l66: "/img/color/l66.jpg", // Qizilo'ngach devori
   l67: "/img/color/l67.jpg", // Oshqozon osti bezi
+  l34: "/img/color/l34.jpg", // Burun bo'shlig'i to'sig'i
 };
 
 /**
@@ -603,6 +604,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "7": "/img/color/l67_7.jpg", // Margo anterior
     "8": "/img/color/l67_8.jpg", // Incisura pancreatis
     "9": "/img/color/l67_9.jpg", // Processus uncinatus
+    "10": "/img/color/l67_10.jpg", // Caput pancreatis
+    "11": "/img/color/l67_6.jpg", // Ductus pancreaticus (qayta)
+    "12": "/img/color/l67_12.jpg", // Ductus choledochus
+  },
+  l34: {
+    "1": "/img/color/l34_1.jpg", // Sinus frontalis
+    "2": "/img/color/l34_2.jpg", // Lamina perpendicularis
+    "3": "/img/color/l34_3.jpg", // Sinus sphenoidalis
+    "4": "/img/color/l34_4.jpg", // Sella turcica
+    "5": "/img/color/l34_5.jpg", // Crista nasalis
+    "6": "/img/color/l34_6.jpg", // Vomer
+    "7": "/img/color/l34_7.jpg", // Spina nasalis anterior
   },
 };
 
