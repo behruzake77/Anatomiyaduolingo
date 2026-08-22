@@ -75,6 +75,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l66: "/img/color/l66.jpg", // Qizilo'ngach devori
   l67: "/img/color/l67.jpg", // Oshqozon osti bezi
   l34: "/img/color/l34.jpg", // Burun bo'shlig'i to'sig'i
+  l35: "/img/color/l35.jpg", // Kekirdak va bronxlar
 };
 
 /**
@@ -616,6 +617,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l34_5.jpg", // Crista nasalis
     "6": "/img/color/l34_6.jpg", // Vomer
     "7": "/img/color/l34_7.jpg", // Spina nasalis anterior
+    "8": "/img/color/l34_8.jpg", // Cartilago septi nasi
+    "9": "/img/color/l34_9.jpg", // Os nasale
+  },
+  l35: {
+    "1": "/img/color/l35_1.jpg", // Cartilago thyroidea
+    "2": "/img/color/l35_2.jpg", // Lig. cricothyroideum medianum
+    "3": "/img/color/l35_3.jpg", // Lamina visceralis fasciae
+    "4": "/img/color/l35_4.jpg", // Tunica mucosa
+    "5": "/img/color/l35_5.jpg", // Bronchus lobaris superior sinister
+    "30": "/img/color/l35_30.jpg", // Trachea
+    "31": "/img/color/l35_31.jpg", // Cartilago cricoidea
   },
 };
 
