@@ -83,6 +83,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l70: "/img/color/l70.jpg", // Nefron
   l71: "/img/color/l71.jpg", // Siydik chiqarish nayining prostata qismi
   l72: "/img/color/l72.jpg", // O'ng moyak va moyak ortig'i
+  l73: "/img/color/l73.jpg", // Ayollarning jinsiy a'zolari
 };
 
 /**
@@ -729,6 +730,14 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
   },
+  l73: {
+    "1": "/img/color/l73_1.jpg", // Rectum
+    "2": "/img/color/l73_2.jpg", // Canalis analis
+    "3": "/img/color/l73_3.jpg", // M. sphincter ani
+    "4": "/img/color/l73_4.jpg", // Urethra feminina
+    "5": "/img/color/l73_5.jpg", // Vesica urinaria
+    "6": "/img/color/l73_6.jpg", // Vagina
+  },
   l72: {
     "1": "/img/color/l72_1.jpg", // Funiculus spermaticus
     "2": "/img/color/l72_2.jpg", // Fascia spermatica interna
@@ -739,6 +748,9 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "7": "/img/color/l72_7.jpg", // Margo anterior
     "8": "/img/color/l72_8.jpg", // Extremitas inferior
     "9": "/img/color/l72_9.jpg", // Lig. epididymidis inferior
+    "10": "/img/color/l72_10.jpg", // Cauda epididymidis
+    "11": "/img/color/l72_11.jpg", // Corpus epididymidis
+    "12": "/img/color/l72_12.jpg", // Sinus epididymidis
   },
   l71: {
     "1": "/img/color/l71_1.jpg", // Sinus prostaticus
