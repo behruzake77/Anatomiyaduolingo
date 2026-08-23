@@ -753,6 +753,13 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "17": "/img/color/l76_17.jpg", // M. pectoralis major
     "18": "/img/color/l76_18.jpg", // Clavicula
     "19": "/img/color/l76_19.jpg", // Venter inferior m. omohyoidei
+    "20": "/img/color/l76_20.jpg", // M. deltoideus
+    "21": "/img/color/l76_21.jpg", // Acromion
+    "22": "/img/color/l76_22.jpg", // M. trapezius
+    "23": "/img/color/l76_23.jpg", // M. scalenus anterior
+    "24": "/img/color/l76_24.jpg", // M. scalenus medius
+    "25": "/img/color/l76_25.jpg", // M. scalenus posterior
+    "26": "/img/color/l76_26.jpg", // M. levator scapulae
   },
   l75: {
     "a1": "/img/color/l75_a1.jpg", // O'ng: Facies renalis
