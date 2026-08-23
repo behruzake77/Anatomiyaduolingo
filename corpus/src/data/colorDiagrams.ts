@@ -82,6 +82,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l37: "/img/color/l37.jpg", // Siydik yo'llari
   l70: "/img/color/l70.jpg", // Nefron
   l71: "/img/color/l71.jpg", // Siydik chiqarish nayining prostata qismi
+  l72: "/img/color/l72.jpg", // O'ng moyak va moyak ortig'i
 };
 
 /**
@@ -727,6 +728,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l37_8.jpg", // Os pubis
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l72: {
+    "1": "/img/color/l72_1.jpg", // Funiculus spermaticus
+    "2": "/img/color/l72_2.jpg", // Fascia spermatica interna
+    "3": "/img/color/l72_3.jpg", // Caput epididymidis
+    "4": "/img/color/l72_4.jpg", // Appendix testis
+    "5": "/img/color/l72_5.jpg", // Tunica vaginalis testis
+    "6": "/img/color/l72_6.jpg", // Testis
+    "7": "/img/color/l72_7.jpg", // Margo anterior
+    "8": "/img/color/l72_8.jpg", // Extremitas inferior
+    "9": "/img/color/l72_9.jpg", // Lig. epididymidis inferior
   },
   l71: {
     "1": "/img/color/l71_1.jpg", // Sinus prostaticus
