@@ -81,6 +81,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l36: "/img/color/l36.jpg", // Buyrak
   l37: "/img/color/l37.jpg", // Siydik yo'llari
   l70: "/img/color/l70.jpg", // Nefron
+  l71: "/img/color/l71.jpg", // Siydik chiqarish nayining prostata qismi
 };
 
 /**
@@ -726,6 +727,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l37_8.jpg", // Os pubis
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l71: {
+    "1": "/img/color/l71_1.jpg", // Sinus prostaticus
+    "2": "/img/color/l71_2.jpg", // Crista urethralis
+    "3": "/img/color/l71_3.jpg", // Colliculus seminalis
+    "4": "/img/color/l71_4.jpg", // Zona glandularum periurethralium
+    "5": "/img/color/l71_5.jpg", // Substantia muscularis
+    "6": "/img/color/l71_6.jpg", // Oraliqning chuqur yumshoq to'qimasi
+    "7": "/img/color/l71_7.jpg", // Oraliq pardasi
+    "8": "/img/color/l71_8.jpg", // M. sphincter urethrae externus
+    "9": "/img/color/l71_9.jpg", // Ductus ejaculatorius teshigi
+    "10": "/img/color/l71_10.jpg", // Prostata bezi naychalarining teshigi
   },
   l70: {
     "1": "/img/color/l70_1.jpg", // Corpusculum renale
