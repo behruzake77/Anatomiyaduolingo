@@ -744,6 +744,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "7": "/img/color/l77_7.jpg", // M. buccinator
     "8": "/img/color/l77_8.jpg", // M. risorius
     "9": "/img/color/l77_9.jpg", // M. depressor anguli oris
+    "10": "/img/color/l77_10.jpg", // M. mentalis
+    "11": "/img/color/l77_11.jpg", // M. depressor labii inferioris
+    "12": "/img/color/l77_12.jpg", // M. orbicularis oris
+    "13": "/img/color/l77_13.jpg", // M. zygomaticus major
+    "14": "/img/color/l77_14.jpg", // M. zygomaticus minor
+    "15": "/img/color/l77_15.jpg", // M. levator labii superioris
+    "16": "/img/color/l77_16.jpg", // M. levator labii superioris alaeque nasi
+    "17": "/img/color/l77_17.jpg", // M. nasalis
+    "18": "/img/color/l77_18.jpg", // M. procerus
+    "19": "/img/color/l77_19.jpg", // M. orbicularis oculi
   },
   l76: {
     "1": "/img/color/l76_1.jpg", // M. styloglossus
