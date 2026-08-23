@@ -84,6 +84,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l71: "/img/color/l71.jpg", // Siydik chiqarish nayining prostata qismi
   l72: "/img/color/l72.jpg", // O'ng moyak va moyak ortig'i
   l73: "/img/color/l73.jpg", // Ayollarning jinsiy a'zolari
+  l74: "/img/color/l74.jpg", // Qalqonsimon bez
 };
 
 /**
@@ -730,6 +731,14 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
   },
+  l74: {
+    "1": "/img/color/l74_1.jpg", // Os hyoideum
+    "2": "/img/color/l74_2.jpg", // Membrana thyrohyoidea
+    "3": "/img/color/l74_3.jpg", // M. thyrohyoideus
+    "4": "/img/color/l74_4.jpg", // A. laryngea superior sinistra
+    "5": "/img/color/l74_5.jpg", // A. thyroidea superior sinistra
+    "6": "/img/color/l74_6.jpg", // Lobus pyramidalis glandulae thyroideae
+  },
   l73: {
     "1": "/img/color/l73_1.jpg", // Rectum
     "2": "/img/color/l73_2.jpg", // Canalis analis
@@ -737,6 +746,9 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l73_4.jpg", // Urethra feminina
     "5": "/img/color/l73_5.jpg", // Vesica urinaria
     "6": "/img/color/l73_6.jpg", // Vagina
+    "7": "/img/color/l73_7.jpg", // Uterus
+    "8": "/img/color/l73_8.jpg", // Ovarium
+    "9": "/img/color/l73_9.jpg", // Tuba uterina
   },
   l72: {
     "1": "/img/color/l72_1.jpg", // Funiculus spermaticus
