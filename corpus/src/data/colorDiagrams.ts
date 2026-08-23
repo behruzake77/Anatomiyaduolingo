@@ -89,6 +89,21 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l76: "/img/color/l76.jpg", // Bo'yin mushaklari
   l77: "/img/color/l77.jpg", // Boshning mimika mushaklari
   l78: "/img/color/l78.jpg", // Bosh va bo'yin arteriyalari
+  l79: "/img/color/l79.jpg", // Yuqori kavak vena
+  l40: "/img/color/l40.jpg", // Katta va kichik qon aylanish doirasi
+  l41: "/img/color/l41.jpg", // Arteriya devorining tuzilishi
+  l42: "/img/color/l42.jpg", // Limfa tuguni shakllari
+  l43: "/img/color/l43.jpg", // Bosh miya asosi va nervlari
+  l44: "/img/color/l44.jpg", // Orqa miya nervlari
+  l57: "/img/color/l57.jpg", // Orqa miyaning ko'ndalang kesimi
+  l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
+  l42: "/img/color/l42.jpg", // Limfa tuguni shakllari
+  l43: "/img/color/l43.jpg", // Bosh miya asosi va nervlari
+  l44: "/img/color/l44.jpg", // Orqa miya nervlari
+  l57: "/img/color/l57.jpg", // Orqa miyaning ko'ndalang kesimi
+  l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
+  l80: "/img/color/l80.jpg", // Bo'yin chigali
+  l81: "/img/color/l81.jpg", // Bel va dumg'aza chigallari
 };
 
 /**
@@ -734,6 +749,239 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l37_8.jpg", // Os pubis
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l81: {
+    "1": "/img/color/l81_1.jpg", // Truncus lumbosacralis
+    "2": "/img/color/l81_2.jpg", // N. gluteus superior
+    "3": "/img/color/l81_3.jpg", // N. gluteus inferior
+    "4": "/img/color/l81_4.jpg", // Lig. inguinale
+    "5": "/img/color/l81_5.jpg", // Nn. m. quadrati femoris et obturatorii interni
+    "6": "/img/color/l81_6.jpg", // N. ischiadicus
+    "7": "/img/color/l81_7.jpg", // N. cutaneus femoris posterior
+    "8": "/img/color/l81_8.jpg", // Nn. clunium perforantes
+    "9": "/img/color/l81_9.jpg", // N. obturatorius
+    "10": "/img/color/l81_10.jpg", // N. femoralis
+    "11": "/img/color/l81_11.jpg", // Lig. sacrospinale
+    "12": "/img/color/l81_12.jpg", // R. femoralis n. genitofemoralis
+    "13": "/img/color/l81_13.jpg", // Lig. sacrotuberale
+    "14": "/img/color/l81_14.jpg", // N. cutaneus femoris lateralis
+    "15": "/img/color/l81_15.jpg", // N. ilioinguinalis
+    "16": "/img/color/l81_16.jpg", // R. anterior L1
+    "17": "/img/color/l81_17.jpg", // R. anterior L2
+    "18": "/img/color/l81_18.jpg", // R. anterior L3
+  },
+  l80: {
+    "1": "/img/color/l80_1.jpg", // N. hypoglossus
+    "2": "/img/color/l80_2.jpg", // N. accessorius
+    "3": "/img/color/l80_3.jpg", // M. sternocleidomastoideus
+    "4": "/img/color/l80_4.jpg", // N. auricularis magnus
+    "5": "/img/color/l80_5.jpg", // N. occipitalis minor
+    "6": "/img/color/l80_6.jpg", // N. occipitalis major
+    "7": "/img/color/l80_7.jpg", // M. trapezius
+    "8": "/img/color/l80_8.jpg", // N. phrenicus
+    "9": "/img/color/l80_9.jpg", // Nn. supraclaviculares
+    "10": "/img/color/l80_10.jpg", // Venter inferior m. omohyoidei
+    "11": "/img/color/l80_11.jpg", // M. sternocleidomastoideus
+    "12": "/img/color/l80_12.jpg", // Ansa cervicalis
+    "13": "/img/color/l80_13.jpg", // M. sternohyoideus
+    "14": "/img/color/l80_14.jpg", // M. sternothyroideus
+    "15": "/img/color/l80_15.jpg", // Venter superior m. omohyoidei
+    "16": "/img/color/l80_16.jpg", // N. transversus colli
+    "17": "/img/color/l80_17.jpg", // Radix inferior ansae cervicalis
+    "18": "/img/color/l80_18.jpg", // Radix superior ansae cervicalis
+    "19": "/img/color/l80_19.jpg", // M. thyrohyoideus
+    "20": "/img/color/l80_20.jpg", // M. geniohyoideus
+  },
+  l45: {
+    "1": "/img/color/l45_1.jpg", // Zonula ciliaris
+    "2": "/img/color/l45_2.jpg", // Iris
+    "3": "/img/color/l45_3.jpg", // Lens
+    "4": "/img/color/l45_4.jpg", // Cornea
+    "5": "/img/color/l45_5.jpg", // Camera anterior bulbi
+    "6": "/img/color/l45_6.jpg", // Camera posterior bulbi
+    "7": "/img/color/l45_7.jpg", // Angulus iridocornealis
+    "8": "/img/color/l45_8.jpg", // Processus ciliares
+    "9": "/img/color/l45_9.jpg", // Tunica conjunctiva bulbi
+    "10": "/img/color/l45_10.jpg", // Tendo m. recti medialis
+    "11": "/img/color/l45_11.jpg", // Ora serrata
+    "12": "/img/color/l45_12.jpg", // Corpus vitreum
+    "13": "/img/color/l45_13.jpg", // N. opticus
+    "14": "/img/color/l45_14.jpg", // A. et v. centralis retinae
+    "15": "/img/color/l45_15.jpg", // Vagina externa nervi optici
+    "16": "/img/color/l45_16.jpg", // Fovea centralis
+    "17": "/img/color/l45_17.jpg", // Spatium episclerale
+    "18": "/img/color/l45_18.jpg", // Vagina bulbi
+    "19": "/img/color/l45_19.jpg", // Sclera
+    "20": "/img/color/l45_20.jpg", // Spatium perichoroideale
+    "21": "/img/color/l45_21.jpg", // Choroidea
+    "22": "/img/color/l45_22.jpg", // Pars optica retinae
+    "23": "/img/color/l45_23.jpg", // Tendo m. recti lateralis
+    "24": "/img/color/l45_24.jpg", // Corpus ciliare
+    "25": "/img/color/l45_25.jpg", // Sinus venosus sclerae
+  },
+  l44: {
+    "1": "/img/color/l44_1.jpg", // Radix posterior
+    "2": "/img/color/l44_2.jpg", // Ganglion spinale
+    "3": "/img/color/l44_3.jpg", // Radix anterior
+    "4": "/img/color/l44_4.jpg", // Ramus communicans albus
+    "5": "/img/color/l44_5.jpg", // Ramus communicans griseus
+    "6": "/img/color/l44_6.jpg", // Ramus anterior
+    "7": "/img/color/l44_7.jpg", // Ramus posterior
+    "8": "/img/color/l44_8.jpg", // Substantia alba
+    "9": "/img/color/l44_9.jpg", // Substantia grisea
+  },
+  l43: {
+    "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
+    "2": "/img/color/l43_2.jpg", // Lobus temporalis
+    "3": "/img/color/l43_3.jpg", // N. opticus
+    "4": "/img/color/l43_4.jpg", // N. oculomotorius
+    "5": "/img/color/l43_5.jpg", // N. trochlearis
+    "6": "/img/color/l43_6.jpg", // Radix sensoria n. trigemini
+    "7": "/img/color/l43_7.jpg", // Radix motoria n. trigemini
+    "8": "/img/color/l43_8.jpg", // N. abducens
+    "9": "/img/color/l43_9.jpg", // N. hypoglossus
+    "10": "/img/color/l43_10.jpg", // Cerebellum
+    "11": "/img/color/l43_11.jpg", // Medulla oblongata
+    "12": "/img/color/l43_12.jpg", // Medulla spinalis
+    "13": "/img/color/l43_13.jpg", // N. accessorius
+    "14": "/img/color/l43_14.jpg", // N. vagus et radix cranialis n. accessorii
+    "15": "/img/color/l43_15.jpg", // N. glossopharyngeus
+    "16": "/img/color/l43_16.jpg", // N. vestibulocochlearis
+    "17": "/img/color/l43_17.jpg", // N. facialis
+    "18": "/img/color/l43_18.jpg", // Lobus temporalis
+    "19": "/img/color/l43_19.jpg", // Pons
+    "20": "/img/color/l43_20.jpg", // Corpora mamillaria
+    "21": "/img/color/l43_21.jpg", // Chiasma opticum
+    "22": "/img/color/l43_22.jpg", // Lobus frontalis
+  },
+  l42: {
+    "a": "/img/color/l42_a.jpg", // Loviyasimon
+    "b": "/img/color/l42_b.jpg", // Yumaloq
+  },
+  l45: {
+    "1": "/img/color/l45_1.jpg", // Zonula ciliaris
+    "2": "/img/color/l45_2.jpg", // Iris
+    "3": "/img/color/l45_3.jpg", // Lens
+    "4": "/img/color/l45_4.jpg", // Cornea
+    "5": "/img/color/l45_5.jpg", // Camera anterior bulbi
+    "6": "/img/color/l45_6.jpg", // Camera posterior bulbi
+    "7": "/img/color/l45_7.jpg", // Angulus iridocornealis
+    "8": "/img/color/l45_8.jpg", // Processus ciliares
+    "9": "/img/color/l45_9.jpg", // Tunica conjunctiva bulbi
+    "10": "/img/color/l45_10.jpg", // Tendo m. recti medialis
+    "11": "/img/color/l45_11.jpg", // Ora serrata
+    "12": "/img/color/l45_12.jpg", // Corpus vitreum
+    "13": "/img/color/l45_13.jpg", // N. opticus
+    "14": "/img/color/l45_14.jpg", // A. et v. centralis retinae
+    "15": "/img/color/l45_15.jpg", // Vagina externa nervi optici
+    "16": "/img/color/l45_16.jpg", // Fovea centralis
+    "17": "/img/color/l45_17.jpg", // Spatium episclerale
+    "18": "/img/color/l45_18.jpg", // Vagina bulbi
+    "19": "/img/color/l45_19.jpg", // Sclera
+    "20": "/img/color/l45_20.jpg", // Spatium perichoroideale
+    "21": "/img/color/l45_21.jpg", // Choroidea
+    "22": "/img/color/l45_22.jpg", // Pars optica retinae
+    "23": "/img/color/l45_23.jpg", // Tendo m. recti lateralis
+    "24": "/img/color/l45_24.jpg", // Corpus ciliare
+    "25": "/img/color/l45_25.jpg", // Sinus venosus sclerae
+  },
+  l44: {
+    "1": "/img/color/l44_1.jpg", // Radix posterior
+    "2": "/img/color/l44_2.jpg", // Ganglion spinale
+    "3": "/img/color/l44_3.jpg", // Radix anterior
+    "4": "/img/color/l44_4.jpg", // Ramus communicans albus
+    "5": "/img/color/l44_5.jpg", // Ramus communicans griseus
+    "6": "/img/color/l44_6.jpg", // Ramus anterior
+    "7": "/img/color/l44_7.jpg", // Ramus posterior
+    "8": "/img/color/l44_8.jpg", // Substantia alba
+    "9": "/img/color/l44_9.jpg", // Substantia grisea
+  },
+  l43: {
+    "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
+    "2": "/img/color/l43_2.jpg", // Lobus temporalis
+    "3": "/img/color/l43_3.jpg", // N. opticus
+    "4": "/img/color/l43_4.jpg", // N. oculomotorius
+    "5": "/img/color/l43_5.jpg", // N. trochlearis
+    "6": "/img/color/l43_6.jpg", // Radix sensoria n. trigemini
+    "7": "/img/color/l43_7.jpg", // Radix motoria n. trigemini
+    "8": "/img/color/l43_8.jpg", // N. abducens
+    "9": "/img/color/l43_9.jpg", // N. hypoglossus
+    "10": "/img/color/l43_10.jpg", // Cerebellum
+    "11": "/img/color/l43_11.jpg", // Medulla oblongata
+    "12": "/img/color/l43_12.jpg", // Medulla spinalis
+    "13": "/img/color/l43_13.jpg", // N. accessorius
+    "14": "/img/color/l43_14.jpg", // N. vagus et radix cranialis n. accessorii
+    "15": "/img/color/l43_15.jpg", // N. glossopharyngeus
+    "16": "/img/color/l43_16.jpg", // N. vestibulocochlearis
+    "17": "/img/color/l43_17.jpg", // N. facialis
+    "18": "/img/color/l43_18.jpg", // Lobus temporalis
+    "19": "/img/color/l43_19.jpg", // Pons
+    "20": "/img/color/l43_20.jpg", // Corpora mamillaria
+    "21": "/img/color/l43_21.jpg", // Chiasma opticum
+    "22": "/img/color/l43_22.jpg", // Lobus frontalis
+  },
+  l42: {
+    "a": "/img/color/l42_a.jpg", // Loviyasimon
+    "b": "/img/color/l42_b.jpg", // Yumaloq
+    "d": "/img/color/l42_d.jpg", // Oval
+    "e": "/img/color/l42_e.jpg", // Bo'laklarga bo'lingan
+    "f": "/img/color/l42_f.jpg", // Tasmasimon
+  },
+  l41: {
+    "1": "/img/color/l41_1.jpg", // Endoteliy
+    "2": "/img/color/l41_2.jpg", // Endoteliy osti qavati
+    "3": "/img/color/l41_3.jpg", // Vasa vasorum
+    "4": "/img/color/l41_4.jpg", // N. vasorum
+    "5": "/img/color/l41_5.jpg", // Tunica externa
+    "6": "/img/color/l41_6.jpg", // Vasa vasorum
+    "7": "/img/color/l41_7.jpg", // Tashqi elastik membrana
+    "8": "/img/color/l41_8.jpg", // Tunica media
+    "9": "/img/color/l41_9.jpg", // Ichki elastik membrana
+    "10": "/img/color/l41_10.jpg", // Bazal membrana
+  },
+  l40: {
+    "1": "/img/color/l40_1.jpg", // Bosh va qo'l kapillyarlari
+    "2": "/img/color/l40_2.jpg", // O'pka kapillyarlari
+    "3": "/img/color/l40_3.jpg", // A. carotis communis
+    "4": "/img/color/l40_4.jpg", // Truncus pulmonalis
+    "5": "/img/color/l40_5.jpg", // Vv. pulmonales sinistrae
+    "6": "/img/color/l40_6.jpg", // Atrium sinistrum
+    "7": "/img/color/l40_7.jpg", // Ventriculus sinister
+    "8": "/img/color/l40_8.jpg", // Truncus coeliacus
+    "9": "/img/color/l40_9.jpg", // A. hepatica propria
+    "10": "/img/color/l40_10.jpg", // Aorta
+    "11": "/img/color/l40_11.jpg", // A. gastrica sinistra
+    "12": "/img/color/l40_12.jpg", // A. splenica
+    "13": "/img/color/l40_13.jpg", // Oshqozon kapillyarlari
+    "14": "/img/color/l40_14.jpg", // A. mesenterica superior
+    "15": "/img/color/l40_15.jpg", // Tananing pastki qismi va oyoq kapillyarlari
+    "16": "/img/color/l40_16.jpg", // V. cava inferior
+    "17": "/img/color/l40_17.jpg", // A. renalis
+    "18": "/img/color/l40_18.jpg", // V. renalis
+    "19": "/img/color/l40_19.jpg", // V. portae hepatis
+    "20": "/img/color/l40_20.jpg", // Vv. hepaticae
+    "21": "/img/color/l40_21.jpg", // Ductus thoracicus
+    "22": "/img/color/l40_22.jpg", // Ventriculus dexter
+    "23": "/img/color/l40_23.jpg", // Atrium dextrum
+    "24": "/img/color/l40_24.jpg", // V. cava superior
+    "25": "/img/color/l40_25.jpg", // Arcus aortae
+    "26": "/img/color/l40_26.jpg", // Vv. pulmonales dextrae
+  },
+  l79: {
+    "1": "/img/color/l79_1.jpg", // V. jugularis interna sinistra
+    "2": "/img/color/l79_2.jpg", // V. subclavia sinistra
+    "3": "/img/color/l79_3.jpg", // V. brachiocephalica sinistra
+    "4": "/img/color/l79_4.jpg", // V. intercostalis suprema sinistra
+    "5": "/img/color/l79_5.jpg", // V. hemiazygos accessoria
+    "6": "/img/color/l79_6.jpg", // V. hemiazygos
+    "7": "/img/color/l79_7.jpg", // V. cava inferior
+    "8": "/img/color/l79_8.jpg", // Vv. intercostales
+    "9": "/img/color/l79_9.jpg", // V. azygos
+    "10": "/img/color/l79_10.jpg", // Atrium dextrum
+    "11": "/img/color/l79_11.jpg", // V. cava superior
+    "12": "/img/color/l79_12.jpg", // V. intercostalis superior
+    "13": "/img/color/l79_13.jpg", // V. vertebralis dextra
+    "14": "/img/color/l79_14.jpg", // V. jugularis interna dextra
   },
   l78: {
     "1": "/img/color/l78_1.jpg", // A. supraorbitalis
