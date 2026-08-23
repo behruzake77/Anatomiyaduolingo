@@ -85,6 +85,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l72: "/img/color/l72.jpg", // O'ng moyak va moyak ortig'i
   l73: "/img/color/l73.jpg", // Ayollarning jinsiy a'zolari
   l74: "/img/color/l74.jpg", // Qalqonsimon bez
+  l75: "/img/color/l75.jpg", // Buyrak usti bezlari
 };
 
 /**
@@ -730,6 +731,14 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l37_8.jpg", // Os pubis
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l75: {
+    "a1": "/img/color/l75_a1.jpg", // O'ng: Facies renalis
+    "a2": "/img/color/l75_a2.jpg", // O'ng: Margo medialis
+    "a3": "/img/color/l75_a3.jpg", // O'ng: Facies posterior
+    "b1": "/img/color/l75_b1.jpg", // Chap: Facies posterior
+    "b2": "/img/color/l75_b2.jpg", // Chap: Margo medialis
+    "b3": "/img/color/l75_b3.jpg", // Chap: Facies renalis
   },
   l74: {
     "1": "/img/color/l74_1.jpg", // Os hyoideum
