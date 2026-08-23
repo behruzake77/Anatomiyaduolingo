@@ -86,6 +86,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l73: "/img/color/l73.jpg", // Ayollarning jinsiy a'zolari
   l74: "/img/color/l74.jpg", // Qalqonsimon bez
   l75: "/img/color/l75.jpg", // Buyrak usti bezlari
+  l76: "/img/color/l76.jpg", // Bo'yin mushaklari
 };
 
 /**
@@ -731,6 +732,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l37_8.jpg", // Os pubis
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l76: {
+    "1": "/img/color/l76_1.jpg", // M. styloglossus
+    "2": "/img/color/l76_2.jpg", // Ramus mandibulae
+    "3": "/img/color/l76_3.jpg", // Glandula parotidea
+    "4": "/img/color/l76_4.jpg", // M. masseter
+    "5": "/img/color/l76_5.jpg", // Glandula submandibularis
+    "6": "/img/color/l76_6.jpg", // M. hyoglossus
+    "7": "/img/color/l76_7.jpg", // M. omohyoideus
+    "8": "/img/color/l76_8.jpg", // Corpus mandibulae
+    "9": "/img/color/l76_9.jpg", // Venter anterior m. digastrici
   },
   l75: {
     "a1": "/img/color/l75_a1.jpg", // O'ng: Facies renalis
