@@ -743,6 +743,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "7": "/img/color/l76_7.jpg", // M. omohyoideus
     "8": "/img/color/l76_8.jpg", // Corpus mandibulae
     "9": "/img/color/l76_9.jpg", // Venter anterior m. digastrici
+    "10": "/img/color/l76_10.jpg", // Os hyoideum
+    "11": "/img/color/l76_11.jpg", // M. thyrohyoideus
+    "12": "/img/color/l76_12.jpg", // Venter superior m. omohyoidei
+    "13": "/img/color/l76_13.jpg", // M. sternohyoideus
+    "14": "/img/color/l76_14.jpg", // M. sternothyroideus
+    "15": "/img/color/l76_15.jpg", // Manubrium sterni
+    "16": "/img/color/l76_16.jpg", // M. sternocleidomastoideus
+    "17": "/img/color/l76_17.jpg", // M. pectoralis major
+    "18": "/img/color/l76_18.jpg", // Clavicula
+    "19": "/img/color/l76_19.jpg", // Venter inferior m. omohyoidei
   },
   l75: {
     "a1": "/img/color/l75_a1.jpg", // O'ng: Facies renalis
