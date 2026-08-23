@@ -87,6 +87,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l74: "/img/color/l74.jpg", // Qalqonsimon bez
   l75: "/img/color/l75.jpg", // Buyrak usti bezlari
   l76: "/img/color/l76.jpg", // Bo'yin mushaklari
+  l77: "/img/color/l77.jpg", // Boshning mimika mushaklari
 };
 
 /**
@@ -732,6 +733,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l37_8.jpg", // Os pubis
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l77: {
+    "1": "/img/color/l77_1.jpg", // M. auricularis anterior
+    "2": "/img/color/l77_2.jpg", // M. auricularis superior
+    "3": "/img/color/l77_3.jpg", // Galea aponeurotica
+    "4": "/img/color/l77_4.jpg", // Venter occipitalis m. occipitofrontalis
+    "5": "/img/color/l77_5.jpg", // M. auricularis posterior
+    "6": "/img/color/l77_6.jpg", // M. platysma
+    "7": "/img/color/l77_7.jpg", // M. buccinator
+    "8": "/img/color/l77_8.jpg", // M. risorius
+    "9": "/img/color/l77_9.jpg", // M. depressor anguli oris
   },
   l76: {
     "1": "/img/color/l76_1.jpg", // M. styloglossus
