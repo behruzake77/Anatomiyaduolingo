@@ -754,6 +754,7 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "17": "/img/color/l77_17.jpg", // M. nasalis
     "18": "/img/color/l77_18.jpg", // M. procerus
     "19": "/img/color/l77_19.jpg", // M. orbicularis oculi
+    "20": "/img/color/l77_20.jpg", // Venter frontalis m. occipitofrontalis
   },
   l76: {
     "1": "/img/color/l76_1.jpg", // M. styloglossus
