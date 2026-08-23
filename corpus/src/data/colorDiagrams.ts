@@ -756,6 +756,11 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "18": "/img/color/l78_18.jpg", // A. facialis
     "19": "/img/color/l78_19.jpg", // A. lingualis
     "20": "/img/color/l78_20.jpg", // A. pharyngea ascendens
+    "21": "/img/color/l78_21.jpg", // A. carotis interna sinistra
+    "22": "/img/color/l78_22.jpg", // N. vagus
+    "23": "/img/color/l78_23.jpg", // M. scalenus medius
+    "24": "/img/color/l78_24.jpg", // N. phrenicus
+    "25": "/img/color/l78_25.jpg", // A. carotis communis
   },
   l77: {
     "1": "/img/color/l77_1.jpg", // M. auricularis anterior
