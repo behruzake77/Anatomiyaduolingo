@@ -746,6 +746,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l78_8.jpg", // A. occipitalis
     "9": "/img/color/l78_9.jpg", // A. transversa faciei
     "10": "/img/color/l78_10.jpg", // A. maxillaris
+    "11": "/img/color/l78_11.jpg", // A. temporalis superficialis
+    "12": "/img/color/l78_12.jpg", // A. auricularis posterior
+    "13": "/img/color/l78_13.jpg", // A. alveolaris inferior
+    "14": "/img/color/l78_14.jpg", // R. mylohyoideus
+    "15": "/img/color/l78_15.jpg", // A. pharyngea ascendens
+    "16": "/img/color/l78_16.jpg", // A. occipitalis
+    "17": "/img/color/l78_17.jpg", // A. palatina ascendens
+    "18": "/img/color/l78_18.jpg", // A. facialis
+    "19": "/img/color/l78_19.jpg", // A. lingualis
+    "20": "/img/color/l78_20.jpg", // A. pharyngea ascendens
   },
   l77: {
     "1": "/img/color/l77_1.jpg", // M. auricularis anterior
