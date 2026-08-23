@@ -743,6 +743,7 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "13": "/img/color/l70_13.jpg", // Tubuli renalis colligentes
     "14": "/img/color/l70_14.jpg", // Tubuli conjunctivi
     "15": "/img/color/l70_15.jpg", // Tubuli renalis contorti secunda
+    "16": "/img/color/l70_16.jpg", // Tubuli renalis contorti prima
   },
 };
 
