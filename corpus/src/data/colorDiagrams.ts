@@ -739,6 +739,9 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l71_8.jpg", // M. sphincter urethrae externus
     "9": "/img/color/l71_9.jpg", // Ductus ejaculatorius teshigi
     "10": "/img/color/l71_10.jpg", // Prostata bezi naychalarining teshigi
+    "11": "/img/color/l71_11.jpg", // Utriculus prostaticus
+    "12": "/img/color/l71_12.jpg", // Prostata
+    "13": "/img/color/l71_13.jpg", // M. sphincter urethrae internus
   },
   l70: {
     "1": "/img/color/l70_1.jpg", // Corpusculum renale
