@@ -738,6 +738,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l74_4.jpg", // A. laryngea superior sinistra
     "5": "/img/color/l74_5.jpg", // A. thyroidea superior sinistra
     "6": "/img/color/l74_6.jpg", // Lobus pyramidalis glandulae thyroideae
+    "7": "/img/color/l74_7.jpg", // V. thyroidea superior sinistra
+    "8": "/img/color/l74_8.jpg", // Lobus sinistra glandulae thyroideae
+    "9": "/img/color/l74_9.jpg", // V. thyroidea inferior sinistra
+    "10": "/img/color/l74_10.jpg", // Plexus thyroideus impar
+    "11": "/img/color/l74_11.jpg", // A. thyroidea inferior sinistra
+    "12": "/img/color/l74_12.jpg", // Trachea
+    "13": "/img/color/l74_13.jpg", // V. thyroidea ima
+    "14": "/img/color/l74_14.jpg", // A. thyroidea ima
+    "15": "/img/color/l74_15.jpg", // A. thyroidea inferior dextra
+    "16": "/img/color/l74_16.jpg", // V. thyroidea inferior dextra
   },
   l73: {
     "1": "/img/color/l73_1.jpg", // Rectum
