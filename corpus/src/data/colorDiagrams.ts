@@ -88,6 +88,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l75: "/img/color/l75.jpg", // Buyrak usti bezlari
   l76: "/img/color/l76.jpg", // Bo'yin mushaklari
   l77: "/img/color/l77.jpg", // Boshning mimika mushaklari
+  l78: "/img/color/l78.jpg", // Bosh va bo'yin arteriyalari
 };
 
 /**
@@ -733,6 +734,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l37_8.jpg", // Os pubis
     "9": "/img/color/l37_9.jpg", // Prostata
     "10": "/img/color/l37_10.jpg", // Vesica urinaria
+  },
+  l78: {
+    "1": "/img/color/l78_1.jpg", // A. supraorbitalis
+    "2": "/img/color/l78_2.jpg", // A. temporalis profunda anterior
+    "3": "/img/color/l78_3.jpg", // A. temporalis profunda posterior
+    "4": "/img/color/l78_4.jpg", // Rr. pterygoidei
+    "5": "/img/color/l78_5.jpg", // A. meningea media
+    "6": "/img/color/l78_6.jpg", // R. frontalis a. temporalis superficialis
+    "7": "/img/color/l78_7.jpg", // R. parietalis a. temporalis superficialis
+    "8": "/img/color/l78_8.jpg", // A. occipitalis
+    "9": "/img/color/l78_9.jpg", // A. transversa faciei
+    "10": "/img/color/l78_10.jpg", // A. maxillaris
   },
   l77: {
     "1": "/img/color/l77_1.jpg", // M. auricularis anterior
