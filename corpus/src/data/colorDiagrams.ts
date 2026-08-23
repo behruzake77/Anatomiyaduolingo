@@ -748,6 +748,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "14": "/img/color/l74_14.jpg", // A. thyroidea ima
     "15": "/img/color/l74_15.jpg", // A. thyroidea inferior dextra
     "16": "/img/color/l74_16.jpg", // V. thyroidea inferior dextra
+    "17": "/img/color/l74_17.jpg", // Isthmus glandulae thyroideae
+    "18": "/img/color/l74_18.jpg", // Lobus dextra glandulae thyroideae
+    "19": "/img/color/l74_19.jpg", // V. thyroidea superior dextra
+    "20": "/img/color/l74_20.jpg", // R. glandularis anterior
+    "21": "/img/color/l74_21.jpg", // Cartilago thyroidea
+    "22": "/img/color/l74_22.jpg", // Incisura thyroidea superior
+    "23": "/img/color/l74_23.jpg", // A. thyroidea superior dextra
+    "24": "/img/color/l74_24.jpg", // A. laryngea superior dextra
+    "25": "/img/color/l74_25.jpg", // Cornu majus ossis hyoidei
+    "26": "/img/color/l74_26.jpg", // Cornu minus ossis hyoidei
   },
   l73: {
     "1": "/img/color/l73_1.jpg", // Rectum
