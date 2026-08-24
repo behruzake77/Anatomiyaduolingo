@@ -65,6 +65,8 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l25: "/img/color/l25.jpg", // Pastki jag' suyagi (mandibula) — ichki tomondan
   l26: "/img/color/l26.jpg", // Bo'g'im tuzilishi (kesma)
   l27: "/img/color/l27.jpg", // Yelka bo'g'imi
+  l28: "/img/color/l28.jpg", // Mushak turlari (A duksimon, B yassi)
+  l47: "/img/color/l47.jpg", // Chok turlari
   l48: "/img/color/l48.jpg", // Tirsak bo'g'imi
   l49: "/img/color/l49.jpg", // Tizza bo'g'imi
   l50: "/img/color/l50.jpg", // Oyoq panjasi bo'g'imlari
@@ -97,6 +99,12 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l44: "/img/color/l44.jpg", // Orqa miya nervlari
   l57: "/img/color/l57.jpg", // Orqa miyaning ko'ndalang kesimi
   l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
+  l46: "/img/color/l46.jpg", // Ta'm sezish — til so'rg'ichlari
+  l53: "/img/color/l53.jpg", // Bilakning oldingi guruh mushaklari
+  l56: "/img/color/l56.jpg", // Vena devorining tuzilishi
+  l62: "/img/color/l62.jpg", // Simpatik poyaning qismlari
+  l63: "/img/color/l63.jpg", // Ko'z gavhari va ushlab turuvchi hosilalar
+  l64: "/img/color/l64.jpg", // Dahliz-chig'anoq a'zosi
   l80: "/img/color/l80.jpg", // Bo'yin chigali
   l81: "/img/color/l81.jpg", // Bel va dumg'aza chigallari
 };
@@ -500,6 +508,22 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l27_5.jpg", // Collum anatomicum
     "6": "/img/color/l27_6.jpg", // Caput humeri
     "7": "/img/color/l27_7.jpg", // Ikki boshli mushakning uzun boshchasi payi
+  },
+  l28: {
+    "A1": "/img/color/l28_A1.jpg", // Caput — mushak boshi
+    "A2": "/img/color/l28_A2.jpg", // Venter — mushak qorni
+    "A3": "/img/color/l28_A3.jpg", // Cauda — mushak dumi
+    "B1": "/img/color/l28_B1.jpg", // Aponeurosis
+  },
+  l47: {
+    "a": "/img/color/l47_a.jpg", // Sutura plana
+    "b": "/img/color/l47_b.jpg", // Sutura squamosa
+  },
+  l46: {
+    "1": "/img/color/l46_1.jpg", // Til (lingua)
+    "2": "/img/color/l46_2.jpg", // Ta'm so'rg'ichlari
+    "3": "/img/color/l46_3.jpg", // Ta'm kurtaklari
+    "4": "/img/color/l46_4.jpg", // Ta'm sezish nerv tolalari
   },
   l48: {
     "1": "/img/color/l48_1.jpg", // Capsula articularis
