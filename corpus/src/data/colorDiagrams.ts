@@ -566,7 +566,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "4": "/img/color/l50_4.jpg", // Lig. talonaviculare
   },
   l51: {
+    "1": "/img/color/l51_1.jpg", // Lig. nuchae
+    "2": "/img/color/l51_2.jpg", // M. levator scapulae
+    "3": "/img/color/l51_3.jpg", // M. rhomboideus minor
+    "4": "/img/color/l51_4.jpg", // M. supraspinatus
+    "5": "/img/color/l51_5.jpg", // M. infraspinatus
+    "6": "/img/color/l51_6.jpg", // M. teres minor
+    "7": "/img/color/l51_7.jpg", // M. rhomboideus major
+    "8": "/img/color/l51_8.jpg", // M. teres major
+    "9": "/img/color/l51_9.jpg", // M. serratus anterior
     "10": "/img/color/l51_10.jpg", // M. latissimus dorsi
+    "11": "/img/color/l51_11.jpg", // M. deltoideus
     "12": "/img/color/l51_12.jpg", // M. trapezius
   },
   l53: {
