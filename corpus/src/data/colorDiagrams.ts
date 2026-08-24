@@ -104,6 +104,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l60: "/img/color/l60.jpg", // Bosh miya yarim pallasi
   l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
   l46: "/img/color/l46.jpg", // Ta'm sezish — til so'rg'ichlari
+  l51: "/img/color/l51.jpg", // Orqaning yuza mushaklari
   l53: "/img/color/l53.jpg", // Bilakning oldingi guruh mushaklari
   l56: "/img/color/l56.jpg", // Vena devorining tuzilishi
   l62: "/img/color/l62.jpg", // Simpatik poyaning qismlari
@@ -1239,21 +1240,4 @@ export function colorForLegendN(n: string): string | null {
   const num = Number(n);
   if (!Number.isInteger(num) || num < 1) return null;
   return colorForIndex(num - 1);
-}
-(num - 1);
-}
-
-
-/** Legend raqami → rang (palitradan indeks bo'yicha). */
-export function colorForIndex(index: number): string {
-  return COLOR_PALETTE[index % COLOR_PALETTE.length];
-}
-
-/** Legend raqami (masalan "3") → rang. Son bo'lmagan raqamlar uchun null. */
-export function colorForLegendN(n: string): string | null {
-  const num = Number(n);
-  if (!Number.isInteger(num) || num < 1) return null;
-  return colorForIndex(num - 1);
-}
-(num - 1);
 }
