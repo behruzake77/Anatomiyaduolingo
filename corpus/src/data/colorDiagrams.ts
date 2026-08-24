@@ -923,7 +923,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "26": "/img/color/l60_26.jpg", // Gyrus frontalis medius
   },
   l61: {
+    "1": "/img/color/l61_1.jpg", // N. olfactorius
     "2": "/img/color/l61_2.jpg", // N. opticus
+    "3": "/img/color/l61_3.jpg", // N. oculomotorius
+    "4": "/img/color/l61_4.jpg", // N. trochlearis
+    "5": "/img/color/l61_5.jpg", // N. abducens
+    "6": "/img/color/l61_6.jpg", // N. trigeminus
+    "7": "/img/color/l61_7.jpg", // N. facialis
+    "9": "/img/color/l61_9.jpg", // N. cochlearis
+    "13": "/img/color/l61_13.jpg", // N. accessorius
+    "14": "/img/color/l61_14.jpg", // N. hypoglossus
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
