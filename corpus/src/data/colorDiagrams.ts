@@ -903,8 +903,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l60_5.jpg", // Gyrus postcentralis
     "6": "/img/color/l60_6.jpg", // Sulcus postcentralis
     "7": "/img/color/l60_7.jpg", // Lobulus parietalis superior
+    "8": "/img/color/l60_8.jpg", // Sulcus intraparietalis
+    "9": "/img/color/l60_9.jpg", // Gyrus supramarginalis
+    "10": "/img/color/l60_10.jpg", // Gyrus angularis
     "11": "/img/color/l60_11.jpg", // Polus occipitalis
+    "14": "/img/color/l60_14.jpg", // Gyrus temporalis medius
+    "16": "/img/color/l60_16.jpg", // Gyrus temporalis superior
+    "17": "/img/color/l60_17.jpg", // Polus temporalis
+    "18": "/img/color/l60_18.jpg", // Sulcus lateralis
     "21": "/img/color/l60_21.jpg", // Polus frontalis
+    "23": "/img/color/l60_23.jpg", // Pars triangularis
+    "24": "/img/color/l60_24.jpg", // Pars opercularis
+    "26": "/img/color/l60_26.jpg", // Gyrus frontalis medius
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
