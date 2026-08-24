@@ -98,6 +98,8 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l43: "/img/color/l43.jpg", // Bosh miya asosi va nervlari
   l44: "/img/color/l44.jpg", // Orqa miya nervlari
   l57: "/img/color/l57.jpg", // Orqa miyaning ko'ndalang kesimi
+  l58: "/img/color/l58.jpg", // Uzunchoq miyaning ko'ndalang kesmasi
+  l59: "/img/color/l59.jpg", // Miyacha o'zaklari
   l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
   l46: "/img/color/l46.jpg", // Ta'm sezish — til so'rg'ichlari
   l53: "/img/color/l53.jpg", // Bilakning oldingi guruh mushaklari
@@ -1122,6 +1124,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
 };
 
 /** Legend raqami → rang (palitradan indeks bo'yicha). */
+export function colorForIndex(index: number): string {
+  return COLOR_PALETTE[index % COLOR_PALETTE.length];
+}
+
+/** Legend raqami (masalan "3") → rang. Son bo'lmagan raqamlar uchun null. */
+export function colorForLegendN(n: string): string | null {
+  const num = Number(n);
+  if (!Number.isInteger(num) || num < 1) return null;
+  return colorForIndex(num - 1);
+}
+itradan indeks bo'yicha). */
 export function colorForIndex(index: number): string {
   return COLOR_PALETTE[index % COLOR_PALETTE.length];
 }
