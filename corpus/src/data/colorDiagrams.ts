@@ -895,6 +895,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "10": "/img/color/l59_10.jpg", // Nucleus globosus
     "11": "/img/color/l59_11.jpg", // Ventriculus quartus
   },
+  l60: {
+    "1": "/img/color/l60_1.jpg", // Gyrus frontalis superior
+    "2": "/img/color/l60_2.jpg", // Sulcus precentralis
+    "3": "/img/color/l60_3.jpg", // Gyrus precentralis
+    "4": "/img/color/l60_4.jpg", // Sulcus centralis
+    "5": "/img/color/l60_5.jpg", // Gyrus postcentralis
+    "6": "/img/color/l60_6.jpg", // Sulcus postcentralis
+    "7": "/img/color/l60_7.jpg", // Lobulus parietalis superior
+    "11": "/img/color/l60_11.jpg", // Polus occipitalis
+    "21": "/img/color/l60_21.jpg", // Polus frontalis
+  },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
     "2": "/img/color/l43_2.jpg", // Lobus temporalis
