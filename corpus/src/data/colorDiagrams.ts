@@ -100,6 +100,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l57: "/img/color/l57.jpg", // Orqa miyaning ko'ndalang kesimi
   l58: "/img/color/l58.jpg", // Uzunchoq miyaning ko'ndalang kesmasi
   l59: "/img/color/l59.jpg", // Miyacha o'zaklari
+  l60: "/img/color/l60.jpg", // Bosh miya yarim pallasi
   l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
   l46: "/img/color/l46.jpg", // Ta'm sezish — til so'rg'ichlari
   l53: "/img/color/l53.jpg", // Bilakning oldingi guruh mushaklari
