@@ -571,6 +571,7 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l47: {
     "a": "/img/color/l47_a.jpg", // Sutura plana
     "b": "/img/color/l47_b.jpg", // Sutura squamosa
+    "c": "/img/color/l47_c.jpg", // Sutura serrata
   },
   l46: {
     "1": "/img/color/l46_1.jpg", // Til (lingua)
@@ -653,10 +654,13 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "20": "/img/color/l52_20.jpg", // Fascia lata
     "21": "/img/color/l52_21.jpg", // V. saphena magna
     "22": "/img/color/l52_22.jpg", // Hiatus saphenus
+    "23": "/img/color/l52_23.jpg", // V. femoralis
+    "24": "/img/color/l52_24.jpg", // Lig. reflexum
     "25": "/img/color/l52_9.jpg", // Falx inguinalis (takror)
     "26": "/img/color/l52_10.jpg", // Lig. inguinale (takror)
     "27": "/img/color/l52_27.jpg", // Spina iliaca anterior superior
     "28": "/img/color/l52_6.jpg", // M. obliquus internus (takror)
+    "29": "/img/color/l52_29.jpg", // Aponeurosis
   },
   l53: {
     "1": "/img/color/l53_1.jpg", // Humerus
@@ -684,6 +688,13 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "13": "/img/color/l54_13.jpg", // M. adductor magnus
     "14": "/img/color/l54_14.jpg", // M. adductor longus
     "15": "/img/color/l54_15.jpg", // M. pectineus
+  },
+
+  l56: {
+    "1": "/img/color/l56_1.jpg", // Endoteliy
+    "2": "/img/color/l56_2.jpg", // Tunica media
+    "3": "/img/color/l56_3.jpg", // Tunica externa
+    "4": "/img/color/l56_4.jpg", // Ichki elastik membrana
   },
 
   l31: {
@@ -1054,6 +1065,10 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l62_3.jpg", // Ganglia lumbalia
     "4": "/img/color/l62_4.jpg", // Ganglia sacralia
     "5": "/img/color/l62_5.jpg", // Ganglion impar
+  },
+
+  l63: {
+    "1": "/img/color/l63_1.jpg", // Sclera
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
