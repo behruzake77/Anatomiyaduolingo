@@ -521,6 +521,28 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "A3": "/img/color/l28_A3.jpg", // Cauda — mushak dumi
     "B1": "/img/color/l28_B1.jpg", // Aponeurosis
   },
+  l29: {
+    "1": "/img/color/l29_1.jpg", // Venter anterior m. digastrici
+    "2": "/img/color/l29_2.jpg", // M. platysma
+    "3": "/img/color/l29_3.jpg", // M. deltoideus
+    "4": "/img/color/l29_4.jpg", // M. pectoralis major
+    "5": "/img/color/l29_5.jpg", // Lamina superficialis fasciae pectoralis
+    "7": "/img/color/l29_7.jpg", // Aponeurosis m. obliqui externi
+    "12": "/img/color/l29_12.jpg", // Lig. inguinale
+    "13": "/img/color/l29_13.jpg", // Linea alba
+    "14": "/img/color/l29_14.jpg", // M. obliquus externus abdominis
+    "15": "/img/color/l29_15.jpg", // Pars abdominalis m. pectoralis majoris
+    "16": "/img/color/l29_16.jpg", // M. serratus anterior
+    "17": "/img/color/l29_17.jpg", // M. latissimus dorsi
+    "18": "/img/color/l29_18.jpg", // Fossa axillaris
+    "19": "/img/color/l29_19.jpg", // M. biceps brachii
+    "20": "/img/color/l29_20.jpg", // Aponeurosis m. bicipitis
+    "21": "/img/color/l29_21.jpg", // Ulna
+    "22": "/img/color/l29_22.jpg", // Radius
+    "23": "/img/color/l29_23.jpg", // M. brachioradialis
+    "24": "/img/color/l29_24.jpg", // Pars sternocostalis m. pectoralis majoris
+    "25": "/img/color/l29_25.jpg", // Clavicula
+  },
   l30: {
     "1": "/img/color/l30_1.jpg", // M. supraspinatus
     "2": "/img/color/l30_2.jpg", // Incisura scapulae
@@ -1223,32 +1245,6 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l70_3.jpg", // Capsula glomerularis
     "4": "/img/color/l70_4.jpg", // A. interlobularis
     "5": "/img/color/l70_5.jpg", // Arteriola glomerularis afferens
-    "6": "/img/color/l70_6.jpg", // Arteriola glomerularis efferens
-    "7": "/img/color/l70_7.jpg", // Vasa interlobularia
-    "8": "/img/color/l70_8.jpg", // V. arcuata
-    "9": "/img/color/l70_9.jpg", // A. arcuata
-    "10": "/img/color/l70_10.jpg", // Ansa nephroni
-    "11": "/img/color/l70_11.jpg", // Rete capillare peritubulare
-    "12": "/img/color/l70_12.jpg", // Ductuli papillaris
-    "13": "/img/color/l70_13.jpg", // Tubuli renalis colligentes
-    "14": "/img/color/l70_14.jpg", // Tubuli conjunctivi
-    "15": "/img/color/l70_15.jpg", // Tubuli renalis contorti secunda
-    "16": "/img/color/l70_16.jpg", // Tubuli renalis contorti prima
-  },
-};
-
-/** Legend raqami → rang (palitradan indeks bo'yicha). */
-export function colorForIndex(index: number): string {
-  return COLOR_PALETTE[index % COLOR_PALETTE.length];
-}
-
-/** Legend raqami (masalan "3") → rang. Son bo'lmagan raqamlar uchun null. */
-export function colorForLegendN(n: string): string | null {
-  const num = Number(n);
-  if (!Number.isInteger(num) || num < 1) return null;
-  return colorForIndex(num - 1);
-}
-", // Arteriola glomerularis afferens
     "6": "/img/color/l70_6.jpg", // Arteriola glomerularis efferens
     "7": "/img/color/l70_7.jpg", // Vasa interlobularia
     "8": "/img/color/l70_8.jpg", // V. arcuata
