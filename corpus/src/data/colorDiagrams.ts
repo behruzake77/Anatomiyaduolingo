@@ -565,6 +565,19 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l50_3.jpg", // Lig. mediale
     "4": "/img/color/l50_4.jpg", // Lig. talonaviculare
   },
+  l51: {
+    "10": "/img/color/l51_10.jpg", // M. latissimus dorsi
+    "12": "/img/color/l51_12.jpg", // M. trapezius
+  },
+  l53: {
+    "1": "/img/color/l53_1.jpg", // Humerus
+    "2": "/img/color/l53_2.jpg", // Epicondylus medialis
+    "3": "/img/color/l53_3.jpg", // M. palmaris longus
+    "4": "/img/color/l53_4.jpg", // M. flexor carpi ulnaris
+    "5": "/img/color/l53_5.jpg", // Ulna
+    "6": "/img/color/l53_6.jpg", // Radius
+    "7": "/img/color/l53_7.jpg", // M. flexor carpi radialis
+  },
   l31: {
     "1": "/img/color/l31_1.jpg", // Glandula parotis
     "2": "/img/color/l31_2.jpg", // Lingua
@@ -661,18 +674,7 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   },
   l34: {
     "1": "/img/color/l34_1.jpg", // Sinus frontalis
-    "2": "/img/color/l34_2.jpg", // Lamina perpendicularis
-    "3": "/img/color/l34_3.jpg", // Sinus sphenoidalis
-    "4": "/img/color/l34_4.jpg", // Sella turcica
-    "5": "/img/color/l34_5.jpg", // Crista nasalis
-    "6": "/img/color/l34_6.jpg", // Vomer
-    "7": "/img/color/l34_7.jpg", // Spina nasalis anterior
-    "8": "/img/color/l34_8.jpg", // Cartilago septi nasi
-    "9": "/img/color/l34_9.jpg", // Os nasale
-  },
-  l35: {
-    "1": "/img/color/l35_1.jpg", // Cartilago thyroidea
-    "2": "/img/color/l35_2.jpg", // Lig. cricothyroideum me "/img/color/l35_2.jpg", // Lig. cricothyroideum medianum
+    "2": "/img/color/l34_2.jpg", // Lamina perpend  "2": "/img/color/l35_2.jpg", // Lig. cricothyroideum me "/img/color/l35_2.jpg", // Lig. cricothyroideum medianum
     "3": "/img/color/l35_3.jpg", // Lamina visceralis fasciae
     "4": "/img/color/l35_4.jpg", // Tunica mucosa
     "5": "/img/color/l35_5.jpg", // Bronchus lobaris superior sinister
@@ -1204,6 +1206,21 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "16": "/img/color/l70_16.jpg", // Tubuli renalis contorti prima
   },
 };
+
+/** Legend raqami → rang (palitradan indeks bo'yicha). */
+export function colorForIndex(index: number): string {
+  return COLOR_PALETTE[index % COLOR_PALETTE.length];
+}
+
+/** Legend raqami (masalan "3") → rang. Son bo'lmagan raqamlar uchun null. */
+export function colorForLegendN(n: string): string | null {
+  const num = Number(n);
+  if (!Number.isInteger(num) || num < 1) return null;
+  return colorForIndex(num - 1);
+}
+(num - 1);
+}
+
 
 /** Legend raqami → rang (palitradan indeks bo'yicha). */
 export function colorForIndex(index: number): string {
