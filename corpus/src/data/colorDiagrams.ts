@@ -633,16 +633,27 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l52: {
     "1": "/img/color/l52_1.jpg", // M. pectoralis major
     "2": "/img/color/l52_2.jpg", // Lamina anterior vaginae m. recti
+    "3": "/img/color/l52_3.jpg", // Linea alba
     "4": "/img/color/l52_4.jpg", // M. obliquus externus abdominis
     "5": "/img/color/l52_5.jpg", // M. rectus abdominis
     "6": "/img/color/l52_6.jpg", // M. obliquus internus abdominis
     "7": "/img/color/l52_7.jpg", // Intersectiones tendineae
     "8": "/img/color/l52_8.jpg", // M. pyramidalis
+    "9": "/img/color/l52_9.jpg", // Falx inguinalis
     "10": "/img/color/l52_10.jpg", // Lig. inguinale
+    "11": "/img/color/l52_11.jpg", // Lig. pectineum
+    "12": "/img/color/l52_12.jpg", // Lig. lacunare
     "13": "/img/color/l52_8.jpg", // M. pyramidalis (takror)
     "14": "/img/color/l52_14.jpg", // Lig. suspensorium penis
+    "15": "/img/color/l52_15.jpg", // Fascia cremasterica
+    "16": "/img/color/l52_16.jpg", // Tunica dartos
     "17": "/img/color/l52_17.jpg", // Scrotum
+    "18": "/img/color/l52_18.jpg", // Fascia spermatica externa
+    "19": "/img/color/l52_19.jpg", // M. cremaster
     "20": "/img/color/l52_20.jpg", // Fascia lata
+    "21": "/img/color/l52_21.jpg", // V. saphena magna
+    "22": "/img/color/l52_22.jpg", // Hiatus saphenus
+    "25": "/img/color/l52_9.jpg", // Falx inguinalis (takror)
     "26": "/img/color/l52_10.jpg", // Lig. inguinale (takror)
     "27": "/img/color/l52_27.jpg", // Spina iliaca anterior superior
     "28": "/img/color/l52_6.jpg", // M. obliquus internus (takror)
