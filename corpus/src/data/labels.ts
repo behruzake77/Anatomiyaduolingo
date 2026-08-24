@@ -1026,6 +1026,10 @@ export const LESSON_LEGENDS: Record<string, LegendItem[]> = {
     { n: "20", name: "R. glandularis anterior" },
     { n: "21", name: "Cartilago thyroidea" },
     { n: "22", name: "Incisura" },
+    { n: "23", name: "A. thyroidea superior dextra" },
+    { n: "24", name: "A. laryngea superior dextra" },
+    { n: "25", name: "Cornu majus ossis hyoidei" },
+    { n: "26", name: "Cornu minus ossis hyoidei" },
   ],
   // Buyrak usti bezi, orqa tomondan (223-rasm)
   l75: [

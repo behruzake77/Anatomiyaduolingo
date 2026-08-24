@@ -97,11 +97,6 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l44: "/img/color/l44.jpg", // Orqa miya nervlari
   l57: "/img/color/l57.jpg", // Orqa miyaning ko'ndalang kesimi
   l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
-  l42: "/img/color/l42.jpg", // Limfa tuguni shakllari
-  l43: "/img/color/l43.jpg", // Bosh miya asosi va nervlari
-  l44: "/img/color/l44.jpg", // Orqa miya nervlari
-  l57: "/img/color/l57.jpg", // Orqa miyaning ko'ndalang kesimi
-  l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
   l80: "/img/color/l80.jpg", // Bo'yin chigali
   l81: "/img/color/l81.jpg", // Bel va dumg'aza chigallari
 };
@@ -791,72 +786,6 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "18": "/img/color/l80_18.jpg", // Radix superior ansae cervicalis
     "19": "/img/color/l80_19.jpg", // M. thyrohyoideus
     "20": "/img/color/l80_20.jpg", // M. geniohyoideus
-  },
-  l45: {
-    "1": "/img/color/l45_1.jpg", // Zonula ciliaris
-    "2": "/img/color/l45_2.jpg", // Iris
-    "3": "/img/color/l45_3.jpg", // Lens
-    "4": "/img/color/l45_4.jpg", // Cornea
-    "5": "/img/color/l45_5.jpg", // Camera anterior bulbi
-    "6": "/img/color/l45_6.jpg", // Camera posterior bulbi
-    "7": "/img/color/l45_7.jpg", // Angulus iridocornealis
-    "8": "/img/color/l45_8.jpg", // Processus ciliares
-    "9": "/img/color/l45_9.jpg", // Tunica conjunctiva bulbi
-    "10": "/img/color/l45_10.jpg", // Tendo m. recti medialis
-    "11": "/img/color/l45_11.jpg", // Ora serrata
-    "12": "/img/color/l45_12.jpg", // Corpus vitreum
-    "13": "/img/color/l45_13.jpg", // N. opticus
-    "14": "/img/color/l45_14.jpg", // A. et v. centralis retinae
-    "15": "/img/color/l45_15.jpg", // Vagina externa nervi optici
-    "16": "/img/color/l45_16.jpg", // Fovea centralis
-    "17": "/img/color/l45_17.jpg", // Spatium episclerale
-    "18": "/img/color/l45_18.jpg", // Vagina bulbi
-    "19": "/img/color/l45_19.jpg", // Sclera
-    "20": "/img/color/l45_20.jpg", // Spatium perichoroideale
-    "21": "/img/color/l45_21.jpg", // Choroidea
-    "22": "/img/color/l45_22.jpg", // Pars optica retinae
-    "23": "/img/color/l45_23.jpg", // Tendo m. recti lateralis
-    "24": "/img/color/l45_24.jpg", // Corpus ciliare
-    "25": "/img/color/l45_25.jpg", // Sinus venosus sclerae
-  },
-  l44: {
-    "1": "/img/color/l44_1.jpg", // Radix posterior
-    "2": "/img/color/l44_2.jpg", // Ganglion spinale
-    "3": "/img/color/l44_3.jpg", // Radix anterior
-    "4": "/img/color/l44_4.jpg", // Ramus communicans albus
-    "5": "/img/color/l44_5.jpg", // Ramus communicans griseus
-    "6": "/img/color/l44_6.jpg", // Ramus anterior
-    "7": "/img/color/l44_7.jpg", // Ramus posterior
-    "8": "/img/color/l44_8.jpg", // Substantia alba
-    "9": "/img/color/l44_9.jpg", // Substantia grisea
-  },
-  l43: {
-    "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
-    "2": "/img/color/l43_2.jpg", // Lobus temporalis
-    "3": "/img/color/l43_3.jpg", // N. opticus
-    "4": "/img/color/l43_4.jpg", // N. oculomotorius
-    "5": "/img/color/l43_5.jpg", // N. trochlearis
-    "6": "/img/color/l43_6.jpg", // Radix sensoria n. trigemini
-    "7": "/img/color/l43_7.jpg", // Radix motoria n. trigemini
-    "8": "/img/color/l43_8.jpg", // N. abducens
-    "9": "/img/color/l43_9.jpg", // N. hypoglossus
-    "10": "/img/color/l43_10.jpg", // Cerebellum
-    "11": "/img/color/l43_11.jpg", // Medulla oblongata
-    "12": "/img/color/l43_12.jpg", // Medulla spinalis
-    "13": "/img/color/l43_13.jpg", // N. accessorius
-    "14": "/img/color/l43_14.jpg", // N. vagus et radix cranialis n. accessorii
-    "15": "/img/color/l43_15.jpg", // N. glossopharyngeus
-    "16": "/img/color/l43_16.jpg", // N. vestibulocochlearis
-    "17": "/img/color/l43_17.jpg", // N. facialis
-    "18": "/img/color/l43_18.jpg", // Lobus temporalis
-    "19": "/img/color/l43_19.jpg", // Pons
-    "20": "/img/color/l43_20.jpg", // Corpora mamillaria
-    "21": "/img/color/l43_21.jpg", // Chiasma opticum
-    "22": "/img/color/l43_22.jpg", // Lobus frontalis
-  },
-  l42: {
-    "a": "/img/color/l42_a.jpg", // Loviyasimon
-    "b": "/img/color/l42_b.jpg", // Yumaloq
   },
   l45: {
     "1": "/img/color/l45_1.jpg", // Zonula ciliaris
