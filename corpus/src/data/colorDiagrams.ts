@@ -522,9 +522,15 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   },
   l30: {
     "1": "/img/color/l30_1.jpg", // M. supraspinatus
+    "2": "/img/color/l30_2.jpg", // Incisura scapulae
     "3": "/img/color/l30_3.jpg", // Deltasimon mushak payi
     "4": "/img/color/l30_4.jpg", // M. teres minor
+    "5": "/img/color/l30_5.jpg", // Collum chirurgicum
+    "6": "/img/color/l30_6.jpg", // Do'mboqchalararo egatning medial chekkasi
     "7": "/img/color/l30_7.jpg", // Foramen quadrilaterum
+    "8": "/img/color/l30_8.jpg", // Uchburchaksimon oraliq
+    "9": "/img/color/l30_9.jpg", // M. triceps brachii — lateral boshchasi
+    "10": "/img/color/l30_10.jpg", // Olecranon
     "11": "/img/color/l30_11.jpg", // Caput longum m. tricipitis
     "12": "/img/color/l30_12.jpg", // M. teres major
     "13": "/img/color/l30_13.jpg", // Foramen trilaterum
