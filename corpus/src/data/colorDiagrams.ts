@@ -82,6 +82,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l35: "/img/color/l35.jpg", // Kekirdak va bronxlar
   l68: "/img/color/l68.jpg", // Hiqildoq tog'aylari
   l69: "/img/color/l69.jpg", // O'pka va plevra
+  l38: "/img/color/l38.jpg", // Erkaklar jinsiy a'zolari
   l36: "/img/color/l36.jpg", // Buyrak
   l37: "/img/color/l37.jpg", // Siydik yo'llari
   l70: "/img/color/l70.jpg", // Nefron
@@ -109,6 +110,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l52: "/img/color/l52.jpg", // Qorin mushaklari, old tomondan
   l53: "/img/color/l53.jpg", // Bilakning oldingi guruh mushaklari
   l54: "/img/color/l54.jpg", // Chap son mushaklari
+  l55: "/img/color/l55.jpg", // Aorta ko'krak qismi
   l56: "/img/color/l56.jpg", // Vena devorining tuzilishi
   l62: "/img/color/l62.jpg", // Simpatik poyaning qismlari
   l63: "/img/color/l63.jpg", // Ko'z gavhari va ushlab turuvchi hosilalar
@@ -1069,6 +1071,8 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
 
   l63: {
     "1": "/img/color/l63_1.jpg", // Sclera
+    "2": "/img/color/l63_2.jpg", // Choroidea
+    "3": "/img/color/l63_3.jpg", // Pars optica retinae
     "4": "/img/color/l63_4.jpg", // Ora serrata
     "5": "/img/color/l63_5.jpg", // Orbiculus ciliaris
     "6": "/img/color/l63_6.jpg", // Lens
@@ -1077,6 +1081,10 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   },
   l64: {
     "1": "/img/color/l64_1.jpg", // Meatus acusticus internus
+    "2": "/img/color/l64_2.jpg", // Pharynx
+    "3": "/img/color/l64_3.jpg", // Tuba auditiva
+    "4": "/img/color/l64_4.jpg", // Membrana tympanica
+    "5": "/img/color/l64_5.jpg", // Cartilago meatus acustici
     "6": "/img/color/l64_6.jpg", // Meatus acusticus externus
     "7": "/img/color/l64_7.jpg", // Auricula
   },
