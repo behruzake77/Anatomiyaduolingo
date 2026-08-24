@@ -1156,14 +1156,3 @@ export function colorForLegendN(n: string): string | null {
   if (!Number.isInteger(num) || num < 1) return null;
   return colorForIndex(num - 1);
 }
-itradan indeks bo'yicha). */
-export function colorForIndex(index: number): string {
-  return COLOR_PALETTE[index % COLOR_PALETTE.length];
-}
-
-/** Legend raqami (masalan "3") → rang. Son bo'lmagan raqamlar uchun null. */
-export function colorForLegendN(n: string): string | null {
-  const num = Number(n);
-  if (!Number.isInteger(num) || num < 1) return null;
-  return colorForIndex(num - 1);
-}
