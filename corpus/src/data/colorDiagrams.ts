@@ -930,9 +930,20 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l61_5.jpg", // N. abducens
     "6": "/img/color/l61_6.jpg", // N. trigeminus
     "7": "/img/color/l61_7.jpg", // N. facialis
+    "8": "/img/color/l61_8.jpg", // N. intermedius
     "9": "/img/color/l61_9.jpg", // N. cochlearis
+    "10": "/img/color/l61_10.jpg", // N. vestibularis
+    "11": "/img/color/l61_11.jpg", // N. glossopharyngeus
+    "12": "/img/color/l61_12.jpg", // N. vagus
     "13": "/img/color/l61_13.jpg", // N. accessorius
     "14": "/img/color/l61_14.jpg", // N. hypoglossus
+  },
+  l62: {
+    "1": "/img/color/l62_1.jpg", // Ganglia cervicalia
+    "2": "/img/color/l62_2.jpg", // Ganglia thoracica
+    "3": "/img/color/l62_3.jpg", // Ganglia lumbalia
+    "4": "/img/color/l62_4.jpg", // Ganglia sacralia
+    "5": "/img/color/l62_5.jpg", // Ganglion impar
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
