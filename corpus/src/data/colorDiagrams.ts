@@ -862,6 +862,28 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l57_8.jpg", // Radix anterior
     "9": "/img/color/l57_9.jpg", // Pia mater spinalis
     "10": "/img/color/l57_10.jpg", // Cornu laterale
+    "11": "/img/color/l57_11.jpg", // Canalis centralis
+    "12": "/img/color/l57_12.jpg", // Sulcus intermedius posterior
+  },
+  l58: {
+    "1": "/img/color/l58_1.jpg", // Nucleus posterior n. vagi
+    "2": "/img/color/l58_2.jpg", // Nucleus nervi hypoglossi
+    "3": "/img/color/l58_3.jpg", // Pedunculus cerebellaris inferior
+    "4": "/img/color/l58_4.jpg", // Formatio reticularis
+    "5": "/img/color/l58_5.jpg", // Nucleus olivaris inferior
+    "6": "/img/color/l58_6.jpg", // Hilum nuclei olivaris inferioris
+    "7": "/img/color/l58_7.jpg", // Tractus pyramidalis
+    "8": "/img/color/l58_8.jpg", // Lemniscus medialis
+    "9": "/img/color/l58_9.jpg", // Tractus spinocerebellaris anterior
+    "10": "/img/color/l58_10.jpg", // Nucleus ambiguus
+    "11": "/img/color/l58_11.jpg", // Nucleus spinalis nervi trigemini
+    "12": "/img/color/l58_12.jpg", // Tractus spinocerebellaris posterior
+    "13": "/img/color/l58_13.jpg", // Nuclei tractus solitarii
+    "14": "/img/color/l58_14.jpg", // Nuclei nervi vestibulocochlearis
+  },
+  l59: {
+    "6": "/img/color/l59_6.jpg", // Nucleus dentatus
+    "9": "/img/color/l59_9.jpg", // Vermis
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
