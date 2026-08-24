@@ -644,6 +644,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l54_5.jpg", // M. rectus femoris
     "6": "/img/color/l54_1.jpg", // M. sartorius (takror)
     "7": "/img/color/l54_7.jpg", // M. vastus medialis
+    "8": "/img/color/l54_8.jpg", // To'rt boshli mushakning payi
+    "9": "/img/color/l54_9.jpg", // Patella
+    "12": "/img/color/l54_12.jpg", // M. gracilis
+    "13": "/img/color/l54_13.jpg", // M. adductor magnus
+    "14": "/img/color/l54_14.jpg", // M. adductor longus
+    "15": "/img/color/l54_15.jpg", // M. pectineus
   },
 
   l31: {
