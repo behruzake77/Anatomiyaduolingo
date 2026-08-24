@@ -106,6 +106,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
   l46: "/img/color/l46.jpg", // Ta'm sezish — til so'rg'ichlari
   l51: "/img/color/l51.jpg", // Orqaning yuza mushaklari
+  l52: "/img/color/l52.jpg", // Qorin mushaklari, old tomondan
   l53: "/img/color/l53.jpg", // Bilakning oldingi guruh mushaklari
   l54: "/img/color/l54.jpg", // Chap son mushaklari
   l56: "/img/color/l56.jpg", // Vena devorining tuzilishi
@@ -628,6 +629,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "11": "/img/color/l51_11.jpg", // M. deltoideus
     "12": "/img/color/l51_12.jpg", // M. trapezius
   },
+
+  l52: {
+    "1": "/img/color/l52_1.jpg", // M. pectoralis major
+    "4": "/img/color/l52_4.jpg", // M. obliquus externus abdominis
+    "5": "/img/color/l52_5.jpg", // M. rectus abdominis
+  },
   l53: {
     "1": "/img/color/l53_1.jpg", // Humerus
     "2": "/img/color/l53_2.jpg", // Epicondylus medialis
@@ -640,12 +647,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
 
   l54: {
     "1": "/img/color/l54_1.jpg", // M. sartorius
+    "2": "/img/color/l54_2.jpg", // Quymich kosasidan boshcha
+    "3": "/img/color/l54_3.jpg", // Yonbosh suyagidan boshcha
     "4": "/img/color/l54_4.jpg", // M. vastus lateralis
     "5": "/img/color/l54_5.jpg", // M. rectus femoris
     "6": "/img/color/l54_1.jpg", // M. sartorius (takror)
     "7": "/img/color/l54_7.jpg", // M. vastus medialis
     "8": "/img/color/l54_8.jpg", // To'rt boshli mushakning payi
     "9": "/img/color/l54_9.jpg", // Patella
+    "10": "/img/color/l54_10.jpg", // Lig. patellae
+    "11": "/img/color/l54_11.jpg", // Yuza g'oz panjasi (pes anserinus)
     "12": "/img/color/l54_12.jpg", // M. gracilis
     "13": "/img/color/l54_13.jpg", // M. adductor magnus
     "14": "/img/color/l54_14.jpg", // M. adductor longus
