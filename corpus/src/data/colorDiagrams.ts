@@ -672,7 +672,7 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   },
   l35: {
     "1": "/img/color/l35_1.jpg", // Cartilago thyroidea
-    "2": "/img/color/l35_2.jpg", // Lig. cricothyroideum medianum
+    "2": "/img/color/l35_2.jpg", // Lig. cricothyroideum me "/img/color/l35_2.jpg", // Lig. cricothyroideum medianum
     "3": "/img/color/l35_3.jpg", // Lamina visceralis fasciae
     "4": "/img/color/l35_4.jpg", // Tunica mucosa
     "5": "/img/color/l35_5.jpg", // Bronchus lobaris superior sinister
@@ -907,14 +907,23 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "9": "/img/color/l60_9.jpg", // Gyrus supramarginalis
     "10": "/img/color/l60_10.jpg", // Gyrus angularis
     "11": "/img/color/l60_11.jpg", // Polus occipitalis
+    "12": "/img/color/l60_12.jpg", // Gyrus temporalis inferior
+    "13": "/img/color/l60_13.jpg", // Sulcus temporalis inferior
     "14": "/img/color/l60_14.jpg", // Gyrus temporalis medius
+    "15": "/img/color/l60_15.jpg", // Sulcus temporalis superior
     "16": "/img/color/l60_16.jpg", // Gyrus temporalis superior
     "17": "/img/color/l60_17.jpg", // Polus temporalis
     "18": "/img/color/l60_18.jpg", // Sulcus lateralis
+    "19": "/img/color/l60_19.jpg", // Ramus ascendens
+    "20": "/img/color/l60_20.jpg", // Ramus anterior
     "21": "/img/color/l60_21.jpg", // Polus frontalis
+    "22": "/img/color/l60_22.jpg", // Pars orbitalis
     "23": "/img/color/l60_23.jpg", // Pars triangularis
     "24": "/img/color/l60_24.jpg", // Pars opercularis
     "26": "/img/color/l60_26.jpg", // Gyrus frontalis medius
+  },
+  l61: {
+    "2": "/img/color/l61_2.jpg", // N. opticus
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
@@ -1186,4 +1195,6 @@ export function colorForLegendN(n: string): string | null {
   const num = Number(n);
   if (!Number.isInteger(num) || num < 1) return null;
   return colorForIndex(num - 1);
+}
+(num - 1);
 }
