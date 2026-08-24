@@ -66,6 +66,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l26: "/img/color/l26.jpg", // Bo'g'im tuzilishi (kesma)
   l27: "/img/color/l27.jpg", // Yelka bo'g'imi
   l28: "/img/color/l28.jpg", // Mushak turlari (A duksimon, B yassi)
+  l30: "/img/color/l30.jpg", // Yelka kamari va yelka mushaklari
   l47: "/img/color/l47.jpg", // Chok turlari
   l48: "/img/color/l48.jpg", // Tirsak bo'g'imi
   l49: "/img/color/l49.jpg", // Tizza bo'g'imi
@@ -517,6 +518,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "A2": "/img/color/l28_A2.jpg", // Venter — mushak qorni
     "A3": "/img/color/l28_A3.jpg", // Cauda — mushak dumi
     "B1": "/img/color/l28_B1.jpg", // Aponeurosis
+  },
+  l30: {
+    "1": "/img/color/l30_1.jpg", // M. supraspinatus
+    "3": "/img/color/l30_3.jpg", // Deltasimon mushak payi
+    "4": "/img/color/l30_4.jpg", // M. teres minor
+    "7": "/img/color/l30_7.jpg", // Foramen quadrilaterum
+    "11": "/img/color/l30_11.jpg", // Caput longum m. tricipitis
+    "12": "/img/color/l30_12.jpg", // M. teres major
+    "13": "/img/color/l30_13.jpg", // Foramen trilaterum
+    "14": "/img/color/l30_14.jpg", // M. infraspinatus
+    "15": "/img/color/l30_15.jpg", // Trapetsiyasimon mushak payi
   },
   l47: {
     "a": "/img/color/l47_a.jpg", // Sutura plana
