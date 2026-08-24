@@ -66,6 +66,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l26: "/img/color/l26.jpg", // Bo'g'im tuzilishi (kesma)
   l27: "/img/color/l27.jpg", // Yelka bo'g'imi
   l28: "/img/color/l28.jpg", // Mushak turlari (A duksimon, B yassi)
+  l29: "/img/color/l29.jpg", // Tana mushaklari, old tomondan
   l30: "/img/color/l30.jpg", // Yelka kamari va yelka mushaklari
   l47: "/img/color/l47.jpg", // Chok turlari
   l48: "/img/color/l48.jpg", // Tirsak bo'g'imi
@@ -1222,6 +1223,32 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "3": "/img/color/l70_3.jpg", // Capsula glomerularis
     "4": "/img/color/l70_4.jpg", // A. interlobularis
     "5": "/img/color/l70_5.jpg", // Arteriola glomerularis afferens
+    "6": "/img/color/l70_6.jpg", // Arteriola glomerularis efferens
+    "7": "/img/color/l70_7.jpg", // Vasa interlobularia
+    "8": "/img/color/l70_8.jpg", // V. arcuata
+    "9": "/img/color/l70_9.jpg", // A. arcuata
+    "10": "/img/color/l70_10.jpg", // Ansa nephroni
+    "11": "/img/color/l70_11.jpg", // Rete capillare peritubulare
+    "12": "/img/color/l70_12.jpg", // Ductuli papillaris
+    "13": "/img/color/l70_13.jpg", // Tubuli renalis colligentes
+    "14": "/img/color/l70_14.jpg", // Tubuli conjunctivi
+    "15": "/img/color/l70_15.jpg", // Tubuli renalis contorti secunda
+    "16": "/img/color/l70_16.jpg", // Tubuli renalis contorti prima
+  },
+};
+
+/** Legend raqami → rang (palitradan indeks bo'yicha). */
+export function colorForIndex(index: number): string {
+  return COLOR_PALETTE[index % COLOR_PALETTE.length];
+}
+
+/** Legend raqami (masalan "3") → rang. Son bo'lmagan raqamlar uchun null. */
+export function colorForLegendN(n: string): string | null {
+  const num = Number(n);
+  if (!Number.isInteger(num) || num < 1) return null;
+  return colorForIndex(num - 1);
+}
+", // Arteriola glomerularis afferens
     "6": "/img/color/l70_6.jpg", // Arteriola glomerularis efferens
     "7": "/img/color/l70_7.jpg", // Vasa interlobularia
     "8": "/img/color/l70_8.jpg", // V. arcuata
