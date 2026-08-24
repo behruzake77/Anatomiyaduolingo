@@ -1069,6 +1069,16 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
 
   l63: {
     "1": "/img/color/l63_1.jpg", // Sclera
+    "4": "/img/color/l63_4.jpg", // Ora serrata
+    "5": "/img/color/l63_5.jpg", // Orbiculus ciliaris
+    "6": "/img/color/l63_6.jpg", // Lens
+    "7": "/img/color/l63_7.jpg", // Fibrae zonulares
+    "8": "/img/color/l63_8.jpg", // Processus ciliares
+  },
+  l64: {
+    "1": "/img/color/l64_1.jpg", // Meatus acusticus internus
+    "6": "/img/color/l64_6.jpg", // Meatus acusticus externus
+    "7": "/img/color/l64_7.jpg", // Auricula
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
