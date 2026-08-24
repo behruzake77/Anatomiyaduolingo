@@ -882,8 +882,17 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "14": "/img/color/l58_14.jpg", // Nuclei nervi vestibulocochlearis
   },
   l59: {
+    "1": "/img/color/l59_1.jpg", // Decussatio pedunculorum cerebellarium superiorum
+    "2": "/img/color/l59_2.jpg", // Pedunculi cerebri
+    "3": "/img/color/l59_3.jpg", // Velum medullare superius
+    "4": "/img/color/l59_4.jpg", // Pedunculus cerebellaris superior
+    "5": "/img/color/l59_5.jpg", // Lingula
     "6": "/img/color/l59_6.jpg", // Nucleus dentatus
+    "7": "/img/color/l59_7.jpg", // Nucleus emboliformis
+    "8": "/img/color/l59_8.jpg", // Nucleus fastigii
     "9": "/img/color/l59_9.jpg", // Vermis
+    "10": "/img/color/l59_10.jpg", // Nucleus globosus
+    "11": "/img/color/l59_11.jpg", // Ventriculus quartus
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
