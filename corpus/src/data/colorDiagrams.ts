@@ -849,6 +849,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "8": "/img/color/l44_8.jpg", // Substantia alba
     "9": "/img/color/l44_9.jpg", // Substantia grisea
   },
+  l57: {
+    "1": "/img/color/l57_1.jpg", // Sulcus medianus posterior
+    "2": "/img/color/l57_2.jpg", // Radix posterior
+    "3": "/img/color/l57_3.jpg", // Cornu posterius
+    "4": "/img/color/l57_4.jpg", // Lig. denticulatum
+    "5": "/img/color/l57_5.jpg", // Cornu anterius
+    "6": "/img/color/l57_6.jpg", // A. spinalis anterior
+    "7": "/img/color/l57_7.jpg", // Fissura mediana anterior
+    "8": "/img/color/l57_8.jpg", // Radix anterior
+    "9": "/img/color/l57_9.jpg", // Pia mater spinalis
+    "10": "/img/color/l57_10.jpg", // Cornu laterale
+  },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
     "2": "/img/color/l43_2.jpg", // Lobus temporalis
