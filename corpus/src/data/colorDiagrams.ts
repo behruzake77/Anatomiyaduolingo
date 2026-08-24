@@ -107,6 +107,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l46: "/img/color/l46.jpg", // Ta'm sezish — til so'rg'ichlari
   l51: "/img/color/l51.jpg", // Orqaning yuza mushaklari
   l53: "/img/color/l53.jpg", // Bilakning oldingi guruh mushaklari
+  l54: "/img/color/l54.jpg", // Chap son mushaklari
   l56: "/img/color/l56.jpg", // Vena devorining tuzilishi
   l62: "/img/color/l62.jpg", // Simpatik poyaning qismlari
   l63: "/img/color/l63.jpg", // Ko'z gavhari va ushlab turuvchi hosilalar
@@ -542,6 +543,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "23": "/img/color/l29_23.jpg", // M. brachioradialis
     "24": "/img/color/l29_24.jpg", // Pars sternocostalis m. pectoralis majoris
     "25": "/img/color/l29_25.jpg", // Clavicula
+    "6": "/img/color/l29_6.jpg", // Fascia brachii
+    "8": "/img/color/l29_8.jpg", // Fascia lata
+    "9": "/img/color/l29_9.jpg", // Funiculus spermaticus
+    "10": "/img/color/l29_10.jpg", // V. saphena magna
+    "11": "/img/color/l29_11.jpg", // Hiatus saphenus
+    "26": "/img/color/l29_3.jpg", // M. deltoideus (takror)
   },
   l30: {
     "1": "/img/color/l30_1.jpg", // M. supraspinatus
@@ -630,6 +637,15 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "6": "/img/color/l53_6.jpg", // Radius
     "7": "/img/color/l53_7.jpg", // M. flexor carpi radialis
   },
+
+  l54: {
+    "1": "/img/color/l54_1.jpg", // M. sartorius
+    "4": "/img/color/l54_4.jpg", // M. vastus lateralis
+    "5": "/img/color/l54_5.jpg", // M. rectus femoris
+    "6": "/img/color/l54_1.jpg", // M. sartorius (takror)
+    "7": "/img/color/l54_7.jpg", // M. vastus medialis
+  },
+
   l31: {
     "1": "/img/color/l31_1.jpg", // Glandula parotis
     "2": "/img/color/l31_2.jpg", // Lingua
