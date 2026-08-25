@@ -883,6 +883,18 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "10": "/img/color/l36_10.jpg", // Cortex renis
     "11": "/img/color/l36_11.jpg", // Pyramides renales
   },
+
+  l38: {
+    "1": "/img/color/l38_1.jpg", // Rectum
+    "2": "/img/color/l38_2.jpg", // Canalis analis
+    "4": "/img/color/l38_4.jpg", // Vesica urinaria
+    "5": "/img/color/l38_5.jpg", // Urethra masculina
+    "6": "/img/color/l38_6.jpg", // Testis
+    "8": "/img/color/l38_8.jpg", // Epididymis
+    "9": "/img/color/l38_9.jpg", // Penis
+    "12": "/img/color/l38_12.jpg", // Ductus deferens
+    "13": "/img/color/l38_13.jpg", // Glandulae seminales
+  },
   l37: {
     "1": "/img/color/l37_1.jpg", // Ureter
     "2": "/img/color/l37_2.jpg", // Ductus deferens
