@@ -692,6 +692,14 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "15": "/img/color/l54_15.jpg", // M. pectineus
   },
 
+  l55: {
+    "1": "/img/color/l55_1.jpg", // Pars thoracica aortae
+    "2": "/img/color/l55_2.jpg", // A. thoracica interna
+    "5": "/img/color/l55_5.jpg", // A. epigastrica superior
+    "8": "/img/color/l55_8.jpg", // Aa. intercostales posteriores
+    "9": "/img/color/l55_9.jpg", // A. subclavia
+  },
+
   l56: {
     "1": "/img/color/l56_1.jpg", // Endoteliy
     "2": "/img/color/l56_2.jpg", // Tunica media
@@ -887,11 +895,15 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l38: {
     "1": "/img/color/l38_1.jpg", // Rectum
     "2": "/img/color/l38_2.jpg", // Canalis analis
+    "3": "/img/color/l38_3.jpg", // M. sphincter ani
     "4": "/img/color/l38_4.jpg", // Vesica urinaria
     "5": "/img/color/l38_5.jpg", // Urethra masculina
     "6": "/img/color/l38_6.jpg", // Testis
+    "7": "/img/color/l38_7.jpg", // Scrotum
     "8": "/img/color/l38_8.jpg", // Epididymis
     "9": "/img/color/l38_9.jpg", // Penis
+    "10": "/img/color/l38_10.jpg", // Ductus ejaculatorius
+    "11": "/img/color/l38_11.jpg", // Prostata
     "12": "/img/color/l38_12.jpg", // Ductus deferens
     "13": "/img/color/l38_13.jpg", // Glandulae seminales
   },
