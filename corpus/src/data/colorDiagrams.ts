@@ -117,6 +117,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l64: "/img/color/l64.jpg", // Dahliz-chig'anoq a'zosi
   l80: "/img/color/l80.jpg", // Bo'yin chigali
   l81: "/img/color/l81.jpg", // Bel va dumg'aza chigallari
+  l82: "/img/color/l82.jpg", // Teri qavatlari
 };
 
 /**
@@ -695,9 +696,15 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   l55: {
     "1": "/img/color/l55_1.jpg", // Pars thoracica aortae
     "2": "/img/color/l55_2.jpg", // A. thoracica interna
+    "3": "/img/color/l55_3.jpg", // Rr. perforantes
+    "4": "/img/color/l55_4.jpg", // Rr. intercostales anteriores
     "5": "/img/color/l55_5.jpg", // A. epigastrica superior
+    "6": "/img/color/l55_6.jpg", // A. musculophrenica
+    "7": "/img/color/l55_7.jpg", // R. collateralis
     "8": "/img/color/l55_8.jpg", // Aa. intercostales posteriores
     "9": "/img/color/l55_9.jpg", // A. subclavia
+    "10": "/img/color/l55_10.jpg", // Truncus costocervicalis
+    "11": "/img/color/l55_11.jpg", // A. intercostalis suprema
   },
 
   l56: {
@@ -1111,6 +1118,12 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
     "5": "/img/color/l64_5.jpg", // Cartilago meatus acustici
     "6": "/img/color/l64_6.jpg", // Meatus acusticus externus
     "7": "/img/color/l64_7.jpg", // Auricula
+  },
+
+  l82: {
+    "1": "/img/color/l82_1.jpg", // Epidermis
+    "2": "/img/color/l82_2.jpg", // Dermis
+    "3": "/img/color/l82_3.jpg", // Tela subcutanea
   },
   l43: {
     "1": "/img/color/l43_1.jpg", // Bulbus olfactorius
