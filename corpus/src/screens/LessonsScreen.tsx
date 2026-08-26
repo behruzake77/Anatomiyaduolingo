@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Lock, Play, Check, Box, Crown, ChevronDown } from "lucide-react";
+import { Lock, Play, Check, Box, Crown, ChevronDown, Star } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
@@ -20,8 +20,11 @@ import { cn } from "@/utils/cn";
  * Tugunlar ilon izi bo'ylab joylashadi; Premium'da oltin yo'l.
  */
 
-/** Ilon izi uchun gorizontal siljishlar (px) — navbatma-navbat chap-o'ng. */
-const ZIGZAG = [0, 44, 88, 132, 88, 44];
+/**
+ * Ilon izi uchun gorizontal siljishlar (px) — markaziy chiziq atrofida
+ * o'ng-chap silliq tebranish (Duolingo yo'li). Musbat = o'ng, manfiy = chap.
+ */
+const ZIGZAG = [0, 52, 84, 52, 0, -52, -84, -52];
 
 export function LessonsScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons);
@@ -132,11 +135,11 @@ function PathView(props: {
 
   return (
     <div className="relative mt-2">
-      {/* yo'l chizig'i (markaziy) */}
+      {/* Yo'l ramkasi — markaziy chiziq atrofida zaif nur */}
       <div
         className={cn(
-          "pointer-events-none absolute inset-y-0 left-1/2 w-3 -translate-x-1/2 rounded-full",
-          isPremium ? "bg-gradient-to-b from-[#F5C04E]/40 via-[#F5C04E]/25 to-transparent" : "bg-primary/10",
+          "pointer-events-none absolute inset-y-0 left-1/2 w-2 -translate-x-1/2 rounded-full",
+          isPremium ? "bg-gradient-to-b from-[#F5C04E]/35 via-[#F5C04E]/15 to-transparent" : "bg-primary/10",
         )}
       />
 
@@ -156,7 +159,27 @@ function PathView(props: {
             {newUnit && (
               <ChapterBanner unit={unit} completedLessons={completedLessons} isPremium={isPremium} />
             )}
-            <div className="relative flex items-center gap-3 py-2.5" style={{ paddingLeft: offset }}>
+
+            {/* lesson guruh — markazda, ilon izi bo'ylab siljigan */}
+            <div
+              className="relative flex items-center justify-center gap-4 py-3"
+              style={{ transform: `translateX(${offset}px)` }}
+            >
+              {/* yorliq (nom) — chap tomonda */}
+              <div
+                className={cn(
+                  "min-w-0 flex-1 text-right",
+                  unlocked && isCurrent ? "opacity-100" : "opacity-70",
+                )}
+              >
+                <p className={cn("text-[13px] font-semibold leading-tight", !unlocked && "text-muted")}>
+                  {lesson.title}
+                </p>
+                <p className={cn("mt-0.5 text-[11px]", isCurrent ? "font-semibold text-primary" : "text-muted")}>
+                  {isDone ? t.complete : t.lesson + " " + (gi + 1)}
+                </p>
+              </div>
+
               {/* tugun */}
               <button
                 onClick={() => unlocked && openLesson(lesson.id)}
@@ -164,19 +187,22 @@ function PathView(props: {
                 aria-label={lesson.title}
                 className="relative shrink-0"
               >
+                {/* joriy dars — puls + START belgisi */}
                 {isCurrent && (
                   <motion.span
                     className={cn(
-                      "absolute -inset-2 rounded-full",
+                      "absolute -inset-3 rounded-full",
                       isPremium ? "bg-[#F5C04E]/30" : "bg-primary/20",
                     )}
-                    animate={{ scale: [1, 1.18, 1], opacity: [0.7, 0.2, 0.7] }}
+                    animate={{ scale: [1, 1.22, 1], opacity: [0.75, 0.15, 0.75] }}
                     transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                   />
                 )}
+
                 <div
                   className={cn(
-                    "relative flex h-16 w-16 items-center justify-center rounded-full border-4 shadow-card transition",
+                    "relative flex items-center justify-center rounded-full border-4 shadow-card transition",
+                    isCurrent ? "h-20 w-20" : "h-16 w-16",
                     isDone
                       ? isPremium
                         ? "border-[#F5C04E] bg-gradient-to-br from-[#F5C04E] to-[#E0A030] text-white"
@@ -190,31 +216,43 @@ function PathView(props: {
                 >
                   {isDone ? (
                     isPremium ? (
-                      <Crown className="h-6 w-6" aria-hidden />
+                      <Crown className="h-7 w-7" aria-hidden />
                     ) : (
-                      <Check className="h-6 w-6" aria-hidden />
+                      <Check className="h-7 w-7" aria-hidden />
                     )
                   ) : unlocked ? (
-                    <Play className="h-6 w-6 fill-current" aria-hidden />
+                    <Play className="h-7 w-7 fill-current" aria-hidden />
                   ) : (
                     <Lock className="h-6 w-6" aria-hidden />
                   )}
                 </div>
+
+                {/* START banner — joriy dars ustida */}
+                {isCurrent && (
+                  <motion.span
+                    initial={{ opacity: 0, y: -6, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className={cn(
+                      "absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider shadow-pop",
+                      isPremium ? "bg-[#F5C04E] text-[#1a1230]" : "bg-primary text-white",
+                    )}
+                  >
+                    {t.start}
+                  </motion.span>
+                )}
               </button>
 
-              {/* yorliq */}
+              {/* XP belgisi — o'ng tomonda */}
               <div className="min-w-0 flex-1">
-                <p className={cn("break-words text-sm font-semibold leading-tight", !unlocked && "text-muted")}>
-                  {lesson.title}
-                </p>
-                <p className={cn("mt-0.5 text-xs", isCurrent ? "font-semibold text-primary" : "text-muted")}>
-                  {isDone ? t.complete : isCurrent ? t.continue : `${t.level} ${gi + 1}`}
-                </p>
+                <span className={cn("inline-flex items-center gap-0.5 text-xs font-extrabold", isPremium && isDone ? "text-[#E0A030]" : "text-primary")}>
+                  <Star aria-hidden />
+                  +{lesson.xp}
+                </span>
+                {isDone && (
+                  <p className="mt-0.5 text-[11px] text-muted">{t.complete}</p>
+                )}
               </div>
-
-              <span className={cn("shrink-0 text-xs font-bold", isPremium && isDone ? "text-[#E0A030]" : "text-primary")}>
-                +{lesson.xp}
-              </span>
             </div>
           </div>
         );
