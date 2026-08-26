@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Crown } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { AnatomyAnimation, type AnatomyKind } from "@/components/reengage/AnatomyAnimation";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 import { getCurrent } from "@/auth";
@@ -12,13 +13,14 @@ import { getCurrent } from "@/auth";
  * Kinematik kirish (intro) animatsiyasi — faqat ochilish ekranini yangilaydi.
  * Logotip ("Logo" komponenti orqali aynan mavjud rasm) va Dashboard o'zgarmaydi.
  *
- * Ketma-ketlik:
- *   0.0–0.5s  qorong'u anatomik fon + grid + donachalar
- *   0.5–1.1s  Logo: scale(0.75 → 1) + yumshoq nur
- *   1.1–1.7s  tibbiy skan nuri (gorizontal) + radial nur
- *   1.7–2.3s  "Corpus" matni (fade + yuqoriga)
- *   2.3–2.7s  yuklash chizig'i 0 → 100%
- *   2.7–3.2s  fade/zoom olib tashlash → asl ekranga o'tish
+ * Qatlamlar:
+ *   fon      — qorong'u gradient + anatomik grid + donachalar
+ *   logo     — scale(0.75 → 1) + halo
+ *   orbit    — logo atrofida aylanuvchi organlar (miya, yurak, o'pka, skelet, DNK)
+ *   skan     — gorizontal tibbiy nur
+ *   nom      — "Corpus" (fade + yuqoriga)
+ *   progress — 0 → 100% chiziq
+ *   exit     — fade/zoom → asl ekranga
  */
 
 const T = {
@@ -30,6 +32,18 @@ const T = {
   exit: 2.7,
   leave: 3.15,
 };
+
+/** Organlar orbita bo'ylab joylashadigan burchaklar (daraja) — doimiy tartib. */
+const ORGANS: { kind: AnatomyKind; degree: number; size: number }[] = [
+  { kind: "brain", degree: -90, size: 46 },
+  { kind: "heart", degree: -18, size: 42 },
+  { kind: "lungs", degree: 54, size: 46 },
+  { kind: "skeleton", degree: 126, size: 42 },
+  { kind: "dna", degree: 198, size: 40 },
+];
+
+/** Orbita radiusi (logo atrofida). */
+const ORBIT_R = 132;
 
 /** Aniq (deterministik) donachalar — qayta renderda farq qilmaydi. */
 const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
@@ -136,26 +150,56 @@ export function SplashScreen() {
           animate={exiting ? { opacity: 0, scale: 1.08 } : { opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* Logo: aynan mavjud rasm, o'zgarmaydi */}
-          <div className="relative flex h-32 w-32 items-center justify-center">
+          {/* Logo + organ orbita */}
+          <div className="relative flex h-44 w-44 items-center justify-center">
+            {/* Organlar orbitali — logo atrofida aylanadi */}
+            {logoVisible && (
+              <div
+                className="rx-organ-orbit absolute left-1/2 top-1/2 -ml-[150px] -mt-[150px] h-[300px] w-[300px]"
+                aria-hidden
+              >
+                {ORGANS.map((o) => {
+                  const rad = (o.degree * Math.PI) / 180;
+                  const x = Math.cos(rad) * ORBIT_R;
+                  const y = Math.sin(rad) * ORBIT_R;
+                  return (
+                    <div
+                      key={o.kind}
+                      className="rx-organ-counter absolute"
+                      style={{
+                        left: `calc(50% + ${x}px)`,
+                        top: `calc(50% + ${y}px)`,
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
+                      <div className="rx-organ-bob">
+                        <AnatomyAnimation kind={o.kind} size={o.size} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* yumshoq halo */}
             {logoVisible && (
               <>
-                {/* yumshoq halo */}
                 <motion.div
-                  className="absolute inset-0 rounded-full bg-primary/35 blur-2xl"
+                  className="absolute inset-0 rounded-full bg-primary/30 blur-3xl"
                   initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: [0, 0.8, 0.45], scale: 1 }}
+                  animate={{ opacity: [0, 0.7, 0.4], scale: 1 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 />
                 <motion.div
                   className="absolute inset-0 rounded-full border border-white/10"
                   initial={{ opacity: 0, scale: 0.6 }}
-                  animate={{ opacity: 1, scale: 1.15 }}
+                  animate={{ opacity: 1, scale: 1.12 }}
                   transition={{ duration: 1.1, ease: "easeOut" }}
                 />
               </>
             )}
 
+            {/* Logo: aynan mavjud rasm, o'zgarmaydi */}
             <motion.div
               initial={false}
               animate={
@@ -171,7 +215,7 @@ export function SplashScreen() {
 
             {/* radial nur (skan payti) */}
             <motion.div
-              className="pointer-events-none absolute -inset-8 rounded-full"
+              className="pointer-events-none absolute inset-0 rounded-full"
               style={{
                 background:
                   "radial-gradient(circle, rgba(162,155,254,0.16) 0%, rgba(162,155,254,0.05) 45%, transparent 70%)",
@@ -183,7 +227,7 @@ export function SplashScreen() {
           </div>
 
           {/* Nom: loyihaning o'z nomi (t.brand) */}
-          <div className="relative mt-7 h-11 overflow-hidden">
+          <div className="relative mt-4 h-11 overflow-hidden">
             <AnimatePresence>
               {nameVisible && (
                 <motion.h1
@@ -215,7 +259,7 @@ export function SplashScreen() {
           )}
 
           {/* Yuklash chizig'i 0 → 100% */}
-          <div className="relative mt-8 h-1 w-44 overflow-hidden rounded-full bg-white/15">
+          <div className="relative mt-7 h-1 w-44 overflow-hidden rounded-full bg-white/15">
             <motion.div
               className="h-full rounded-full bg-gradient-to-r from-primary-soft to-primary"
               initial={{ width: "0%" }}

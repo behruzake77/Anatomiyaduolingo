@@ -116,3 +116,11 @@ body {
 .rx-brain-pulse { animation: rx-brain-pulse 3.2s ease-in-out infinite; }
 .rx-sway { animation: rx-sway 5s ease-in-out infinite; }
 .rx-dna { animation: rx-dna 7s linear infinite; }
+
+/* ---- Splash intro: organ orbit ring ---- */
+@keyframes rx-organ-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes rx-organ-counter { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes rx-organ-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.rx-organ-orbit { animation: rx-organ-orbit 26s linear infinite; }
+.rx-organ-counter { animation: rx-organ-counter 26s linear infinite; }
+.rx-organ-bob { animation: rx-organ-bob 3.6s ease-in-out infinite; }
