@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, BookOpen, User, Settings, type LucideIcon } from "lucide-react";
+import { Home, BookOpen, User, Library, type LucideIcon } from "lucide-react";
 import { useAppStore, type Tab } from "@/store/useAppStore";
 import { useStrings, type Strings } from "@/i18n";
 import { cn } from "@/utils/cn";
@@ -9,8 +9,8 @@ function items(t: Strings): { id: Tab; label: string; icon: LucideIcon }[] {
   return [
     { id: "home", label: t.home, icon: Home },
     { id: "learn", label: t.learn, icon: BookOpen },
+    { id: "library", label: t.library, icon: Library },
     { id: "profile", label: t.profile, icon: User },
-    { id: "settings", label: t.settings, icon: Settings },
   ];
 }
 

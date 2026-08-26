@@ -15,6 +15,9 @@ import { NECK_HEAD_MUSCLES, VESSELS_DETAIL } from "./neckvessels";
 import { PLEXUS_DETAIL, SKIN_DETAIL } from "./final";
 import { IMG_QUESTIONS, VISUAL_SLIDES, LESSON_IMAGES } from "./visuals";
 import { LESSON_LEGENDS } from "./labels";
+import { FIGURE_LESSONS } from "./figureLessons";
+import { COLOR_DIAGRAMS, COLOR_HIGHLIGHTS } from "./colorDiagrams";
+import { termDef } from "./termsInfo";
 
 export type { ContentSystem, Lesson, SystemUnit, Question };
 export type { QuestionType, Difficulty } from "./types";
@@ -50,6 +53,86 @@ const RANK: Record<Difficulty, number> = { easy: 0, medium: 1, hard: 2 };
 /** Dars savollarini oson → o'rta → qiyin tartibida saralash. */
 export function sortByDifficulty(questions: Question[]): Question[] {
   return [...questions].sort((a, b) => RANK[difficultyOf(a)] - RANK[difficultyOf(b)]);
+}
+
+function shuffleArr<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/**
+ * Har bir raqamlangan qismga rasmli savol (kitob rasmi + raqam → nom).
+ * Faqat kitobdan kesilgan (raqam bosilgan) rasmlar va sonli raqamlar uchun.
+ * Manba: kitobdagi rasm izohi (raqam → nom) — ixtiro qilinmaydi.
+ */
+export function partQuestions(lessonId: string): Question[] {
+  const legend = LESSON_LEGENDS[lessonId];
+  if (!legend) return [];
+  // Faqat izohsiz (faqat rasm+raqam) kesimi tayyor bo'lgan darslarda — javob ko'rinib qolmasligi uchun.
+  if (!FIGURE_LESSONS.has(lessonId)) return [];
+  const img = `/img/fig/${lessonId}.jpg`;
+  const items = legend.filter((it) => /^\d+$/.test(it.n));
+  if (items.length < 4) return [];
+
+  const names = items.map((i) => i.name);
+  const out: Question[] = [];
+  items.forEach((item) => {
+    const others = [...new Set(names.filter((n) => n !== item.name))];
+    if (others.length < 3) return;
+    const distractors = shuffleArr(others).slice(0, 3);
+    const options = shuffleArr([item.name, ...distractors]);
+    const answer = options.indexOf(item.name);
+    out.push({
+      type: "img",
+      prompt: `Rasmda №${item.n} bilan qaysi qism ko'rsatilgan?`,
+      image: img,
+      options,
+      answer,
+      difficulty: "medium",
+      hint: item.name,
+    });
+  });
+  return out;
+}
+
+/**
+ * Rangli diagramma savollari — faqat O'SHA qism bo'yalgan + strelka bilan ko'rsatilgan,
+ * qolgan qismlar xira. Javob variantlarida nomlar.
+ * Manba: Ahmedov kitobidagi qismlar; rang/strelka faqat vizual yordam.
+ */
+export function colorQuestions(lessonId: string): Question[] {
+  const baseImg = COLOR_DIAGRAMS[lessonId];
+  const highlights = COLOR_HIGHLIGHTS[lessonId];
+  const legend = LESSON_LEGENDS[lessonId];
+  if (!baseImg || !highlights || !legend) return [];
+  const items = legend.filter((it) => /^\d+$/.test(it.n));
+  if (items.length < 4) return [];
+
+  const names = items.map((i) => i.name);
+  const out: Question[] = [];
+  items.forEach((item) => {
+    const img = highlights[item.n];
+    if (!img) return;
+    const others = [...new Set(names.filter((n) => n !== item.name))];
+    if (others.length < 3) return;
+    const distractors = shuffleArr(others).slice(0, 3);
+    const options = shuffleArr([item.name, ...distractors]);
+    const answer = options.indexOf(item.name);
+    out.push({
+      type: "img",
+      prompt: `Rasmda strelka bilan ko'rsatilgan qism qanday ataladi?`,
+      image: img,
+      options,
+      answer,
+      difficulty: "medium",
+      hint: item.name,
+    });
+  });
+  return out;
 }
 
 const BASE_SYSTEMS: ContentSystem[] = [
@@ -126,21 +209,56 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
     ...unit,
     lessons: unit.lessons.map((lesson, li) => {
       let patched: Lesson = lesson;
+      const lessonImg = LESSON_IMAGES[lesson.id];
 
-      // slaydsiz darsga rasmli kirish slaydi
-      if (!patched.slides || patched.slides.length === 0) {
+      const colorImg = COLOR_DIAGRAMS[lesson.id];
+      const legend = LESSON_LEGENDS[lesson.id];
+
+      if (colorImg && legend) {
+        // Rangli diagrammali dars — kитоб бети o'rniga FLASH-KARTALAR + rangli diagramma.
+        // Har bir qism = bitta flesh-karta (oldingi tomoni: strelkali rasm, orqasi: nomi).
+        const flashcards = legend
+          .filter((it) => /^\d+$/.test(it.n))
+          .map((it) => ({
+            n: it.n,
+            name: it.name,
+            img: COLOR_HIGHLIGHTS[lesson.id]?.[it.n] ?? colorImg,
+            def: termDef(it.name),
+          }));
+
+        const colorSlide = {
+          title: "Rangli diagramma",
+          text: "Qismlar raqamlangan — pastdagi ro'yxatdan nomini toping yoki rasmga bosing.",
+          img: colorImg,
+          legend,
+          highlights: COLOR_HIGHLIGHTS[lesson.id],
+        };
+        patched = { ...patched, slides: [colorSlide], flashcards };
+      } else if (lessonImg) {
+        // Kitobdan kesilgan aniq rasm — USTUVOR: birinchi slaydga kitob rasmi + raqamli ro'yxat qo'yiladi.
+        const bookSlide = {
+          title: lesson.title,
+          text: lesson.description,
+          img: lessonImg,
+          cap: lesson.source ? `${lesson.source.book}, ${lesson.source.page}-bet` : undefined,
+          legend,
+        };
+        if (!patched.slides || patched.slides.length === 0) {
+          patched = { ...patched, slides: [bookSlide] };
+        } else {
+          patched = { ...patched, slides: [bookSlide, ...patched.slides] };
+        }
+      } else if (!patched.slides || patched.slides.length === 0) {
+        // Slaydsiz darsga tizim rasmi bilan kirish slaydi.
         const s = slideFor();
-        // Kitobdan kesilgan aniq rasm (har bir qismning o'z rasmi) — yo'q bo'lsa tizim rasmi.
-        const lessonImg = LESSON_IMAGES[lesson.id];
         patched = {
           ...patched,
           slides: [
             {
               title: lesson.title,
               text: lesson.description,
-              img: lessonImg ?? s.img,
-              cap: lessonImg && lesson.source ? `${lesson.source.book}, ${lesson.source.page}-bet` : s.text,
-              legend: LESSON_LEGENDS[lesson.id],
+              img: s.img,
+              cap: s.text,
             },
           ],
         };
@@ -150,6 +268,17 @@ export const CONTENT_SYSTEMS: ContentSystem[] = BASE_SYSTEMS.map((sys) => {
       const imgs = IMG_QUESTIONS[sys.id];
       if (ui === 0 && li === 0 && imgs && imgs.length) {
         patched = { ...patched, questions: [...imgs, ...patched.questions] };
+      }
+
+      // Rangli diagrammasi bor darslarda — rangli (yozuvsiz) savollar; aks holda №N raqamli savollar.
+      const colors = colorQuestions(lesson.id);
+      if (colors.length) {
+        patched = { ...patched, questions: [...patched.questions, ...colors] };
+      } else {
+        const parts = partQuestions(lesson.id);
+        if (parts.length) {
+          patched = { ...patched, questions: [...patched.questions, ...parts] };
+        }
       }
       return patched;
     }),

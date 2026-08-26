@@ -84,7 +84,8 @@ export function LoginScreen() {
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
             autoComplete="username"
-            className="w-full bg-transparent text-base outline-none placeholder:text-muted"
+            maxLength={20}
+            className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
           />
         </label>
 

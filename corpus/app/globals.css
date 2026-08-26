@@ -77,3 +77,50 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================
+   Re-engagement motion primitives (CORPUS — premium, subtle)
+   Naming: rx-*  (re-engagement). All neutralized by the global
+   prefers-reduced-motion rule above.
+   ============================================================ */
+
+.rx-tf { transform-box: fill-box; transform-origin: center; }
+
+@keyframes rx-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+@keyframes rx-orbit { to { transform: rotate(360deg); } }
+@keyframes rx-blink { 0%, 92%, 100% { transform: scaleY(1); } 95%, 96% { transform: scaleY(0.12); } }
+@keyframes rx-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes rx-think { 0%,60%,100% { opacity:.25; transform: translateY(0); } 30% { opacity:1; transform: translateY(-2px); } }
+@keyframes rx-twinkle { 0%,100% { opacity:.2; transform: scale(.7); } 50% { opacity:1; transform: scale(1); } }
+@keyframes rx-wave { 0%,100% { transform: rotate(-14deg); } 50% { transform: rotate(16deg); } }
+@keyframes rx-pop-in { from { opacity:0; transform: translateY(10px) scale(.98); } to { opacity:1; transform: translateY(0) scale(1); } }
+@keyframes rx-overlay-in { from { opacity:0; } to { opacity:1; } }
+@keyframes rx-heartbeat { 0%,100% { transform: scale(1); } 14% { transform: scale(1.09); } 28% { transform: scale(1); } 42% { transform: scale(1.06); } 56% { transform: scale(1); } }
+@keyframes rx-lungs { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+@keyframes rx-brain-pulse { 0%,100% { transform: scale(1); opacity:.9; } 50% { transform: scale(1.045); opacity:1; } }
+@keyframes rx-sway { 0%,100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
+@keyframes rx-dna { to { transform: rotate(360deg); } }
+@keyframes rx-shimmer { to { transform: translateX(220%); } }
+
+.rx-breathe { animation: rx-breathe 3.4s ease-in-out infinite; }
+.rx-orbit { animation: rx-orbit 22s linear infinite; }
+.rx-eyes { animation: rx-blink 4.6s infinite; }
+.rx-float { animation: rx-float 4s ease-in-out infinite; }
+.rx-think-dot { animation: rx-think 1.5s ease-in-out infinite; }
+.rx-twinkle { animation: rx-twinkle 2.2s ease-in-out infinite; }
+.rx-wave { animation: rx-wave 1.5s ease-in-out infinite; }
+.rx-pop-in { animation: rx-pop-in .5s cubic-bezier(.22,1,.36,1) both; }
+.rx-overlay-in { animation: rx-overlay-in .25s ease both; }
+.rx-heartbeat { animation: rx-heartbeat 1.6s ease-in-out infinite; }
+.rx-lungs { animation: rx-lungs 4.6s ease-in-out infinite; }
+.rx-brain-pulse { animation: rx-brain-pulse 3.2s ease-in-out infinite; }
+.rx-sway { animation: rx-sway 5s ease-in-out infinite; }
+.rx-dna { animation: rx-dna 7s linear infinite; }
+
+/* ---- Splash intro: organ orbit ring ---- */
+@keyframes rx-organ-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes rx-organ-counter { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes rx-organ-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.rx-organ-orbit { animation: rx-organ-orbit 26s linear infinite; }
+.rx-organ-counter { animation: rx-organ-counter 26s linear infinite; }
+.rx-organ-bob { animation: rx-organ-bob 3.6s ease-in-out infinite; }
