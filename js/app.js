@@ -980,6 +980,28 @@
     const s = session.slides[session.slideIdx];
     const total = session.slides.length;
     const pct = Math.round((session.slideIdx / total) * 100);
+    let body;
+    if (s.parts && s.parts.length) {
+      // Interaktiv «qismlarni o'rganish» — nuqtaga bosing, nomi chiqadi
+      body = `<div class="ex-kind">${esc(session.title)}</div>
+        <h2 style="font-size:20px;margin:6px 0 12px">${esc(s.title)}</h2>
+        <p style="color:var(--text-2);line-height:1.7;font-size:14px;max-width:420px">${esc(s.text)}</p>
+        <div class="study">
+          <div class="study-img">
+            <img src="${s.img}" alt="" onerror="this.style.display='none'">
+            ${s.parts.map((p, i) => `<button class="study-dot" data-i="${i}" style="left:${p.x}%;top:${p.y}%" aria-label="${esc(p.label)}"><span>${i + 1}</span></button>`).join("")}
+          </div>
+          <div class="study-tag" id="study-tag">Qismlardan birini bosing 👆</div>
+          <div class="study-list">${s.parts.map((p, i) => `<button class="study-chip" data-i="${i}"><span class="n">${i + 1}</span><span>${esc(p.label)}</span></button>`).join("")}</div>
+          ${s.cap ? `<div class="lead-muted" style="margin-top:12px;font-size:11.5px">${esc(s.cap)}</div>` : ""}
+        </div>`;
+    } else {
+      body = `<div class="ex-kind">${esc(session.title)}</div>
+        <h2 style="font-size:22px;margin:6px 0 14px">${esc(s.title)}</h2>
+        ${s.img ? `<div class="ex-img"><img src="${s.img}" alt="" onerror="this.style.display='none'" style="max-height:240px"></div>` : ""}
+        <p style="color:var(--text-2);line-height:1.7;font-size:14.5px;max-width:420px">${esc(s.text)}</p>
+        ${s.cap ? `<div class="lead-muted" style="margin-top:12px;font-size:11.5px">${esc(s.cap)}</div>` : ""}`;
+    }
     $app.innerHTML = `<div class="lesson">
       <div class="lesson-top glass">
         <button class="btn-quit" id="quit">${ic("x")}</button>
@@ -987,22 +1009,40 @@
         <div class="exam-timer">${session.slideIdx + 1}/${total}</div>
       </div>
       <div class="ex-body" style="align-items:center;text-align:center;justify-content:center">
-        <div class="ex-kind">${esc(session.title)}</div>
-        <h2 style="font-size:22px;margin:6px 0 14px">${esc(s.title)}</h2>
-        ${s.img ? `<div class="ex-img"><img src="${s.img}" alt="" onerror="this.style.display='none'" style="max-height:240px"></div>` : ""}
-        <p style="color:var(--text-2);line-height:1.7;font-size:14.5px;max-width:420px">${esc(s.text)}</p>
-        ${s.cap ? `<div class="lead-muted" style="margin-top:12px;font-size:11.5px">${esc(s.cap)}</div>` : ""}
+        ${body}
       </div>
       <div class="ex-footer"><button class="btn full" id="next-slide">${session.slideIdx + 1 >= total ? "Mashqni boshlash" : "Davom etish"}</button></div>
     </div>`;
     document.getElementById("quit").addEventListener("click", () => {
       if (confirm("Chiqasizmi? Sessiya natijasi saqlanmaydi.")) { session = null; renderHome(); }
     });
+    if (s.parts && s.parts.length) bindStudySlide(s.parts);
     document.getElementById("next-slide").addEventListener("click", () => {
       session.slideIdx++;
       renderExercise();
     });
     window.scrollTo(0, 0);
+  }
+
+  // Interaktiv o'rganish: nuqta/chipga bosilganda nomni ko'rsatadi
+  function bindStudySlide(parts) {
+    const tag = document.getElementById("study-tag");
+    const dots = Array.from($app.querySelectorAll(".study-dot"));
+    const chips = Array.from($app.querySelectorAll(".study-chip"));
+    const seen = new Set();
+    function activate(i) {
+      dots.forEach(d => d.classList.toggle("on", +d.dataset.i === i));
+      chips.forEach(c => c.classList.toggle("on", +c.dataset.i === i));
+      if (tag) tag.innerHTML = `<b>${i + 1}.</b> ${esc(parts[i].label)}`;
+    }
+    function markSeen(i) {
+      seen.add(i);
+      dots[i].classList.add("seen");
+      chips[i].classList.add("seen");
+      if (seen.size >= parts.length && tag) tag.innerHTML = `${ic("check", "ico-sm")} Barcha qismlar ko'rildi — davom etishingiz mumkin`;
+    }
+    dots.forEach(d => d.addEventListener("click", () => { const i = +d.dataset.i; markSeen(i); activate(i); }));
+    chips.forEach(c => c.addEventListener("click", () => { const i = +c.dataset.i; markSeen(i); activate(i); }));
   }
 
   function quizBody(ex) {
