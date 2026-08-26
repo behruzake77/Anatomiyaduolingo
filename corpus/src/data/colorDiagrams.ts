@@ -95,6 +95,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l77: "/img/color/l77.jpg", // Boshning mimika mushaklari
   l78: "/img/color/l78.jpg", // Bosh va bo'yin arteriyalari
   l79: "/img/color/l79.jpg", // Yuqori kavak vena
+  l39: "/img/book/l39.jpg", // Gipofiz va miya arteriyalari (224-rasm, kitobdan)
   l40: "/img/color/l40.jpg", // Katta va kichik qon aylanish doirasi
   l41: "/img/color/l41.jpg", // Arteriya devorining tuzilishi
   l42: "/img/color/l42.jpg", // Limfa tuguni shakllari
@@ -104,6 +105,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l58: "/img/color/l58.jpg", // Uzunchoq miyaning ko'ndalang kesmasi
   l59: "/img/color/l59.jpg", // Miyacha o'zaklari
   l60: "/img/color/l60.jpg", // Bosh miya yarim pallasi
+  l61: "/img/color/l61.jpg", // Bosh miya nervlari (12 juft)
   l45: "/img/color/l45.jpg", // Ko'z olmasi kesimi
   l46: "/img/color/l46.jpg", // Ta'm sezish — til so'rg'ichlari
   l51: "/img/color/l51.jpg", // Orqaning yuza mushaklari
@@ -118,6 +120,7 @@ export const COLOR_DIAGRAMS: Record<string, string> = {
   l80: "/img/color/l80.jpg", // Bo'yin chigali
   l81: "/img/color/l81.jpg", // Bel va dumg'aza chigallari
   l82: "/img/color/l82.jpg", // Teri qavatlari
+  l83: "/img/cross/smell-cross.jpg", // Hid sezish — burun shilliq pardasi (rangli)
 };
 
 /**
@@ -810,8 +813,19 @@ export const COLOR_HIGHLIGHTS: Record<string, Record<string, string>> = {
   },
   l34: {
     "1": "/img/color/l34_1.jpg", // Sinus frontalis
-    "2": "/img/color/l34_2.jpg", // Lamina perpend  "2": "/img/color/l35_2.jpg", // Lig. cricothyroideum me "/img/color/l35_2.jpg", // Lig. cricothyroideum medianum
-    "3": "/img/color/l35_3.jpg", // Lamina visceralis fasciae
+    "2": "/img/color/l34_2.jpg", // Lamina perpendicularis ossis ethmoidalis
+    "3": "/img/color/l34_3.jpg", // Sinus sphenoidalis
+    "4": "/img/color/l34_4.jpg", // Sella turcica
+    "5": "/img/color/l34_5.jpg", // Crista nasalis ossis maxillae et palatinae
+    "6": "/img/color/l34_6.jpg", // Vomer
+    "7": "/img/color/l34_7.jpg", // Spina nasalis anterior
+    "8": "/img/color/l34_8.jpg", // Cartilago septi nasi
+    "9": "/img/color/l34_9.jpg", // Os nasale
+  },
+  l35: {
+    "1": "/img/color/l35_1.jpg", // Cartilago thyroidea
+    "2": "/img/color/l35_2.jpg", // Lig. cricothyroideum medianum
+    "3": "/img/color/l35_3.jpg", // Lamina visceralis fasciae pretrachealis
     "4": "/img/color/l35_4.jpg", // Tunica mucosa
     "5": "/img/color/l35_5.jpg", // Bronchus lobaris superior sinister
     "6": "/img/color/l35_6.jpg", // Bronchus segmentalis apicoposterior
