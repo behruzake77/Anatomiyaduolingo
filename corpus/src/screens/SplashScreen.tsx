@@ -35,15 +35,17 @@ const T = {
 
 /** Organlar orbita bo'ylab joylashadigan burchaklar (daraja) — doimiy tartib. */
 const ORGANS: { kind: AnatomyKind; degree: number; size: number }[] = [
-  { kind: "brain", degree: -90, size: 46 },
-  { kind: "heart", degree: -18, size: 42 },
-  { kind: "lungs", degree: 54, size: 46 },
-  { kind: "skeleton", degree: 126, size: 42 },
-  { kind: "dna", degree: 198, size: 40 },
+  { kind: "brain", degree: -90, size: 44 },
+  { kind: "heart", degree: -18, size: 40 },
+  { kind: "lungs", degree: 54, size: 44 },
+  { kind: "skeleton", degree: 126, size: 40 },
+  { kind: "dna", degree: 198, size: 38 },
 ];
 
 /** Orbita radiusi (logo atrofida). */
-const ORBIT_R = 132;
+const ORBIT_R = 112;
+/** Ring konteyner o'lchami (logo atrofida). */
+const RING = 280;
 
 /** Aniq (deterministik) donachalar — qayta renderda farq qilmaydi. */
 const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
@@ -155,7 +157,8 @@ export function SplashScreen() {
             {/* Organlar orbitali — logo atrofida aylanadi */}
             {logoVisible && (
               <div
-                className="rx-organ-orbit absolute left-1/2 top-1/2 -ml-[150px] -mt-[150px] h-[300px] w-[300px]"
+                className="rx-organ-orbit absolute left-1/2 top-1/2"
+                style={{ width: RING, height: RING, marginLeft: -RING / 2, marginTop: -RING / 2 }}
                 aria-hidden
               >
                 {ORGANS.map((o) => {
@@ -167,12 +170,15 @@ export function SplashScreen() {
                       key={o.kind}
                       className="rx-organ-counter absolute"
                       style={{
+                        width: o.size,
+                        height: o.size,
                         left: `calc(50% + ${x}px)`,
                         top: `calc(50% + ${y}px)`,
-                        transform: "translate(-50%, -50%)",
+                        marginLeft: -o.size / 2,
+                        marginTop: -o.size / 2,
                       }}
                     >
-                      <div className="rx-organ-bob">
+                      <div className="h-full w-full">
                         <AnatomyAnimation kind={o.kind} size={o.size} />
                       </div>
                     </div>
