@@ -25,6 +25,7 @@ import { GlossaryScreen } from "@/screens/GlossaryScreen";
 import { ExamScreen } from "@/screens/ExamScreen";
 import { BookmarksScreen } from "@/screens/BookmarksScreen";
 import { LibraryScreen } from "@/screens/LibraryScreen";
+import { LeaderboardScreen } from "@/screens/LeaderboardScreen";
 import { InfoScreen } from "@/screens/InfoScreen";
 import { PremiumScreen } from "@/screens/PremiumScreen";
 
@@ -49,6 +50,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   exam: ExamScreen,
   bookmarks: BookmarksScreen,
   library: LibraryScreen,
+  leaderboard: LeaderboardScreen,
   info: InfoScreen,
   premium: PremiumScreen,
 };
@@ -75,6 +77,11 @@ export function AppNavigator() {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
+
+  // Haftalik liga: hafta almashsa — o'tgan hafta yakunlanadi (ko'tarilish/tushish).
+  useEffect(() => {
+    useAppStore.getState().syncLeague();
+  }, []);
 
   // Keep tab in sync when navigating to a tab screen.
   useEffect(() => {

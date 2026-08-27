@@ -16,30 +16,34 @@ import {
   GraduationCap,
   Repeat,
   Trophy,
+  Medal,
   ChevronRight,
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import { useAppStore, type ScreenId } from "@/store/useAppStore";
-import { useStrings } from "@/i18n";
+import { useStrings, fmt } from "@/i18n";
 import { NEWS } from "@/data/news";
+import { LEAGUES, boardFor, userRank, userWeekXp, weekKeyOf } from "@/utils/league";
 
 interface Promo {
   screen: ScreenId;
   icon: LucideIcon;
   color: string;
-  titleKey: "library" | "models3d" | "glossaryTitle" | "examTitle" | "reviewTitle" | "achievements";
+  titleKey: "library" | "models3d" | "glossaryTitle" | "examTitle" | "reviewTitle" | "achievements" | "leaderboardTitle";
   textKey:
     | "librarySubtitle"
     | "promo3d"
     | "promoGlossary"
     | "promoExam"
     | "promoReview"
-    | "promoAch";
+    | "promoAch"
+    | "promoLeaderboard";
 }
 
 /** Qaysi bo'lim bannerlarda reklama qilinadi (ranglar SYSTEMS palitrasidan). */
 const PROMOS: Promo[] = [
+  { screen: "leaderboard", icon: Medal, color: "#EC4899", titleKey: "leaderboardTitle", textKey: "promoLeaderboard" },
   { screen: "library", icon: Library, color: "#6C5CE7", titleKey: "library", textKey: "librarySubtitle" },
   { screen: "models3d", icon: Box, color: "#06b6d4", titleKey: "models3d", textKey: "promo3d" },
   { screen: "glossary", icon: BookOpen, color: "#F59E0B", titleKey: "glossaryTitle", textKey: "promoGlossary" },
@@ -62,6 +66,9 @@ export function DashboardBanners() {
 
   return (
     <>
+      {/* 0) Haftalik poyga — foydalanuvchining joriy o'rni */}
+      <WeekRaceCard />
+
       {/* 1) Bo'limlar — surib yuriladigan banner kartalar */}
       <section className="mt-6">
         <h2 className="text-lg font-semibold">{t.bannersSectionsTitle}</h2>
@@ -195,5 +202,41 @@ function NewsCarousel() {
         ))}
       </div>
     </div>
+  );
+}
+
+/** Dashboard'dagi ixcham «Haftalik poyga» kartasi — joriy liga va o'rin. */
+function WeekRaceCard() {
+  const t = useStrings();
+  const navigate = useAppStore((s) => s.navigate);
+  const xpHistory = useAppStore((s) => s.xpHistory);
+  const currentUser = useAppStore((s) => s.currentUser);
+  const leagueIndex = useAppStore((s) => s.leagueIndex);
+
+  const weekKey = weekKeyOf(new Date());
+  const myXp = userWeekXp(xpHistory, weekKey);
+  const board = boardFor(weekKey, leagueIndex, currentUser ?? "", myXp);
+  const rank = userRank(board);
+  const league = LEAGUES[Math.min(leagueIndex, LEAGUES.length - 1)];
+
+  return (
+    <section className="mt-6">
+      <button
+        onClick={() => navigate("leaderboard")}
+        className="flex w-full items-center gap-3 rounded-2xl border border-line p-4 text-left shadow-card transition-transform duration-150 active:scale-[.98]"
+        style={{ backgroundImage: `linear-gradient(120deg, ${league.color}30 0%, transparent 60%)` }}
+      >
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-black/5 text-2xl">
+          {league.emoji}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold leading-tight">🏁 {t.weekRaceTitle}</p>
+          <p className="mt-0.5 text-xs text-muted">
+            {fmt(t.weekRaceRank, { league: t[league.key], n: rank })} · {myXp} XP
+          </p>
+        </div>
+        <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
+      </button>
+    </section>
   );
 }

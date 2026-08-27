@@ -14,6 +14,18 @@ export interface NewsItem {
 export const NEWS: NewsItem[] = [
   {
     date: "2026-08-28",
+    icon: "🏁",
+    uz: {
+      title: "Haftalik ligalar — endi raqobat bor!",
+      text: "Bronzadan Olmosgacha 5 liga. Har hafta TOP-3 ko'tariladi — reytingda o'rningizni ko'ring.",
+    },
+    en: {
+      title: "Weekly leagues — competition is here!",
+      text: "5 leagues from Bronze to Diamond. TOP 3 climb every week — check your rank.",
+    },
+  },
+  {
+    date: "2026-08-28",
     icon: "📚",
     uz: {
       title: "Kutubxona tuzatildi",
