@@ -5,7 +5,7 @@
  *  - PDF kitoblar: SW umuman aralashmaydi (to'g'ridan-to'g'ri yuklanadi, keshga olinmaydi)
  *  - boshqa so'rovlar: network-first, muvaffaqiyatsiz bo'lsa keshdan
  */
-const CACHE = "corpus-v2";
+const CACHE = "corpus-v3";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
