@@ -9,6 +9,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { AdBanner } from "@/components/AdBanner";
+import { DashboardBanners } from "@/components/DashboardBanners";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
 import { activityState } from "@/utils/activity";
@@ -133,6 +134,9 @@ export function DashboardScreen() {
           </div>
         </Card>
       </section>
+
+      {/* Bo'limlar reklaması + loyiha yangiliklari bannerlari */}
+      <DashboardBanners />
 
       {/* comeback modal (lazy) */}
       {showWelcomeBack && (

@@ -117,6 +117,16 @@ export const STR: Record<Lang, Strings> = {
     bookSlow: "Fayl katta — yuklanish bir necha soniya olishi mumkin. Tugma bilan to'liq ekranda ochishingiz mumkin.",
     bookUnsupported: "Bu brauzer kitobni ichki oynada ko'rsatolmaydi. «To'liq ekranda ochish» tugmasini bosing — kitob alohida oynada ochiladi.",
     bookBackToList: "Kitoblar ro'yxatiga qaytish",
+
+    bannersSectionsTitle: "Bo'limlar",
+    bannersNewsTitle: "Loyiha yangiliklari",
+    newsBadge: "Yangilik",
+    promoOpen: "Ochish",
+    promo3d: "Anatomiya 3D — aylantirib ko'ring",
+    promoGlossary: "Lotin–o'zbek–ingliz atamalar",
+    promoExam: "Barcha tizimlar bo'yicha imtihon",
+    promoReview: "Unutayotganlaringizni takrorlang",
+    promoAch: "12 ta yutuqni to'plang",
     readHint: "iOS'da PDF faqat birinchi sahifani ko'rsatishi mumkin — «Yuklab olish» tugmasidan foydalaning.",
 
     topicsTitle: "Mavzular",
@@ -398,6 +408,16 @@ export const STR: Record<Lang, Strings> = {
     bookSlow: "Large file — it may take a while. You can also open it full screen.",
     bookUnsupported: "This browser can't show the book inline. Tap «Open full screen» — the book will open in a separate view.",
     bookBackToList: "Back to book list",
+
+    bannersSectionsTitle: "Sections",
+    bannersNewsTitle: "Project news",
+    newsBadge: "News",
+    promoOpen: "Open",
+    promo3d: "Anatomy in 3D — rotate and explore",
+    promoGlossary: "Latin–Uzbek–English terms",
+    promoExam: "An exam across all systems",
+    promoReview: "Review what you're forgetting",
+    promoAch: "Unlock all 12 achievements",
     readHint: "On iOS the PDF may show only the first page — use Download instead.",
 
     topicsTitle: "Topics",
