@@ -1,6 +1,7 @@
 "use client";
 
-import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info } from "lucide-react";
+import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Toggle } from "@/components/ui/Toggle";
@@ -13,9 +14,11 @@ export function SettingsScreen() {
   const toggleSetting = useAppStore((s) => s.toggleSetting);
   const setLanguage = useAppStore((s) => s.setLanguage);
   const logout = useAppStore((s) => s.logout);
+  const deleteAccount = useAppStore((s) => s.deleteAccount);
   const openInfo = useAppStore((s) => s.openInfo);
   const t = useStrings();
   const { requestPermission } = useNotifications();
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const onToggle = async (key: "notifications" | "darkMode" | "sound") => {
     if (key === "notifications" && !settings.notifications) {
@@ -109,6 +112,26 @@ export function SettingsScreen() {
             <LogOut className="h-5 w-5" aria-hidden />
           </span>
           <span className="flex-1 text-base font-medium">{t.logout}</span>
+        </button>
+
+        {/* Hisobni o'chirish — Play siyosati: majburiy, ikki bosqichli tasdiqlash */}
+        <button
+          onClick={() => (confirmDelete ? deleteAccount() : setConfirmDelete(true))}
+          onBlur={() => setConfirmDelete(false)}
+          className={`flex w-full items-center gap-3 border-t border-line px-4 py-3.5 text-left text-danger ${
+            confirmDelete ? "bg-danger text-white" : ""
+          }`}
+        >
+          <span
+            className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+              confirmDelete ? "bg-white/15 text-white" : "bg-danger/10 text-danger"
+            }`}
+          >
+            <Trash2 className="h-5 w-5" aria-hidden />
+          </span>
+          <span className="min-w-0 flex-1 break-words text-base font-medium">
+            {confirmDelete ? t.deleteAccountConfirm : t.deleteAccount}
+          </span>
         </button>
       </Card>
     </Screen>

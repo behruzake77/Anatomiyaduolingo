@@ -137,3 +137,19 @@ Defined in `app/globals.css` (Tailwind `@theme`) and mirrored in `src/theme/toke
 
 - Primary `#6C5CE7` · Secondary `#A29BFE` · Success `#00B894` · Accent `#FD79A8` · Dark `#2D3436` · BG `#F8F9FA`
 - 8px spacing grid · radius 12/16/24 · soft purple-tinted shadows
+
+## 🤖 Google Play'ga chiqarish
+
+Ilova PWA → **TWA (Bubblewrap)** orqali Android paketiga aylantiriladi.
+Barcha fayllar va qadam-baqadam yo'riqnoma: **[`play/README.md`](play/README.md)**
+
+```bash
+# qisqacha
+keytool -genkeypair -keystore corpus-release.keystore -alias corpus ...  # 1. imzo
+bubblewrap build --manifest play/twa-manifest.json                      # 2. .aab
+./play/update-assetlinks.sh <SHA256>                                    # 3. bog'lash
+# 4. Play Console → AAB yuklash
+```
+
+Play siyosatiga moslik: hisobni o'chirish (Sozlamalar), maxfiylik sahifasi,
+targetSdk 35, maskable ikonka — tayyor.

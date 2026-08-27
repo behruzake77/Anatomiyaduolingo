@@ -3,3 +3,9 @@ node_modules
 out
 *.tsbuildinfo
 .DS_Store
+
+# Play imzo kaliti — hech qachon git'ga tushmasin
+*.keystore
+*.jks
+play/corpus-release.keystore
+!play/twa-manifest.json

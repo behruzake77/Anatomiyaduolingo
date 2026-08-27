@@ -19,6 +19,7 @@ import {
   register as authRegister,
   login as authLogin,
   logout as authLogout,
+  deleteCurrentAccount,
   progressKey,
   normalizeName,
 } from "@/auth";
@@ -123,6 +124,7 @@ interface AppState {
   register: (username: string, password: string) => boolean;
   login: (username: string, password: string) => boolean;
   logout: () => void;
+  deleteAccount: () => void;
 
   // progress (foydalanuvchiga xos, noldan boshlanadi)
   onboardingDone: boolean;
@@ -275,6 +277,18 @@ export const useAppStore = create<AppState>()(
       },
       logout: () => {
         authLogout();
+        set({
+          currentUser: null,
+          ...freshProgress,
+          screen: "login",
+          tab: "home",
+          history: [],
+        });
+      },
+
+      /** Hisobni butunlay o'chiradi (hisob + progress) — Play siyosati talabi. */
+      deleteAccount: () => {
+        deleteCurrentAccount();
         set({
           currentUser: null,
           ...freshProgress,

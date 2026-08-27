@@ -83,6 +83,16 @@ export function AppNavigator() {
     useAppStore.getState().syncLeague();
   }, []);
 
+  // PWA shortcut'lar (/ ?screen=topics …) — faqat ruxsat etilgan ekranlar.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const target = new URLSearchParams(window.location.search).get("screen");
+    const safe = ["topics", "library", "leaderboard", "profile", "glossary", "exam"];
+    if (target && safe.includes(target)) {
+      useAppStore.getState().navigate(target as ScreenId);
+    }
+  }, []);
+
   // Keep tab in sync when navigating to a tab screen.
   useEffect(() => {
     if (screen in TAB_SCREEN || TABS.includes(screen)) {
