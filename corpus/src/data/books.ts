@@ -159,3 +159,24 @@ export const BOOKS: Book[] = [
 export function booksByKind(kind: BookKind): Book[] {
   return BOOKS.filter((b) => b.kind === kind);
 }
+
+/**
+ * Android APK (WebView) ichida PDF kitoblar APK ga kirmaydi (hajmi 246 MB) —
+ * ular ochiq GitHub repodan oqib olinadi. Oddiy brauzerlarda esa saytning
+ * o'zidan (/books/...) beriladi.
+ */
+export const REMOTE_BOOKS_BASE =
+  "https://raw.githubusercontent.com/behruzake77/Anatomiyaduolingo/main/corpus/public";
+
+/** Ilova Android WebView (APK / Telegram ichki brauzeri) ichida yurganmi? */
+export function isEmbeddedWebView(): boolean {
+  return (
+    typeof navigator !== "undefined" &&
+    (/;\s*wv\)/.test(navigator.userAgent) || /CorpusAndroid/.test(navigator.userAgent))
+  );
+}
+
+/** Kitob faylining to'liq URL i (muhitga qarab: mahalliy yoki GitHub). */
+export function bookUrl(b: Book): string {
+  return isEmbeddedWebView() ? REMOTE_BOOKS_BASE + b.file : b.file;
+}

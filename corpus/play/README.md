@@ -138,3 +138,33 @@ kitoblarni CDN'ga (masalan R2/S3) ko'chirish mumkin.
 
 **iOS ham kerakmi?** → Xuddi shu PWA App Store'ga **PWABuilder** bilan
 chiqariladi (keyingi qadam).
+
+---
+
+## 📱 To'g'ridan-to'g'ri ulashish uchun APK (Play'siz)
+
+`play/android/` — ilovaning **to'liq oflayn APK** versiyasi (WebView qobiq):
+
+- Veb-ilova APK ichida (`assets/www/`) — **internetsiz ishlaydi**
+- Kutubxona PDF'lari (246 MB) APK ga kirmaydi — ochiq GitHub repodan oqiladi
+- 3D modellar (Sketchfab) internet so'raydi
+- `com.corpus.anatomy` · v1.0 · minSdk 24 (Android 7.0+) · ≈64 MB
+
+### Qurish (qayta)
+
+```bash
+TOOLS=/path/to/tools JAVA=/path/to/java ./play/android/build-apk.sh
+```
+
+### ⚠️ MUHIM: imzo kaliti
+
+`play/android/corpus-release.p12` — ilova imzosi. **Fayl + parol
+(`corpus-anatomy-2026`) saqlanmasa, kelajakda yangi versiyani o'rnatib
+yangilab bo'lmaydi** (foydalanuvchilar ilovani o'chirib qayta o'rnatishadi).
+Backup qiling!
+
+### Yangi versiya chiqarish
+
+1. `AndroidManifest.xml` + `apktool.yml`: `versionCode` +1, `versionName` "1.1"
+2. `build-apk.sh` qayta ishga tushirish
+3. Yangi APK'ni ulashish (eski versiya ustidan o'rnatiladi)

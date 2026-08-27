@@ -9,3 +9,7 @@ out
 *.jks
 play/corpus-release.keystore
 !play/twa-manifest.json
+
+# APK build artifaktlari va kalitlar
+*.p12
+play/android/out/

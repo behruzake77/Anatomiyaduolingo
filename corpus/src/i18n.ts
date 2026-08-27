@@ -326,6 +326,7 @@ export const STR: Record<Lang, Strings> = {
     resetLogout: "Qayta boshlash va chiqish",
     deleteAccount: "Hisobni o'chirish",
     deleteAccountConfirm: "Tasdiqlash — hisob va progress butunlay o'chadi!",
+    booksRemoteNote: "APK versiyasida kitoblar internet orqali (GitHub) yuklanadi.",
 
     tierBeginner: "Boshlang'ich",
     tierIntermediate: "O'rta",
@@ -644,6 +645,7 @@ export const STR: Record<Lang, Strings> = {
     resetLogout: "Reset & Log out",
     deleteAccount: "Delete account",
     deleteAccountConfirm: "Confirm — account and progress will be deleted!",
+    booksRemoteNote: "In the APK version, books are streamed from GitHub (internet required).",
 
     tierBeginner: "Beginner",
     tierIntermediate: "Intermediate",

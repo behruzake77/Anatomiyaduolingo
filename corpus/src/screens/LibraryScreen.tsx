@@ -5,7 +5,7 @@ import { BookOpen, BookMarked, Download, ChevronRight, ExternalLink, Loader2, Fi
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
-import { BOOKS, type Book } from "@/data/books";
+import { BOOKS, bookUrl, isEmbeddedWebView, type Book } from "@/data/books";
 import { useStrings } from "@/i18n";
 
 /**
@@ -120,7 +120,7 @@ function BookReader({ book, onBack }: { book: Book; onBack: () => void }) {
         {/* Har doim mavjud amallar — brauzerning o'z PDF o'quvchisi ishlatiladi */}
         <div className="flex gap-3">
           <a
-            href={book.file}
+            href={bookUrl(book)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white shadow-soft active:scale-[.99]"
@@ -128,13 +128,17 @@ function BookReader({ book, onBack }: { book: Book; onBack: () => void }) {
             <ExternalLink className="h-4 w-4" aria-hidden /> {t.openBook}
           </a>
           <a
-            href={book.file}
+            href={bookUrl(book)}
             download
             className="flex items-center justify-center gap-2 rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-semibold active:scale-[.99]"
           >
             <Download className="h-4 w-4" aria-hidden /> {t.downloadBook}
           </a>
         </div>
+
+        {isEmbeddedWebView() && (
+          <p className="text-center text-[11px] leading-relaxed text-muted">{t.booksRemoteNote}</p>
+        )}
 
         {/* O'quvchi maydoni */}
         {unsupported ? (
@@ -145,7 +149,7 @@ function BookReader({ book, onBack }: { book: Book; onBack: () => void }) {
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-muted">{t.bookUnsupported}</p>
             <a
-              href={book.file}
+              href={bookUrl(book)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-white shadow-soft active:scale-[.99]"
@@ -157,7 +161,7 @@ function BookReader({ book, onBack }: { book: Book; onBack: () => void }) {
           <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-line bg-surface2">
             <iframe
               title={book.title}
-              src={book.file}
+              src={bookUrl(book)}
               className="h-full w-full"
               style={{ border: 0 }}
               onLoad={() => setLoaded(true)}
