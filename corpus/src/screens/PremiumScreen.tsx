@@ -7,7 +7,7 @@ import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
 import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/store/useAppStore";
-import { PREMIUM_BENEFITS, PREMIUM_PLANS, demoPremiumCode } from "@/data/premium";
+import { PREMIUM_BENEFITS, PREMIUM_PLANS, PREMIUM_DISABLED, demoPremiumCode } from "@/data/premium";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
@@ -19,6 +19,21 @@ export function PremiumScreen() {
   const [plan, setPlan] = useState("yearly");
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  // VAQTINCHA: Premium o'chirilgan — barcha funksiyalar bepul. Ekranga eski
+  // havoladan kirib qolsa, do'stona xabar ko'rsatamiz.
+  if (PREMIUM_DISABLED) {
+    return (
+      <Screen padded={false}>
+        <TopBar title={t.premiumTitle} />
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 pb-28 text-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-4xl">🎉</div>
+          <h2 className="text-xl font-bold">{t.premiumTempTitle}</h2>
+          <p className="max-w-xs text-sm leading-relaxed text-muted">{t.premiumTempText}</p>
+        </div>
+      </Screen>
+    );
+  }
 
   const submitCode = () => {
     setError(null);

@@ -1,4 +1,10 @@
 /**
+ * VAQTINCHA: Premium o'chirilgan — BARCHA funksiyalar hamma uchun BEPUL.
+ * Qayta yoqish uchun PREMIUM_DISABLED = false qiling (kodlar saqlanadi).
+ */
+export const PREMIUM_DISABLED = true;
+
+/**
  * Premium — faollashtirish kodlari va imtiyozlar ro'yxati.
  * Server yo'q (PWA) — kodlar lokal tekshiriladi (checksum asosida).
  * Yangi kod qo'shish: CORPUS-XXXX-YYYY formatida, checksum mos bo'lishi kerak

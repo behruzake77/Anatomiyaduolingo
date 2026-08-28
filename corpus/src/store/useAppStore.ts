@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { evaluateAchievements } from "@/utils/achievements";
 import { reviewCard, SRS_MASTERED_BOX, type SRSCard } from "@/utils/srs";
-import { isValidPremiumCode } from "@/data/premium";
+import { isValidPremiumCode, PREMIUM_DISABLED } from "@/data/premium";
 import {
   LEAGUES,
   PROMOTE_SLOTS,
@@ -314,6 +314,7 @@ export const useAppStore = create<AppState>()(
 
       isPremium: false,
       activatePremium: (code) => {
+        if (PREMIUM_DISABLED) return false; // vaqtincha bloklangan — hammasi bepul
         if (!isValidPremiumCode(code)) return false;
         set({ isPremium: true });
         return true;

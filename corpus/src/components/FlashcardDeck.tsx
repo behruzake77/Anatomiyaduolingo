@@ -6,6 +6,7 @@ import { RotateCcw, Check, Eye, ChevronRight, Crown } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { colorForLegendN } from "@/data/colorDiagrams";
 import { useStrings, fmt } from "@/i18n";
+import { PREMIUM_DISABLED } from "@/data/premium";
 import { cn } from "@/utils/cn";
 
 export interface Flashcard {
@@ -21,7 +22,7 @@ export interface Flashcard {
  */
 export function FlashcardDeck({ cards, onDone }: { cards: Flashcard[]; onDone: () => void }) {
   const t = useStrings();
-  const isPremium = useAppStore((s) => s.isPremium);
+  const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [again, setAgain] = useState<number[]>([]);

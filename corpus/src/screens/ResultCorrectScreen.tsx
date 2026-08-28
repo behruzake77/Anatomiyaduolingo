@@ -9,12 +9,13 @@ import { Confetti } from "@/components/ui/Confetti";
 import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY } from "@/i18n";
+import { PREMIUM_DISABLED } from "@/data/premium";
 
 export function ResultCorrectScreen() {
   const resetTo = useAppStore((s) => s.resetTo);
   const lastResult = useAppStore((s) => s.lastResult);
   const xp = useAppStore((s) => s.xp);
-  const isPremium = useAppStore((s) => s.isPremium);
+  const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const t = useStrings();
 
   const score = lastResult?.score ?? 8;

@@ -75,6 +75,8 @@ export const STR: Record<Lang, Strings> = {
 
     premium: "Premium",
     premiumTitle: "Premium muhit",
+    premiumTempTitle: "Hamma narsa bepul 🎉",
+    premiumTempText: "Premium vaqtincha o'chirilgan — barcha funksiyalar (flash-kartalar, tahlil, rejalar) hamma uchun bepul.",
     premiumTagline: "Reklamasiz, maxsus dizayn va to'liq imkoniyatlar.",
     premiumActive: "Premium faol",
     premiumBenefits: "Imtiyozlar",
@@ -394,6 +396,8 @@ export const STR: Record<Lang, Strings> = {
 
     premium: "Premium",
     premiumTitle: "Premium experience",
+    premiumTempTitle: "Everything is free 🎉",
+    premiumTempText: "Premium is temporarily disabled — all features (flashcards, analytics, plans) are free for everyone.",
     premiumTagline: "Ad-free, special design and full features.",
     premiumActive: "Premium active",
     premiumBenefits: "Benefits",

@@ -17,6 +17,7 @@ import { StreakCelebration } from "@/components/reengage/StreakCelebration";
 import { useNotifications } from "@/hooks/useNotifications";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
+import { PREMIUM_DISABLED } from "@/data/premium";
 
 // Welcome-back modal — lazy (faqat kerak bo'lganda yuklanadi).
 const WelcomeBackModal = dynamic(
@@ -30,7 +31,7 @@ export function DashboardScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
-  const isPremium = useAppStore((s) => s.isPremium);
+  const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const lastActiveAt = useAppStore((s) => s.lastActiveAt);
   const navigate = useAppStore((s) => s.navigate);
   const openLesson = useAppStore((s) => s.openLesson);
@@ -101,8 +102,8 @@ export function DashboardScreen() {
 
       <StreakCelebration streak={streak} />
 
-      {/* Reklama banneri — faqat bepul foydalanuvchilarga */}
-      {!isPremium && <AdBanner />}
+      {/* Reklama banneri — faqat bepul foydalanuvchilarga (Premium o'chirilganda — umuman yo'q) */}
+      {!PREMIUM_DISABLED && !isPremium && <AdBanner />}
 
       {/* Continue learning */}
       <section className="mt-6">

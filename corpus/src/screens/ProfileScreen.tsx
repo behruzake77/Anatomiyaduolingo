@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY } from "@/i18n";
+import { PREMIUM_DISABLED } from "@/data/premium";
 
 type MenuAction = { screen?: "premium" | "exam" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings"; info?: "about" };
 
@@ -18,7 +19,7 @@ export function ProfileScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons.length);
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
-  const isPremium = useAppStore((s) => s.isPremium);
+  const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const navigate = useAppStore((s) => s.navigate);
   const openInfo = useAppStore((s) => s.openInfo);
   const t = useStrings();
@@ -28,7 +29,7 @@ export function ProfileScreen() {
   const tier = t[TIER_KEY[levelTier(level)]];
   const name = currentUser ?? t.name;
 
-  const menu: { id: string; label: string; icon: typeof Trophy; action: MenuAction }[] = [
+  const allMenu: { id: string; label: string; icon: typeof Trophy; action: MenuAction }[] = [
     { id: "premium", label: t.premium, icon: Crown, action: { screen: "premium" } },
     { id: "exam", label: t.examTitle, icon: GraduationCap, action: { screen: "exam" } },
     { id: "challenge", label: t.dailyChallenge, icon: Zap, action: { screen: "exam" } },
@@ -41,7 +42,8 @@ export function ProfileScreen() {
     { id: "study", label: t.studyMode, icon: BookOpen, action: { screen: "study" } },
     { id: "settings", label: t.settings, icon: Settings, action: { screen: "settings" } },
     { id: "about", label: t.about, icon: Info, action: { info: "about" } },
-  ];
+  ].filter((m) => !(PREMIUM_DISABLED && m.id === "premium"));
+  const menu = allMenu;
 
   return (
     <Screen className="pt-6">

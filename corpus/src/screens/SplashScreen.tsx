@@ -7,6 +7,7 @@ import { Logo } from "@/components/ui/Logo";
 import { AnatomyAnimation, type AnatomyKind } from "@/components/reengage/AnatomyAnimation";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
+import { PREMIUM_DISABLED } from "@/data/premium";
 import { getCurrent } from "@/auth";
 
 /**
@@ -60,7 +61,7 @@ const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
 export function SplashScreen() {
   const navigate = useAppStore((s) => s.navigate);
   const onboardingDone = useAppStore((s) => s.onboardingDone);
-  const isPremium = useAppStore((s) => s.isPremium);
+  const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const t = useStrings();
   const reduced = useReducedMotion();
 
