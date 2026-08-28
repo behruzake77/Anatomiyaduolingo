@@ -3,6 +3,7 @@
 import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Screen } from "@/components/layout/Screen";
+import { TopBar } from "@/components/layout/TopBar";
 import { Card } from "@/components/ui/Card";
 import { Toggle } from "@/components/ui/Toggle";
 import { useAppStore, type InfoSection } from "@/store/useAppStore";
@@ -44,11 +45,10 @@ export function SettingsScreen() {
   ];
 
   return (
-    <Screen className="pt-6">
-      <header>
-        <h1 className="text-2xl font-semibold">{t.settings}</h1>
-        <p className="text-sm text-muted">{t.settingsSubtitle}</p>
-      </header>
+    <Screen padded={false}>
+      <TopBar title={t.settings} />
+      <div className="px-5 pb-28">
+      <p className="text-sm text-muted">{t.settingsSubtitle}</p>
 
       {/* toggles */}
       <Card className="mt-5 overflow-hidden">
@@ -134,6 +134,7 @@ export function SettingsScreen() {
           </span>
         </button>
       </Card>
+    </div>
     </Screen>
   );
 }

@@ -37,7 +37,8 @@ export function FlashcardDeck({ cards, onDone }: { cards: Flashcard[]; onDone: (
 
   const next = () => {
     setFlipped(false);
-    setIdx((i) => Math.min(cards.length - 1, i + 1));
+    // Oxirgi kartadan keyin idx == cards.length bo'ladi → «Yakunlash» ekrani chiqadi
+    setIdx((i) => i + 1);
   };
 
   const markAgain = () => {

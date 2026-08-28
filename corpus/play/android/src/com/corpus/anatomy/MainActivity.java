@@ -56,11 +56,15 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (wv != null && wv.canGoBack()) {
-            wv.goBack();
-        } else {
-            super.onBackPressed();
-        }
+        // Ilova ichida orqaga (window.__corpusBack) — u "false" qaytarsa ilovadan chiqamiz.
+        wv.evaluateJavascript(
+            "(window.__corpusBack ? window.__corpusBack() : 'false')",
+            result -> {
+                if ("\"true\"".equals(result)) {
+                    return; // ilova ichida orqaga o'tdi
+                }
+                MainActivity.super.onBackPressed();
+            });
     }
 
     @Override

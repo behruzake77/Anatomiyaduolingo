@@ -93,6 +93,28 @@ export function AppNavigator() {
     }
   }, []);
 
+  // Android APK: tizim «Orqaga» tugmasi — ilova ichida orqaga qaytadi
+  // (MainActivity buni window.__corpusBack orqali chaqiradi).
+  useEffect(() => {
+    const w = window as unknown as { __corpusBack?: () => string };
+    w.__corpusBack = () => {
+      const s = useAppStore.getState();
+      if (s.screen === "splash") return "false";
+      if (s.history.length > 0) {
+        s.back();
+        return "true";
+      }
+      if (s.screen !== "dashboard") {
+        s.setTab("home");
+        return "true";
+      }
+      return "false"; // bosh sahifada — ilovadan chiqish
+    };
+    return () => {
+      delete w.__corpusBack;
+    };
+  }, []);
+
   // Keep tab in sync when navigating to a tab screen.
   useEffect(() => {
     if (screen in TAB_SCREEN || TABS.includes(screen)) {
