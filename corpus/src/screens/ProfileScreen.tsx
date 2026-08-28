@@ -42,8 +42,8 @@ export function ProfileScreen() {
     { id: "study", label: t.studyMode, icon: BookOpen, action: { screen: "study" } },
     { id: "settings", label: t.settings, icon: Settings, action: { screen: "settings" } },
     { id: "about", label: t.about, icon: Info, action: { info: "about" } },
-  ].filter((m) => !(PREMIUM_DISABLED && m.id === "premium"));
-  const menu = allMenu;
+  ];
+  const menu = allMenu.filter((m) => !(PREMIUM_DISABLED && m.id === "premium"));
 
   return (
     <Screen className="pt-6">
