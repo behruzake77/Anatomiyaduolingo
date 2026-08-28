@@ -83,3 +83,23 @@ export function logout() {
   d.current = null;
   write(d);
 }
+
+/**
+ * Joriy foydalanuvchini BUTUNLAY o'chiradi: hisob + uning progressi.
+ * (Google Play siyosati: hisob yaratish imkoni bo'lsa — o'chirish ham bo'lishi shart.)
+ */
+export function deleteCurrentAccount(): boolean {
+  const d = read();
+  if (!d.current) return false;
+  const uname = d.current;
+  d.users = d.users.filter((u) => u.username !== uname);
+  d.current = null;
+  write(d);
+  try {
+    localStorage.removeItem(progressKey(uname));
+    localStorage.removeItem("corpus-storage"); // zustand persist (joriy holat)
+  } catch {
+    /* no-op */
+  }
+  return true;
+}

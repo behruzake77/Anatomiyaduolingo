@@ -4,12 +4,22 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { evaluateAchievements } from "@/utils/achievements";
 import { reviewCard, SRS_MASTERED_BOX, type SRSCard } from "@/utils/srs";
-import { isValidPremiumCode } from "@/data/premium";
+import { isValidPremiumCode, PREMIUM_DISABLED } from "@/data/premium";
+import {
+  LEAGUES,
+  PROMOTE_SLOTS,
+  DEMOTE_SLOTS,
+  boardFor,
+  userRank,
+  userWeekXp,
+  weekKeyOf,
+} from "@/utils/league";
 import {
   getCurrent,
   register as authRegister,
   login as authLogin,
   logout as authLogout,
+  deleteCurrentAccount,
   progressKey,
   normalizeName,
 } from "@/auth";
@@ -35,6 +45,7 @@ export type ScreenId =
   | "exam"
   | "bookmarks"
   | "library"
+  | "leaderboard"
   | "info"
   | "premium";
 
@@ -57,6 +68,15 @@ export interface LessonResult {
   earned: number;
 }
 
+/** O'tgan hafta liga natijasi (ko'tarilish/tushish). */
+export interface LeagueResult {
+  weekKey: string; // natija qaysi hafta yakunida olingan (yangi haftoning kaliti)
+  rank: number; // yakuniy o'rin
+  from: number; // eski liga
+  to: number; // yangi liga
+  change: "up" | "down" | "stay";
+}
+
 /** Yangi foydalanuvchi uchun boshlang'ich holat — hammasi NOL. */
 const freshProgress = {
   onboardingDone: false,
@@ -75,6 +95,9 @@ const freshProgress = {
   bookmarks: [] as string[], // xatcho'p qilingan savol kalitlari
   lastActiveDay: "", // oxirgi faol kun "YYYY-MM-DD" (seriya hisobi uchun)
   lastActiveAt: 0, // oxirgi faollik vaqti (ms) — maskot kayfiyati uchun
+  leagueIndex: 0, // haftalik liga (0=Bronza … 4=Olmos)
+  leagueWeekKey: "", // oxirgi sinxronlangan hafta "YYYY-Wnn"
+  leagueResult: null as LeagueResult | null, // o'tgan hafta natijasi
   settings: {
     darkMode: false,
     sound: true,
@@ -101,6 +124,7 @@ interface AppState {
   register: (username: string, password: string) => boolean;
   login: (username: string, password: string) => boolean;
   logout: () => void;
+  deleteAccount: () => void;
 
   // progress (foydalanuvchiga xos, noldan boshlanadi)
   onboardingDone: boolean;
@@ -119,6 +143,13 @@ interface AppState {
   bookmarks: string[];
   lastActiveDay: string;
   lastActiveAt: number;
+
+  // haftalik liga (reyting)
+  leagueIndex: number;
+  leagueWeekKey: string;
+  leagueResult: LeagueResult | null;
+  syncLeague: () => void;
+  dismissLeagueResult: () => void;
 
   // settings
   settings: Settings;
@@ -255,6 +286,18 @@ export const useAppStore = create<AppState>()(
         });
       },
 
+      /** Hisobni butunlay o'chiradi (hisob + progress) — Play siyosati talabi. */
+      deleteAccount: () => {
+        deleteCurrentAccount();
+        set({
+          currentUser: null,
+          ...freshProgress,
+          screen: "login",
+          tab: "home",
+          history: [],
+        });
+      },
+
       ...freshProgress,
 
       toggleSetting: (key) =>
@@ -271,6 +314,7 @@ export const useAppStore = create<AppState>()(
 
       isPremium: false,
       activatePremium: (code) => {
+        if (PREMIUM_DISABLED) return false; // vaqtincha bloklangan — hammasi bepul
         if (!isValidPremiumCode(code)) return false;
         set({ isPremium: true });
         return true;
@@ -341,6 +385,38 @@ export const useAppStore = create<AppState>()(
       touchActivity: () =>
         set((s) => ({ lastActiveAt: Date.now() })),
 
+      /** Hafta almashganini tekshiradi: o'tgan hafta yakunlanadi (ko'tarilish/tushish). */
+      syncLeague: () => {
+        const s = get();
+        const wk = weekKeyOf(new Date());
+        if (s.leagueWeekKey === wk) return;
+
+        const isFirstWeek = !s.leagueWeekKey;
+        let leagueIndex = s.leagueIndex;
+        let leagueResult: LeagueResult | null = null;
+
+        if (!isFirstWeek) {
+          const prevXp = userWeekXp(s.xpHistory, s.leagueWeekKey);
+          const board = boardFor(s.leagueWeekKey, s.leagueIndex, s.currentUser ?? "", prevXp, {
+            finalize: true,
+          });
+          const rank = userRank(board);
+          let change: LeagueResult["change"] = "stay";
+          if (rank <= PROMOTE_SLOTS && leagueIndex < LEAGUES.length - 1) {
+            leagueIndex += 1;
+            change = "up";
+          } else if (rank > board.length - DEMOTE_SLOTS && leagueIndex > 0) {
+            leagueIndex -= 1;
+            change = "down";
+          }
+          leagueResult = { weekKey: wk, rank, from: s.leagueIndex, to: leagueIndex, change };
+        }
+
+        set({ leagueWeekKey: wk, leagueIndex, leagueResult });
+      },
+
+      dismissLeagueResult: () => set({ leagueResult: null }),
+
       recordAnswer: (key, correct) => {
         const s = get();
         const card = s.srs[key];
@@ -382,6 +458,9 @@ export const useAppStore = create<AppState>()(
           lastActiveAt?: number;
           avatar?: string | null;
           isPremium?: boolean;
+          leagueIndex?: number;
+          leagueWeekKey?: string;
+          leagueResult?: LeagueResult | null;
         };
         // v1..v6: yangi maydonlar (SRS, bookmarks, lastActive, avatar, isPremium) qo'shiladi — progress saqlanadi.
         return {
@@ -392,6 +471,9 @@ export const useAppStore = create<AppState>()(
           lastActiveAt: p.lastActiveAt ?? 0,
           avatar: p.avatar ?? null,
           isPremium: p.isPremium ?? false,
+          leagueIndex: p.leagueIndex ?? 0,
+          leagueWeekKey: p.leagueWeekKey ?? "",
+          leagueResult: p.leagueResult ?? null,
         };
       },
       storage: createJSONStorage(() => rawStorage),
@@ -411,6 +493,9 @@ export const useAppStore = create<AppState>()(
         bookmarks: s.bookmarks,
         lastActiveDay: s.lastActiveDay,
         lastActiveAt: s.lastActiveAt,
+        leagueIndex: s.leagueIndex,
+        leagueWeekKey: s.leagueWeekKey,
+        leagueResult: s.leagueResult,
         settings: s.settings,
         avatar: s.avatar,
         isPremium: s.isPremium,

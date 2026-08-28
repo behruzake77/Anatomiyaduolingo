@@ -3,3 +3,13 @@ node_modules
 out
 *.tsbuildinfo
 .DS_Store
+
+# Play imzo kaliti — hech qachon git'ga tushmasin
+*.keystore
+*.jks
+play/corpus-release.keystore
+!play/twa-manifest.json
+
+# APK build artifaktlari va kalitlar
+*.p12
+play/android/out/

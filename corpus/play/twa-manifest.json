@@ -1,0 +1,60 @@
+{
+  "packageId": "com.corpus.anatomy",
+  "host": "CORPUS-DOMAIN",
+  "name": "CORPUS — Anatomiyani o'rgan",
+  "launcherName": "CORPUS",
+  "display": "standalone",
+  "themeColor": "#6C5CE7",
+  "themeColorDark": "#090D18",
+  "navigationColor": "#6C5CE7",
+  "navigationColorDark": "#090D18",
+  "navigationDividerColor": "#00000000",
+  "navigationDividerColorDark": "#00000000",
+  "backgroundColor": "#F8F9FA",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://CORPUS-DOMAIN/logo/icon-512.png",
+  "maskableIconUrl": "https://CORPUS-DOMAIN/logo/icon-512-maskable.png",
+  "monochromeIconUrl": "https://CORPUS-DOMAIN/logo/logo-mono.svg",
+  "webManifestUrl": "https://CORPUS-DOMAIN/manifest.json",
+  "shortcuts": [
+    {
+      "name": "Darslar",
+      "short_name": "Darslar",
+      "url": "/?screen=topics"
+    },
+    {
+      "name": "Reyting",
+      "short_name": "Liga",
+      "url": "/?screen=leaderboard"
+    },
+    {
+      "name": "Kutubxona",
+      "short_name": "Kitoblar",
+      "url": "/?screen=library"
+    }
+  ],
+  "signingKey": {
+    "path": "./play/corpus-release.keystore",
+    "alias": "corpus"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "minSdkVersion": 21,
+  "targetSdkVersion": 35,
+  "capabilities": [],
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://CORPUS-DOMAIN/",
+  "minifiedWebApp": false,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "appVersion": "1.0.0",
+  "verbose": false
+}

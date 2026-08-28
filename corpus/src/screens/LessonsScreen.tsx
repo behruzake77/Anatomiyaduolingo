@@ -13,6 +13,7 @@ import { systemById, unitProgress, isLessonUnlocked, type SystemUnit, type Lesso
 import { unitIconImage } from "@/data/unitIcons";
 import { systemIconImage } from "@/data/systemIcons";
 import { useStrings, fmt } from "@/i18n";
+import { PREMIUM_DISABLED } from "@/data/premium";
 import { cn } from "@/utils/cn";
 
 /**
@@ -31,7 +32,7 @@ export function LessonsScreen() {
   const activeSystemId = useAppStore((s) => s.activeSystemId);
   const openLesson = useAppStore((s) => s.openLesson);
   const navigate = useAppStore((s) => s.navigate);
-  const isPremium = useAppStore((s) => s.isPremium);
+  const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const t = useStrings();
 
   const sys = systemById(activeSystemId ?? "skeletal");

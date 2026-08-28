@@ -25,6 +25,7 @@ import { GlossaryScreen } from "@/screens/GlossaryScreen";
 import { ExamScreen } from "@/screens/ExamScreen";
 import { BookmarksScreen } from "@/screens/BookmarksScreen";
 import { LibraryScreen } from "@/screens/LibraryScreen";
+import { LeaderboardScreen } from "@/screens/LeaderboardScreen";
 import { InfoScreen } from "@/screens/InfoScreen";
 import { PremiumScreen } from "@/screens/PremiumScreen";
 
@@ -49,6 +50,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   exam: ExamScreen,
   bookmarks: BookmarksScreen,
   library: LibraryScreen,
+  leaderboard: LeaderboardScreen,
   info: InfoScreen,
   premium: PremiumScreen,
 };
@@ -75,6 +77,43 @@ export function AppNavigator() {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
+
+  // Haftalik liga: hafta almashsa — o'tgan hafta yakunlanadi (ko'tarilish/tushish).
+  useEffect(() => {
+    useAppStore.getState().syncLeague();
+  }, []);
+
+  // PWA shortcut'lar (/ ?screen=topics …) — faqat ruxsat etilgan ekranlar.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const target = new URLSearchParams(window.location.search).get("screen");
+    const safe = ["topics", "library", "leaderboard", "profile", "glossary", "exam"];
+    if (target && safe.includes(target)) {
+      useAppStore.getState().navigate(target as ScreenId);
+    }
+  }, []);
+
+  // Android APK: tizim «Orqaga» tugmasi — ilova ichida orqaga qaytadi
+  // (MainActivity buni window.__corpusBack orqali chaqiradi).
+  useEffect(() => {
+    const w = window as unknown as { __corpusBack?: () => string };
+    w.__corpusBack = () => {
+      const s = useAppStore.getState();
+      if (s.screen === "splash") return "false";
+      if (s.history.length > 0) {
+        s.back();
+        return "true";
+      }
+      if (s.screen !== "dashboard") {
+        s.setTab("home");
+        return "true";
+      }
+      return "false"; // bosh sahifada — ilovadan chiqish
+    };
+    return () => {
+      delete w.__corpusBack;
+    };
+  }, []);
 
   // Keep tab in sync when navigating to a tab screen.
   useEffect(() => {
