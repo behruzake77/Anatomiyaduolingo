@@ -69,7 +69,7 @@ export function DashboardScreen() {
   const doneCount = completedLessons.filter((id) => ALL_LESSONS.some((l) => l.id === id)).length;
   const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
   const nextSystem = systemOfLesson(nextLesson.id);
-  const name = currentUser ?? t.name;
+  const name = currentUser?.username ?? t.name;
 
   return (
     <Screen className="pt-4">

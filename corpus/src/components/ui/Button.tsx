@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/cn";
 
-type Variant = "primary" | "secondary" | "ghost" | "danger";
+type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -14,6 +14,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const VARIANTS: Record<Variant, string> = {
   primary: "bg-primary text-white shadow-soft hover:bg-primary-deep",
   secondary: "bg-primary/10 text-primary hover:bg-primary/15",
+  outline: "border-2 border-line bg-surface text-ink hover:bg-surface2",
   ghost: "bg-surface2 text-ink hover:brightness-95",
   danger: "bg-danger text-white hover:brightness-105",
 };

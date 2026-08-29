@@ -36,7 +36,7 @@ export function LeaderboardScreen() {
   const weekKey = weekKeyOf(new Date());
   const myXp = useMemo(() => userWeekXp(xpHistory, weekKey), [xpHistory, weekKey]);
   const board = useMemo(
-    () => boardFor(weekKey, leagueIndex, currentUser ?? "", myXp),
+    () => boardFor(weekKey, leagueIndex, currentUser?.username ?? "", myXp),
     [weekKey, leagueIndex, currentUser, myXp],
   );
   const rank = userRank(board);
