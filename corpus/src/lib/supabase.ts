@@ -10,7 +10,14 @@ export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
 // faqat isSupabaseConfigured() tekshiruvidan keyin yuboriladi.
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-anon-key'
+  supabaseAnonKey || 'placeholder-anon-key',
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+    },
+  },
 )
 
 // Tipografiya

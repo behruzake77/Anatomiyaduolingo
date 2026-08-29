@@ -14,15 +14,17 @@ import {
   userWeekXp,
   weekKeyOf,
 } from "@/utils/league";
-import { 
-  initAuth, 
-  onAuthChange, 
-  getCurrentUser,
-  login as authLogin, 
-  register as authRegister, 
+import {
+  initAuth as libInitAuth,
+  onAuthChange,
+  login as authLogin,
+  register as authRegister,
   logout as authLogout,
   deleteAccount as authDeleteAccount,
-  type AuthUser
+  verifyEmailOtp as authVerifyOtp,
+  resendSignupOtp as authResendOtp,
+  type AuthUser,
+  type AuthResult,
 } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 
@@ -200,8 +202,10 @@ interface AppState {
   // auth
   currentUser: AuthUser | null;
   isLoading: boolean;
-  register: (email: string, password: string, username: string) => Promise<{ success: boolean; error?: string }>;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  register: (email: string, password: string, username: string) => Promise<AuthResult>;
+  login: (email: string, password: string) => Promise<AuthResult>;
+  verifyOtp: (email: string, token: string) => Promise<AuthResult>;
+  resendOtp: (email: string) => Promise<AuthResult>;
   logout: () => Promise<void>;
   deleteAccount: () => Promise<void>;
   initAuth: () => Promise<void>;
@@ -260,6 +264,8 @@ interface AppState {
 // Supabase configured bo'lsa — remote storage, aks holda — localStorage
 const storageName = isSupabaseConfigured() ? "corpus-storage-remote" : "corpus-storage";
 
+let authBound = false;
+
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
@@ -295,49 +301,67 @@ export const useAppStore = create<AppState>()(
           return;
         }
 
-        await initAuth();
-        
-        onAuthChange(async (user) => {
+        const applyUser = async (user: AuthUser | null) => {
           if (user) {
-            // Supabase'dan progress yuklash
-            const dbProgress = await loadProgressFromSupabase(user.id);
-            
+            const wasLoggedOut = !get().currentUser;
+            const dbProgress = wasLoggedOut ? await loadProgressFromSupabase(user.id) : null;
+            const s = get();
+            const enterApp = s.screen === "login";
+            const nextScreen = s.onboardingDone ? "dashboard" : "onboarding";
             set({
               currentUser: user,
               isLoading: false,
               ...(dbProgress || {}),
-              screen: "dashboard",
-              tab: "home",
-              history: []
+              ...(enterApp ? { screen: nextScreen, tab: "home" as const, history: [] } : {}),
             });
           } else {
+            const s = get();
+            const stay = s.screen === "splash" || s.screen === "login";
             set({
               currentUser: null,
               isLoading: false,
-              screen: "login",
-              tab: "home",
-              history: []
+              ...(stay ? {} : { screen: "login" as const, tab: "home" as const, history: [] }),
             });
           }
-        });
+        };
+
+        if (!authBound) {
+          authBound = true;
+          onAuthChange((user) => {
+            void applyUser(user);
+          });
+          await libInitAuth();
+        } else {
+          set({ isLoading: false });
+        }
       },
 
       register: async (email, password, username) => {
         if (!isSupabaseConfigured()) {
-          return { success: false, error: "Subabase sozlanmagan" };
+          return { success: false, error: "Supabase sozlanmagan" };
         }
-        
-        const result = await authRegister(email, password, username);
-        return result;
+        return authRegister(email, password, username);
       },
 
       login: async (email, password) => {
         if (!isSupabaseConfigured()) {
-          return { success: false, error: "Subabase sozlanmagan" };
+          return { success: false, error: "Supabase sozlanmagan" };
         }
-        
-        const result = await authLogin(email, password);
-        return result;
+        return authLogin(email, password);
+      },
+
+      verifyOtp: async (email, token) => {
+        if (!isSupabaseConfigured()) {
+          return { success: false, error: "Supabase sozlanmagan" };
+        }
+        return authVerifyOtp(email, token);
+      },
+
+      resendOtp: async (email) => {
+        if (!isSupabaseConfigured()) {
+          return { success: false, error: "Supabase sozlanmagan" };
+        }
+        return authResendOtp(email);
       },
 
       logout: async () => {

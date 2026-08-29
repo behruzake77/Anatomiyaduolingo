@@ -37,9 +37,10 @@ Darslar kitob tartibida **ketma-ket ochiladi** (Duolingo yo'li), har bir darsda 
 
 ## Kirish / Ro'yxatdan o'tish
 
-- Ilova birinchi ochilganda **ro'yxatdan o'tish** so'raladi (username + parol, localStorage'da saqlanadi)
+- **Supabase Auth** — email + parol (ixtiyoriy Google). Progress `profiles` jadvalida saqlanadi.
+- Email tasdiqlash (OTP) yoqilgan: ro'yxatdan o'tgach pochtaga **6 xonali kod** keladi, saytda tasdiqlash ekrani ochiladi.
+- Tasdiqlanmagan hisob bilan kirishga urinilsa — yangi kod yuboriladi va shu ekran ochiladi.
 - **Yangi foydalanuvchi 0 XP bilan boshlaydi** — hech qanday oldindan to'ldirilgan progress yo'q
-- Har bir foydalanuvchining progressi **alohida** saqlanadi (`corpus-progress-<username>`)
 - Chiqish → progress saqlanib qoladi; qayta kirishda tiklanadi
 
 ## Tech stack
