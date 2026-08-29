@@ -8,7 +8,7 @@ import { AnatomyAnimation, type AnatomyKind } from "@/components/reengage/Anatom
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 import { PREMIUM_DISABLED } from "@/data/premium";
-import { getCurrent } from "@/auth";
+
 
 /**
  * Kinematik kirish (intro) animatsiyasi — faqat ochilish ekranini yangilaydi.
@@ -60,7 +60,6 @@ const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
 
 export function SplashScreen() {
   const navigate = useAppStore((s) => s.navigate);
-  const onboardingDone = useAppStore((s) => s.onboardingDone);
   const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const t = useStrings();
   const reduced = useReducedMotion();
@@ -90,9 +89,17 @@ export function SplashScreen() {
   }, [reduced]);
 
   function finish() {
-    const loggedIn = !!getCurrent();
-    if (!loggedIn) navigate("login");
-    else navigate(onboardingDone ? "dashboard" : "onboarding");
+    const started = Date.now();
+    const go = () => {
+      const s = useAppStore.getState();
+      if (s.isLoading && Date.now() - started < 5000) {
+        setTimeout(go, 80);
+        return;
+      }
+      if (!s.currentUser) navigate("login");
+      else navigate(s.onboardingDone ? "dashboard" : "onboarding");
+    };
+    go();
   }
 
   const logoVisible = elapsed >= T.logo;
