@@ -27,7 +27,7 @@ export function ProfileScreen() {
 
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
-  const name = currentUser ?? t.name;
+  const name = currentUser?.username ?? t.name;
 
   const allMenu: { id: string; label: string; icon: typeof Trophy; action: MenuAction }[] = [
     { id: "premium", label: t.premium, icon: Crown, action: { screen: "premium" } },

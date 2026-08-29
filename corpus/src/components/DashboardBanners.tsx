@@ -215,7 +215,7 @@ function WeekRaceCard() {
 
   const weekKey = weekKeyOf(new Date());
   const myXp = userWeekXp(xpHistory, weekKey);
-  const board = boardFor(weekKey, leagueIndex, currentUser ?? "", myXp);
+  const board = boardFor(weekKey, leagueIndex, currentUser?.username ?? "", myXp);
   const rank = userRank(board);
   const league = LEAGUES[Math.min(leagueIndex, LEAGUES.length - 1)];
 

@@ -56,7 +56,7 @@ export function LoginScreen() {
     setError(null);
     const result = await loginWithGoogle();
     if (!result.success) {
-      setError(result.error);
+      setError(result.error ?? t.errLogin);
       setLoading(false);
     }
   };
