@@ -1339,6 +1339,4 @@
   regenHearts();
   resetDailyIfNeeded();
   renderHome();
-  const sp = document.getElementById("splash");
-  if (sp) setTimeout(() => sp.classList.add("hide"), 550);
 })();
