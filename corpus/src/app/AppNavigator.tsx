@@ -55,10 +55,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   premium: PremiumScreen,
 };
 
-/** Screens that show the bottom navigation bar. */
 const TABS: ScreenId[] = ["dashboard", "topics", "library", "profile"];
-
-/** Bo'limlar (darslar ro'yxati) ham pastki menyu bilan — foydalanuvchi bosh menyuga qayta olsin. */
 const NAV_SCREENS: ScreenId[] = [...TABS, "lessons"];
 
 const TAB_SCREEN: Record<Tab, ScreenId> = {
@@ -72,11 +69,17 @@ export function AppNavigator() {
   const screen = useAppStore((s) => s.screen);
   const tab = useAppStore((s) => s.tab);
   const darkMode = useAppStore((s) => s.settings.darkMode);
+  const initAuth = useAppStore((s) => s.initAuth);
 
   // Apply dark mode to <html> reactively.
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
+
+  // Initialize Supabase Auth
+  useEffect(() => {
+    initAuth();
+  }, [initAuth]);
 
   // Haftalik liga: hafta almashsa — o'tgan hafta yakunlanadi (ko'tarilish/tushish).
   useEffect(() => {
@@ -94,7 +97,6 @@ export function AppNavigator() {
   }, []);
 
   // Android APK: tizim «Orqaga» tugmasi — ilova ichida orqaga qaytadi
-  // (MainActivity buni window.__corpusBack orqali chaqiradi).
   useEffect(() => {
     const w = window as unknown as { __corpusBack?: () => string };
     w.__corpusBack = () => {
@@ -108,7 +110,7 @@ export function AppNavigator() {
         s.setTab("home");
         return "true";
       }
-      return "false"; // bosh sahifada — ilovadan chiqish
+      return "false";
     };
     return () => {
       delete w.__corpusBack;

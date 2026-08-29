@@ -14,15 +14,17 @@ import {
   userWeekXp,
   weekKeyOf,
 } from "@/utils/league";
-import {
-  getCurrent,
-  register as authRegister,
-  login as authLogin,
+import { 
+  initAuth, 
+  onAuthChange, 
+  getCurrentUser,
+  login as authLogin, 
+  register as authRegister, 
   logout as authLogout,
-  deleteCurrentAccount,
-  progressKey,
-  normalizeName,
-} from "@/auth";
+  deleteAccount as authDeleteAccount,
+  type AuthUser
+} from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
 
 export type ScreenId =
   | "splash"
@@ -68,16 +70,14 @@ export interface LessonResult {
   earned: number;
 }
 
-/** O'tgan hafta liga natijasi (ko'tarilish/tushish). */
 export interface LeagueResult {
-  weekKey: string; // natija qaysi hafta yakunida olingan (yangi haftoning kaliti)
-  rank: number; // yakuniy o'rin
-  from: number; // eski liga
-  to: number; // yangi liga
+  weekKey: string;
+  rank: number;
+  from: number;
+  to: number;
   change: "up" | "down" | "stay";
 }
 
-/** Yangi foydalanuvchi uchun boshlang'ich holat — hammasi NOL. */
 const freshProgress = {
   onboardingDone: false,
   xp: 0,
@@ -90,14 +90,14 @@ const freshProgress = {
   completedTopics: [] as string[],
   achievements: [] as string[],
   lastResult: null as LessonResult | null,
-  xpHistory: {} as Record<string, number>, // "YYYY-MM-DD" -> XP
-  srs: {} as Record<string, SRSCard>, // savol kaliti -> SRS kartasi
-  bookmarks: [] as string[], // xatcho'p qilingan savol kalitlari
-  lastActiveDay: "", // oxirgi faol kun "YYYY-MM-DD" (seriya hisobi uchun)
-  lastActiveAt: 0, // oxirgi faollik vaqti (ms) — maskot kayfiyati uchun
-  leagueIndex: 0, // haftalik liga (0=Bronza … 4=Olmos)
-  leagueWeekKey: "", // oxirgi sinxronlangan hafta "YYYY-Wnn"
-  leagueResult: null as LeagueResult | null, // o'tgan hafta natijasi
+  xpHistory: {} as Record<string, number>,
+  srs: {} as Record<string, SRSCard>,
+  bookmarks: [] as string[],
+  lastActiveDay: "",
+  lastActiveAt: 0,
+  leagueIndex: 0,
+  leagueWeekKey: "",
+  leagueResult: null as LeagueResult | null,
   settings: {
     darkMode: false,
     sound: true,
@@ -109,8 +109,86 @@ const freshProgress = {
   isPremium: false,
 };
 
+// LocalStorage fallback — Subabase not available bo'lsa
+const localStorageFallback = {
+  getItem: (name: string): string | null => {
+    try {
+      return localStorage.getItem(name);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (name: string, value: string): void => {
+    try {
+      localStorage.setItem(name, value);
+    } catch {
+      /* no-op */
+    }
+  },
+  removeItem: (name: string): void => {
+    try {
+      localStorage.removeItem(name);
+    } catch {
+      /* no-op */
+    }
+  },
+};
+
+// Supabase connectedmi?
+function isSupabaseConfigured(): boolean {
+  return !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+}
+
+// Supabase'ga progress saqlash
+async function saveProgressToSupabase(userId: string, progress: Partial<typeof freshProgress>) {
+  if (!isSupabaseConfigured()) return;
+  
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        xp: progress.xp ?? 0,
+        level: Math.floor((progress.xp ?? 0) / 500) + 1,
+        streak: progress.streak ?? 0,
+        daily_goal: progress.dailyGoal ?? 20,
+        last_activity: new Date().toISOString().split('T')[0]
+      })
+      .eq('id', userId);
+    
+    if (error) console.error('Progress save error:', error);
+  } catch (err) {
+    console.error('Supabase save error:', err);
+  }
+}
+
+async function loadProgressFromSupabase(userId: string) {
+  if (!isSupabaseConfigured()) return null;
+  
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+    
+    if (error || !data) return null;
+    
+    return {
+      xp: data.xp ?? 0,
+      streak: data.streak ?? 0,
+      dailyGoal: data.daily_goal ?? 20,
+      level: data.level ?? 1
+    };
+  } catch (err) {
+    console.error('Supabase load error:', err);
+    return null;
+  }
+}
+
 interface AppState {
-  // navigation
   screen: ScreenId;
   tab: Tab;
   history: ScreenId[];
@@ -120,13 +198,15 @@ interface AppState {
   setTab: (tab: Tab) => void;
 
   // auth
-  currentUser: string | null;
-  register: (username: string, password: string) => boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
-  deleteAccount: () => void;
+  currentUser: AuthUser | null;
+  isLoading: boolean;
+  register: (email: string, password: string, username: string) => Promise<{ success: boolean; error?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
+  initAuth: () => Promise<void>;
 
-  // progress (foydalanuvchiga xos, noldan boshlanadi)
+  // progress
   onboardingDone: boolean;
   xp: number;
   dailyXp: number;
@@ -144,7 +224,7 @@ interface AppState {
   lastActiveDay: string;
   lastActiveAt: number;
 
-  // haftalik liga (reyting)
+  // liga
   leagueIndex: number;
   leagueWeekKey: string;
   leagueResult: LeagueResult | null;
@@ -156,18 +236,15 @@ interface AppState {
   toggleSetting: (key: keyof Settings) => void;
   setLanguage: (lang: "en" | "uz") => void;
 
-  // profil rasmi + ma'lumot ekrani
   avatar: string | null;
   setAvatar: (dataUrl: string | null) => void;
   infoSection: InfoSection;
   openInfo: (section: InfoSection) => void;
 
-  // premium
   isPremium: boolean;
   activatePremium: (code: string) => boolean;
   deactivatePremium: () => void;
 
-  // actions
   finishOnboarding: () => void;
   activeLessonId: string | null;
   activeSystemId: string | null;
@@ -180,48 +257,8 @@ interface AppState {
   resetProgress: () => void;
 }
 
-/** localStorage-ga joriy foydalanuvchi bo'yicha yo'naltiruvchi xom storage. */
-const rawStorage = {
-  getItem: (): string | null => {
-    const u = getCurrent();
-    if (!u) return null;
-    try {
-      return localStorage.getItem(progressKey(u));
-    } catch {
-      return null;
-    }
-  },
-  setItem: (_name: string, value: string) => {
-    const u = getCurrent();
-    if (!u) return;
-    try {
-      localStorage.setItem(progressKey(u), value);
-    } catch {
-      /* no-op */
-    }
-  },
-  removeItem: () => {
-    const u = getCurrent();
-    if (!u) return;
-    try {
-      localStorage.removeItem(progressKey(u));
-    } catch {
-      /* no-op */
-    }
-  },
-};
-
-/** Foydalanuvchining saqlangan progressini o'qish (login paytida). */
-function loadProgressFor(username: string): Partial<AppState> {
-  try {
-    const raw = localStorage.getItem(progressKey(username));
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed.state ?? {};
-  } catch {
-    return {};
-  }
-}
+// Supabase configured bo'lsa — remote storage, aks holda — localStorage
+const storageName = isSupabaseConfigured() ? "corpus-storage-remote" : "corpus-storage";
 
 export const useAppStore = create<AppState>()(
   persist(
@@ -249,52 +286,75 @@ export const useAppStore = create<AppState>()(
         set({ tab, screen: screen[tab], history: [] });
       },
 
-      currentUser: getCurrent(),
+      currentUser: null,
+      isLoading: true,
 
-      register: (username, password) => {
-        if (!authRegister(username, password)) return false;
-        set({
-          currentUser: normalizeName(username),
-          ...freshProgress,
-          screen: "onboarding",
-          tab: "home",
-          history: [],
+      initAuth: async () => {
+        if (!isSupabaseConfigured()) {
+          set({ isLoading: false });
+          return;
+        }
+
+        await initAuth();
+        
+        onAuthChange(async (user) => {
+          if (user) {
+            // Supabase'dan progress yuklash
+            const dbProgress = await loadProgressFromSupabase(user.id);
+            
+            set({
+              currentUser: user,
+              isLoading: false,
+              ...(dbProgress || {}),
+              screen: "dashboard",
+              tab: "home",
+              history: []
+            });
+          } else {
+            set({
+              currentUser: null,
+              isLoading: false,
+              screen: "login",
+              tab: "home",
+              history: []
+            });
+          }
         });
-        return true;
       },
-      login: (username, password) => {
-        if (!authLogin(username, password)) return false;
-        const saved = loadProgressFor(username);
-        set({
-          currentUser: normalizeName(username),
-          ...freshProgress,
-          ...saved,
-          screen: "dashboard",
-          tab: "home",
-          history: [],
-        });
-        return true;
+
+      register: async (email, password, username) => {
+        if (!isSupabaseConfigured()) {
+          return { success: false, error: "Subabase sozlanmagan" };
+        }
+        
+        const result = await authRegister(email, password, username);
+        return result;
       },
-      logout: () => {
-        authLogout();
+
+      login: async (email, password) => {
+        if (!isSupabaseConfigured()) {
+          return { success: false, error: "Subabase sozlanmagan" };
+        }
+        
+        const result = await authLogin(email, password);
+        return result;
+      },
+
+      logout: async () => {
+        await authLogout();
         set({
           currentUser: null,
           ...freshProgress,
           screen: "login",
-          tab: "home",
-          history: [],
         });
       },
 
-      /** Hisobni butunlay o'chiradi (hisob + progress) — Play siyosati talabi. */
-      deleteAccount: () => {
-        deleteCurrentAccount();
+      deleteAccount: async () => {
+        await authDeleteAccount();
         set({
           currentUser: null,
           ...freshProgress,
           screen: "login",
-          tab: "home",
-          history: [],
         });
       },
 
@@ -314,7 +374,7 @@ export const useAppStore = create<AppState>()(
 
       isPremium: false,
       activatePremium: (code) => {
-        if (PREMIUM_DISABLED) return false; // vaqtincha bloklangan — hammasi bepul
+        if (PREMIUM_DISABLED) return false;
         if (!isValidPremiumCode(code)) return false;
         set({ isPremium: true });
         return true;
@@ -357,7 +417,6 @@ export const useAppStore = create<AppState>()(
         const today = new Date().toISOString().slice(0, 10);
         const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
 
-        // Seriya (streak): yangi kunda birinchi faollik — kecha faol bo'lgan bo'lsa +1, aks holda 1.
         let streak = s.streak;
         let lastActiveDay = s.lastActiveDay;
         if (lastActiveDay !== today) {
@@ -365,7 +424,7 @@ export const useAppStore = create<AppState>()(
           lastActiveDay = today;
         }
 
-        set({
+        const newState = {
           xp: s.xp + earned,
           dailyXp: s.dailyXp + earned,
           streak,
@@ -378,14 +437,21 @@ export const useAppStore = create<AppState>()(
           achievements: [...s.achievements, ...newly],
           lastResult: result,
           xpHistory: { ...s.xpHistory, [today]: (s.xpHistory[today] ?? 0) + earned },
-        });
+        };
+
+        set(newState);
+
+        // Supabase'ga saqlash
+        if (s.currentUser) {
+          saveProgressToSupabase(s.currentUser.id, newState);
+        }
+
         return result;
       },
 
       touchActivity: () =>
         set((s) => ({ lastActiveAt: Date.now() })),
 
-      /** Hafta almashganini tekshiradi: o'tgan hafta yakunlanadi (ko'tarilish/tushish). */
       syncLeague: () => {
         const s = get();
         const wk = weekKeyOf(new Date());
@@ -397,7 +463,7 @@ export const useAppStore = create<AppState>()(
 
         if (!isFirstWeek) {
           const prevXp = userWeekXp(s.xpHistory, s.leagueWeekKey);
-          const board = boardFor(s.leagueWeekKey, s.leagueIndex, s.currentUser ?? "", prevXp, {
+          const board = boardFor(s.leagueWeekKey, s.leagueIndex, s.currentUser?.username ?? "", prevXp, {
             finalize: true,
           });
           const rank = userRank(board);
@@ -420,10 +486,8 @@ export const useAppStore = create<AppState>()(
       recordAnswer: (key, correct) => {
         const s = get();
         const card = s.srs[key];
-        // Yangi karta faqat XATO javobdan yaratiladi; karta bo'lmasa to'g'ri javob no-op.
         if (!card && correct) return;
         const updated = reviewCard(card, correct);
-        // O'zlashtirilgan (yuqori qutidan to'g'ri) — kartani takrorlashdan chiqarish.
         if (correct && updated.box >= SRS_MASTERED_BOX) {
           const next = { ...s.srs };
           delete next[key];
@@ -448,35 +512,9 @@ export const useAppStore = create<AppState>()(
         })),
     }),
     {
-      name: "corpus-storage",
-      version: 6,
-      migrate: (persisted, version) => {
-        const p = (persisted ?? {}) as Partial<AppState> & {
-          srs?: Record<string, SRSCard>;
-          bookmarks?: string[];
-          lastActiveDay?: string;
-          lastActiveAt?: number;
-          avatar?: string | null;
-          isPremium?: boolean;
-          leagueIndex?: number;
-          leagueWeekKey?: string;
-          leagueResult?: LeagueResult | null;
-        };
-        // v1..v6: yangi maydonlar (SRS, bookmarks, lastActive, avatar, isPremium) qo'shiladi — progress saqlanadi.
-        return {
-          ...p,
-          srs: p.srs ?? {},
-          bookmarks: p.bookmarks ?? [],
-          lastActiveDay: p.lastActiveDay ?? "",
-          lastActiveAt: p.lastActiveAt ?? 0,
-          avatar: p.avatar ?? null,
-          isPremium: p.isPremium ?? false,
-          leagueIndex: p.leagueIndex ?? 0,
-          leagueWeekKey: p.leagueWeekKey ?? "",
-          leagueResult: p.leagueResult ?? null,
-        };
-      },
-      storage: createJSONStorage(() => rawStorage),
+      name: storageName,
+      version: 7,
+      storage: createJSONStorage(() => localStorageFallback),
       partialize: (s) => ({
         onboardingDone: s.onboardingDone,
         xp: s.xp,
