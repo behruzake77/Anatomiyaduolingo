@@ -1,0 +1,1 @@
+- [Vite JSX metadata transform](vite-jsx-metadata-transform.md) — avoid generic JSX component invocation when the Replit metadata transform is active.

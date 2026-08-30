@@ -270,7 +270,13 @@ export function LoginScreen() {
         ))}
       </div>
 
-      <div className="mt-6 flex flex-col gap-4">
+      <form
+        className="mt-6 flex flex-col gap-4"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void submit();
+        }}
+      >
         <label className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
           <Mail className="h-5 w-5 text-muted" aria-hidden />
           <input
@@ -306,9 +312,6 @@ export function LoginScreen() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
             autoComplete={mode === "register" ? "new-password" : "current-password"}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") void submit();
-            }}
             className="w-full bg-transparent text-base outline-none placeholder:text-muted"
           />
         </label>
@@ -329,7 +332,7 @@ export function LoginScreen() {
         <p className="text-center text-sm text-muted">
           {mode === "register" ? t.haveAccount : t.noAccount}
         </p>
-      </div>
+      </form>
     </div>
   );
 }

@@ -65,7 +65,7 @@ export function ProgressScreen() {
         <div className="flex justify-center">
           <Segmented
             value={range}
-            onChange={setRange}
+            onChange={(value) => setRange(value as Range)}
             options={[
               { value: "week", label: t.thisWeek },
               { value: "month", label: t.month },
