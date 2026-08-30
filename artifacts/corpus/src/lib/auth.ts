@@ -75,6 +75,12 @@ export function mapAuthError(message: string): string {
   if (m.includes("signup is disabled")) {
     return "Ro'yxatdan o'tish hozircha yopiq.";
   }
+  if (
+    m.includes("provider") &&
+    (m.includes("not enabled") || m.includes("unsupported") || m.includes("disabled"))
+  ) {
+    return "Google orqali kirish Supabase Auth sozlamalarida yoqilmagan.";
+  }
   if (m.includes("same email") || m.includes("email change")) {
     return "Emailni o'zgartirishda xatolik.";
   }
@@ -172,6 +178,11 @@ export async function initAuth(): Promise<AuthUser | null> {
   const {
     data: { session },
   } = await supabase.auth.getSession();
+  // OAuth bilan kirgan yangi foydalanuvchida trigger hali ishlamagan bo'lsa ham
+  // profil satri yaratiladi va keyingi progress sync yo'qolib ketmaydi.
+  if (session?.user) {
+    await ensureProfile(session.user);
+  }
   const user = await userFromSession(session);
   notify(user);
 
@@ -320,6 +331,13 @@ export async function resendSignupOtp(email: string): Promise<AuthResult> {
 }
 
 export async function loginWithGoogle(): Promise<AuthResult> {
+  if (!isSupabaseConfigured) {
+    return {
+      success: false,
+      error: "Supabase sozlanmagan. VITE_SUPABASE_URL va VITE_SUPABASE_ANON_KEY ni kiriting.",
+    };
+  }
+
   try {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
