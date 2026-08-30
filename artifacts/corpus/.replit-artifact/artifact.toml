@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "CORPUS Anatomy Learning"
+description = "A Duolingo-style anatomy learning app in Uzbek with lessons, quizzes, spaced repetition, progress tracking, glossary, atlas visuals, and offline-friendly local persistence."
+version = "1.0.0"
+id = "artifacts/corpus"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22229
+
+[services.development]
+run = "pnpm --filter @workspace/corpus run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/corpus", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/corpus/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22229"
+BASE_PATH = "/"

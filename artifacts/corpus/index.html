@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#6C5CE7" />
+    <meta name="application-name" content="CORPUS" />
+    <meta name="description" content="Anatomiyani Duolingo uslubida o'rganing: interaktiv darslar, aqlli testlar, 3D o'rganish rejimi va gamifikatsiya." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="CORPUS — Anatomiyani o'rgan. Hayotni boshqar." />
+    <meta property="og:description" content="Interaktiv darslar, aqlli testlar, 3D o'rganish rejimi va gamifikatsiya." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CORPUS — Anatomiyani o'rgan. Hayotni boshqar." />
+    <meta name="twitter:description" content="Interaktiv darslar, aqlli testlar, 3D o'rganish rejimi va gamifikatsiya." />
+    <link rel="icon" type="image/png" href="/logo/icon-192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <script>
+      try {
+        const stored = JSON.parse(localStorage.getItem("corpus-storage-remote") || localStorage.getItem("corpus-storage") || "{}");
+        if (stored.state?.settings?.darkMode) document.documentElement.classList.add("dark");
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
