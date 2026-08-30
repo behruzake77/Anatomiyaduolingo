@@ -1,0 +1,18 @@
+# Render Blueprint for the CORPUS Vite SPA.
+# The repository root must remain the service root; the app lives in
+# artifacts/corpus inside this PNPM workspace.
+services:
+  - type: web
+    name: corpus
+    runtime: static
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run build
+    staticPublishPath: ./artifacts/corpus/dist/public
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false

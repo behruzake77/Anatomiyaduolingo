@@ -1,1 +1,2 @@
 - [Vite JSX metadata transform](vite-jsx-metadata-transform.md) — avoid generic JSX component invocation when the Replit metadata transform is active.
+- [Render monorepo root](render-monorepo-root.md) — Render must build from repository root when the Vite app lives under artifacts/corpus.
