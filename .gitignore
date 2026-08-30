@@ -47,3 +47,9 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Environment / secrets — Supabase credentials must never be committed
+.env
+.env.local
+.env.*.local
+artifacts/corpus/.env.local
