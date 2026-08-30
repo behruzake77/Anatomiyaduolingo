@@ -5,7 +5,7 @@ services:
   - type: web
     name: corpus
     runtime: static
-    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run build
+    buildCommand: pnpm install --frozen-lockfile --prod=false && PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run build
     staticPublishPath: ./artifacts/corpus/dist/public
     routes:
       - type: rewrite
