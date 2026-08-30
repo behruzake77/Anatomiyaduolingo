@@ -91,6 +91,28 @@ function siteOrigin(): string | undefined {
   return typeof window !== "undefined" ? window.location.origin : undefined;
 }
 
+/**
+ * Eski (Supabase'dan oldingi) mahalliy localStorage auth tizimining qoldiqlarini
+ * tozalaydi. O'sha eski tizim `src/auth.ts` da edi va `corpus-auth` kalitida
+ * ro'yxatdan o'tgan akkauntlar ro'yxatini saqlardi. Yangi tizim Supabase bo'lgani
+ * uchun bu kalit endi foydasiz — loyihani "yangidan boshlash" uchun o'chiriladi.
+ */
+export function clearLegacyAuth(): void {
+  if (typeof localStorage === "undefined") return;
+  try {
+    // Eski localStorage-based auth ma'lumotlari (o'lik tizim): har qanday nom bilan
+    // bo'lgan `corpus-progress-*` kalitlarini ham o'chiramiz.
+    for (let i = 0; i < localStorage.length; i += 1) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith("corpus-progress-")) localStorage.removeItem(key);
+    }
+    localStorage.removeItem("corpus-auth");
+    localStorage.removeItem("corpus-storage"); // eski non-remote fallback
+  } catch {
+    /* no-op */
+  }
+}
+
 function usernameFrom(user: User, fallbackEmail = ""): string {
   const meta = (user.user_metadata?.username as string | undefined)?.trim();
   if (meta) return meta;
@@ -172,6 +194,9 @@ export async function initAuth(): Promise<AuthUser | null> {
 
   if (authStarted) return currentUser;
   authStarted = true;
+
+  // Yangi Supabase tizimiga o'tishda eski mahalliy akkauntlarni bir marta tozalaymiz.
+  clearLegacyAuth();
 
   await consumeAuthRedirect();
 
@@ -367,17 +392,35 @@ export async function deleteAccount(): Promise<AuthResult> {
   if (!user) return { success: false, error: "Foydalanuvchi topilmadi" };
 
   try {
+    // 1) Foydalanuvchining O'Z satrlarini RLS orqali o'chirish (anon kalit yetadi).
+    //    `progress` va `achievements` jadvallaridagi qatorlar auth.users ga
+    //    on delete cascade bo'lgani uchun, auth foydalanuvchisi o'chsa ham
+    //    ular avtomatik tozalanadi.
     await supabase.from("progress").delete().eq("user_id", user.id);
     await supabase.from("achievements").delete().eq("user_id", user.id);
     await supabase.from("profiles").delete().eq("id", user.id);
 
-    const { error } = await supabase.auth.admin.deleteUser(user.id);
-    if (error) {
-      return { success: false, error: mapAuthError(error.message) };
+    // 2) auth.users qatorini o'chirish uchun service_role kerak (admin API).
+    //    Brauzerda faqat anon kalit bo'lgani uchun bu best-effort bo'ladi:
+    //    xato bo'lsa ham dastur foydalanuvchini mahalliy o'chiradi. To'liq
+    //    o'chirish uchun SUPABASE_SETUP.md dagi Edge Function / SQL dan
+    //    foydalaning.
+    let adminError: string | null = null;
+    try {
+      const { error } = await supabase.auth.admin.deleteUser(user.id);
+      adminError = error?.message ?? null;
+    } catch {
+      adminError = "admin_delete_unavailable";
     }
 
+    clearLegacyAuth();
     notify(null);
-    return { success: true };
+    return {
+      success: true,
+      ...(adminError
+        ? { error: "Hisob ma'lumotlari o'chirildi. (Auth satrini to'liq o'chirish uchun server sozlamasi kerak.)" }
+        : {}),
+    };
   } catch {
     return { success: false, error: "Hisobni o'chirishda xatolik" };
   }
