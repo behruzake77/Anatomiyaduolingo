@@ -13,6 +13,44 @@ export interface AuthUser {
   id: string;
   email: string;
   username: string;
+  birthYear: number | null;
+}
+
+let passwordRecovery = false;
+
+export function isPasswordRecovery(): boolean {
+  return passwordRecovery;
+}
+
+export function clearPasswordRecovery(): void {
+  passwordRecovery = false;
+}
+
+export function normalizeUsername(raw: string): string {
+  return raw.trim().replace(/\s+/g, "_").slice(0, 20);
+}
+
+export function validUsername(raw: string): boolean {
+  const n = normalizeUsername(raw);
+  return n.length >= 3 && /^[A-Za-z0-9._]+$/.test(n);
+}
+
+export async function isUsernameTaken(name: string, exceptId?: string): Promise<boolean> {
+  if (!isSupabaseConfigured) return false;
+  const n = normalizeUsername(name);
+  if (!n) return true;
+  const { data } = await supabase.from("profiles").select("id, username").ilike("username", n).limit(8);
+  return (data ?? []).some((row) => row.id !== exceptId && String(row.username).toLowerCase() === n.toLowerCase());
+}
+
+async function uniqueUsername(base: string, exceptId?: string): Promise<string> {
+  let name = normalizeUsername(base) || "user";
+  if (!(await isUsernameTaken(name, exceptId))) return name;
+  for (let i = 0; i < 12; i++) {
+    const cand = `${name.slice(0, 16)}${Math.floor(10 + Math.random() * 89)}`;
+    if (!(await isUsernameTaken(cand, exceptId))) return cand;
+  }
+  return `${name.slice(0, 12)}${Date.now().toString().slice(-6)}`;
 }
 
 export interface AuthResult {
@@ -120,11 +158,19 @@ function usernameFrom(user: User, fallbackEmail = ""): string {
   return email.split("@")[0] || "user";
 }
 
+function birthYearFrom(user: User): number | null {
+  const raw = user.user_metadata?.birth_year ?? user.user_metadata?.birthYear;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 1940 || n > new Date().getFullYear() - 10) return null;
+  return Math.round(n);
+}
+
 async function ensureProfile(user: User) {
-  const username = usernameFrom(user);
+  const username = await uniqueUsername(usernameFrom(user), user.id);
+  const birthYear = birthYearFrom(user);
   const { data: existing } = await supabase
     .from("profiles")
-    .select("id")
+    .select("id, username, birth_year")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -132,11 +178,19 @@ async function ensureProfile(user: User) {
     await supabase.from("profiles").insert({
       id: user.id,
       username,
+      birth_year: birthYear,
       xp: 0,
       level: 1,
       streak: 0,
       daily_goal: 20,
     });
+    return;
+  }
+  const patch: Record<string, unknown> = {};
+  if (!existing.username) patch.username = username;
+  if (existing.birth_year == null && birthYear) patch.birth_year = birthYear;
+  if (Object.keys(patch).length) {
+    await supabase.from("profiles").update(patch).eq("id", user.id);
   }
 }
 
@@ -145,7 +199,7 @@ async function userFromSession(session: Session | null): Promise<AuthUser | null
   const u = session.user;
   const { data: profile } = await supabase
     .from("profiles")
-    .select("username")
+    .select("username, birth_year")
     .eq("id", u.id)
     .maybeSingle();
 
@@ -153,6 +207,7 @@ async function userFromSession(session: Session | null): Promise<AuthUser | null
     id: u.id,
     email: u.email || "",
     username: profile?.username || usernameFrom(u),
+    birthYear: profile?.birth_year ?? birthYearFrom(u),
   };
 }
 
@@ -163,6 +218,7 @@ async function consumeAuthRedirect() {
   const code = url.searchParams.get("code");
   const tokenHash = url.searchParams.get("token_hash");
   const type = url.searchParams.get("type") as EmailOtpType | null;
+  if (type === "recovery") passwordRecovery = true;
   let cleaned = false;
 
   try {
@@ -219,7 +275,10 @@ export async function initAuth(): Promise<AuthUser | null> {
         notify(null);
         return;
       }
-      if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
+      if (event === "PASSWORD_RECOVERY") {
+      passwordRecovery = true;
+    }
+    if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
         if (nextSession?.user) {
           await ensureProfile(nextSession.user);
         }
@@ -235,14 +294,22 @@ export async function register(
   email: string,
   password: string,
   username: string,
+  birthYear?: number,
 ): Promise<AuthResult> {
   try {
     const cleanEmail = email.trim().toLowerCase();
+    const name = normalizeUsername(username);
+    if (!validUsername(name)) {
+      return { success: false, error: "Username 3–20 belgi: harf, raqam, nuqta yoki _" };
+    }
+    if (await isUsernameTaken(name)) {
+      return { success: false, error: "Bu username band. Boshqasini tanlang." };
+    }
     const { data, error } = await supabase.auth.signUp({
       email: cleanEmail,
       password,
       options: {
-        data: { username: username.trim() },
+        data: { username: name, birth_year: birthYear ?? null },
         emailRedirectTo: siteOrigin(),
       },
     });
@@ -330,6 +397,7 @@ export async function verifyEmailOtp(email: string, token: string): Promise<Auth
         id: data.user.id,
         email: data.user.email || cleanEmail,
         username: usernameFrom(data.user, cleanEmail),
+        birthYear: birthYearFrom(data.user),
       });
     }
 
@@ -443,4 +511,49 @@ export async function resetPassword(email: string): Promise<AuthResult> {
   } catch {
     return { success: false, error: "Parol tiklashda xatolik" };
   }
+}
+
+export async function updatePassword(password: string): Promise<AuthResult> {
+  try {
+    if (password.length < 6) {
+      return { success: false, error: "Parol kamida 6 ta belgidan iborat bo'lishi kerak." };
+    }
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) return { success: false, error: mapAuthError(error.message) };
+    passwordRecovery = false;
+    return { success: true };
+  } catch {
+    return { success: false, error: "Parolni yangilashda xatolik" };
+  }
+}
+
+export async function updateUsername(name: string): Promise<AuthResult> {
+  const user = getCurrentUser();
+  if (!user) return { success: false, error: "Foydalanuvchi topilmadi" };
+  const clean = normalizeUsername(name);
+  if (!validUsername(clean)) {
+    return { success: false, error: "Username 3–20 belgi: harf, raqam, nuqta yoki _" };
+  }
+  if (await isUsernameTaken(clean, user.id)) {
+    return { success: false, error: "Bu username band. Boshqasini tanlang." };
+  }
+  const { error } = await supabase.from("profiles").update({ username: clean }).eq("id", user.id);
+  if (error) return { success: false, error: mapAuthError(error.message) };
+  await supabase.auth.updateUser({ data: { username: clean } });
+  notify({ ...user, username: clean });
+  return { success: true };
+}
+
+export async function updateBirthYear(year: number): Promise<AuthResult> {
+  const user = getCurrentUser();
+  if (!user) return { success: false, error: "Foydalanuvchi topilmadi" };
+  const y = Math.round(year);
+  if (y < 1940 || y > new Date().getFullYear() - 10) {
+    return { success: false, error: "Tug'ilgan yil noto'g'ri" };
+  }
+  const { error } = await supabase.from("profiles").update({ birth_year: y }).eq("id", user.id);
+  if (error) return { success: false, error: mapAuthError(error.message) };
+  await supabase.auth.updateUser({ data: { birth_year: y } });
+  notify({ ...user, birthYear: y });
+  return { success: true };
 }

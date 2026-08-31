@@ -65,6 +65,25 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
+    // Honor 9S / Android 10 WebView — es2019, not bleeding-edge.
+    target: ['es2019', 'chrome80'],
+    cssTarget: 'chrome80',
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'react';
+          }
+          if (id.includes('node_modules/motion') || id.includes('node_modules/framer-motion')) {
+            return 'motion';
+          }
+          if (id.includes('node_modules/@supabase')) {
+            return 'supabase';
+          }
+        },
+      },
+    },
   },
   server: {
     port,

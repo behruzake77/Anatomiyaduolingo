@@ -15,6 +15,10 @@
     <meta name="twitter:description" content="Interaktiv darslar, aqlli testlar, 3D o'rganish rejimi va gamifikatsiya." />
     <link rel="icon" type="image/png" href="/logo/icon-192.png" />
     <link rel="manifest" href="/manifest.json" />
+    <style>
+      html, body, #root { min-height: 100%; min-height: 100vh; margin: 0; background: #F8F9FA; }
+      #root { display: flex; flex-direction: column; }
+    </style>
     <script>
       try {
         const stored = JSON.parse(localStorage.getItem("corpus-storage-remote") || localStorage.getItem("corpus-storage") || "{}");
@@ -25,5 +29,6 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>CORPUS ishlashi uchun JavaScript yoqing.</noscript>
   </body>
 </html>

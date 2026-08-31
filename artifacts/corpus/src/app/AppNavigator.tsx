@@ -1,40 +1,101 @@
 "use client";
 
-import { useEffect, type ComponentType } from "react";
+import { lazy, Suspense, useEffect, type ComponentType } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useAppStore, type ScreenId, type Tab } from "@/store/useAppStore";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ErrorBoundary } from "@/components/error-boundary";
-
+import { applyDeviceClass, isLowEndDevice } from "@/lib/device";
 import { SplashScreen } from "@/screens/SplashScreen";
-import { LoginScreen } from "@/screens/LoginScreen";
-import { OnboardingScreen } from "@/screens/OnboardingScreen";
-import { DashboardScreen } from "@/screens/DashboardScreen";
-import { TopicsScreen } from "@/screens/TopicsScreen";
-import { LessonsScreen } from "@/screens/LessonsScreen";
-import { LessonScreen } from "@/screens/LessonScreen";
-import { ReviewScreen } from "@/screens/ReviewScreen";
-import { ResultCorrectScreen } from "@/screens/ResultCorrectScreen";
-import { ResultWrongScreen } from "@/screens/ResultWrongScreen";
-import { ProfileScreen } from "@/screens/ProfileScreen";
-import { AchievementsScreen } from "@/screens/AchievementsScreen";
-import { StudyModeScreen } from "@/screens/StudyModeScreen";
-import { Models3DScreen } from "@/screens/Models3DScreen";
-import { ProgressScreen } from "@/screens/ProgressScreen";
-import { SettingsScreen } from "@/screens/SettingsScreen";
-import { GlossaryScreen } from "@/screens/GlossaryScreen";
-import { ExamScreen } from "@/screens/ExamScreen";
-import { BookmarksScreen } from "@/screens/BookmarksScreen";
-import { LibraryScreen } from "@/screens/LibraryScreen";
-import { LeaderboardScreen } from "@/screens/LeaderboardScreen";
-import { InfoScreen } from "@/screens/InfoScreen";
-import { PremiumScreen } from "@/screens/PremiumScreen";
-import { BattleScreen } from "@/screens/BattleScreen";
-import { KahootScreen } from "@/screens/KahootScreen";
-import { AdminScreen } from "@/screens/AdminScreen";
-import { FeedbackScreen } from "@/screens/FeedbackScreen";
-import { InboxScreen } from "@/screens/InboxScreen";
-import { QuizStudioScreen } from "@/screens/QuizStudioScreen";
+
+function screen(loader: () => Promise<{ default: ComponentType }>) {
+  return lazy(loader);
+}
+
+const LoginScreen = screen(() =>
+  import("@/screens/LoginScreen").then((m) => ({ default: m.LoginScreen })),
+);
+const OnboardingScreen = screen(() =>
+  import("@/screens/OnboardingScreen").then((m) => ({ default: m.OnboardingScreen })),
+);
+const DashboardScreen = screen(() =>
+  import("@/screens/DashboardScreen").then((m) => ({ default: m.DashboardScreen })),
+);
+const TopicsScreen = screen(() =>
+  import("@/screens/TopicsScreen").then((m) => ({ default: m.TopicsScreen })),
+);
+const LessonsScreen = screen(() =>
+  import("@/screens/LessonsScreen").then((m) => ({ default: m.LessonsScreen })),
+);
+const LessonScreen = screen(() =>
+  import("@/screens/LessonScreen").then((m) => ({ default: m.LessonScreen })),
+);
+const ReviewScreen = screen(() =>
+  import("@/screens/ReviewScreen").then((m) => ({ default: m.ReviewScreen })),
+);
+const ResultCorrectScreen = screen(() =>
+  import("@/screens/ResultCorrectScreen").then((m) => ({ default: m.ResultCorrectScreen })),
+);
+const ResultWrongScreen = screen(() =>
+  import("@/screens/ResultWrongScreen").then((m) => ({ default: m.ResultWrongScreen })),
+);
+const ProfileScreen = screen(() =>
+  import("@/screens/ProfileScreen").then((m) => ({ default: m.ProfileScreen })),
+);
+const AchievementsScreen = screen(() =>
+  import("@/screens/AchievementsScreen").then((m) => ({ default: m.AchievementsScreen })),
+);
+const StudyModeScreen = screen(() =>
+  import("@/screens/StudyModeScreen").then((m) => ({ default: m.StudyModeScreen })),
+);
+const Models3DScreen = screen(() =>
+  import("@/screens/Models3DScreen").then((m) => ({ default: m.Models3DScreen })),
+);
+const ProgressScreen = screen(() =>
+  import("@/screens/ProgressScreen").then((m) => ({ default: m.ProgressScreen })),
+);
+const SettingsScreen = screen(() =>
+  import("@/screens/SettingsScreen").then((m) => ({ default: m.SettingsScreen })),
+);
+const GlossaryScreen = screen(() =>
+  import("@/screens/GlossaryScreen").then((m) => ({ default: m.GlossaryScreen })),
+);
+const ExamScreen = screen(() =>
+  import("@/screens/ExamScreen").then((m) => ({ default: m.ExamScreen })),
+);
+const BookmarksScreen = screen(() =>
+  import("@/screens/BookmarksScreen").then((m) => ({ default: m.BookmarksScreen })),
+);
+const LibraryScreen = screen(() =>
+  import("@/screens/LibraryScreen").then((m) => ({ default: m.LibraryScreen })),
+);
+const LeaderboardScreen = screen(() =>
+  import("@/screens/LeaderboardScreen").then((m) => ({ default: m.LeaderboardScreen })),
+);
+const InfoScreen = screen(() =>
+  import("@/screens/InfoScreen").then((m) => ({ default: m.InfoScreen })),
+);
+const PremiumScreen = screen(() =>
+  import("@/screens/PremiumScreen").then((m) => ({ default: m.PremiumScreen })),
+);
+const BattleScreen = screen(() =>
+  import("@/screens/BattleScreen").then((m) => ({ default: m.BattleScreen })),
+);
+const KahootScreen = screen(() =>
+  import("@/screens/KahootScreen").then((m) => ({ default: m.KahootScreen })),
+);
+const AdminScreen = screen(() =>
+  import("@/screens/AdminScreen").then((m) => ({ default: m.AdminScreen })),
+);
+const FeedbackScreen = screen(() =>
+  import("@/screens/FeedbackScreen").then((m) => ({ default: m.FeedbackScreen })),
+);
+const InboxScreen = screen(() =>
+  import("@/screens/InboxScreen").then((m) => ({ default: m.InboxScreen })),
+);
+const QuizStudioScreen = screen(() =>
+  import("@/screens/QuizStudioScreen").then((m) => ({ default: m.QuizStudioScreen })),
+);
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -78,38 +139,56 @@ const TAB_SCREEN: Record<Tab, ScreenId> = {
   profile: "profile",
 };
 
+function ScreenFallback() {
+  return (
+    <div className="flex flex-1 flex-col items-center justify-center bg-bg px-6 text-center">
+      <div className="h-8 w-8 animate-pulse rounded-full bg-primary/40" />
+      <p className="mt-3 text-sm text-muted">Yuklanmoqda…</p>
+    </div>
+  );
+}
+
 export function AppNavigator() {
-  const screen = useAppStore((s) => s.screen);
+  const screenId = useAppStore((s) => s.screen);
   const tab = useAppStore((s) => s.tab);
   const darkMode = useAppStore((s) => s.settings.darkMode);
   const initAuth = useAppStore((s) => s.initAuth);
+  const lowEnd = isLowEndDevice();
 
-  // Apply dark mode to <html> reactively.
+  useEffect(() => {
+    applyDeviceClass();
+  }, []);
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
-  // Initialize Supabase Auth
   useEffect(() => {
     initAuth();
   }, [initAuth]);
 
-  // Haftalik liga: hafta almashsa — o'tgan hafta yakunlanadi (ko'tarilish/tushish).
   useEffect(() => {
     useAppStore.getState().syncLeague();
   }, []);
 
-  // PWA shortcut'lar (/ ?screen=topics …) — faqat ruxsat etilgan ekranlar.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const target = new URLSearchParams(window.location.search).get("screen");
-    const safe = ["topics", "library", "leaderboard", "profile", "glossary", "exam", "battle", "kahoot"];
+    const safe = [
+      "topics",
+      "library",
+      "leaderboard",
+      "profile",
+      "glossary",
+      "exam",
+      "battle",
+      "kahoot",
+    ];
     if (target && safe.includes(target)) {
       useAppStore.getState().navigate(target as ScreenId);
     }
   }, []);
 
-  // Android APK: tizim «Orqaga» tugmasi — ilova ichida orqaga qaytadi
   useEffect(() => {
     const w = window as unknown as { __corpusBack?: () => string };
     w.__corpusBack = () => {
@@ -130,35 +209,44 @@ export function AppNavigator() {
     };
   }, []);
 
-  // Keep tab in sync when navigating to a tab screen.
   useEffect(() => {
-    if (screen in TAB_SCREEN || TABS.includes(screen)) {
-      const found = (Object.keys(TAB_SCREEN) as Tab[]).find((t) => TAB_SCREEN[t] === screen);
+    if (screenId in TAB_SCREEN || TABS.includes(screenId)) {
+      const found = (Object.keys(TAB_SCREEN) as Tab[]).find((t) => TAB_SCREEN[t] === screenId);
       if (found && found !== tab) useAppStore.setState({ tab: found });
     }
-  }, [screen, tab]);
+  }, [screenId, tab]);
 
-  const Screen = SCREENS[screen];
-  const showNav = NAV_SCREENS.includes(screen);
+  const Screen = SCREENS[screenId];
+  const showNav = NAV_SCREENS.includes(screenId);
+
+  const body = Screen ? (
+    <ErrorBoundary resetKey={screenId}>
+      <Suspense fallback={<ScreenFallback />}>
+        <Screen />
+      </Suspense>
+    </ErrorBoundary>
+  ) : null;
 
   return (
-    <div className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={screen}
-          className="flex min-h-dvh flex-1 flex-col"
-          initial={{ opacity: 0, x: 24 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -24 }}
-          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {Screen ? (
-            <ErrorBoundary resetKey={screen}>
-              <Screen />
-            </ErrorBoundary>
-          ) : null}
-        </motion.div>
-      </AnimatePresence>
+    <div className="relative mx-auto flex min-h-screen min-h-[100dvh] w-full max-w-md flex-1 flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">
+      {lowEnd ? (
+        <div key={screenId} className="flex min-h-screen min-h-[100dvh] flex-1 flex-col">
+          {body}
+        </div>
+      ) : (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={screenId}
+            className="flex min-h-screen min-h-[100dvh] flex-1 flex-col"
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -16 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {body}
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {showNav && <BottomNav />}
     </div>

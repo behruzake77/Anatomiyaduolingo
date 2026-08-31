@@ -25,6 +25,7 @@ export const supabase = createClient(
 export interface Profile {
   id: string;
   username: string;
+  birth_year?: number | null;
   xp: number;
   level: number;
   streak: number;
