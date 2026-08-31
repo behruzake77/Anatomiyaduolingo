@@ -24,6 +24,9 @@ import {
   deleteAccount as authDeleteAccount,
   verifyEmailOtp as authVerifyOtp,
   resendSignupOtp as authResendOtp,
+  updateUsername as authUpdateUsername,
+  updateBirthYear as authUpdateBirthYear,
+  isPasswordRecovery,
   type AuthUser,
   type AuthResult,
 } from "@/lib/auth";
@@ -219,13 +222,15 @@ interface AppState {
   currentUser: AuthUser | null;
   isAdmin: boolean;
   isLoading: boolean;
-  register: (email: string, password: string, username: string) => Promise<AuthResult>;
+  register: (email: string, password: string, username: string, birthYear: number) => Promise<AuthResult>;
   login: (email: string, password: string) => Promise<AuthResult>;
   verifyOtp: (email: string, token: string) => Promise<AuthResult>;
   resendOtp: (email: string) => Promise<AuthResult>;
   logout: () => Promise<void>;
   deleteAccount: () => Promise<void>;
   initAuth: () => Promise<void>;
+  updateUsername: (name: string) => Promise<AuthResult>;
+  updateBirthYear: (year: number) => Promise<AuthResult>;
 
   // progress
   onboardingDone: boolean;
@@ -338,7 +343,7 @@ export const useAppStore = create<AppState>()(
             const dbProgress = wasLoggedOut ? await loadProgressFromSupabase(user.id) : null;
             const flag = Boolean(dbProgress?.isAdmin) || isAdminAccount(user) || (await fetchIsAdmin(user.id));
             const s = get();
-            const enterApp = s.screen === "login";
+            const enterApp = s.screen === "login" && !isPasswordRecovery();
             const nextScreen = s.onboardingDone ? "dashboard" : "onboarding";
             const progress = dbProgress ? { ...dbProgress, isAdmin: flag } : { isAdmin: flag };
             set({
@@ -370,12 +375,15 @@ export const useAppStore = create<AppState>()(
         }
       },
 
-      register: async (email, password, username) => {
+      register: async (email, password, username, birthYear) => {
         if (!isSupabaseConfigured) {
           return { success: false, error: "Supabase sozlanmagan" };
         }
-        return authRegister(email, password, username);
+        return authRegister(email, password, username, birthYear);
       },
+
+      updateUsername: async (name) => authUpdateUsername(name),
+      updateBirthYear: async (year) => authUpdateBirthYear(year),
 
       login: async (email, password) => {
         if (!isSupabaseConfigured) {

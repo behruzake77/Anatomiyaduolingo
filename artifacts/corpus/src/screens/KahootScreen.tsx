@@ -34,6 +34,7 @@ import {
   makeBattleSeed,
   parseBattleSeed,
   pickKahootQuestions,
+  collectChoiceQuestions,
   type PoolItem,
 } from "@/utils/quizPool";
 import { getQuiz, quizToPool, snapshotToPool } from "@/lib/userQuizzes";
@@ -75,6 +76,7 @@ export function KahootScreen() {
   const recordKahoot = useAppStore((s) => s.recordKahoot);
   const haptic = useHaptics();
   const topicName = battleScopeLabel(battleScope);
+  const poolN = pendingQuiz?.questions.length ?? collectChoiceQuestions(battleScope).length;
 
   const [phase, setPhase] = useState<Phase>("hub");
   const [practice, setPractice] = useState(false);
@@ -214,16 +216,19 @@ export function KahootScreen() {
 
   const hostLive = async () => {
     setError("");
-    if (!currentUser || !isKahootOnline()) {
-      startPractice();
+    if (!currentUser) {
+      setError(t.kahootNeedLogin);
+      return;
+    }
+    if (!isKahootOnline()) {
+      setError(t.kahootOfflineHost);
       return;
     }
     setBusy(true);
     const created = await createKahootGame(currentUser, battleScope, pendingQuiz);
     setBusy(false);
     if (!created) {
-      setError(t.kahootNeedLogin);
-      startPractice();
+      setError(t.kahootHostFail);
       return;
     }
     setPractice(false);
@@ -235,14 +240,14 @@ export function KahootScreen() {
     setPhase("lobby");
   };
 
-  const doJoin = async () => {
+  const doJoin = async (rawPin = pinInput) => {
     setError("");
     if (!currentUser || !isKahootOnline()) {
       setError(t.kahootNeedLogin);
       return;
     }
     setBusy(true);
-    const joined = await joinKahootByPin(currentUser, pinInput);
+    const joined = await joinKahootByPin(currentUser, rawPin);
     setBusy(false);
     if (!joined) {
       setError(t.kahootBadPin);
@@ -513,28 +518,15 @@ export function KahootScreen() {
         ) : (
           <>
             <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">{t.battlePickTopic}</p>
-            <div className="-mx-5 mt-2 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <Chip
-                active={battleScope === "all"}
-                label={t.battleScopeAll}
-                onClick={() => {
-                  setPendingQuiz(null);
-                  setBattleScope("all");
-                }}
-              />
-              {CONTENT_SYSTEMS.map((s) => (
-                <Chip
-                  key={s.id}
-                  active={battleScope === `sys:${s.id}`}
-                  label={s.name}
-                  color={s.color}
-                  onClick={() => {
-                    setPendingQuiz(null);
-                    setBattleScope(`sys:${s.id}`);
-                  }}
-                />
-              ))}
-            </div>
+            <KahootScopePicker
+              battleScope={battleScope}
+              onPick={(scope) => {
+                setPendingQuiz(null);
+                setBattleScope(scope);
+              }}
+              allLabel={t.battleScopeAll}
+              partsLabel={t.kahootParts}
+            />
           </>
         )}
 
@@ -544,23 +536,47 @@ export function KahootScreen() {
           </p>
         )}
 
-        <div className="mt-5 flex flex-col gap-3">
-          <ModeCard icon={Users} color="#46178F" title={t.kahootHost} hint={t.kahootHostHint} onClick={() => void hostLive()} />
+        <p className="mt-3 text-center text-xs font-semibold text-muted">{fmt(t.kahootQsReady, { n: poolN })}</p>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <ModeCard
+            icon={Users}
+            color="#46178F"
+            title={t.kahootHost}
+            hint={t.kahootHostHint}
+            disabled={busy}
+            onClick={() => void hostLive()}
+          />
           <ModeCard
             icon={KeyRound}
             color="#1368CE"
             title={t.kahootJoin}
             hint={t.kahootJoinHint}
+            disabled={busy}
             onClick={() => {
               setError("");
               setPinInput("");
               setPhase("join");
             }}
           />
-          <ModeCard icon={Bot} color="#26890C" title={t.kahootPractice} hint={t.kahootPracticeHint} onClick={startPractice} />
-          <ModeCard icon={Pencil} color="#D89E00" title={t.kahootMakeQuiz} hint={t.kahootMakeQuizHint} onClick={() => openQuizStudio()} />
+          <ModeCard
+            icon={Bot}
+            color="#26890C"
+            title={t.kahootPractice}
+            hint={t.kahootPracticeHint}
+            disabled={busy}
+            onClick={startPractice}
+          />
+          <ModeCard
+            icon={Pencil}
+            color="#D89E00"
+            title={t.kahootMakeQuiz}
+            hint={t.kahootMakeQuizHint}
+            disabled={busy}
+            onClick={() => openQuizStudio()}
+          />
         </div>
-        {error && <p className="mt-3 text-center text-sm text-danger">{error}</p>}
+        {error && <p className="mt-3 text-center text-sm font-semibold text-danger">{error}</p>}
       </Screen>
     );
   }
@@ -582,14 +598,19 @@ export function KahootScreen() {
         <p className="mt-8 text-sm text-muted">{t.kahootEnterPin}</p>
         <input
           value={pinInput}
-          onChange={(e) => setPinInput(e.target.value.replace(/\D/g, "").slice(0, 6))}
+          onChange={(e) => {
+            const v = e.target.value.replace(/\D/g, "").slice(0, 6);
+            setPinInput(v);
+            if (v.length === 6) setTimeout(() => void doJoin(), 0);
+          }}
           inputMode="numeric"
           maxLength={6}
-          className="mt-3 w-full rounded-2xl border-2 border-line bg-surface px-4 py-4 text-center font-mono text-3xl font-extrabold tracking-[0.4em] outline-none focus:border-primary"
-          placeholder="123456"
+          autoFocus
+          className="mt-3 w-full rounded-2xl border-2 border-line bg-surface px-4 py-5 text-center font-mono text-4xl font-extrabold tracking-[0.35em] outline-none focus:border-[#1368CE]"
+          placeholder="••••••"
         />
-        {error && <p className="mt-3 text-center text-sm text-danger">{error}</p>}
-        <Button className="mt-6 w-full" size="lg" loading={busy} onClick={() => void doJoin()}>
+        {error && <p className="mt-3 text-center text-sm font-semibold text-danger">{error}</p>}
+        <Button className="mt-6 w-full" size="lg" loading={busy} disabled={pinInput.length < 6} onClick={() => void doJoin()}>
           {t.kahootJoinCta}
         </Button>
       </Screen>
@@ -639,18 +660,21 @@ export function KahootScreen() {
               className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-semibold"
             >
               <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: playerColor(p.name) }} />
-              {p.name}
+              {p.id === meId ? t.kahootYou : p.name}
+              {game.host_id === p.user_id && (
+                <span className="rounded-full bg-primary/15 px-1.5 text-[10px] uppercase text-primary">{t.kahootHostBadge}</span>
+              )}
               {p.is_bot && <span className="text-[10px] uppercase text-muted">{t.battlePractice}</span>}
             </span>
           ))}
         </div>
 
         {isHost ? (
-          <Button className="mt-8 w-full" size="lg" onClick={beginPlay} loading={busy}>
+          <Button className="mt-8 w-full" size="lg" onClick={beginPlay} loading={busy} disabled={busy}>
             <Play className="h-5 w-5" aria-hidden /> {t.kahootStartGame}
           </Button>
         ) : (
-          <p className="mt-8 text-center text-sm text-muted">{t.kahootWaitingHost}</p>
+          <p className="mt-8 text-center text-sm font-semibold text-muted">{t.kahootWaitingHost}</p>
         )}
       </Screen>
     );
@@ -668,7 +692,7 @@ export function KahootScreen() {
   const answeredN = players.filter((p) => p.answers.some((a) => a.i === qIndex)).length;
 
   return (
-    <div className={cn("flex min-h-dvh flex-1 flex-col text-white", playBg)}>
+    <div className={cn("flex min-h-screen min-h-[100dvh] flex-1 flex-col text-white", playBg)}>
       <header className="flex items-center gap-3 px-5 pt-4">
         <button
           onClick={() => void goHub()}
@@ -745,8 +769,11 @@ export function KahootScreen() {
                 return (
                   <button
                     key={i}
+                    type="button"
                     onClick={() => void lockIn(i)}
-                    className="flex min-h-[88px] items-center gap-2 rounded-2xl px-3 py-3 text-left text-sm font-bold text-white shadow-lg active:scale-[.98]"
+                    disabled={locked}
+                    aria-label={`${t.kahootTapAnswer}: ${opt}`}
+                    className="flex min-h-[96px] items-center gap-2 rounded-2xl px-3 py-3 text-left text-sm font-bold text-white shadow-lg transition active:scale-[.97] disabled:opacity-70"
                     style={{ backgroundColor: pal.bg }}
                   >
                     <KahootShape kind={pal.shape} />
@@ -872,6 +899,95 @@ export function KahootScreen() {
   );
 }
 
+function KahootScopePicker({
+  battleScope,
+  onPick,
+  allLabel,
+  partsLabel,
+}: {
+  battleScope: string;
+  onPick: (scope: string) => void;
+  allLabel: string;
+  partsLabel: string;
+}) {
+  const selectedSys = (() => {
+    if (battleScope.startsWith("sys:")) return CONTENT_SYSTEMS.find((s) => s.id === battleScope.slice(4));
+    if (battleScope.startsWith("unit:")) {
+      const id = battleScope.slice(5);
+      return CONTENT_SYSTEMS.find((s) => s.units.some((u) => u.id === id));
+    }
+    if (battleScope.startsWith("lesson:")) {
+      const id = battleScope.slice(7);
+      return CONTENT_SYSTEMS.find((s) => s.units.some((u) => u.lessons.some((l) => l.id === id)));
+    }
+    return undefined;
+  })();
+  const selectedUnit = (() => {
+    if (!selectedSys) return undefined;
+    if (battleScope.startsWith("unit:")) return selectedSys.units.find((u) => u.id === battleScope.slice(5));
+    if (battleScope.startsWith("lesson:")) {
+      const id = battleScope.slice(7);
+      return selectedSys.units.find((u) => u.lessons.some((l) => l.id === id));
+    }
+    return undefined;
+  })();
+
+  return (
+    <div className="mt-2 flex flex-col gap-2">
+      <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <Chip active={battleScope === "all"} label={allLabel} onClick={() => onPick("all")} />
+        {CONTENT_SYSTEMS.map((s) => (
+          <Chip
+            key={s.id}
+            active={selectedSys?.id === s.id}
+            label={s.name}
+            color={s.color}
+            onClick={() => onPick(`sys:${s.id}`)}
+          />
+        ))}
+      </div>
+      {selectedSys && selectedSys.units.length > 0 && (
+        <>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-muted">{partsLabel}</p>
+          <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <Chip
+              active={battleScope === `sys:${selectedSys.id}`}
+              label={selectedSys.name}
+              color={selectedSys.color}
+              onClick={() => onPick(`sys:${selectedSys.id}`)}
+            />
+            {selectedSys.units.map((u) => (
+              <Chip
+                key={u.id}
+                active={selectedUnit?.id === u.id}
+                label={u.title}
+                onClick={() => onPick(`unit:${u.id}`)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+      {selectedUnit && selectedUnit.lessons.length > 1 && (
+        <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Chip
+            active={battleScope === `unit:${selectedUnit.id}`}
+            label={selectedUnit.title}
+            onClick={() => onPick(`unit:${selectedUnit.id}`)}
+          />
+          {selectedUnit.lessons.map((l) => (
+            <Chip
+              key={l.id}
+              active={battleScope === `lesson:${l.id}`}
+              label={l.title}
+              onClick={() => onPick(`lesson:${l.id}`)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Chip({
   active,
   label,
@@ -904,24 +1020,29 @@ function ModeCard({
   title,
   hint,
   onClick,
+  disabled,
 }: {
   icon: typeof Gamepad2;
   color: string;
   title: string;
   hint: string;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className="flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-transform active:scale-[.98]"
+      disabled={disabled}
+      className="flex min-h-[108px] w-full flex-col items-start gap-2 rounded-2xl border-0 p-4 text-left text-white shadow-lg transition active:scale-[.97] disabled:opacity-50"
+      style={{ backgroundColor: color }}
     >
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: `${color}22`, color }}>
+      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
         <Icon className="h-5 w-5" aria-hidden />
       </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-sm font-semibold">{title}</span>
-        <span className="mt-0.5 block text-xs text-muted">{hint}</span>
+      <span className="min-w-0">
+        <span className="block text-sm font-bold leading-tight">{title}</span>
+        <span className="mt-0.5 block text-[11px] leading-snug text-white/80">{hint}</span>
       </span>
     </button>
   );

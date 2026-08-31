@@ -24,13 +24,18 @@ export function SplashScreen() {
   const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const t = useStrings();
   const reduced = useReducedMotion();
+  const lite =
+    reduced ||
+    (typeof navigator !== "undefined" &&
+      (((navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8) <= 2 ||
+        (navigator.hardwareConcurrency ?? 8) <= 4));
 
   const [phase, setPhase] = useState<"init" | "grid" | "emblem" | "focus" | "exiting">("init");
   const [gaugeProgress, setGaugeProgress] = useState(0);
 
   useEffect(() => {
-    if (reduced) {
-      const id = setTimeout(() => finish(), 400);
+    if (lite) {
+      const id = setTimeout(() => finish(), 280);
       return () => clearTimeout(id);
     }
 
@@ -51,7 +56,7 @@ export function SplashScreen() {
       clearTimeout(t5);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced]);
+  }, [lite]);
 
   function finish() {
     const started = Date.now();

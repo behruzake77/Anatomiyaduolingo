@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info, Trash2, Flag } from "lucide-react";
+import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info, Trash2, Flag, User } from "lucide-react";
 import { useState } from "react";
 import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
@@ -21,6 +21,40 @@ export function SettingsScreen() {
   const t = useStrings();
   const { requestPermission } = useNotifications();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const currentUser = useAppStore((s) => s.currentUser);
+  const updateUsername = useAppStore((s) => s.updateUsername);
+  const updateBirthYear = useAppStore((s) => s.updateBirthYear);
+  const [uname, setUname] = useState(currentUser?.username ?? "");
+  const thisYear = new Date().getFullYear();
+  const [byear, setByear] = useState(String(currentUser?.birthYear ?? ""));
+  const [profileMsg, setProfileMsg] = useState<string | null>(null);
+  const [profileErr, setProfileErr] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const saveProfile = async () => {
+    setProfileErr(null);
+    setProfileMsg(null);
+    setSaving(true);
+    if (uname.trim() && uname.trim() !== currentUser?.username) {
+      const r = await updateUsername(uname);
+      if (!r.success) {
+        setSaving(false);
+        setProfileErr(r.error || t.errUsernameTaken);
+        return;
+      }
+    }
+    const y = Number(byear);
+    if (y && y !== currentUser?.birthYear) {
+      const r = await updateBirthYear(y);
+      if (!r.success) {
+        setSaving(false);
+        setProfileErr(r.error || t.errBirthYear);
+        return;
+      }
+    }
+    setSaving(false);
+    setProfileMsg(t.profileSaved);
+  };
 
   const onToggle = async (key: "notifications" | "darkMode" | "sound") => {
     if (key === "notifications" && !settings.notifications) {

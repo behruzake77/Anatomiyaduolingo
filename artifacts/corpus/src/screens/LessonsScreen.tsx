@@ -370,6 +370,14 @@ function LegacyList(props: {
               >
                 <Swords className="h-4 w-4" aria-hidden />
               </button>
+              <button
+                type="button"
+                onClick={() => useAppStore.getState().openKahoot(`unit:${u.id}`)}
+                aria-label={t.kahootTitle}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#46178F]/30 bg-[#46178F]/10 text-[#46178F]"
+              >
+                <Gamepad2 className="h-4 w-4" aria-hidden />
+              </button>
             </div>
             <AnimatePresence>
               {isOpen && (

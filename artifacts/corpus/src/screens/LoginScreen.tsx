@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/Button";
 import { OtpInput } from "@/components/auth/OtpInput";
 import { useAppStore } from "@/store/useAppStore";
 import { fmt, useStrings } from "@/i18n";
-import { loginWithGoogle } from "@/lib/auth";
+import { isPasswordRecovery, loginWithGoogle, resetPassword, updatePassword } from "@/lib/auth";
 
 type Mode = "register" | "login";
-type Step = "form" | "otp";
+type Step = "form" | "otp" | "forgot" | "newpass";
 
 const RESEND_SECONDS = 60;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,7 +27,9 @@ export function LoginScreen() {
   const [step, setStep] = useState<Step>("form");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [birthYear, setBirthYear] = useState("");
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -35,6 +37,11 @@ export function LoginScreen() {
   const [resendIn, setResendIn] = useState(0);
   const otpBusy = useRef(false);
   const lastTriedOtp = useRef("");
+  const thisYear = new Date().getFullYear();
+
+  useEffect(() => {
+    if (isPasswordRecovery()) setStep("newpass");
+  }, []);
 
   useEffect(() => {
     if (resendIn <= 0) return;
@@ -72,7 +79,7 @@ export function LoginScreen() {
 
     const result =
       mode === "register"
-        ? await register(cleanEmail, password, username.trim())
+        ? await register(cleanEmail, password, username.trim(), year)
         : await login(cleanEmail, password);
 
     if (result.needsVerification) {
@@ -143,6 +150,112 @@ export function LoginScreen() {
       setLoading(false);
     }
   };
+
+  const sendReset = async () => {
+    setError(null);
+    setInfo(null);
+    const cleanEmail = email.trim().toLowerCase();
+    if (!EMAIL_RE.test(cleanEmail)) {
+      setError(t.errEmail);
+      return;
+    }
+    setLoading(true);
+    const result = await resetPassword(cleanEmail);
+    setLoading(false);
+    if (result.success) setInfo(t.resetSent);
+    else setError(result.error || t.resetFail);
+  };
+
+  const saveNewPassword = async () => {
+    setError(null);
+    if (password.length < 6) {
+      setError(t.errPasswordLen);
+      return;
+    }
+    if (password !== password2) {
+      setError(t.errPasswordMatch);
+      return;
+    }
+    setLoading(true);
+    const result = await updatePassword(password);
+    setLoading(false);
+    if (!result.success) {
+      setError(result.error || t.resetFail);
+      return;
+    }
+    setStep("form");
+    setMode("login");
+    setInfo(t.resetDone);
+  };
+
+  if (step === "forgot") {
+    return (
+      <div className="flex flex-1 flex-col justify-center px-6 py-8">
+        <button
+          type="button"
+          onClick={() => {
+            setStep("form");
+            setError(null);
+            setInfo(null);
+          }}
+          className="mb-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-muted"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden />
+          {t.otpBack}
+        </button>
+        <h1 className="text-2xl font-bold">{t.forgotTitle}</h1>
+        <p className="mt-2 text-sm text-muted">{t.forgotHint}</p>
+        <label className="mt-6 flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
+          <Mail className="h-5 w-5 text-muted" aria-hidden />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
+          />
+        </label>
+        {error && <p className="mt-3 text-sm font-medium text-danger">{error}</p>}
+        {info && <p className="mt-3 text-sm font-medium text-success">{info}</p>}
+        <Button size="lg" className="mt-5 w-full" onClick={() => void sendReset()} disabled={loading}>
+          {loading ? t.pleaseWait : t.resetSend}
+        </Button>
+      </div>
+    );
+  }
+
+  if (step === "newpass") {
+    return (
+      <div className="flex flex-1 flex-col justify-center px-6 py-8">
+        <h1 className="text-2xl font-bold">{t.newPasswordTitle}</h1>
+        <p className="mt-2 text-sm text-muted">{t.newPasswordHint}</p>
+        <label className="mt-6 flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
+          <Lock className="h-5 w-5 text-muted" aria-hidden />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={t.password}
+            className="w-full bg-transparent text-base outline-none placeholder:text-muted"
+          />
+        </label>
+        <label className="mt-3 flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
+          <Lock className="h-5 w-5 text-muted" aria-hidden />
+          <input
+            type="password"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+            placeholder={t.passwordAgain}
+            className="w-full bg-transparent text-base outline-none placeholder:text-muted"
+          />
+        </label>
+        {error && <p className="mt-3 text-sm font-medium text-danger">{error}</p>}
+        <Button size="lg" className="mt-5 w-full" onClick={() => void saveNewPassword()} disabled={loading}>
+          {loading ? t.pleaseWait : t.savePassword}
+        </Button>
+      </div>
+    );
+  }
 
   if (step === "otp") {
     return (
@@ -290,18 +403,36 @@ export function LoginScreen() {
         </label>
 
         {mode === "register" && (
-          <label className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
-            <User className="h-5 w-5 text-muted" aria-hidden />
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder={t.username}
-              autoComplete="username"
-              maxLength={20}
-              className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
-            />
-          </label>
+          <>
+            <label className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
+              <User className="h-5 w-5 text-muted" aria-hidden />
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder={t.username}
+                autoComplete="username"
+                maxLength={20}
+                className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
+              />
+            </label>
+            <label className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
+              <span className="w-5 text-center text-sm font-bold text-muted">Y</span>
+              <select
+                value={birthYear}
+                onChange={(e) => setBirthYear(e.target.value)}
+                className="min-w-0 flex-1 bg-transparent text-base outline-none"
+                aria-label={t.birthYear}
+              >
+                <option value="">{t.birthYear}</option>
+                {Array.from({ length: thisYear - 10 - 1940 + 1 }, (_, i) => thisYear - 10 - i).map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </>
         )}
 
         <label className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
