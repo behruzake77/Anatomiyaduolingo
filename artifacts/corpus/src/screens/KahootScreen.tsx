@@ -39,6 +39,7 @@ import {
 import { getQuiz, quizToPool, snapshotToPool } from "@/lib/userQuizzes";
 import { CONTENT_SYSTEMS } from "@/data/content";
 import { ReportFlagButton } from "@/components/ReportQuestion";
+import { ReactionSticker } from "@/components/ReactionSticker";
 import {
   KAHOOT_BOT_NAMES,
   KAHOOT_PALETTE,
@@ -783,11 +784,17 @@ export function KahootScreen() {
               );
             })}
           </div>
-          <div className="mt-auto pt-6 text-center">
+          <div className="mt-auto flex flex-col items-center pt-5 text-center">
+            <ReactionSticker
+              ok={Boolean(myAns?.correct || selected === item.q.answer)}
+              seed={`${game?.id ?? "k"}-${qIndex}`}
+              size="lg"
+              label={myAns?.correct || selected === item.q.answer ? t.kahootCorrect : t.kahootWrong}
+            />
             {myAns?.correct || selected === item.q.answer ? (
-              <p className="text-2xl font-black text-[#7CFC98]">{t.kahootCorrect}</p>
+              <p className="mt-1 text-2xl font-black text-[#7CFC98]">{t.kahootCorrect}</p>
             ) : (
-              <p className="text-2xl font-black text-[#FF8A8A]">{t.kahootWrong}</p>
+              <p className="mt-1 text-2xl font-black text-[#FF8A8A]">{t.kahootWrong}</p>
             )}
             <p className="mt-1 text-lg font-bold">
               {fmt(t.kahootPts, { n: myAns?.pts ?? 0 })}

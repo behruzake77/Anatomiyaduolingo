@@ -21,6 +21,7 @@ import { difficultyOf, type Question, type Difficulty } from "@/data/content";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 import { useHaptics } from "@/hooks/useHaptics";
+import { ReactionSticker } from "@/components/ReactionSticker";
 
 /* ---------- Kattalashtiriladigan rasm ---------- */
 export function ZoomableImage(props: { src: string; alt: string; maxH: string; showHint?: boolean }) {
@@ -91,6 +92,7 @@ function AnswerBar(props: {
   canRetry?: boolean;
   onRetry?: () => void;
   haptic: (p: number | number[]) => void;
+  seed?: string | number;
 }) {
   const t = useStrings();
 
@@ -123,9 +125,13 @@ function AnswerBar(props: {
       )}
     >
       <div className="flex items-start gap-3 text-white">
-        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/25">
-          {ok ? <Check className="h-5 w-5" aria-hidden /> : <X className="h-5 w-5" aria-hidden />}
-        </span>
+        <ReactionSticker
+          ok={ok}
+          seed={props.seed ?? (ok ? "ok" : "bad")}
+          size="sm"
+          label={ok ? t.correct : t.wrong}
+          className="-mt-10 shrink-0"
+        />
         <div className="min-w-0 flex-1">
           <p className="text-base font-bold">{ok ? t.correct : t.wrong}</p>
           {!ok && props.showCorrect && (
@@ -289,6 +295,7 @@ function ChoiceUI(props: { q: Question; onCorrect: () => void; onWrong?: () => v
         onNext={onNext}
         isLast={isLast}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -358,6 +365,7 @@ function TfUI(props: { q: Question; onCorrect: () => void; onWrong?: () => void;
         onNext={onNext}
         isLast={isLast}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -478,6 +486,7 @@ function MatchUI(props: {
         isLast={isLast}
         disabled={!done}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -534,6 +543,7 @@ function BuildUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         isLast={isLast}
         disabled={picked.length === 0}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -590,6 +600,7 @@ function OrderUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         isLast={isLast}
         disabled={picked.length !== items.length}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -648,6 +659,7 @@ function FillUI(props: { q: Question; onNext: () => void; isLast: boolean; onCor
         onNext={onNext}
         isLast={isLast}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );

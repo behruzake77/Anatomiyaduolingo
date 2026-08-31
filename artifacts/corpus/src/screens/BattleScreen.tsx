@@ -39,6 +39,7 @@ import {
 } from "@/utils/quizPool";
 import { CONTENT_SYSTEMS } from "@/data/content";
 import { ReportFlagButton } from "@/components/ReportQuestion";
+import { ReactionSticker } from "@/components/ReactionSticker";
 import {
   avatarColor,
   battleXp,
@@ -374,7 +375,7 @@ export function BattleScreen() {
 
   useEffect(() => {
     if (phase !== "play" || !revealed) return;
-    const id = setTimeout(() => void advance(), 900);
+    const id = setTimeout(() => void advance(), 1600);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revealed, phase]);
@@ -733,9 +734,17 @@ export function BattleScreen() {
       </div>
 
       {revealed && (
-        <p className="mt-auto pt-4 text-center text-xs text-muted">
-          {isLast ? t.battleWaitOpp : t.next}…
-        </p>
+        <div className="mt-auto flex flex-col items-center pt-4">
+          <ReactionSticker
+            ok={selected !== null && selected === item.q.answer}
+            seed={idx}
+            size="md"
+            label={selected !== null && selected === item.q.answer ? t.correct : t.wrong}
+          />
+          <p className="pt-1 text-center text-xs text-muted">
+            {isLast ? t.battleWaitOpp : t.next}…
+          </p>
+        </div>
       )}
     </div>
   );

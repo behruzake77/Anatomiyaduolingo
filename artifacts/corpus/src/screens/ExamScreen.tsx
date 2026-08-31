@@ -17,6 +17,7 @@ import { type Question } from "@/data/content";
 import { collectChoiceQuestions } from "@/utils/quizPool";
 import { useStrings, fmt } from "@/i18n";
 import { cn } from "@/utils/cn";
+import { ReactionSticker } from "@/components/ReactionSticker";
 
 interface ExamItem {
   q: Question;
@@ -287,6 +288,19 @@ export function ExamScreen() {
       </div>
 
       <div className="mt-auto pt-5">
+        {revealed && (
+          <div className="mb-3 flex items-center gap-3">
+            <ReactionSticker
+              ok={selected === item.q.answer}
+              seed={idx}
+              size="sm"
+              label={selected === item.q.answer ? t.correct : t.wrong}
+            />
+            <p className={cn("text-base font-bold", selected === item.q.answer ? "text-success" : "text-danger")}>
+              {selected === item.q.answer ? t.correct : t.wrong}
+            </p>
+          </div>
+        )}
         {revealed && (item.q.explanation ?? item.q.hint) && (
           <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{item.q.explanation ?? item.q.hint}</p>
         )}
