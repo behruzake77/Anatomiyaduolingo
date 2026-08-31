@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Flag, Shield } from "lucide-react";
+import { Flag, Megaphone, Shield } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
 import { Button } from "@/components/ui/Button";
@@ -69,6 +69,19 @@ export function AdminScreen() {
       <TopBar title={t.adminTitle} />
       <div className="px-5 pb-28">
         <p className="text-sm text-muted">{t.adminInbox}</p>
+        <button
+          type="button"
+          onClick={() => navigate("inbox")}
+          className="mt-4 flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-transform active:scale-[.98]"
+        >
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Megaphone className="h-5 w-5" aria-hidden />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold">{t.adminBroadcast}</span>
+            <span className="mt-0.5 block text-xs text-muted">{t.inboxComposeHint}</span>
+          </span>
+        </button>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <button
             type="button"

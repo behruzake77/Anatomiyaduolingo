@@ -14,6 +14,18 @@ export interface NewsItem {
 export const NEWS: NewsItem[] = [
   {
     date: "2026-08-31",
+    icon: "🔔",
+    uz: {
+      title: "Bildirishnomalar — qo'ng'iroq",
+      text: "Bosh sahifa tepasidagi qo'ng'iroqda admin xabarlarini o'qing.",
+    },
+    en: {
+      title: "Notifications — the bell",
+      text: "Read admin messages from the bell at the top of Home.",
+    },
+  },
+  {
+    date: "2026-08-31",
     icon: "🚩",
     uz: {
       title: "Talab, taklif va savol xatoliklari",

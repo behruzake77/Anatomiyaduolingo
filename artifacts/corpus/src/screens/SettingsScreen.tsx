@@ -87,8 +87,18 @@ export function SettingsScreen() {
       {/* links */}
       <Card className="mt-4 overflow-hidden">
         <button
-          onClick={() => navigate("feedback")}
+          onClick={() => navigate("inbox")}
           className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2"
+        >
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
+            <Bell className="h-5 w-5" aria-hidden />
+          </span>
+          <span className="min-w-0 flex-1 break-words text-base font-medium">{t.inboxTitle}</span>
+          <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
+        </button>
+        <button
+          onClick={() => navigate("feedback")}
+          className="flex w-full items-center gap-3 border-t border-line px-4 py-3.5 text-left transition hover:bg-surface2"
         >
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
             <Flag className="h-5 w-5" aria-hidden />

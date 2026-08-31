@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Sun, Zap, Crown } from "lucide-react";
+import { InboxBell } from "@/components/InboxBell";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
@@ -79,11 +80,14 @@ export function DashboardScreen() {
         <span className="text-lg font-bold tracking-tight">
           {t.brand}
         </span>
-        {isPremium && (
-          <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-2.5 py-1 text-[11px] font-bold text-[#1a1230]">
-            <Crown className="h-3 w-3" aria-hidden /> PRO
-          </span>
-        )}
+        <div className="ml-auto flex items-center gap-2">
+          {isPremium && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-2.5 py-1 text-[11px] font-bold text-[#1a1230]">
+              <Crown className="h-3 w-3" aria-hidden /> PRO
+            </span>
+          )}
+          <InboxBell />
+        </div>
       </header>
 
       {/* greeting */}

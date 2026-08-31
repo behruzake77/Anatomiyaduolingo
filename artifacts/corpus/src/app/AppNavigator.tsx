@@ -33,6 +33,7 @@ import { BattleScreen } from "@/screens/BattleScreen";
 import { KahootScreen } from "@/screens/KahootScreen";
 import { AdminScreen } from "@/screens/AdminScreen";
 import { FeedbackScreen } from "@/screens/FeedbackScreen";
+import { InboxScreen } from "@/screens/InboxScreen";
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -62,6 +63,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   kahoot: KahootScreen,
   admin: AdminScreen,
   feedback: FeedbackScreen,
+  inbox: InboxScreen,
 };
 
 const TABS: ScreenId[] = ["dashboard", "topics", "library", "profile"];

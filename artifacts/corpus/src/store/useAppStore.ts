@@ -57,7 +57,8 @@ export type ScreenId =
   | "battle"
   | "kahoot"
   | "admin"
-  | "feedback";
+  | "feedback"
+  | "inbox";
 
 export type Tab = "home" | "learn" | "library" | "profile";
 

@@ -47,6 +47,7 @@ Agar `schema.sql` avval ishlatilgan bo'lsa, qo'shimchalarni yuguring:
   where id in (select id from auth.users where email = 'SIZNING_EMAIL');
   ```
   Yoki `.env.local`: `VITE_ADMIN_EMAILS=siz@email.com` / `VITE_ADMIN_USERNAMES=login`.
+- `artifacts/corpus/supabase/broadcasts.sql` — admin umumiy xabarlari (bosh sahifadagi qo'ng'iroq). Barcha foydalanuvchilarga yuborish uchun `profiles.is_admin = true` kerak.
 
 ---
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown, Swords, Gamepad2, Flag, Shield } from "lucide-react";
+import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown, Swords, Gamepad2, Flag, Shield, Bell } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { AvatarPicker } from "@/components/AvatarPicker";
@@ -11,8 +11,9 @@ import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY } from "@/i18n";
 import { PREMIUM_DISABLED } from "@/data/premium";
 import { countOpenReports } from "@/lib/reports";
+import { countUnreadBroadcasts } from "@/lib/broadcasts";
 
-type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin"; info?: "about" };
+type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin" | "inbox"; info?: "about" };
 
 export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
@@ -27,8 +28,10 @@ export function ProfileScreen() {
   const t = useStrings();
   const [picker, setPicker] = useState(false);
   const [openReports, setOpenReports] = useState(0);
+  const [unreadInbox, setUnreadInbox] = useState(0);
 
   useEffect(() => {
+    void countUnreadBroadcasts().then(setUnreadInbox);
     if (!isAdmin) return;
     void countOpenReports().then(setOpenReports);
   }, [isAdmin]);
@@ -50,6 +53,7 @@ export function ProfileScreen() {
     { id: "bookmarks", label: t.bookmarks, icon: Bookmark, action: { screen: "bookmarks" } },
     { id: "progress", label: t.progress, icon: TrendingUp, action: { screen: "progress" } },
     { id: "study", label: t.studyMode, icon: BookOpen, action: { screen: "study" } },
+    { id: "inbox", label: t.inboxTitle, icon: Bell, action: { screen: "inbox" } },
     { id: "feedback", label: t.feedbackTitle, icon: Flag, action: { screen: "feedback" } },
     { id: "admin", label: t.adminTitle, icon: Shield, action: { screen: "admin" } },
     { id: "settings", label: t.settings, icon: Settings, action: { screen: "settings" } },
@@ -122,6 +126,9 @@ export function ProfileScreen() {
             <span className="min-w-0 flex-1 break-words text-base font-medium">{m.label}</span>
             {m.id === "admin" && openReports > 0 && (
               <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{openReports}</span>
+            )}
+            {m.id === "inbox" && unreadInbox > 0 && (
+              <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{unreadInbox}</span>
             )}
             <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
           </button>
