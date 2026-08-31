@@ -39,8 +39,19 @@ export async function isUsernameTaken(name: string, exceptId?: string): Promise<
   if (!isSupabaseConfigured) return false;
   const n = normalizeUsername(name);
   if (!n) return true;
-  const { data } = await supabase.from("profiles").select("id, username").ilike("username", n).limit(8);
-  return (data ?? []).some((row) => row.id !== exceptId && String(row.username).toLowerCase() === n.toLowerCase());
+  try {
+    // Username tekshiruvi auth so'rovini to'sib qo'ymasligi kerak. Ayniqsa eski
+    // Android WebView'larda profiles so'rovi javobsiz qolishi mumkin.
+    const query = supabase.from("profiles").select("id, username").ilike("username", n).limit(8);
+    const timeout = new Promise<never>((_, reject) =>
+      window.setTimeout(() => reject(new Error("username check timeout")), 8000),
+    );
+    const { data } = await Promise.race([query, timeout]);
+    return (data ?? []).some((row) => row.id !== exceptId && String(row.username).toLowerCase() === n.toLowerCase());
+  } catch {
+    // Auth signup baribir ishlashi mumkin; unique constraint xatosi signup'dan qaytadi.
+    return false;
+  }
 }
 
 async function uniqueUsername(base: string, exceptId?: string): Promise<string> {
@@ -110,8 +121,11 @@ export function mapAuthError(message: string): string {
   if (m.includes("unable to validate email") || m.includes("invalid email") || m.includes("email address")) {
     return "Email manzili noto'g'ri.";
   }
-  if (m.includes("signup is disabled")) {
-    return "Ro'yxatdan o'tish hozircha yopiq.";
+  if (m.includes("signup is disabled") || m.includes("email provider is disabled") || m.includes("email provider")) {
+    return "Email orqali ro'yxatdan o'tish Supabase sozlamalarida yoqilmagan.";
+  }
+  if (m.includes("email rate limit") || m.includes("email sending")) {
+    return "Tasdiqlash emailini yuborib bo'lmadi. Supabase email sozlamalarini tekshiring.";
   }
   if (
     m.includes("provider") &&
