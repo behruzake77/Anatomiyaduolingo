@@ -136,6 +136,7 @@ export function ReviewScreen() {
             key={`${item!.key}-${idx}`}
             q={item!.q}
             qKey={item!.key}
+            report={{ lessonTitle: item!.lessonTitle, source: "review", qKey: item!.key }}
             onCorrect={() => {
               setCorrect((c) => c + 1);
               recordAnswer(item!.key, true);

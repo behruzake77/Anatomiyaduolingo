@@ -5,36 +5,30 @@
  * Faqat tanlovli savol turlari ishlatiladi (quiz/img/func/tf → 4 yoki 2 variant).
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { X, Check, Timer, GraduationCap, ChevronRight, RotateCcw } from "lucide-react";
+import { ReportFlagButton } from "@/components/ReportQuestion";
 import { Screen } from "@/components/layout/Screen";
 import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/store/useAppStore";
 import { useHaptics } from "@/hooks/useHaptics";
-import { ALL_LESSONS, type Question } from "@/data/content";
+import { type Question } from "@/data/content";
+import { collectChoiceQuestions } from "@/utils/quizPool";
 import { useStrings, fmt } from "@/i18n";
 import { cn } from "@/utils/cn";
+import { ReactionSticker } from "@/components/ReactionSticker";
 
 interface ExamItem {
   q: Question;
   lessonTitle: string;
+  lessonId: string;
 }
 
 const COUNT_OPTIONS = [10, 20, 30, 50];
 
 function collectExamQuestions(): ExamItem[] {
-  const out: ExamItem[] = [];
-  for (const l of ALL_LESSONS) {
-    for (const q of l.questions) {
-      if (q.type === "quiz" || q.type === "img" || q.type === "func") {
-        if (q.options && q.options.length >= 2 && q.answer != null) out.push({ q, lessonTitle: l.title });
-      } else if (q.type === "tf") {
-        out.push({ q: { ...q, options: ["To'g'ri", "Noto'g'ri"], answer: q.statement ? 0 : 1 }, lessonTitle: l.title });
-      }
-    }
-  }
-  return out;
+  return collectChoiceQuestions().map(({ q, lessonTitle, lessonId }) => ({ q, lessonTitle, lessonId }));
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -227,6 +221,16 @@ export function ExamScreen() {
           <p className="text-sm font-semibold leading-tight">{t.examTitle}</p>
           <p className="text-xs text-muted">{item.lessonTitle}</p>
         </div>
+        <ReportFlagButton
+          q={item.q}
+          ctx={{
+            lessonId: item.lessonId,
+            lessonTitle: item.lessonTitle,
+            prompt: item.q.prompt,
+            qType: item.q.type,
+            source: "exam",
+          }}
+        />
         <span className="flex items-center gap-1 rounded-full bg-surface2 px-3 py-1 text-xs font-semibold text-muted">
           <Timer className="h-3.5 w-3.5" aria-hidden /> {fmtTime(elapsed)}
         </span>
@@ -284,6 +288,19 @@ export function ExamScreen() {
       </div>
 
       <div className="mt-auto pt-5">
+        {revealed && (
+          <div className="mb-3 flex items-center gap-3">
+            <ReactionSticker
+              ok={selected === item.q.answer}
+              seed={idx}
+              size="sm"
+              label={selected === item.q.answer ? t.correct : t.wrong}
+            />
+            <p className={cn("text-base font-bold", selected === item.q.answer ? "text-success" : "text-danger")}>
+              {selected === item.q.answer ? t.correct : t.wrong}
+            </p>
+          </div>
+        )}
         {revealed && (item.q.explanation ?? item.q.hint) && (
           <p className="mb-3 rounded-xl bg-surface2 p-3 text-sm text-muted">{item.q.explanation ?? item.q.hint}</p>
         )}

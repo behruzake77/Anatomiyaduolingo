@@ -398,6 +398,11 @@ export async function deleteAccount(): Promise<AuthResult> {
     //    ular avtomatik tozalanadi.
     await supabase.from("progress").delete().eq("user_id", user.id);
     await supabase.from("achievements").delete().eq("user_id", user.id);
+    await supabase.from("battles").delete().eq("host_id", user.id);
+    await supabase.from("battles").delete().eq("guest_id", user.id);
+    await supabase.from("kahoot_players").delete().eq("user_id", user.id);
+    await supabase.from("kahoot_games").delete().eq("host_id", user.id);
+    await supabase.from("question_reports").delete().eq("user_id", user.id);
     await supabase.from("profiles").delete().eq("id", user.id);
 
     // 2) auth.users qatorini o'chirish uchun service_role kerak (admin API).

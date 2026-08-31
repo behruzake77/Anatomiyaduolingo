@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Box } from "lucide-react";
+import { Search, Box, Swords } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -13,6 +13,7 @@ import { useStrings, fmt } from "@/i18n";
 export function TopicsScreen() {
   const navigate = useAppStore((s) => s.navigate);
   const openSystem = useAppStore((s) => s.openSystem);
+  const openBattle = useAppStore((s) => s.openBattle);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const t = useStrings();
 
@@ -46,31 +47,41 @@ export function TopicsScreen() {
         {CONTENT_SYSTEMS.map((sys) => {
           const { done, total, pct } = systemProgress(sys, completedLessons);
           return (
-            <Card key={sys.id} onClick={() => openSystem(sys.id)}>
-              <div className="flex items-center gap-4 p-4">
-                <div
-                  className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl"
-                  style={{ background: `${sys.color}1f`, color: sys.color }}
-                >
-                  {systemIconImage(sys.id) ? (
-                    <img src={systemIconImage(sys.id)} alt="" className="h-full w-full object-cover" />
-                  ) : (
-                    <Icon name={sys.icon} className="h-7 w-7" />
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <p className="truncate text-base font-semibold">{sys.name}</p>
-                    <span className="shrink-0 text-xs font-medium text-muted">
-                      {fmt("{n}/{total} {lessons}", { n: done, total, lessons: t.lessons })}
-                    </span>
+            <Card key={sys.id}>
+              <div className="flex items-center gap-3 p-4">
+                <button type="button" onClick={() => openSystem(sys.id)} className="flex min-w-0 flex-1 items-center gap-4 text-left">
+                  <div
+                    className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl"
+                    style={{ background: `${sys.color}1f`, color: sys.color }}
+                  >
+                    {systemIconImage(sys.id) ? (
+                      <img src={systemIconImage(sys.id)} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <Icon name={sys.icon} className="h-7 w-7" />
+                    )}
                   </div>
-                  <p className="text-xs italic text-muted">{sys.latin}</p>
-                  <ProgressBar value={pct} color={sys.color} className="mt-2.5" />
-                  <p className="mt-1.5 text-xs font-semibold" style={{ color: sys.color }}>
-                    {pct}% {t.complete}
-                  </p>
-                </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <p className="truncate text-base font-semibold">{sys.name}</p>
+                      <span className="shrink-0 text-xs font-medium text-muted">
+                        {fmt("{n}/{total} {lessons}", { n: done, total, lessons: t.lessons })}
+                      </span>
+                    </div>
+                    <p className="text-xs italic text-muted">{sys.latin}</p>
+                    <ProgressBar value={pct} color={sys.color} className="mt-2.5" />
+                    <p className="mt-1.5 text-xs font-semibold" style={{ color: sys.color }}>
+                      {pct}% {t.complete}
+                    </p>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openBattle(`sys:${sys.id}`)}
+                  aria-label={t.battleThisSystem}
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-danger/30 bg-danger/10 text-danger"
+                >
+                  <Swords className="h-5 w-5" aria-hidden />
+                </button>
               </div>
             </Card>
           );

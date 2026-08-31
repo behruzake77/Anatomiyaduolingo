@@ -13,6 +13,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Check, X, ZoomIn, Bookmark, ArrowRight, RotateCcw } from "lucide-react";
+import { ReportFlagButton, type ReportContext } from "@/components/ReportQuestion";
 import { Button } from "@/components/ui/Button";
 import { Lightbox } from "@/components/ui/Lightbox";
 import { useAppStore } from "@/store/useAppStore";
@@ -20,6 +21,7 @@ import { difficultyOf, type Question, type Difficulty } from "@/data/content";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 import { useHaptics } from "@/hooks/useHaptics";
+import { ReactionSticker } from "@/components/ReactionSticker";
 
 /* ---------- Kattalashtiriladigan rasm ---------- */
 export function ZoomableImage(props: { src: string; alt: string; maxH: string; showHint?: boolean }) {
@@ -90,6 +92,7 @@ function AnswerBar(props: {
   canRetry?: boolean;
   onRetry?: () => void;
   haptic: (p: number | number[]) => void;
+  seed?: string | number;
 }) {
   const t = useStrings();
 
@@ -122,9 +125,13 @@ function AnswerBar(props: {
       )}
     >
       <div className="flex items-start gap-3 text-white">
-        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/25">
-          {ok ? <Check className="h-5 w-5" aria-hidden /> : <X className="h-5 w-5" aria-hidden />}
-        </span>
+        <ReactionSticker
+          ok={ok}
+          seed={props.seed ?? (ok ? "ok" : "bad")}
+          size="sm"
+          label={ok ? t.correct : t.wrong}
+          className="-mt-10 shrink-0"
+        />
         <div className="min-w-0 flex-1">
           <p className="text-base font-bold">{ok ? t.correct : t.wrong}</p>
           {!ok && props.showCorrect && (
@@ -160,13 +167,14 @@ function AnswerBar(props: {
 export function QuestionCard(props: {
   q: Question;
   qKey?: string;
+  report?: ReportContext;
   onCorrect: () => void;
   onWrong?: () => void;
   onNext: () => void;
   isLast: boolean;
   haptic: (p: number | number[]) => void;
 }) {
-  const { q, qKey } = props;
+  const { q, qKey, report } = props;
   const bookmarks = useAppStore((s) => s.bookmarks);
   const toggleBookmark = useAppStore((s) => s.toggleBookmark);
   const t = useStrings();
@@ -182,20 +190,23 @@ export function QuestionCard(props: {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mt-3 flex items-center justify-between">
+      <div className="mt-3 flex items-center justify-between gap-2">
         <DifficultyBadge q={q} />
-        {qKey && (
-          <button
-            onClick={() => toggleBookmark(qKey)}
-            aria-label={bookmarked ? t.bookmarkRemove : t.bookmarkAdd}
-            className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-lg border transition-colors",
-              bookmarked ? "border-accent bg-accent/15 text-accent" : "border-line text-muted",
-            )}
-          >
-            <Bookmark className={cn("h-4 w-4", bookmarked && "fill-current")} aria-hidden />
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          <ReportFlagButton q={q} ctx={{ ...report, qKey, prompt: q.prompt, qType: q.type }} />
+          {qKey && (
+            <button
+              onClick={() => toggleBookmark(qKey)}
+              aria-label={bookmarked ? t.bookmarkRemove : t.bookmarkAdd}
+              className={cn(
+                "flex h-8 w-8 items-center justify-center rounded-lg border transition-colors",
+                bookmarked ? "border-accent bg-accent/15 text-accent" : "border-line text-muted",
+              )}
+            >
+              <Bookmark className={cn("h-4 w-4", bookmarked && "fill-current")} aria-hidden />
+            </button>
+          )}
+        </div>
       </div>
       {body}
     </div>
@@ -284,6 +295,7 @@ function ChoiceUI(props: { q: Question; onCorrect: () => void; onWrong?: () => v
         onNext={onNext}
         isLast={isLast}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -353,34 +365,57 @@ function TfUI(props: { q: Question; onCorrect: () => void; onWrong?: () => void;
         onNext={onNext}
         isLast={isLast}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
 }
 
-/* ---------- Moslashtirish ---------- */
-function MatchUI(props: { q: Question; onNext: () => void; isLast: boolean; onCorrect: () => void; haptic: (p: number | number[]) => void }) {
+/* ---------- Moslashtirish: chap — lotincha, o'ng — o'zbekcha (alohida aralashtiriladi) ---------- */
+function MatchUI(props: {
+  q: Question;
+  onNext: () => void;
+  isLast: boolean;
+  onCorrect: () => void;
+  onWrong?: () => void;
+  haptic: (p: number | number[]) => void;
+}) {
   const { q, onNext, isLast, onCorrect, haptic } = props;
   const t = useStrings();
   const pairs = q.pairs ?? [];
+  const { left, right } = useMemo(() => {
+    const L = shuffle(pairs.map((p, i) => ({ id: i, text: p[0] })));
+    const R = derangeAgainst(L, pairs.map((p, i) => ({ id: i, text: p[1] })));
+    return { left: L, right: R };
+  }, [q]);
   const [leftSel, setLeftSel] = useState<number | null>(null);
   const [matched, setMatched] = useState<number[]>([]);
-  const [wrong, setWrong] = useState<number | null>(null);
+  const [wrongL, setWrongL] = useState<number | null>(null);
+  const [wrongR, setWrongR] = useState<number | null>(null);
 
-  const done = matched.length === pairs.length;
+  const done = pairs.length > 0 && matched.length === pairs.length;
 
-  const click = (side: "L" | "R", i: number) => {
-    if (matched.includes(i)) return;
-    if (side === "L") { setLeftSel(i); setWrong(null); return; }
+  const pickLeft = (id: number) => {
+    if (matched.includes(id) || done) return;
+    setLeftSel(id);
+    setWrongL(null);
+    setWrongR(null);
+  };
+
+  const pickRight = (id: number) => {
+    if (matched.includes(id) || done) return;
     if (leftSel === null) return;
-    if (leftSel === i) {
-      setMatched((m) => [...m, i]);
+    if (leftSel === id) {
+      const next = [...matched, id];
+      setMatched(next);
       haptic(12);
       setLeftSel(null);
-      setWrong(null);
-      if (matched.length + 1 === pairs.length) onCorrect();
+      setWrongL(null);
+      setWrongR(null);
+      if (next.length === pairs.length) onCorrect();
     } else {
-      setWrong(i);
+      setWrongL(leftSel);
+      setWrongR(id);
       haptic([50, 50]);
       setLeftSel(null);
     }
@@ -389,32 +424,55 @@ function MatchUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
   return (
     <div className="flex flex-1 flex-col">
       <Prompt prompt={q.prompt} type={q.type} />
+      <p className="mt-2 text-xs text-muted">{t.matchHint}</p>
 
-      <div className="mt-5 grid grid-cols-2 gap-3">
-        {pairs.map((p, i) => (
-          <div key={i} className="flex flex-col gap-3">
-            <button
-              onClick={() => click("L", i)}
-              className={cn(
-                "min-h-16 rounded-2xl border-2 bg-surface p-3 text-sm font-medium transition-colors dark:bg-surface2",
-                leftSel === i && !matched.includes(i) ? "border-primary bg-primary/10 ring-1 ring-primary" : "border-line",
-                matched.includes(i) && "border-success bg-success/10 opacity-60",
-              )}
-            >
-              {p[0]}
-            </button>
-            <button
-              onClick={() => click("R", i)}
-              className={cn(
-                "min-h-16 rounded-2xl border-2 bg-surface p-3 text-sm font-medium transition-colors dark:bg-surface2",
-                matched.includes(i) ? "border-success bg-success/10 opacity-60" : "border-line",
-                wrong === i && "animate-pulse border-danger bg-danger/10",
-              )}
-            >
-              {p[1]}
-            </button>
-          </div>
-        ))}
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-3">
+          {left.map((item) => {
+            const isSel = leftSel === item.id && !matched.includes(item.id);
+            const isOk = matched.includes(item.id);
+            const isBad = wrongL === item.id;
+            return (
+              <button
+                key={`L-${item.id}`}
+                type="button"
+                onClick={() => pickLeft(item.id)}
+                disabled={isOk}
+                className={cn(
+                  "min-h-16 rounded-2xl border-2 bg-surface p-3 text-left text-sm font-medium transition-colors dark:bg-surface2",
+                  isSel && "border-primary bg-primary/10 ring-1 ring-primary",
+                  isOk && "border-success bg-success/10 opacity-60",
+                  isBad && "animate-pulse border-danger bg-danger/10",
+                  !isSel && !isOk && !isBad && "border-line",
+                )}
+              >
+                {item.text}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex flex-col gap-3">
+          {right.map((item) => {
+            const isOk = matched.includes(item.id);
+            const isBad = wrongR === item.id;
+            return (
+              <button
+                key={`R-${item.id}`}
+                type="button"
+                onClick={() => pickRight(item.id)}
+                disabled={isOk || leftSel === null}
+                className={cn(
+                  "min-h-16 rounded-2xl border-2 bg-surface p-3 text-left text-sm font-medium transition-colors dark:bg-surface2",
+                  isOk && "border-success bg-success/10 opacity-60",
+                  isBad && "animate-pulse border-danger bg-danger/10",
+                  !isOk && !isBad && "border-line",
+                )}
+              >
+                {item.text}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <AnswerBar
@@ -428,6 +486,7 @@ function MatchUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         isLast={isLast}
         disabled={!done}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -484,6 +543,7 @@ function BuildUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         isLast={isLast}
         disabled={picked.length === 0}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -540,6 +600,7 @@ function OrderUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         isLast={isLast}
         disabled={picked.length !== items.length}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -598,6 +659,7 @@ function FillUI(props: { q: Question; onNext: () => void; isLast: boolean; onCor
         onNext={onNext}
         isLast={isLast}
         haptic={haptic}
+        seed={q.prompt}
       />
     </div>
   );
@@ -610,4 +672,18 @@ function shuffle<T>(arr: T[]): T[] {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+/** Right column: same items, but never the matching pair on the same row. */
+function derangeAgainst<T extends { id: number }>(left: T[], right: T[]): T[] {
+  if (right.length < 2) return shuffle(right);
+  const byId = new Map(right.map((item) => [item.id, item]));
+  const leftIds = left.map((item) => item.id);
+  for (let n = 0; n < 24; n++) {
+    const perm = shuffle(leftIds);
+    if (perm.every((id, i) => id !== leftIds[i])) {
+      return perm.map((id) => byId.get(id)!);
+    }
+  }
+  return [...leftIds.slice(1), leftIds[0]].map((id) => byId.get(id)!);
 }

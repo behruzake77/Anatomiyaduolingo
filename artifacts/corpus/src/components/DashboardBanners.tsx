@@ -17,6 +17,9 @@ import {
   Repeat,
   Trophy,
   Medal,
+  Swords,
+  Gamepad2,
+  Flag,
   ChevronRight,
   Sparkles,
   type LucideIcon,
@@ -30,7 +33,7 @@ interface Promo {
   screen: ScreenId;
   icon: LucideIcon;
   color: string;
-  titleKey: "library" | "models3d" | "glossaryTitle" | "examTitle" | "reviewTitle" | "achievements" | "leaderboardTitle";
+  titleKey: "library" | "models3d" | "glossaryTitle" | "examTitle" | "reviewTitle" | "achievements" | "leaderboardTitle" | "battleTitle" | "kahootTitle" | "feedbackTitle";
   textKey:
     | "librarySubtitle"
     | "promo3d"
@@ -38,11 +41,17 @@ interface Promo {
     | "promoExam"
     | "promoReview"
     | "promoAch"
-    | "promoLeaderboard";
+    | "promoLeaderboard"
+    | "promoBattle"
+    | "promoKahoot"
+    | "feedbackSubtitle";
 }
 
 /** Qaysi bo'lim bannerlarda reklama qilinadi (ranglar SYSTEMS palitrasidan). */
 const PROMOS: Promo[] = [
+  { screen: "feedback", icon: Flag, color: "#F59E0B", titleKey: "feedbackTitle", textKey: "feedbackSubtitle" },
+  { screen: "kahoot", icon: Gamepad2, color: "#46178F", titleKey: "kahootTitle", textKey: "promoKahoot" },
+  { screen: "battle", icon: Swords, color: "#EF4444", titleKey: "battleTitle", textKey: "promoBattle" },
   { screen: "leaderboard", icon: Medal, color: "#EC4899", titleKey: "leaderboardTitle", textKey: "promoLeaderboard" },
   { screen: "library", icon: Library, color: "#6C5CE7", titleKey: "library", textKey: "librarySubtitle" },
   { screen: "models3d", icon: Box, color: "#06b6d4", titleKey: "models3d", textKey: "promo3d" },
@@ -68,6 +77,8 @@ export function DashboardBanners() {
     <>
       {/* 0) Haftalik poyga — foydalanuvchining joriy o'rni */}
       <WeekRaceCard />
+      <BattleCard />
+      <KahootCard />
 
       {/* 1) Bo'limlar — surib yuriladigan banner kartalar */}
       <section className="mt-6">
@@ -234,6 +245,59 @@ function WeekRaceCard() {
           <p className="mt-0.5 text-xs text-muted">
             {fmt(t.weekRaceRank, { league: t[league.key], n: rank })} · {myXp} XP
           </p>
+        </div>
+        <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
+      </button>
+    </section>
+  );
+}
+
+function BattleCard() {
+  const t = useStrings();
+  const openBattle = useAppStore((s) => s.openBattle);
+  const wins = useAppStore((s) => s.battlesWon);
+  const losses = useAppStore((s) => s.battlesLost);
+
+  return (
+    <section className="mt-3">
+      <button
+        onClick={() => openBattle("all")}
+        className="flex w-full items-center gap-3 rounded-2xl border border-line p-4 text-left shadow-card transition-transform duration-150 active:scale-[.98]"
+        style={{ backgroundImage: "linear-gradient(120deg, #EF444430 0%, transparent 60%)" }}
+      >
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-danger/15 text-danger">
+          <Swords className="h-6 w-6" aria-hidden />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold leading-tight">⚔️ {t.battleTitle}</p>
+          <p className="mt-0.5 text-xs text-muted">
+            {t.promoBattle}
+            {(wins > 0 || losses > 0) && ` · ${wins}–${losses}`}
+          </p>
+        </div>
+        <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
+      </button>
+    </section>
+  );
+}
+
+function KahootCard() {
+  const t = useStrings();
+  const openKahoot = useAppStore((s) => s.openKahoot);
+
+  return (
+    <section className="mt-3">
+      <button
+        onClick={() => openKahoot("all")}
+        className="flex w-full items-center gap-3 rounded-2xl border border-line p-4 text-left shadow-card transition-transform duration-150 active:scale-[.98]"
+        style={{ backgroundImage: "linear-gradient(120deg, #46178F40 0%, transparent 60%)" }}
+      >
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#46178F]/15 text-[#46178F]">
+          <Gamepad2 className="h-6 w-6" aria-hidden />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold leading-tight">🎯 {t.kahootTitle}</p>
+          <p className="mt-0.5 text-xs text-muted">{t.promoKahoot}</p>
         </div>
         <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
       </button>
