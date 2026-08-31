@@ -30,11 +30,16 @@ export function DashboardScreen() {
   const lastActiveAt = useAppStore((s) => s.lastActiveAt);
   const navigate = useAppStore((s) => s.navigate);
   const openLesson = useAppStore((s) => s.openLesson);
+  const publishProfile = useAppStore((s) => s.publishProfile);
   const t = useStrings();
 
   const activity = activityState(streak, lastActiveAt);
   const { notify } = useNotifications();
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
+
+  useEffect(() => {
+    publishProfile();
+  }, [publishProfile]);
 
   // Uzoq kirmagan bo'lsa — qaytib kelganda bildirishnoma + comeback modal (kuniga bir marta).
   useEffect(() => {

@@ -36,6 +36,9 @@ export function LessonScreen() {
   const [score, setScore] = useState(0);
   const [flashDone, setFlashDone] = useState(false);
 
+  // Hook'lar erta return'dan oldin — dars topilmasa ham hook soni o'zgarmasin.
+  const questions = useMemo(() => sortByDifficulty(lesson?.questions ?? []), [lesson]);
+
   if (!lesson || !unit) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
@@ -49,8 +52,6 @@ export function LessonScreen() {
   const hasFlash = !!lesson.flashcards && lesson.flashcards.length > 0;
   const inFlash = hasFlash && !flashDone;
   const inSlides = !inFlash && slideIdx < slides.length;
-  // Savollar oson → o'rta → qiyin tartibida gradatsiyalanadi.
-  const questions = useMemo(() => sortByDifficulty(lesson.questions), [lesson]);
   const total = questions.length;
   const q = questions[idx];
   const isLast = idx + 1 >= total;
@@ -95,11 +96,12 @@ export function LessonScreen() {
           onNext={() => setSlideIdx((i) => i + 1)}
           onQuit={() => back()}
         />
-      ) : (
+      ) : q ? (
         <QuestionCard
           key={`${lesson.id}-${idx}`}
           q={q}
           qKey={questionKey(lesson.id, idx)}
+          report={{ lessonId: lesson.id, lessonTitle: lesson.title, qIndex: idx, source: "lesson" }}
           onCorrect={() => {
             setScore((s) => s + 1);
             // Agar bu savol avval xato bo'lgan bo'lsa — kartani bir quti yuqoriga ko'tarish.
@@ -113,6 +115,11 @@ export function LessonScreen() {
           isLast={isLast}
           haptic={haptic}
         />
+      ) : (
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
+          <p className="text-muted">{t.reviewEmpty}</p>
+          <Button onClick={() => back()}>« {t.backToTopics}</Button>
+        </div>
       )}
     </div>
   );

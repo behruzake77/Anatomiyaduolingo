@@ -1,15 +1,15 @@
 "use client";
 
 /**
- * Haftalik reyting (liga) — foydalanuvchilar orasida raqobat.
- * Dushanbadan dushanbagacha: TOP-3 yuqoriga ko'tariladi, pastki 3 tushadi.
- * Raqiblar deterministik generatsiya qilinadi (utils/league.ts).
+ * Reyting — haqiqiy o'quvchilar (Supabase) + virtual liga zaxirasi.
+ * Tablar: haftalik XP, umumiy XP, arena g'alabalari.
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { Trophy, ArrowUp, ArrowDown, Minus, X } from "lucide-react";
+import { ArrowUp, ArrowDown, Minus, X, Swords, Radio } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
+import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings, fmt } from "@/i18n";
 import {
@@ -22,26 +22,80 @@ import {
   weekKeyOf,
   nextWeekEnd,
   hueColor,
+  type BoardEntry,
 } from "@/utils/league";
+import { fetchRankings, type RankEntry, type RankKind } from "@/lib/competition";
 
 export function LeaderboardScreen() {
   const t = useStrings();
+  const navigate = useAppStore((s) => s.navigate);
   const xpHistory = useAppStore((s) => s.xpHistory);
   const currentUser = useAppStore((s) => s.currentUser);
   const leagueIndex = useAppStore((s) => s.leagueIndex);
   const leagueResult = useAppStore((s) => s.leagueResult);
   const dismiss = useAppStore((s) => s.dismissLeagueResult);
+  const xp = useAppStore((s) => s.xp);
+  const battlesWon = useAppStore((s) => s.battlesWon);
+  const battlesLost = useAppStore((s) => s.battlesLost);
+  const publishProfile = useAppStore((s) => s.publishProfile);
+
+  const [tab, setTab] = useState<RankKind>("week");
+  const [liveRows, setLiveRows] = useState<RankEntry[] | null>(null);
+  const [live, setLive] = useState(false);
 
   const league = LEAGUES[Math.min(leagueIndex, LEAGUES.length - 1)];
   const weekKey = weekKeyOf(new Date());
   const myXp = useMemo(() => userWeekXp(xpHistory, weekKey), [xpHistory, weekKey]);
-  const board = useMemo(
+  const virtualBoard = useMemo(
     () => boardFor(weekKey, leagueIndex, currentUser?.username ?? "", myXp),
     [weekKey, leagueIndex, currentUser, myXp],
   );
+
+  useEffect(() => {
+    publishProfile();
+    let alive = true;
+    void fetchRankings(tab, {
+      id: currentUser?.id,
+      name: currentUser?.username ?? "",
+      xp,
+      weekXp: myXp,
+      wins: battlesWon,
+      losses: battlesLost,
+    }).then((res) => {
+      if (!alive) return;
+      setLive(res.live);
+      setLiveRows(res.rows);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [tab, currentUser, xp, myXp, battlesWon, battlesLost, publishProfile]);
+
+  const useLive = live && (liveRows?.filter((r) => r.live && !r.isYou).length ?? 0) >= 1;
+  const board: Array<BoardEntry & { live?: boolean; wins?: number }> = useLive
+    ? (liveRows ?? []).map((r) => ({
+        name: r.name,
+        xp: r.xp,
+        isYou: r.isYou,
+        hue: r.hue,
+        live: r.live,
+        wins: r.wins,
+      }))
+    : tab === "week"
+      ? virtualBoard
+      : [
+          {
+            name: currentUser?.username ?? t.you,
+            xp: tab === "arena" ? battlesWon : xp,
+            isYou: true,
+            hue: 262,
+            live: Boolean(currentUser),
+            wins: battlesWon,
+          },
+        ];
+
   const rank = userRank(board);
 
-  // Hafta tugashiga qolgan vaqt (har daqiqa yangilanadi)
   const [left, setLeft] = useState(() => nextWeekEnd().getTime() - Date.now());
   useEffect(() => {
     const id = setInterval(() => setLeft(nextWeekEnd().getTime() - Date.now()), 30_000);
@@ -52,37 +106,68 @@ export function LeaderboardScreen() {
   const mins = Math.max(0, Math.floor((left % 3600000) / 60000));
 
   const showResult = leagueResult && leagueResult.weekKey === weekKey;
+  const xpLabel = tab === "arena" ? t.battleWins : "XP";
 
   return (
     <Screen padded={false}>
       <TopBar title={t.leaderboardTitle} />
 
       <div className="px-5 pb-28">
-        {/* Liga sarlavhasi + taymer */}
-        <div
-          className="relative mt-1 overflow-hidden rounded-2xl border border-line p-4 shadow-card"
-          style={{ backgroundImage: `linear-gradient(150deg, ${league.color}2e 0%, transparent 70%)` }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="text-4xl leading-none">{league.emoji}</div>
-            <div className="min-w-0 flex-1">
-              <p className="text-base font-bold leading-tight">{t[league.key]}</p>
-              <p className="mt-0.5 text-xs text-muted">
-                {t.weekEndsIn}:{" "}
-                <span className="font-semibold text-primary">
-                  {days} {t.timeDay} {hours} {t.timeHour} {mins} {t.timeMin}
-                </span>
-              </p>
-            </div>
-            <div className="shrink-0 rounded-xl bg-primary/10 px-3 py-2 text-center">
-              <p className="text-[10px] font-medium uppercase tracking-wide text-muted">{t.yourRank}</p>
-              <p className="text-lg font-extrabold leading-none text-primary">#{rank}</p>
-            </div>
-          </div>
+        <div className="mt-1 grid grid-cols-3 gap-1 rounded-2xl border border-line bg-surface2 p-1">
+          {(
+            [
+              ["week", t.battleTabWeek],
+              ["all", t.battleTabAll],
+              ["arena", t.battleTabArena],
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              onClick={() => setTab(id)}
+              className={`rounded-xl py-2 text-xs font-bold ${tab === id ? "bg-surface text-ink shadow-soft" : "text-muted"}`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
-        {/* O'tgan hafta natijasi */}
-        {showResult && (
+        {tab === "week" && (
+          <div
+            className="relative mt-3 overflow-hidden rounded-2xl border border-line p-4 shadow-card"
+            style={{ backgroundImage: `linear-gradient(150deg, ${league.color}2e 0%, transparent 70%)` }}
+          >
+            <div className="flex items-center gap-3">
+              <div className="text-4xl leading-none">{league.emoji}</div>
+              <div className="min-w-0 flex-1">
+                <p className="text-base font-bold leading-tight">{t[league.key]}</p>
+                <p className="mt-0.5 text-xs text-muted">
+                  {t.weekEndsIn}:{" "}
+                  <span className="font-semibold text-primary">
+                    {days} {t.timeDay} {hours} {t.timeHour} {mins} {t.timeMin}
+                  </span>
+                </p>
+              </div>
+              <div className="shrink-0 rounded-xl bg-primary/10 px-3 py-2 text-center">
+                <p className="text-[10px] font-medium uppercase tracking-wide text-muted">{t.yourRank}</p>
+                <p className="text-lg font-extrabold leading-none text-primary">#{rank}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-3 flex items-center gap-2 text-xs text-muted">
+          {useLive ? (
+            <>
+              <Radio className="h-3.5 w-3.5 text-success" aria-hidden />
+              <span className="font-semibold text-success">{t.leaderboardLive}</span>
+              <span>· {t.battleRealHint}</span>
+            </>
+          ) : (
+            <span>{t.battleFewPlayers}</span>
+          )}
+        </div>
+
+        {showResult && tab === "week" && (
           <div className="mt-3 flex items-center gap-3 rounded-2xl border border-line bg-surface p-3.5 shadow-card">
             <div
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
@@ -122,25 +207,23 @@ export function LeaderboardScreen() {
           </div>
         )}
 
-        {/* Podium — TOP-3 */}
-        <div className="mt-5 flex items-end justify-center gap-3">
-          <PodiumSpot entry={board[1]} place={2} t={t} />
-          <PodiumSpot entry={board[0]} place={1} t={t} />
-          <PodiumSpot entry={board[2]} place={3} t={t} />
-        </div>
+        {board.length >= 3 && (
+          <div className="mt-5 flex items-end justify-center gap-3">
+            <PodiumSpot entry={board[1]} place={2} t={t} />
+            <PodiumSpot entry={board[0]} place={1} t={t} />
+            <PodiumSpot entry={board[2]} place={3} t={t} />
+          </div>
+        )}
 
-        {/* To'liq jadval */}
         <div className="mt-5 overflow-hidden rounded-2xl border border-line bg-surface shadow-card">
           {board.map((e, i) => {
             const r = i + 1;
-            const inPromo = r <= PROMOTE_SLOTS;
-            const inDemo = r > board.length - DEMOTE_SLOTS;
             return (
               <div key={e.name + i}>
-                {r === PROMOTE_SLOTS + 1 && (
+                {tab === "week" && !useLive && r === PROMOTE_SLOTS + 1 && (
                   <ZoneLabel icon={<ArrowUp className="h-3.5 w-3.5" aria-hidden />} text={t.promotionZone} color="#22c55e" />
                 )}
-                {r === board.length - DEMOTE_SLOTS && (
+                {tab === "week" && !useLive && r === board.length - DEMOTE_SLOTS && (
                   <ZoneLabel icon={<ArrowDown className="h-3.5 w-3.5" aria-hidden />} text={t.demotionZone} color="#ef4444" />
                 )}
                 <div
@@ -159,9 +242,19 @@ export function LeaderboardScreen() {
                   </span>
                   <span className={`min-w-0 flex-1 truncate text-sm ${e.isYou ? "font-bold" : "font-medium"}`}>
                     {e.isYou ? `${e.name} · ${t.you}` : e.name}
+                    {e.live && !e.isYou && (
+                      <span className="ml-1.5 inline-flex items-center rounded-full bg-success/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-success">
+                        {t.battleLive}
+                      </span>
+                    )}
+                    {!e.live && !e.isYou && tab === "week" && (
+                      <span className="ml-1.5 text-[9px] font-semibold uppercase tracking-wide text-muted">
+                        {t.battlePractice}
+                      </span>
+                    )}
                   </span>
                   <span className={`shrink-0 text-sm font-bold ${e.isYou ? "text-primary" : "text-muted"}`}>
-                    {e.xp} XP
+                    {e.xp} {xpLabel}
                   </span>
                 </div>
               </div>
@@ -169,7 +262,13 @@ export function LeaderboardScreen() {
           })}
         </div>
 
-        <p className="mt-3 text-center text-[11px] leading-relaxed text-muted">{t.leagueHint}</p>
+        <Button className="mt-5 w-full" size="lg" onClick={() => navigate("battle")}>
+          <Swords className="h-5 w-5" aria-hidden /> {t.battleTitle}
+        </Button>
+
+        <p className="mt-3 text-center text-[11px] leading-relaxed text-muted">
+          {useLive ? t.battleRealHint : t.leagueHint}
+        </p>
       </div>
     </Screen>
   );
@@ -214,7 +313,7 @@ function PodiumSpot({
       <span className="mt-1 w-full truncate px-1 text-center text-xs font-semibold">
         {entry.isYou ? t.you : entry.name}
       </span>
-      <span className="text-[11px] font-bold text-muted">{entry.xp} XP</span>
+      <span className="text-[11px] font-bold text-muted">{entry.xp}</span>
       <div
         className={`mt-1.5 w-full rounded-t-xl ${h}`}
         style={{

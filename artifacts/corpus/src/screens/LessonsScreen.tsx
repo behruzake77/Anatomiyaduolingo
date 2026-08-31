@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Lock, Play, Check, Box, Crown, ChevronDown, Star } from "lucide-react";
+import { Lock, Play, Check, Box, Crown, ChevronDown, Star, Swords, Gamepad2 } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
@@ -31,6 +31,8 @@ export function LessonsScreen() {
   const completedLessons = useAppStore((s) => s.completedLessons);
   const activeSystemId = useAppStore((s) => s.activeSystemId);
   const openLesson = useAppStore((s) => s.openLesson);
+  const openBattle = useAppStore((s) => s.openBattle);
+  const openKahoot = useAppStore((s) => s.openKahoot);
   const navigate = useAppStore((s) => s.navigate);
   const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const t = useStrings();
@@ -102,6 +104,34 @@ export function LessonsScreen() {
               </div>
               <ProgressBar value={(totalDone / Math.max(1, totalLessons)) * 100} color={isPremium ? "#F5C04E" : sys.color} className="mt-2" />
             </div>
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <div className="rounded-xl border border-line bg-surface2 px-3 py-2 text-center">
+              <p className="text-[11px] font-semibold text-ink">{t.battleSolo}</p>
+              <p className="mt-0.5 text-[10px] text-muted">{t.continueLearning}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => openBattle(`sys:${sys.id}`)}
+              className="rounded-xl border border-danger/30 bg-danger/10 px-3 py-2 text-center transition active:scale-[.98]"
+            >
+              <p className="inline-flex items-center gap-1 text-[11px] font-semibold text-danger">
+                <Swords className="h-3.5 w-3.5" aria-hidden />
+                {t.battleVs}
+              </p>
+              <p className="mt-0.5 text-[10px] text-muted">{t.battleThisSystem}</p>
+            </button>
+            <button
+              type="button"
+              onClick={() => openKahoot(`sys:${sys.id}`)}
+              className="rounded-xl border border-[#46178F]/30 bg-[#46178F]/10 px-3 py-2 text-center transition active:scale-[.98]"
+            >
+              <p className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#46178F]">
+                <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
+                {t.kahootTitle}
+              </p>
+              <p className="mt-0.5 text-[10px] text-muted">{t.kahootSubtitle}</p>
+            </button>
           </div>
         </Card>
 
@@ -265,6 +295,7 @@ function PathView(props: {
 function ChapterBanner(props: { unit: SystemUnit; completedLessons: string[]; isPremium: boolean }) {
   const { unit, completedLessons, isPremium } = props;
   const t = useStrings();
+  const openBattle = useAppStore((s) => s.openBattle);
   const { done, total } = unitProgress(unit, completedLessons);
   return (
     <div className="relative my-3 flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3 shadow-card">
@@ -281,6 +312,14 @@ function ChapterBanner(props: { unit: SystemUnit; completedLessons: string[]; is
           {fmt("{done}/{total} {lessons}", { done, total, lessons: t.lessons })}
         </p>
       </div>
+      <button
+        type="button"
+        onClick={() => openBattle(`unit:${unit.id}`)}
+        aria-label={t.battleThisUnit}
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-danger/30 bg-danger/10 text-danger"
+      >
+        <Swords className="h-4 w-4" aria-hidden />
+      </button>
       {isPremium && done === total && total > 0 && <Crown className="h-5 w-5 shrink-0 text-[#F5C04E]" aria-hidden />}
     </div>
   );
@@ -305,23 +344,33 @@ function LegacyList(props: {
         const isOpen = open === u.id;
         return (
           <Card key={u.id} className="overflow-hidden">
-            <button onClick={() => setOpen(isOpen ? null : u.id)} className="flex w-full items-center gap-3 p-4 text-left">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary/10 text-primary">
-                {unitIconImage(u.id) ? (
-                  <img src={unitIconImage(u.id)} alt="" className="h-full w-full object-cover" />
-                ) : (
-                  <Icon name={u.icon} className="h-5 w-5" />
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold leading-tight">{u.title}</p>
-                <p className="mt-0.5 text-xs text-muted">
-                  {fmt("{done}/{total} {lessons}", { done, total, lessons: t.lessons })}
-                </p>
-                <ProgressBar value={pct} color={sys.color} className="mt-2" />
-              </div>
-              <ChevronDown className={cn("h-5 w-5 shrink-0 text-muted transition-transform", isOpen && "rotate-180")} aria-hidden />
-            </button>
+            <div className="flex w-full items-center gap-3 p-4">
+              <button onClick={() => setOpen(isOpen ? null : u.id)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary/10 text-primary">
+                  {unitIconImage(u.id) ? (
+                    <img src={unitIconImage(u.id)} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <Icon name={u.icon} className="h-5 w-5" />
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold leading-tight">{u.title}</p>
+                  <p className="mt-0.5 text-xs text-muted">
+                    {fmt("{done}/{total} {lessons}", { done, total, lessons: t.lessons })}
+                  </p>
+                  <ProgressBar value={pct} color={sys.color} className="mt-2" />
+                </div>
+                <ChevronDown className={cn("h-5 w-5 shrink-0 text-muted transition-transform", isOpen && "rotate-180")} aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={() => useAppStore.getState().openBattle(`unit:${u.id}`)}
+                aria-label={t.battleThisUnit}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-danger/30 bg-danger/10 text-danger"
+              >
+                <Swords className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
             <AnimatePresence>
               {isOpen && (
                 <motion.div

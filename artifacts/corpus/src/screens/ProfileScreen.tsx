@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown, Swords, Gamepad2, Flag, Shield } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { AvatarPicker } from "@/components/AvatarPicker";
@@ -10,8 +10,9 @@ import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY } from "@/i18n";
 import { PREMIUM_DISABLED } from "@/data/premium";
+import { countOpenReports } from "@/lib/reports";
 
-type MenuAction = { screen?: "premium" | "exam" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings"; info?: "about" };
+type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin"; info?: "about" };
 
 export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
@@ -20,10 +21,17 @@ export function ProfileScreen() {
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
   const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
+  const isAdmin = useAppStore((s) => s.isAdmin);
   const navigate = useAppStore((s) => s.navigate);
   const openInfo = useAppStore((s) => s.openInfo);
   const t = useStrings();
   const [picker, setPicker] = useState(false);
+  const [openReports, setOpenReports] = useState(0);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    void countOpenReports().then(setOpenReports);
+  }, [isAdmin]);
 
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
@@ -32,6 +40,8 @@ export function ProfileScreen() {
   const allMenu: { id: string; label: string; icon: typeof Trophy; action: MenuAction }[] = [
     { id: "premium", label: t.premium, icon: Crown, action: { screen: "premium" } },
     { id: "exam", label: t.examTitle, icon: GraduationCap, action: { screen: "exam" } },
+    { id: "battle", label: t.battleTitle, icon: Swords, action: { screen: "battle" } },
+    { id: "kahoot", label: t.kahootTitle, icon: Gamepad2, action: { screen: "kahoot" } },
     { id: "challenge", label: t.dailyChallenge, icon: Zap, action: { screen: "exam" } },
     { id: "review", label: t.reviewTitle, icon: RotateCcw, action: { screen: "review" } },
     { id: "glossary", label: t.glossaryTitle, icon: Library, action: { screen: "glossary" } },
@@ -40,10 +50,12 @@ export function ProfileScreen() {
     { id: "bookmarks", label: t.bookmarks, icon: Bookmark, action: { screen: "bookmarks" } },
     { id: "progress", label: t.progress, icon: TrendingUp, action: { screen: "progress" } },
     { id: "study", label: t.studyMode, icon: BookOpen, action: { screen: "study" } },
+    { id: "feedback", label: t.feedbackTitle, icon: Flag, action: { screen: "feedback" } },
+    { id: "admin", label: t.adminTitle, icon: Shield, action: { screen: "admin" } },
     { id: "settings", label: t.settings, icon: Settings, action: { screen: "settings" } },
     { id: "about", label: t.about, icon: Info, action: { info: "about" } },
   ];
-  const menu = allMenu.filter((m) => !(PREMIUM_DISABLED && m.id === "premium"));
+  const menu = allMenu.filter((m) => !(PREMIUM_DISABLED && m.id === "premium") && !(m.id === "admin" && !isAdmin));
 
   return (
     <Screen className="pt-6">
@@ -108,6 +120,9 @@ export function ProfileScreen() {
               <m.icon className="h-5 w-5" aria-hidden />
             </span>
             <span className="min-w-0 flex-1 break-words text-base font-medium">{m.label}</span>
+            {m.id === "admin" && openReports > 0 && (
+              <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{openReports}</span>
+            )}
             <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
           </button>
         ))}

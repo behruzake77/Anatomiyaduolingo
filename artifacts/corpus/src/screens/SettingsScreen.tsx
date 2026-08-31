@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info, Trash2 } from "lucide-react";
+import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info, Trash2, Flag } from "lucide-react";
 import { useState } from "react";
 import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
@@ -17,6 +17,7 @@ export function SettingsScreen() {
   const logout = useAppStore((s) => s.logout);
   const deleteAccount = useAppStore((s) => s.deleteAccount);
   const openInfo = useAppStore((s) => s.openInfo);
+  const navigate = useAppStore((s) => s.navigate);
   const t = useStrings();
   const { requestPermission } = useNotifications();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -85,17 +86,25 @@ export function SettingsScreen() {
 
       {/* links */}
       <Card className="mt-4 overflow-hidden">
+        <button
+          onClick={() => navigate("feedback")}
+          className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2"
+        >
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
+            <Flag className="h-5 w-5" aria-hidden />
+          </span>
+          <span className="min-w-0 flex-1 break-words text-base font-medium">{t.feedbackTitle}</span>
+          <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
+        </button>
         {[
           { label: t.about, icon: Info, section: "about" as InfoSection },
           { label: t.privacy, icon: Shield, section: "privacy" as InfoSection },
           { label: t.terms, icon: FileText, section: "terms" as InfoSection },
-        ].map((l, i) => (
+        ].map((l) => (
           <button
             key={l.section}
             onClick={() => openInfo(l.section)}
-            className={
-              "flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2 " + (i > 0 ? "border-t border-line" : "")
-            }
+            className="flex w-full items-center gap-3 border-t border-line px-4 py-3.5 text-left transition hover:bg-surface2"
           >
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
               <l.icon className="h-5 w-5" aria-hidden />

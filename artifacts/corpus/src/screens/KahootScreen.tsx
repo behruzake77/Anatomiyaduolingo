@@ -1,0 +1,907 @@
+"use client";
+
+/**
+ * Kahoot-uslubidagi anatomiya viktorinasi.
+ *  - Host PIN ochadi, o'yinchilar qo'shiladi
+ *  - 10 savol · 20 soniya · tezlik balli
+ *  - Mashq: 3 bot (internetsiz)
+ */
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import {
+  Gamepad2,
+  Users,
+  KeyRound,
+  Bot,
+  Copy,
+  Check,
+  X,
+  Crown,
+  Play,
+} from "lucide-react";
+import { Screen } from "@/components/layout/Screen";
+import { Button } from "@/components/ui/Button";
+import { Confetti } from "@/components/ui/Confetti";
+import { useAppStore } from "@/store/useAppStore";
+import { useHaptics } from "@/hooks/useHaptics";
+import { useStrings, fmt } from "@/i18n";
+import { cn } from "@/utils/cn";
+import {
+  KAHOOT_Q_COUNT,
+  KAHOOT_SECONDS,
+  battleScopeLabel,
+  makeBattleSeed,
+  pickKahootQuestions,
+  type PoolItem,
+} from "@/utils/quizPool";
+import { CONTENT_SYSTEMS } from "@/data/content";
+import { ReportFlagButton } from "@/components/ReportQuestion";
+import {
+  KAHOOT_BOT_NAMES,
+  KAHOOT_PALETTE,
+  cancelKahoot,
+  createKahootGame,
+  isKahootOnline,
+  joinKahootByPin,
+  kahootPoints,
+  kahootXp,
+  leaveKahoot,
+  listKahootPlayers,
+  patchKahootGame,
+  playerColor,
+  sortKahootBoard,
+  submitKahootAnswer,
+  subscribeKahoot,
+  type KahootGame,
+  type KahootPlayer,
+  type KahootStatus,
+} from "@/lib/kahoot";
+
+type Phase = "hub" | "join" | "lobby" | "play";
+
+export function KahootScreen() {
+  const t = useStrings();
+  const navigate = useAppStore((s) => s.navigate);
+  const currentUser = useAppStore((s) => s.currentUser);
+  const battleScope = useAppStore((s) => s.battleScope);
+  const setBattleScope = useAppStore((s) => s.setBattleScope);
+  const recordKahoot = useAppStore((s) => s.recordKahoot);
+  const haptic = useHaptics();
+  const topicName = battleScopeLabel(battleScope);
+
+  const [phase, setPhase] = useState<Phase>("hub");
+  const [practice, setPractice] = useState(false);
+  const [game, setGame] = useState<KahootGame | null>(null);
+  const [players, setPlayers] = useState<KahootPlayer[]>([]);
+  const [meId, setMeId] = useState<string>("");
+  const [items, setItems] = useState<PoolItem[]>([]);
+  const [pinInput, setPinInput] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [cd, setCd] = useState(3);
+  const [left, setLeft] = useState(KAHOOT_SECONDS);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [locked, setLocked] = useState(false);
+  const [earned, setEarned] = useState(0);
+  const [myRank, setMyRank] = useState(0);
+
+  const gameRef = useRef<KahootGame | null>(null);
+  const playersRef = useRef<KahootPlayer[]>([]);
+  const meIdRef = useRef("");
+  const itemsRef = useRef<PoolItem[]>([]);
+  const recorded = useRef(false);
+  const qStart = useRef(0);
+  gameRef.current = game;
+  playersRef.current = players;
+  meIdRef.current = meId;
+  itemsRef.current = items;
+
+  const me = players.find((p) => p.id === meId);
+  const isHost = Boolean(game && currentUser && game.host_id === currentUser.id) || (practice && Boolean(game));
+  const status: KahootStatus = game?.status ?? "lobby";
+  const qIndex = game?.q_index ?? 0;
+  const item = items[qIndex] ?? null;
+  const board = sortKahootBoard(players);
+
+  const resetLocal = () => {
+    setSelected(null);
+    setLocked(false);
+    setLeft(game?.q_seconds ?? KAHOOT_SECONDS);
+  };
+
+  const goHub = async () => {
+    const g = gameRef.current;
+    const mid = meIdRef.current;
+    if (g && !practice && currentUser) {
+      if (g.host_id === currentUser.id) void cancelKahoot(g.id);
+      else if (mid) void leaveKahoot(mid);
+    }
+    gameRef.current = null;
+    setGame(null);
+    setPlayers([]);
+    setMeId("");
+    setPhase("hub");
+    setPractice(false);
+    setError("");
+    recorded.current = false;
+  };
+
+  const loadItems = (seed: string, count: number) => {
+    const qs = pickKahootQuestions(seed, count);
+    setItems(qs);
+    itemsRef.current = qs;
+    return qs;
+  };
+
+  const startPractice = () => {
+    setError("");
+    const seed = makeBattleSeed(battleScope);
+    const qs = loadItems(seed, KAHOOT_Q_COUNT);
+    const hostName = currentUser?.username || t.you;
+    const host: KahootPlayer = {
+      id: "me",
+      game_id: "local",
+      user_id: currentUser?.id ?? "local",
+      name: hostName,
+      score: 0,
+      streak: 0,
+      answers: [],
+      is_bot: false,
+      joined_at: new Date().toISOString(),
+    };
+    const bots: KahootPlayer[] = KAHOOT_BOT_NAMES.slice(0, 3).map((name, i) => ({
+      id: `bot-${i}`,
+      game_id: "local",
+      user_id: null,
+      name,
+      score: 0,
+      streak: 0,
+      answers: [],
+      is_bot: true,
+      joined_at: new Date().toISOString(),
+    }));
+    const g: KahootGame = {
+      id: "local",
+      pin: "------",
+      host_id: host.user_id || "local",
+      host_name: hostName,
+      seed,
+      q_count: qs.length,
+      q_seconds: KAHOOT_SECONDS,
+      status: "lobby",
+      q_index: 0,
+      q_started_at: null,
+      created_at: new Date().toISOString(),
+    };
+    setPractice(true);
+    setGame(g);
+    setPlayers([host, ...bots]);
+    setMeId(host.id);
+    recorded.current = false;
+    setPhase("lobby");
+  };
+
+  const hostLive = async () => {
+    setError("");
+    if (!currentUser || !isKahootOnline()) {
+      startPractice();
+      return;
+    }
+    setBusy(true);
+    const created = await createKahootGame(currentUser, battleScope);
+    setBusy(false);
+    if (!created) {
+      setError(t.kahootNeedLogin);
+      startPractice();
+      return;
+    }
+    setPractice(false);
+    setGame(created.game);
+    setMeId(created.me.id);
+    loadItems(created.game.seed, created.game.q_count);
+    setPlayers([created.me]);
+    recorded.current = false;
+    setPhase("lobby");
+  };
+
+  const doJoin = async () => {
+    setError("");
+    if (!currentUser || !isKahootOnline()) {
+      setError(t.kahootNeedLogin);
+      return;
+    }
+    setBusy(true);
+    const joined = await joinKahootByPin(currentUser, pinInput);
+    setBusy(false);
+    if (!joined) {
+      setError(t.kahootBadPin);
+      return;
+    }
+    setPractice(false);
+    setGame(joined.game);
+    setMeId(joined.me.id);
+    loadItems(joined.game.seed, joined.game.q_count);
+    const list = await listKahootPlayers(joined.game.id);
+    setPlayers(list.length ? list : [joined.me]);
+    recorded.current = false;
+    setPhase("lobby");
+  };
+
+  const patch = useCallback(async (next: Partial<KahootGame>) => {
+    const g = gameRef.current;
+    if (!g) return;
+    const merged = { ...g, ...next };
+    gameRef.current = merged;
+    setGame(merged);
+    if (practice || g.id === "local") return;
+    const saved = await patchKahootGame(g.id, next);
+    if (saved) {
+      gameRef.current = saved;
+      setGame(saved);
+    }
+  }, [practice]);
+
+  const beginPlay = () => {
+    resetLocal();
+    setPhase("play");
+    void patch({ status: "countdown", q_index: 0, q_started_at: null });
+  };
+
+  // Live sync
+  useEffect(() => {
+    const g = game;
+    if (!g || practice || g.id === "local") return;
+    const pull = async () => {
+      const list = await listKahootPlayers(g.id);
+      if (list.length) setPlayers(list);
+    };
+    void pull();
+    const iv = setInterval(pull, 1400);
+    const unsub = subscribeKahoot(
+      g.id,
+      (row) => {
+        gameRef.current = row;
+        setGame(row);
+        if (row.status === "cancelled") {
+          setPhase("hub");
+          setGame(null);
+        }
+      },
+      setPlayers,
+    );
+    return () => {
+      clearInterval(iv);
+      unsub();
+    };
+  }, [game?.id, practice]);
+
+  // Host auto-advance
+  useEffect(() => {
+    if (phase !== "play" || !isHost) return;
+    const g = gameRef.current;
+    if (!g) return;
+    if (status === "countdown") {
+      const id = setTimeout(() => {
+        if (gameRef.current?.status !== "countdown") return;
+        void patch({ status: "question", q_started_at: new Date().toISOString() });
+      }, 3200);
+      return () => clearTimeout(id);
+    }
+    if (status === "question") {
+      const id = setTimeout(() => {
+        if (gameRef.current?.status !== "question") return;
+        void patch({ status: "reveal" });
+      }, (g.q_seconds + 0.4) * 1000);
+      return () => clearTimeout(id);
+    }
+    if (status === "reveal") {
+      const id = setTimeout(() => {
+        if (gameRef.current?.status !== "reveal") return;
+        void patch({ status: "scoreboard" });
+      }, 4200);
+      return () => clearTimeout(id);
+    }
+    if (status === "scoreboard") {
+      const id = setTimeout(() => {
+        const cur = gameRef.current;
+        if (!cur || cur.status !== "scoreboard") return;
+        const last = qIndex + 1 >= (cur.q_count || itemsRef.current.length);
+        if (last) void patch({ status: "podium" });
+        else void patch({ status: "countdown", q_index: qIndex + 1, q_started_at: null });
+      }, 5200);
+      return () => clearTimeout(id);
+    }
+    return undefined;
+  }, [phase, isHost, status, qIndex, patch]);
+
+  // Countdown number
+  useEffect(() => {
+    if (status !== "countdown") return;
+    setCd(3);
+    const iv = setInterval(() => setCd((c) => Math.max(0, c - 1)), 1000);
+    return () => clearInterval(iv);
+  }, [status, qIndex]);
+
+  // Question timer
+  useEffect(() => {
+    if (status !== "question") return;
+    setSelected(null);
+    setLocked(false);
+    const started = game?.q_started_at ? Date.parse(game.q_started_at) : Date.now();
+    qStart.current = started;
+    const limit = game?.q_seconds ?? KAHOOT_SECONDS;
+    const tick = () => {
+      const elapsed = (Date.now() - started) / 1000;
+      setLeft(Math.max(0, limit - elapsed));
+    };
+    tick();
+    const iv = setInterval(tick, 150);
+    return () => clearInterval(iv);
+  }, [status, game?.q_started_at, game?.q_seconds, qIndex]);
+
+  // Follow live status into play
+  useEffect(() => {
+    if (!game) return;
+    if (game.status === "lobby") {
+      if (phase === "play") setPhase("lobby");
+      return;
+    }
+    if (game.status === "cancelled") return;
+    if (phase !== "play") setPhase("play");
+  }, [game?.status, phase, game]);
+
+  // Practice bots
+  useEffect(() => {
+    if (!practice || status !== "question") return;
+    const q = itemsRef.current[qIndex];
+    if (!q?.q.options || q.q.answer == null) return;
+    const limit = (game?.q_seconds ?? KAHOOT_SECONDS) * 1000;
+    const timers = playersRef.current.filter((p) => p.is_bot).map((bot) => {
+      const delay = 1600 + Math.random() * Math.min(9000, limit * 0.7);
+      return window.setTimeout(() => {
+        const ok = Math.random() < 0.64;
+        let choice = q.q.answer ?? 0;
+        if (!ok) {
+          const wrong = q.q.options!.map((_, i) => i).filter((i) => i !== q.q.answer);
+          choice = wrong[Math.floor(Math.random() * Math.max(1, wrong.length))] ?? 0;
+        }
+        const { pts, nextStreak } = kahootPoints(ok, delay, limit, bot.streak);
+        setPlayers((cur) =>
+          cur.map((p) =>
+            p.id !== bot.id || p.answers.some((a) => a.i === qIndex)
+              ? p
+              : {
+                  ...p,
+                  score: p.score + pts,
+                  streak: nextStreak,
+                  answers: [...p.answers, { i: qIndex, choice, ms: delay, correct: ok, pts }],
+                },
+          ),
+        );
+      }, delay);
+    });
+    return () => timers.forEach((id) => clearTimeout(id));
+  }, [practice, status, qIndex, game?.q_seconds]);
+
+  // Award XP once on podium
+  useEffect(() => {
+    if (status !== "podium" || recorded.current) return;
+    const ranked = sortKahootBoard(playersRef.current);
+    const idx = ranked.findIndex((p) => p.id === meIdRef.current);
+    if (idx < 0) return;
+    recorded.current = true;
+    const xp = kahootXp(idx + 1, ranked[idx].score);
+    setMyRank(idx + 1);
+    setEarned(xp);
+    recordKahoot(xp);
+  }, [status, recordKahoot]);
+
+  const lockIn = async (choice: number) => {
+    if (locked || status !== "question" || !item || item.q.answer == null) return;
+    const ms = Date.now() - qStart.current;
+    const ok = choice === item.q.answer;
+    const mine = playersRef.current.find((p) => p.id === meIdRef.current);
+    const { pts, nextStreak } = kahootPoints(ok, ms, (game?.q_seconds ?? KAHOOT_SECONDS) * 1000, mine?.streak ?? 0);
+    setSelected(choice);
+    setLocked(true);
+    haptic(ok ? [40, 50, 80] : [50, 40]);
+    const ans = { i: qIndex, choice, ms, correct: ok, pts };
+    if (!mine || mine.answers.some((a) => a.i === qIndex)) return;
+    if (practice || mine.game_id === "local" || !isKahootOnline()) {
+      setPlayers((cur) =>
+        cur.map((p) =>
+          p.id === mine.id
+            ? {
+                ...p,
+                score: p.score + pts,
+                streak: nextStreak,
+                answers: [...p.answers.filter((a) => a.i !== qIndex), ans],
+              }
+            : p,
+        ),
+      );
+      return;
+    }
+    const next = await submitKahootAnswer(mine, ans);
+    if (next) {
+      setPlayers((cur) => cur.map((p) => (p.id === next.id ? next : p)));
+      setMeId(next.id);
+    }
+  };
+
+  const copyPin = async () => {
+    if (!game?.pin) return;
+    try {
+      await navigator.clipboard.writeText(game.pin);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch {
+      /* no-op */
+    }
+  };
+
+  /* ===================== HUB ===================== */
+  if (phase === "hub") {
+    return (
+      <Screen className="pt-4">
+        <header className="flex items-center gap-3">
+          <button
+            onClick={() => navigate("dashboard")}
+            aria-label={t.backToTopics}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-surface text-muted"
+          >
+            <X className="h-5 w-5" aria-hidden />
+          </button>
+          <h1 className="text-xl font-semibold">{t.kahootTitle}</h1>
+        </header>
+
+        <div className="mt-6 overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-[#46178F] via-[#6C5CE7] to-[#E21B3C] p-5 text-white shadow-card">
+          <div className="flex items-center gap-3">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
+              <Gamepad2 className="h-7 w-7" aria-hidden />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-lg font-bold leading-tight">{t.kahootTitle}</p>
+              <p className="mt-0.5 text-sm text-white/80">
+                {topicName ? fmt(t.kahootOnTopic, { name: topicName }) : t.kahootSubtitle}
+              </p>
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-white/75">{t.kahootHow}</p>
+        </div>
+
+        <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">{t.battlePickTopic}</p>
+        <div className="-mx-5 mt-2 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Chip active={battleScope === "all"} label={t.battleScopeAll} onClick={() => setBattleScope("all")} />
+          {CONTENT_SYSTEMS.map((s) => (
+            <Chip
+              key={s.id}
+              active={battleScope === `sys:${s.id}`}
+              label={s.name}
+              color={s.color}
+              onClick={() => setBattleScope(`sys:${s.id}`)}
+            />
+          ))}
+        </div>
+
+        {!currentUser && (
+          <p className="mt-4 rounded-2xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-ink">
+            {t.kahootNeedLogin}
+          </p>
+        )}
+
+        <div className="mt-5 flex flex-col gap-3">
+          <ModeCard icon={Users} color="#46178F" title={t.kahootHost} hint={t.kahootHostHint} onClick={() => void hostLive()} />
+          <ModeCard
+            icon={KeyRound}
+            color="#1368CE"
+            title={t.kahootJoin}
+            hint={t.kahootJoinHint}
+            onClick={() => {
+              setError("");
+              setPinInput("");
+              setPhase("join");
+            }}
+          />
+          <ModeCard icon={Bot} color="#26890C" title={t.kahootPractice} hint={t.kahootPracticeHint} onClick={startPractice} />
+        </div>
+        {error && <p className="mt-3 text-center text-sm text-danger">{error}</p>}
+      </Screen>
+    );
+  }
+
+  /* ===================== JOIN ===================== */
+  if (phase === "join") {
+    return (
+      <Screen className="pt-4">
+        <header className="flex items-center gap-3">
+          <button
+            onClick={() => setPhase("hub")}
+            aria-label={t.battleCancel}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-surface text-muted"
+          >
+            <X className="h-5 w-5" aria-hidden />
+          </button>
+          <h1 className="text-xl font-semibold">{t.kahootJoin}</h1>
+        </header>
+        <p className="mt-8 text-sm text-muted">{t.kahootEnterPin}</p>
+        <input
+          value={pinInput}
+          onChange={(e) => setPinInput(e.target.value.replace(/\D/g, "").slice(0, 6))}
+          inputMode="numeric"
+          maxLength={6}
+          className="mt-3 w-full rounded-2xl border-2 border-line bg-surface px-4 py-4 text-center font-mono text-3xl font-extrabold tracking-[0.4em] outline-none focus:border-primary"
+          placeholder="123456"
+        />
+        {error && <p className="mt-3 text-center text-sm text-danger">{error}</p>}
+        <Button className="mt-6 w-full" size="lg" loading={busy} onClick={() => void doJoin()}>
+          {t.kahootJoinCta}
+        </Button>
+      </Screen>
+    );
+  }
+
+  /* ===================== LOBBY ===================== */
+  if (phase === "lobby" && game) {
+    return (
+      <Screen className="pt-4">
+        <header className="flex items-center gap-3">
+          <button
+            onClick={() => void goHub()}
+            aria-label={t.battleCancel}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-surface text-muted"
+          >
+            <X className="h-5 w-5" aria-hidden />
+          </button>
+          <h1 className="text-xl font-semibold">{t.kahootLobby}</h1>
+        </header>
+
+        <div className="mt-6 rounded-3xl bg-[#46178F] p-6 text-center text-white shadow-pop">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">{t.kahootPin}</p>
+          <p className="mt-2 font-mono text-5xl font-black tracking-[0.18em]">{practice ? "BOT" : game.pin}</p>
+          {!practice && (
+            <Button className="mt-4" variant="secondary" onClick={() => void copyPin()}>
+              {copied ? <Check className="h-4 w-4" aria-hidden /> : <Copy className="h-4 w-4" aria-hidden />}
+              {copied ? t.battleCopied : t.battleCopy}
+            </Button>
+          )}
+          <p className="mt-3 text-sm text-white/80">
+            {topicName ? fmt(t.kahootOnTopic, { name: topicName }) : t.kahootSubtitle}
+          </p>
+        </div>
+
+        <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-muted">
+          {fmt(t.kahootPlayers, { n: players.length })}
+        </p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {players.map((p) => (
+            <span
+              key={p.id}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-semibold"
+            >
+              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: playerColor(p.name) }} />
+              {p.name}
+              {p.is_bot && <span className="text-[10px] uppercase text-muted">{t.battlePractice}</span>}
+            </span>
+          ))}
+        </div>
+
+        {isHost ? (
+          <Button className="mt-8 w-full" size="lg" onClick={beginPlay} loading={busy}>
+            <Play className="h-5 w-5" aria-hidden /> {t.kahootStartGame}
+          </Button>
+        ) : (
+          <p className="mt-8 text-center text-sm text-muted">{t.kahootWaitingHost}</p>
+        )}
+      </Screen>
+    );
+  }
+
+  /* ===================== PLAY ===================== */
+  const playBg =
+    status === "podium"
+      ? "bg-gradient-to-b from-[#46178F] to-[#2A0D5C]"
+      : status === "scoreboard" || status === "reveal"
+        ? "bg-[#2A0D5C]"
+        : "bg-[#46178F]";
+
+  const myAns = me?.answers.find((a) => a.i === qIndex);
+  const answeredN = players.filter((p) => p.answers.some((a) => a.i === qIndex)).length;
+
+  return (
+    <div className={cn("flex min-h-dvh flex-1 flex-col text-white", playBg)}>
+      <header className="flex items-center gap-3 px-5 pt-4">
+        <button
+          onClick={() => void goHub()}
+          aria-label={t.battleCancel}
+          className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white"
+        >
+          <X className="h-5 w-5" aria-hidden />
+        </button>
+        <p className="min-w-0 flex-1 truncate text-sm font-semibold">
+          {status === "podium" ? t.kahootPodium : fmt(t.kahootQuestionOf, { n: qIndex + 1, total: items.length || game?.q_count || KAHOOT_Q_COUNT })}
+        </p>
+        {item && (status === "question" || status === "reveal") && (
+          <ReportFlagButton
+            q={item.q}
+            ctx={{
+              lessonId: item.lessonId,
+              lessonTitle: item.lessonTitle,
+              prompt: item.q.prompt,
+              qType: item.q.type,
+              source: "kahoot",
+              qIndex,
+            }}
+            className="border-white/35 text-white hover:border-white hover:text-white"
+          />
+        )}
+        {status === "question" && (
+          <span className="rounded-full bg-white/20 px-3 py-1 text-sm font-black">{Math.ceil(left)}</span>
+        )}
+      </header>
+
+      {status === "countdown" && (
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 px-5 text-center">
+          <p className="text-sm font-bold uppercase tracking-widest text-white/70">{t.kahootGetReady}</p>
+          {item && <h2 className="max-w-sm text-xl font-bold leading-snug">{item.q.prompt}</h2>}
+          <motion.p
+            key={cd}
+            initial={{ scale: 0.4, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-8xl font-black"
+          >
+            {cd > 0 ? cd : "!"}
+          </motion.p>
+        </div>
+      )}
+
+      {status === "question" && item && (
+        <div className="flex flex-1 flex-col px-5 pb-5 pt-3">
+          <div className="h-1.5 overflow-hidden rounded-full bg-white/20">
+            <motion.div
+              className="h-full rounded-full bg-[#F5C04E]"
+              animate={{ width: `${(left / (game?.q_seconds ?? KAHOOT_SECONDS)) * 100}%` }}
+              transition={{ duration: 0.15 }}
+            />
+          </div>
+          <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/70">{item.lessonTitle}</p>
+          <h1 className="mt-2 text-xl font-bold leading-snug">{item.q.prompt}</h1>
+          {item.q.image && (
+            <div className="mt-3 overflow-hidden rounded-2xl bg-white">
+              <img src={item.q.image} alt="" className="mx-auto max-h-36 object-contain" />
+            </div>
+          )}
+          {locked ? (
+            <div className="mt-auto flex flex-1 flex-col items-center justify-center gap-2">
+              <Check className="h-16 w-16" aria-hidden />
+              <p className="text-lg font-bold">{t.kahootAnswered}</p>
+              <p className="text-sm text-white/70">
+                {answeredN}/{players.length}
+              </p>
+            </div>
+          ) : (
+            <div className={cn("mt-4 grid flex-1 gap-3", (item.q.options?.length ?? 0) <= 2 ? "grid-cols-1" : "grid-cols-2")}>
+              {item.q.options?.map((opt, i) => {
+                const pal = KAHOOT_PALETTE[i % KAHOOT_PALETTE.length];
+                return (
+                  <button
+                    key={i}
+                    onClick={() => void lockIn(i)}
+                    className="flex min-h-[88px] items-center gap-2 rounded-2xl px-3 py-3 text-left text-sm font-bold text-white shadow-lg active:scale-[.98]"
+                    style={{ backgroundColor: pal.bg }}
+                  >
+                    <KahootShape kind={pal.shape} />
+                    <span className="min-w-0 flex-1 leading-snug">{opt}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {status === "reveal" && item && (
+        <div className="flex flex-1 flex-col px-5 pb-6 pt-4">
+          <h2 className="text-lg font-bold leading-snug">{item.q.prompt}</h2>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            {item.q.options?.map((opt, i) => {
+              const pal = KAHOOT_PALETTE[i % KAHOOT_PALETTE.length];
+              const good = i === item.q.answer;
+              const mine = selected === i || myAns?.choice === i;
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    "flex min-h-[72px] items-center gap-2 rounded-2xl px-3 py-3 text-sm font-bold",
+                    good ? "ring-4 ring-white" : "opacity-45",
+                  )}
+                  style={{ backgroundColor: pal.bg }}
+                >
+                  <KahootShape kind={pal.shape} />
+                  <span className="min-w-0 flex-1">{opt}</span>
+                  {good && <Check className="h-5 w-5 shrink-0" aria-hidden />}
+                  {mine && !good && <X className="h-5 w-5 shrink-0" aria-hidden />}
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-auto pt-6 text-center">
+            {myAns?.correct || selected === item.q.answer ? (
+              <p className="text-2xl font-black text-[#7CFC98]">{t.kahootCorrect}</p>
+            ) : (
+              <p className="text-2xl font-black text-[#FF8A8A]">{t.kahootWrong}</p>
+            )}
+            <p className="mt-1 text-lg font-bold">
+              {fmt(t.kahootPts, { n: myAns?.pts ?? 0 })}
+              {(me?.streak ?? 0) >= 2 && ` · ${fmt(t.kahootStreakN, { n: me?.streak ?? 0 })}`}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {status === "scoreboard" && (
+        <div className="flex flex-1 flex-col px-5 pb-6 pt-3">
+          <h2 className="text-center text-xl font-black">{t.kahootBoard}</h2>
+          <div className="mt-4 flex flex-col gap-2">
+            {board.slice(0, 8).map((p, i) => (
+              <div
+                key={p.id}
+                className={cn(
+                  "flex items-center gap-3 rounded-2xl bg-white/10 px-3 py-2.5",
+                  p.id === meId && "bg-white text-[#46178F]",
+                )}
+              >
+                <span className="w-6 text-center text-sm font-black">{i + 1}</span>
+                <span className="h-8 w-8 rounded-full text-center text-sm font-bold leading-8 text-white" style={{ backgroundColor: playerColor(p.name) }}>
+                  {p.name.slice(0, 1).toUpperCase()}
+                </span>
+                <span className="min-w-0 flex-1 truncate font-semibold">{p.name}</span>
+                <span className="font-black">{p.score}</span>
+              </div>
+            ))}
+          </div>
+          {isHost && (
+            <Button
+              className="mt-auto w-full bg-white text-[#46178F] hover:bg-white/90"
+              onClick={() => {
+                if (gameRef.current?.status !== "scoreboard") return;
+                const last = qIndex + 1 >= (game?.q_count || items.length);
+                if (last) void patch({ status: "podium" });
+                else void patch({ status: "countdown", q_index: qIndex + 1, q_started_at: null });
+              }}
+            >
+              {t.kahootNext}
+            </Button>
+          )}
+        </div>
+      )}
+
+      {status === "podium" && (
+        <div className="relative flex flex-1 flex-col items-center px-5 pb-8 pt-4">
+          {myRank > 0 && myRank <= 3 && <Confetti />}
+          <Crown className="h-10 w-10 text-[#F5C04E]" aria-hidden />
+          <h1 className="mt-2 text-3xl font-black">{t.kahootPodium}</h1>
+          <div className="mt-6 flex w-full items-end justify-center gap-3">
+            <PodiumPlace entry={board[1]} place={2} youId={meId} youLabel={t.you} />
+            <PodiumPlace entry={board[0]} place={1} youId={meId} youLabel={t.you} />
+            <PodiumPlace entry={board[2]} place={3} youId={meId} youLabel={t.you} />
+          </div>
+          <p className="mt-6 text-lg font-bold">{fmt(t.kahootRank, { n: myRank || board.findIndex((p) => p.id === meId) + 1 })}</p>
+          <p className="text-sm text-white/80">{fmt(t.battleXp, { n: earned })}</p>
+          <div className="mt-6 flex w-full gap-3">
+            <Button variant="ghost" className="flex-1 bg-white/15 text-white hover:bg-white/25" onClick={() => navigate("dashboard")}>
+              {t.battleHome}
+            </Button>
+            <Button
+              className="flex-1 bg-white text-[#46178F] hover:bg-white/90"
+              onClick={() => {
+                void goHub();
+              }}
+            >
+              {t.battleAgain}
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Chip({
+  active,
+  label,
+  color,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  color?: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold",
+        active ? "border-primary bg-primary text-white" : "border-line bg-surface text-ink",
+      )}
+      style={active && color ? { backgroundColor: color, borderColor: color, color: "#fff" } : undefined}
+    >
+      {label}
+    </button>
+  );
+}
+
+function ModeCard({
+  icon: Icon,
+  color,
+  title,
+  hint,
+  onClick,
+}: {
+  icon: typeof Gamepad2;
+  color: string;
+  title: string;
+  hint: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-transform active:scale-[.98]"
+    >
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: `${color}22`, color }}>
+        <Icon className="h-5 w-5" aria-hidden />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-semibold">{title}</span>
+        <span className="mt-0.5 block text-xs text-muted">{hint}</span>
+      </span>
+    </button>
+  );
+}
+
+function KahootShape({ kind }: { kind: "triangle" | "diamond" | "circle" | "square" }) {
+  if (kind === "circle") return <span className="h-6 w-6 shrink-0 rounded-full bg-white/90" />;
+  if (kind === "square") return <span className="h-6 w-6 shrink-0 rounded-sm bg-white/90" />;
+  if (kind === "diamond") {
+    return <span className="h-6 w-6 shrink-0 rotate-45 rounded-sm bg-white/90" />;
+  }
+  return (
+    <svg viewBox="0 0 24 24" className="h-6 w-6 shrink-0" aria-hidden>
+      <polygon points="12,3 22,21 2,21" fill="white" fillOpacity="0.92" />
+    </svg>
+  );
+}
+
+function PodiumPlace({
+  entry,
+  place,
+  youId,
+  youLabel,
+}: {
+  entry?: KahootPlayer;
+  place: 1 | 2 | 3;
+  youId: string;
+  youLabel: string;
+}) {
+  const h = place === 1 ? "h-28" : place === 2 ? "h-20" : "h-16";
+  const medal = place === 1 ? "🥇" : place === 2 ? "🥈" : "🥉";
+  if (!entry) return <div className={`w-[30%] ${h}`} />;
+  return (
+    <div className="flex w-[30%] flex-col items-center">
+      <span className="text-2xl">{medal}</span>
+      <span
+        className="mt-1 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white"
+        style={{ backgroundColor: playerColor(entry.name) }}
+      >
+        {entry.name.slice(0, 1).toUpperCase()}
+      </span>
+      <p className="mt-1 w-full truncate text-center text-xs font-bold">{entry.id === youId ? youLabel : entry.name}</p>
+      <p className="text-[11px] font-black text-[#F5C04E]">{entry.score}</p>
+      <div className={cn("mt-1 w-full rounded-t-xl bg-white/20", h)} />
+    </div>
+  );
+}

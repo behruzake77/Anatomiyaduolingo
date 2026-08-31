@@ -4,6 +4,7 @@ import { useEffect, type ComponentType } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useAppStore, type ScreenId, type Tab } from "@/store/useAppStore";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 import { SplashScreen } from "@/screens/SplashScreen";
 import { LoginScreen } from "@/screens/LoginScreen";
@@ -28,6 +29,10 @@ import { LibraryScreen } from "@/screens/LibraryScreen";
 import { LeaderboardScreen } from "@/screens/LeaderboardScreen";
 import { InfoScreen } from "@/screens/InfoScreen";
 import { PremiumScreen } from "@/screens/PremiumScreen";
+import { BattleScreen } from "@/screens/BattleScreen";
+import { KahootScreen } from "@/screens/KahootScreen";
+import { AdminScreen } from "@/screens/AdminScreen";
+import { FeedbackScreen } from "@/screens/FeedbackScreen";
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -53,6 +58,10 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   leaderboard: LeaderboardScreen,
   info: InfoScreen,
   premium: PremiumScreen,
+  battle: BattleScreen,
+  kahoot: KahootScreen,
+  admin: AdminScreen,
+  feedback: FeedbackScreen,
 };
 
 const TABS: ScreenId[] = ["dashboard", "topics", "library", "profile"];
@@ -90,7 +99,7 @@ export function AppNavigator() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const target = new URLSearchParams(window.location.search).get("screen");
-    const safe = ["topics", "library", "leaderboard", "profile", "glossary", "exam"];
+    const safe = ["topics", "library", "leaderboard", "profile", "glossary", "exam", "battle", "kahoot"];
     if (target && safe.includes(target)) {
       useAppStore.getState().navigate(target as ScreenId);
     }
@@ -139,7 +148,11 @@ export function AppNavigator() {
           exit={{ opacity: 0, x: -24 }}
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Screen />
+          {Screen ? (
+            <ErrorBoundary resetKey={screen}>
+              <Screen />
+            </ErrorBoundary>
+          ) : null}
         </motion.div>
       </AnimatePresence>
 

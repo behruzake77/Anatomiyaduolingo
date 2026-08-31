@@ -35,8 +35,18 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Supabase **SQL Editor** → `artifacts/corpus/supabase/schema.sql` faylidagi
 butun kodni joylashtiring → **Run**.
 
-Bu `profiles`, `progress`, `achievements` jadvallarini, RLS siyosatlarini va
+Bu `profiles`, `progress`, `achievements`, `battles` jadvallarini, RLS siyosatlarini va
 har bir yangi foydalanuvchi uchun avtomatik profil yaratuvchi trigger-ni o'rnatadi.
+
+Agar `schema.sql` avval ishlatilgan bo'lsa, qo'shimchalarni yuguring:
+- `artifacts/corpus/supabase/competition.sql` — jonli reyting ustunlari + 1ga-1 bellashuv jadvali.
+- `artifacts/corpus/supabase/kahoot.sql` — Kahoot sinf o'yini (PIN lobby, o'yinchilar, realtime).
+- `artifacts/corpus/supabase/reports.sql` — talab/taklif va savol xatoliklari (admin inbox). O'zingizni admin qilish:
+  ```sql
+  update public.profiles set is_admin = true
+  where id in (select id from auth.users where email = 'SIZNING_EMAIL');
+  ```
+  Yoki `.env.local`: `VITE_ADMIN_EMAILS=siz@email.com` / `VITE_ADMIN_USERNAMES=login`.
 
 ---
 

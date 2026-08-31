@@ -14,6 +14,7 @@ import {
   userWeekXp,
   weekKeyOf,
 } from "@/utils/league";
+import { levelFromXp } from "@/utils/levels";
 import {
   initAuth as libInitAuth,
   onAuthChange,
@@ -27,6 +28,7 @@ import {
   type AuthResult,
 } from "@/lib/auth";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { fetchIsAdmin, isAdminAccount } from "@/lib/reports";
 
 export type ScreenId =
   | "splash"
@@ -51,7 +53,11 @@ export type ScreenId =
   | "library"
   | "leaderboard"
   | "info"
-  | "premium";
+  | "premium"
+  | "battle"
+  | "kahoot"
+  | "admin"
+  | "feedback";
 
 export type Tab = "home" | "learn" | "library" | "profile";
 
@@ -100,6 +106,8 @@ const freshProgress = {
   leagueIndex: 0,
   leagueWeekKey: "",
   leagueResult: null as LeagueResult | null,
+  battlesWon: 0,
+  battlesLost: 0,
   settings: {
     darkMode: false,
     sound: true,
@@ -139,22 +147,33 @@ const localStorageFallback = {
 // Supabase'ga progress saqlash
 async function saveProgressToSupabase(userId: string, progress: Partial<typeof freshProgress>) {
   if (!isSupabaseConfigured) return;
-  
+
+  const wk = weekKeyOf(new Date());
+  const weekXp = userWeekXp(progress.xpHistory ?? {}, wk);
+  const base = {
+    xp: progress.xp ?? 0,
+    level: levelFromXp(progress.xp ?? 0),
+    streak: progress.streak ?? 0,
+    daily_goal: progress.dailyGoal ?? 20,
+    last_activity: new Date().toISOString().split("T")[0],
+  };
+  const extra = {
+    ...base,
+    week_xp: weekXp,
+    week_key: wk,
+    league_index: progress.leagueIndex ?? 0,
+    battles_won: progress.battlesWon ?? 0,
+    battles_lost: progress.battlesLost ?? 0,
+  };
+
   try {
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        xp: progress.xp ?? 0,
-        level: Math.floor((progress.xp ?? 0) / 500) + 1,
-        streak: progress.streak ?? 0,
-        daily_goal: progress.dailyGoal ?? 20,
-        last_activity: new Date().toISOString().split('T')[0]
-      })
-      .eq('id', userId);
-    
-    if (error) console.error('Progress save error:', error);
+    const { error } = await supabase.from("profiles").update(extra).eq("id", userId);
+    if (error) {
+      const fallback = await supabase.from("profiles").update(base).eq("id", userId);
+      if (fallback.error) console.error("Progress save error:", fallback.error);
+    }
   } catch (err) {
-    console.error('Supabase save error:', err);
+    console.error("Supabase save error:", err);
   }
 }
 
@@ -174,7 +193,9 @@ async function loadProgressFromSupabase(userId: string) {
       xp: data.xp ?? 0,
       streak: data.streak ?? 0,
       dailyGoal: data.daily_goal ?? 20,
-      level: data.level ?? 1
+      battlesWon: data.battles_won ?? 0,
+      battlesLost: data.battles_lost ?? 0,
+      isAdmin: Boolean(data.is_admin),
     };
   } catch (err) {
     console.error('Supabase load error:', err);
@@ -193,6 +214,7 @@ interface AppState {
 
   // auth
   currentUser: AuthUser | null;
+  isAdmin: boolean;
   isLoading: boolean;
   register: (email: string, password: string, username: string) => Promise<AuthResult>;
   login: (email: string, password: string) => Promise<AuthResult>;
@@ -226,6 +248,11 @@ interface AppState {
   leagueResult: LeagueResult | null;
   syncLeague: () => void;
   dismissLeagueResult: () => void;
+  battlesWon: number;
+  battlesLost: number;
+  recordBattle: (outcome: "win" | "lose" | "draw", earned: number) => void;
+  recordKahoot: (earned: number) => void;
+  publishProfile: () => void;
 
   // settings
   settings: Settings;
@@ -244,8 +271,12 @@ interface AppState {
   finishOnboarding: () => void;
   activeLessonId: string | null;
   activeSystemId: string | null;
+  battleScope: string;
   openLesson: (lessonId: string) => void;
   openSystem: (systemId: string) => void;
+  openBattle: (scope?: string) => void;
+  openKahoot: (scope?: string) => void;
+  setBattleScope: (scope: string) => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
   recordAnswer: (key: string, correct: boolean) => void;
   toggleBookmark: (key: string) => void;
@@ -285,6 +316,7 @@ export const useAppStore = create<AppState>()(
       },
 
       currentUser: null,
+      isAdmin: false,
       isLoading: true,
 
       initAuth: async () => {
@@ -297,13 +329,15 @@ export const useAppStore = create<AppState>()(
           if (user) {
             const wasLoggedOut = !get().currentUser;
             const dbProgress = wasLoggedOut ? await loadProgressFromSupabase(user.id) : null;
+            const flag = Boolean(dbProgress?.isAdmin) || isAdminAccount(user) || (await fetchIsAdmin(user.id));
             const s = get();
             const enterApp = s.screen === "login";
             const nextScreen = s.onboardingDone ? "dashboard" : "onboarding";
+            const progress = dbProgress ? { ...dbProgress, isAdmin: flag } : { isAdmin: flag };
             set({
               currentUser: user,
               isLoading: false,
-              ...(dbProgress || {}),
+              ...progress,
               ...(enterApp ? { screen: nextScreen, tab: "home" as const, history: [] } : {}),
             });
           } else {
@@ -311,6 +345,7 @@ export const useAppStore = create<AppState>()(
             const stay = s.screen === "splash" || s.screen === "login";
             set({
               currentUser: null,
+              isAdmin: false,
               isLoading: false,
               ...(stay ? {} : { screen: "login" as const, tab: "home" as const, history: [] }),
             });
@@ -360,6 +395,7 @@ export const useAppStore = create<AppState>()(
         await authLogout();
         set({
           currentUser: null,
+          isAdmin: false,
           ...freshProgress,
           screen: "login",
         });
@@ -369,6 +405,7 @@ export const useAppStore = create<AppState>()(
         await authDeleteAccount();
         set({
           currentUser: null,
+          isAdmin: false,
           ...freshProgress,
           screen: "login",
         });
@@ -401,6 +438,7 @@ export const useAppStore = create<AppState>()(
 
       activeLessonId: null,
       activeSystemId: null,
+      battleScope: "all",
       openLesson: (lessonId) => {
         set({ activeLessonId: lessonId });
         get().navigate("lesson");
@@ -408,6 +446,15 @@ export const useAppStore = create<AppState>()(
       openSystem: (systemId) => {
         set({ activeSystemId: systemId });
         get().navigate("lessons");
+      },
+      setBattleScope: (scope) => set({ battleScope: scope || "all" }),
+      openBattle: (scope) => {
+        if (scope) set({ battleScope: scope });
+        get().navigate("battle");
+      },
+      openKahoot: (scope) => {
+        if (scope) set({ battleScope: scope });
+        get().navigate("kahoot");
       },
 
       completeLesson: (lessonId, topicId, score, totalQ) => {
@@ -459,7 +506,7 @@ export const useAppStore = create<AppState>()(
 
         // Supabase'ga saqlash
         if (s.currentUser) {
-          saveProgressToSupabase(s.currentUser.id, newState);
+          saveProgressToSupabase(s.currentUser.id, { ...s, ...newState });
         }
 
         return result;
@@ -499,6 +546,61 @@ export const useAppStore = create<AppState>()(
 
       dismissLeagueResult: () => set({ leagueResult: null }),
 
+      recordBattle: (outcome, earned) => {
+        const s = get();
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+        let streak = s.streak;
+        let lastActiveDay = s.lastActiveDay;
+        if (lastActiveDay !== today) {
+          streak = lastActiveDay === yesterday ? streak + 1 : 1;
+          lastActiveDay = today;
+        }
+        const newState = {
+          xp: s.xp + earned,
+          dailyXp: s.dailyXp + earned,
+          streak,
+          lastActiveDay,
+          lastActiveAt: Date.now(),
+          battlesWon: s.battlesWon + (outcome === "win" ? 1 : 0),
+          battlesLost: s.battlesLost + (outcome === "lose" ? 1 : 0),
+          xpHistory: { ...s.xpHistory, [today]: (s.xpHistory[today] ?? 0) + earned },
+        };
+        set(newState);
+        if (s.currentUser) {
+          saveProgressToSupabase(s.currentUser.id, { ...s, ...newState });
+        }
+      },
+
+      recordKahoot: (earned) => {
+        const s = get();
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+        let streak = s.streak;
+        let lastActiveDay = s.lastActiveDay;
+        if (lastActiveDay !== today) {
+          streak = lastActiveDay === yesterday ? streak + 1 : 1;
+          lastActiveDay = today;
+        }
+        const newState = {
+          xp: s.xp + earned,
+          dailyXp: s.dailyXp + earned,
+          streak,
+          lastActiveDay,
+          lastActiveAt: Date.now(),
+          xpHistory: { ...s.xpHistory, [today]: (s.xpHistory[today] ?? 0) + earned },
+        };
+        set(newState);
+        if (s.currentUser) {
+          saveProgressToSupabase(s.currentUser.id, { ...s, ...newState });
+        }
+      },
+
+      publishProfile: () => {
+        const s = get();
+        if (s.currentUser) saveProgressToSupabase(s.currentUser.id, s);
+      },
+
       recordAnswer: (key, correct) => {
         const s = get();
         const card = s.srs[key];
@@ -529,7 +631,8 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: storageName,
-      version: 7,
+      version: 8,
+      migrate: (persisted) => persisted as AppState,
       storage: createJSONStorage(() => localStorageFallback),
       partialize: (s) => ({
         onboardingDone: s.onboardingDone,
@@ -550,6 +653,8 @@ export const useAppStore = create<AppState>()(
         leagueIndex: s.leagueIndex,
         leagueWeekKey: s.leagueWeekKey,
         leagueResult: s.leagueResult,
+        battlesWon: s.battlesWon,
+        battlesLost: s.battlesLost,
         settings: s.settings,
         avatar: s.avatar,
         isPremium: s.isPremium,

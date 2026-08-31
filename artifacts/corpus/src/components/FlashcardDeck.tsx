@@ -27,15 +27,6 @@ export function FlashcardDeck({ cards, onDone }: { cards: Flashcard[]; onDone: (
   const [flipped, setFlipped] = useState(false);
   const [again, setAgain] = useState<number[]>([]);
 
-  if (cards.length === 0) {
-    onDone();
-    return null;
-  }
-
-  const card = cards[idx];
-  const isLast = idx + 1 >= cards.length;
-  const color = colorForLegendN(card.n);
-
   const next = () => {
     setFlipped(false);
     // Oxirgi kartadan keyin idx == cards.length bo'ladi → «Yakunlash» ekrani chiqadi
@@ -47,8 +38,10 @@ export function FlashcardDeck({ cards, onDone }: { cards: Flashcard[]; onDone: (
     next();
   };
 
-  // yakun — barcha kartalar ko'rildi
-  if (idx >= cards.length) {
+  const card = idx >= 0 && idx < cards.length ? cards[idx] : undefined;
+
+  // yakun — barcha kartalar ko'rildi (card.n ni faqat karta mavjud bo'lganda o'qiymiz)
+  if (!card) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
         <motion.div
@@ -74,6 +67,9 @@ export function FlashcardDeck({ cards, onDone }: { cards: Flashcard[]; onDone: (
       </div>
     );
   }
+
+  const isLast = idx + 1 >= cards.length;
+  const color = colorForLegendN(card.n);
 
   return (
     <div className="flex flex-1 flex-col">

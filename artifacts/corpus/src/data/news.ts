@@ -13,6 +13,42 @@ export interface NewsItem {
 
 export const NEWS: NewsItem[] = [
   {
+    date: "2026-08-31",
+    icon: "🚩",
+    uz: {
+      title: "Talab, taklif va savol xatoliklari",
+      text: "Savol yonidagi bayroqcha bilan xabar yuboring — admin menyusiga tushadi.",
+    },
+    en: {
+      title: "Report question errors",
+      text: "Tap the flag on a question to send it to the admin inbox.",
+    },
+  },
+  {
+    date: "2026-08-31",
+    icon: "🎯",
+    uz: {
+      title: "Kahoot — sinf o'yini",
+      text: "PIN oching, 10 savol × 20 soniya, tezlik balli va podyum. Mashq botlari internetsiz ishlaydi.",
+    },
+    en: {
+      title: "Kahoot — class quiz",
+      text: "Open a PIN, 10 questions × 20 seconds, speed points and a podium. Practice bots work offline.",
+    },
+  },
+  {
+    date: "2026-08-31",
+    icon: "⚔️",
+    uz: {
+      title: "Jonli bellashuv — 1 ga 1",
+      text: "Haqiqiy o'quvchilar bilan tezkor o'yin, do'st kodi va mashq raqibi. Reyting endi jonli.",
+    },
+    en: {
+      title: "Live battles — 1v1",
+      text: "Quick match real learners, friend codes, and a practice rival. Rankings are live.",
+    },
+  },
+  {
     date: "2026-08-28",
     icon: "🏁",
     uz: {
