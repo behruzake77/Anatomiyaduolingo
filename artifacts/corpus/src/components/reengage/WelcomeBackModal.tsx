@@ -12,6 +12,7 @@ import { createPortal } from "react-dom";
 import { X, ChevronRight, Zap } from "lucide-react";
 import { AnatomyTutor } from "./AnatomyTutor";
 import { AnatomyAnimation } from "./AnatomyAnimation";
+import { Mascot3D } from "@/components/Mascot3D";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
 import { useStrings } from "@/i18n";
@@ -67,9 +68,9 @@ export function WelcomeBackModal(props: {
           </button>
         </div>
 
-        {/* 1. tutor */}
+        {/* 1. 3D maskot (WebGL bo'lsa; aks holda 2D tutor + animatsiya) */}
         <div className="rx-pop-in flex justify-center" style={step("0ms")}>
-          <AnatomyTutor state="WELCOME_BACK" size={92} />
+          <Mascot3D clip="Wave" size={104} title={t.welcomeBackTitle} />
         </div>
 
         {/* 2. anatomiya mikro-animatsiya */}

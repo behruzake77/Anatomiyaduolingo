@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Toggle } from "@/components/ui/Toggle";
 import { useAppStore, type InfoSection } from "@/store/useAppStore";
 import { useNotifications } from "@/hooks/useNotifications";
@@ -84,6 +85,51 @@ export function SettingsScreen() {
       <TopBar title={t.settings} />
       <div className="px-5 pb-28">
       <p className="text-sm text-muted">{t.settingsSubtitle}</p>
+
+      {/* Profil ma'lumotlarini tahrirlash */}
+      <Card className="mt-5 overflow-hidden">
+        <div className="flex items-center gap-3 border-b border-line px-4 py-3.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <User className="h-5 w-5" aria-hidden />
+          </span>
+          <span className="min-w-0 flex-1 break-words text-base font-medium">{t.profileEdit}</span>
+        </div>
+
+        <div className="px-4 py-3.5">
+          <label className="block text-xs font-semibold uppercase tracking-wide text-muted" htmlFor="settings-username">
+            {t.username}
+          </label>
+          <input
+            id="settings-username"
+            value={uname}
+            onChange={(e) => setUname(e.target.value)}
+            autoComplete="username"
+            className="mt-1.5 w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+          />
+        </div>
+
+        <div className="border-t border-line px-4 py-3.5">
+          <label className="block text-xs font-semibold uppercase tracking-wide text-muted" htmlFor="settings-birthyear">
+            {t.birthYear}
+          </label>
+          <input
+            id="settings-birthyear"
+            value={byear}
+            onChange={(e) => setByear(e.target.value.replace(/\D/g, "").slice(0, 4))}
+            inputMode="numeric"
+            placeholder={String(thisYear)}
+            className="mt-1.5 w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+          />
+        </div>
+
+        <div className="border-t border-line px-4 py-3.5">
+          {profileErr && <p className="mb-2 text-sm font-medium text-danger">{profileErr}</p>}
+          {profileMsg && <p className="mb-2 text-sm font-medium text-success">{profileMsg}</p>}
+          <Button className="w-full" size="lg" loading={saving} onClick={saveProfile}>
+            {t.saveProfile}
+          </Button>
+        </div>
+      </Card>
 
       {/* toggles */}
       <Card className="mt-5 overflow-hidden">

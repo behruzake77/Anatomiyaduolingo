@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown, Swords, Gamepad2, Flag, Shield, Bell, Pencil } from "lucide-react";
+import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown, Swords, Gamepad2, Flag, Shield, Bell, Pencil, User, Check } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { AvatarPicker } from "@/components/AvatarPicker";
@@ -25,10 +25,47 @@ export function ProfileScreen() {
   const isAdmin = useAppStore((s) => s.isAdmin);
   const navigate = useAppStore((s) => s.navigate);
   const openInfo = useAppStore((s) => s.openInfo);
+  const updateUsername = useAppStore((s) => s.updateUsername);
+  const updateBirthYear = useAppStore((s) => s.updateBirthYear);
   const t = useStrings();
   const [picker, setPicker] = useState(false);
   const [openReports, setOpenReports] = useState(0);
   const [unreadInbox, setUnreadInbox] = useState(0);
+
+  // Profilni tahrirlash (username + tug'ilgan yil)
+  const [editing, setEditing] = useState(false);
+  const [uname, setUname] = useState(currentUser?.username ?? "");
+  const thisYear = new Date().getFullYear();
+  const [byear, setByear] = useState(String(currentUser?.birthYear ?? ""));
+  const [profileMsg, setProfileMsg] = useState<string | null>(null);
+  const [profileErr, setProfileErr] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const saveProfile = async () => {
+    setProfileErr(null);
+    setProfileMsg(null);
+    setSaving(true);
+    if (uname.trim() && uname.trim() !== currentUser?.username) {
+      const r = await updateUsername(uname);
+      if (!r.success) {
+        setSaving(false);
+        setProfileErr(r.error || t.errUsernameTaken);
+        return;
+      }
+    }
+    const y = Number(byear);
+    if (y && y !== currentUser?.birthYear) {
+      const r = await updateBirthYear(y);
+      if (!r.success) {
+        setSaving(false);
+        setProfileErr(r.error || t.errBirthYear);
+        return;
+      }
+    }
+    setSaving(false);
+    setProfileMsg(t.profileSaved);
+    setEditing(false);
+  };
 
   useEffect(() => {
     void countUnreadBroadcasts().then(setUnreadInbox);
@@ -92,8 +129,84 @@ export function ProfileScreen() {
           <p className="mt-0.5 text-sm text-muted">
             {t.level} {level} • {tier}
           </p>
+          <button
+            onClick={() => {
+              setEditing((v) => !v);
+              setProfileMsg(null);
+              setProfileErr(null);
+              setUname(currentUser?.username ?? "");
+              setByear(String(currentUser?.birthYear ?? ""));
+            }}
+            className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"
+          >
+            <Pencil className="h-3.5 w-3.5" aria-hidden /> {t.editProfile}
+          </button>
         </div>
       </div>
+
+      {/* Profilni tahrirlash */}
+      {editing && (
+        <Card className="mt-5 overflow-hidden">
+          <div className="flex items-center gap-3 border-b border-line px-4 py-3.5">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <User className="h-5 w-5" aria-hidden />
+            </span>
+            <span className="min-w-0 flex-1 break-words text-base font-medium">{t.profileEdit}</span>
+          </div>
+
+          <div className="px-4 py-3.5">
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted" htmlFor="profile-username">
+              {t.username}
+            </label>
+            <input
+              id="profile-username"
+              value={uname}
+              onChange={(e) => setUname(e.target.value)}
+              autoComplete="username"
+              className="mt-1.5 w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+            />
+          </div>
+
+          <div className="border-t border-line px-4 py-3.5">
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted" htmlFor="profile-birthyear">
+              {t.birthYear}
+            </label>
+            <input
+              id="profile-birthyear"
+              value={byear}
+              onChange={(e) => setByear(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              inputMode="numeric"
+              placeholder={String(thisYear)}
+              className="mt-1.5 w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+            />
+          </div>
+
+          <div className="border-t border-line px-4 py-3.5">
+            {profileErr && <p className="mb-2 text-sm font-medium text-danger">{profileErr}</p>}
+            {profileMsg && <p className="mb-2 text-sm font-medium text-success">{profileMsg}</p>}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setEditing(false)}
+                className="flex-1 rounded-3xl bg-surface2 px-6 py-4 text-center text-base font-semibold text-muted transition-all duration-150 active:scale-[.97]"
+              >
+                {t.cancel}
+              </button>
+              <button
+                onClick={() => void saveProfile()}
+                disabled={saving}
+                className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-primary px-6 py-4 text-base font-semibold text-white shadow-soft transition-all duration-150 active:scale-[.97] disabled:pointer-events-none disabled:opacity-50"
+              >
+                {saving ? (
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                ) : (
+                  <Check className="h-5 w-5" aria-hidden />
+                )}
+                {t.saveProfile}
+              </button>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* stats */}
       <div className="mt-6 grid grid-cols-3 gap-3">

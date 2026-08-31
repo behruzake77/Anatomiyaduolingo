@@ -63,7 +63,7 @@ export function LessonScreen() {
   };
 
   return (
-    <div className="flex flex-1 flex-col px-5 pb-6 pt-4">
+    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-6 pt-4">
       {/* header */}
       <header className="flex items-center gap-4">
         <button

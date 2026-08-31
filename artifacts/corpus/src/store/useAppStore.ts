@@ -222,7 +222,7 @@ interface AppState {
   currentUser: AuthUser | null;
   isAdmin: boolean;
   isLoading: boolean;
-  register: (email: string, password: string, username: string, birthYear: number) => Promise<AuthResult>;
+  register: (email: string, password: string, username: string, birthYear?: number) => Promise<AuthResult>;
   login: (email: string, password: string) => Promise<AuthResult>;
   verifyOtp: (email: string, token: string) => Promise<AuthResult>;
   resendOtp: (email: string) => Promise<AuthResult>;
@@ -375,7 +375,7 @@ export const useAppStore = create<AppState>()(
         }
       },
 
-      register: async (email, password, username, birthYear) => {
+      register: async (email, password, username, birthYear?) => {
         if (!isSupabaseConfigured) {
           return { success: false, error: "Supabase sozlanmagan" };
         }

@@ -3,11 +3,13 @@
 /**
  * Yagona savol UI — dars (LessonScreen) va takrorlash (ReviewScreen) uchun.
  *
- * Duolingo uslubidagi 2 bosqichli oqim:
- *   1) variantni tanlash (ko'k ajralib turadi) → pastda "Tekshirish" tugmasi.
- *   2) "Tekshirish" bosilgach — pastki panel yashil (to'g'ri) / qizil (xato)
- *      bo'yaladi, izoh va "Davom etish" tugmasi chiqadi.
- * `onCorrect` / `onWrong` — faqat "Tekshirish" paytida bir marta chaqiriladi.
+ * BARCHA savol turlari "Tekshirish" tugmasisiz ishlaydi (checkless):
+ *  - quiz / img / func / tf / fill → variant bosilishi bilan natija darhol
+ *    ko'rsatiladi (yashil/to'g'ri yoki qizil/xato), izoh va "Davom etish".
+ *  - match → barcha juftlik to'g'ri ulanganda avtomatik yopiladi.
+ *  - build (atama yig'ish) → kerakli so'zlar soni yig'ilganda avtomatik.
+ *  - order (tartiblash) → barcha elementlar joylashtirilganda avtomatik.
+ * `onCorrect` / `onWrong` — natija ko'rsatilganda bir marta chaqiriladi.
  */
 
 import { useMemo, useState } from "react";
@@ -91,12 +93,16 @@ function AnswerBar(props: {
   disabled?: boolean;         // Check tugmasini o'chirish (build/order uchun)
   canRetry?: boolean;
   onRetry?: () => void;
+  checkless?: boolean;        // tanlovda "Tekshirish" tugmasisiz — javob avtomatik ko'rsatiladi
   haptic: (p: number | number[]) => void;
   seed?: string | number;
 }) {
   const t = useStrings();
 
   if (!props.revealed) {
+    // checkless rejim: tanlovdan keyin natija darhol ko'rsatiladi, alohida tugma shart emas.
+    if (props.checkless) return null;
+
     // 1-bosqich: tanlash — pastda ko'k "Tekshirish" bar
     return (
       <div className="sticky bottom-0 -mx-5 mt-auto border-t border-line bg-bg/90 px-5 py-4 backdrop-blur">
@@ -230,10 +236,18 @@ function ChoiceUI(props: { q: Question; onCorrect: () => void; onWrong?: () => v
   const [revealed, setRevealed] = useState(false);
   const correct = revealed && selected === q.answer;
 
-  const onCheck = () => {
+  // "Tekshirish" tugmasisiz — variant tanlansa javob darhol ko'rsatiladi.
+  const onSelect = (i: number) => {
+    if (revealed) return;
+    setSelected(i);
     setRevealed(true);
-    if (selected === q.answer) { onCorrect(); haptic([40, 60, 90]); }
-    else { onWrong?.(); haptic([50, 50]); }
+    if (i === q.answer) {
+      onCorrect();
+      haptic([40, 60, 90]);
+    } else {
+      onWrong?.();
+      haptic([50, 50]);
+    }
   };
 
   return (
@@ -253,7 +267,7 @@ function ChoiceUI(props: { q: Question; onCorrect: () => void; onWrong?: () => v
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04, duration: 0.22 }}
-              onClick={() => { if (!revealed) setSelected(i); }}
+              onClick={() => onSelect(i)}
               disabled={revealed}
               className={cn(
                 "flex items-center gap-3 rounded-2xl border-2 bg-surface p-4 text-left text-base font-medium transition-colors dark:bg-surface2",
@@ -291,9 +305,10 @@ function ChoiceUI(props: { q: Question; onCorrect: () => void; onWrong?: () => v
         correct={correct}
         showCorrect={q.answer !== undefined ? q.options?.[q.answer] : undefined}
         explanation={q.explanation ?? q.hint}
-        onCheck={onCheck}
+        onCheck={() => {}} // checkless — natija tanlovda avtomatik ko'rsatiladi
         onNext={onNext}
         isLast={isLast}
+        checkless
         haptic={haptic}
         seed={q.prompt}
       />
@@ -310,10 +325,18 @@ function TfUI(props: { q: Question; onCorrect: () => void; onWrong?: () => void;
   const options = [true, false];
   const correct = revealed && selected !== null && options[selected] === q.statement;
 
-  const onCheck = () => {
+  // "Tekshirish" tugmasisiz — tanlovda javob darhol ko'rsatiladi.
+  const onSelect = (i: number) => {
+    if (revealed) return;
+    setSelected(i);
     setRevealed(true);
-    if (options[selected!] === q.statement) { onCorrect(); haptic([40, 60, 90]); }
-    else { onWrong?.(); haptic([50, 50]); }
+    if (options[i] === q.statement) {
+      onCorrect();
+      haptic([40, 60, 90]);
+    } else {
+      onWrong?.();
+      haptic([50, 50]);
+    }
   };
 
   const correctLabel = q.statement ? t.trueLabel : t.falseLabel;
@@ -330,7 +353,7 @@ function TfUI(props: { q: Question; onCorrect: () => void; onWrong?: () => void;
           return (
             <button
               key={i}
-              onClick={() => { if (!revealed) setSelected(i); }}
+              onClick={() => onSelect(i)}
               disabled={revealed}
               className={cn(
                 "flex items-center gap-3 rounded-2xl border-2 bg-surface p-4 text-left text-base font-semibold transition-colors dark:bg-surface2",
@@ -361,9 +384,10 @@ function TfUI(props: { q: Question; onCorrect: () => void; onWrong?: () => void;
         correct={correct}
         showCorrect={correctLabel}
         explanation={q.explanation}
-        onCheck={onCheck}
+        onCheck={() => {}} // checkless — natija tanlovda avtomatik ko'rsatiladi
         onNext={onNext}
         isLast={isLast}
+        checkless
         haptic={haptic}
         seed={q.prompt}
       />
@@ -481,10 +505,10 @@ function MatchUI(props: {
         correct={done}
         showCorrect={undefined}
         explanation={q.explanation}
-        onCheck={() => onCorrect()}
+        onCheck={() => {}} // match — barcha juftlik ulanganda avtomatik yopiladi
         onNext={onNext}
         isLast={isLast}
-        disabled={!done}
+        checkless
         haptic={haptic}
         seed={q.prompt}
       />
@@ -501,13 +525,20 @@ function BuildUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
   const [picked, setPicked] = useState<number[]>([]);
   const [revealed, setRevealed] = useState(false);
 
-  const pick = (key: number) => { if (!revealed) setPicked((p) => [...p, key]); };
-  const unpick = (key: number) => { if (!revealed) setPicked((p) => p.filter((k) => k !== key)); };
-  const check = () => {
-    const correct = picked.map((k) => bank.find((b) => b.key === k)?.word).join(" ") === (q.answerText ?? "");
+  const buildCheck = (keys: number[]) => {
+    const correct = keys.map((k) => bank.find((b) => b.key === k)?.word).join(" ") === (q.answerText ?? "");
     setRevealed(true);
     if (correct) { onCorrect(); haptic([40, 60, 90]); } else { onWrong?.(); haptic([50, 50]); }
   };
+
+  // "Tekshirish" tugmasisiz — kerakli so'zlar soni yig'ilganda avtomatik javob ko'rsatiladi.
+  const pick = (key: number) => {
+    if (revealed) return;
+    const next = [...picked, key];
+    setPicked(next);
+    if (next.length === words.length) buildCheck(next);
+  };
+  const unpick = (key: number) => { if (!revealed) setPicked((p) => p.filter((k) => k !== key)); };
 
   const correct = revealed && picked.map((k) => bank.find((b) => b.key === k)?.word).join(" ") === (q.answerText ?? "");
 
@@ -538,10 +569,10 @@ function BuildUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         correct={correct}
         showCorrect={q.answerText}
         explanation={q.explanation}
-        onCheck={check}
+        onCheck={() => {}} // build — so'zlar yig'ilganda avtomatik ko'rsatiladi
         onNext={onNext}
         isLast={isLast}
-        disabled={picked.length === 0}
+        checkless
         haptic={haptic}
         seed={q.prompt}
       />
@@ -558,13 +589,20 @@ function OrderUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
   const [picked, setPicked] = useState<number[]>([]);
   const [revealed, setRevealed] = useState(false);
 
-  const pick = (key: number) => { if (!revealed) setPicked((p) => [...p, key]); };
-  const unpick = (key: number) => { if (!revealed) setPicked((p) => p.filter((k) => k !== key)); };
-  const check = () => {
-    const correct = picked.every((k, i) => bank.find((b) => b.key === k)?.word === items[i]);
+  const orderCheck = (keys: number[]) => {
+    const correct = keys.every((k, i) => bank.find((b) => b.key === k)?.word === items[i]);
     setRevealed(true);
     if (correct) { onCorrect(); haptic([40, 60, 90]); } else { onWrong?.(); haptic([50, 50]); }
   };
+
+  // "Tekshirish" tugmasisiz — barcha elementlar joylashtirilganda avtomatik javob ko'rsatiladi.
+  const pick = (key: number) => {
+    if (revealed) return;
+    const next = [...picked, key];
+    setPicked(next);
+    if (next.length === items.length) orderCheck(next);
+  };
+  const unpick = (key: number) => { if (!revealed) setPicked((p) => p.filter((k) => k !== key)); };
 
   const correct = revealed && picked.every((k, i) => bank.find((b) => b.key === k)?.word === items[i]);
 
@@ -595,10 +633,10 @@ function OrderUI(props: { q: Question; onNext: () => void; isLast: boolean; onCo
         correct={correct}
         showCorrect={items.join(" → ")}
         explanation={q.explanation ?? t.correct + ": " + items.join(" → ")}
-        onCheck={check}
+        onCheck={() => {}} // order — elementlar joylashtirilganda avtomatik ko'rsatiladi
         onNext={onNext}
         isLast={isLast}
-        disabled={picked.length !== items.length}
+        checkless
         haptic={haptic}
         seed={q.prompt}
       />
@@ -614,7 +652,20 @@ function FillUI(props: { q: Question; onNext: () => void; isLast: boolean; onCor
   const [revealed, setRevealed] = useState(false);
 
   const correct = revealed && sel !== null && bank[sel].word === q.answerText;
-  const onCheck = () => setRevealed(true);
+
+  // "Tekshirish" tugmasisiz — variant tanlansa javob darhol ko'rsatiladi.
+  const onSelect = (i: number) => {
+    if (revealed) return;
+    setSel(i);
+    setRevealed(true);
+    if (bank[i].word === q.answerText) {
+      onCorrect();
+      haptic([40, 60, 90]);
+    } else {
+      onWrong?.();
+      haptic([50, 50]);
+    }
+  };
 
   return (
     <div className="flex flex-1 flex-col">
@@ -628,7 +679,7 @@ function FillUI(props: { q: Question; onNext: () => void; isLast: boolean; onCor
           return (
             <button
               key={b.key}
-              onClick={() => { if (!revealed) setSel(i); }}
+              onClick={() => onSelect(i)}
               disabled={revealed}
               className={cn(
                 "rounded-2xl border-2 bg-surface px-5 py-3 text-base font-semibold transition-colors dark:bg-surface2",
@@ -651,13 +702,10 @@ function FillUI(props: { q: Question; onNext: () => void; isLast: boolean; onCor
         correct={correct}
         showCorrect={q.answerText}
         explanation={q.explanation}
-        onCheck={() => {
-          setRevealed(true);
-          if (bank[sel!].word === q.answerText) { onCorrect(); haptic([40, 60, 90]); }
-          else { onWrong?.(); haptic([50, 50]); }
-        }}
+        onCheck={() => {}} // checkless — natija tanlovda avtomatik ko'rsatiladi
         onNext={onNext}
         isLast={isLast}
+        checkless
         haptic={haptic}
         seed={q.prompt}
       />
