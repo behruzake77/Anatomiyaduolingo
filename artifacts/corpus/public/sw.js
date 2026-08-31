@@ -5,7 +5,9 @@
  *  - PDF kitoblar: SW umuman aralashmaydi (to'g'ridan-to'g'ri yuklanadi, keshga olinmaydi)
  *  - boshqa so'rovlar: network-first, muvaffaqiyatsiz bo'lsa keshdan
  */
-const CACHE = "corpus-v3";
+// Increment whenever the app shell changes so installed PWAs do not stay on an
+// old build (which made new profile menu items appear to disappear).
+const CACHE = "corpus-v4";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
