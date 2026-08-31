@@ -1,29 +1,26 @@
 "use client";
 
 /**
- * Javobdan keyin chiqadigan stickerlar — Bluemoji to'plami (bluemoji.io).
+ * Javobdan keyin chiqadigan qurbaqa sticker to'plami.
  * To'g'ri / noto'g'ri pooldan savol seediga qarab aylanadi.
- * Muallif: non-commercial foydalanish ruxsat etilgan (bluemoji.io/stickers).
  */
 import { motion } from "motion/react";
 import { cn } from "@/utils/cn";
 
 const OK = [
-  "/img/stickers/ok-1.png",
-  "/img/stickers/ok-2.png",
-  "/img/stickers/ok-3.png",
-  "/img/stickers/ok-4.png",
-  "/img/stickers/ok-5.png",
-  "/img/stickers/ok-6.png",
+  "/img/stickers/ok-1.jpg",
+  "/img/stickers/ok-2.jpg",
+  "/img/stickers/ok-3.jpg",
+  "/img/stickers/ok-4.jpg",
+  "/img/stickers/ok-5.jpg",
+  "/img/stickers/ok-6.jpg",
 ] as const;
 
 const BAD = [
-  "/img/stickers/bad-1.png",
-  "/img/stickers/bad-2.png",
-  "/img/stickers/bad-3.png",
-  "/img/stickers/bad-4.png",
-  "/img/stickers/bad-5.png",
-  "/img/stickers/bad-6.png",
+  "/img/stickers/bad-1.jpg",
+  "/img/stickers/bad-2.jpg",
+  "/img/stickers/bad-3.jpg",
+  "/img/stickers/bad-4.jpg",
 ] as const;
 
 function hashSeed(seed: string | number): number {
