@@ -21,7 +21,9 @@ export function PwaRegister() {
     if (!("serviceWorker" in navigator)) return;
 
     const register = () => {
-      navigator.serviceWorker.register("/sw.js").catch(() => {
+      const base = import.meta.env.BASE_URL || "/";
+      const swUrl = `${base.replace(/\/$/, "")}/sw.js` || "/sw.js";
+      navigator.serviceWorker.register(swUrl).catch(() => {
         /* offline rejim ishlamay qolsa ham ilova ishlayveradi */
       });
     };

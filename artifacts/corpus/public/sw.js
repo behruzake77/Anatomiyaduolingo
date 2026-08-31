@@ -37,14 +37,15 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Navigatsiya → cache-first (app shell). Faqat HTML sahifa so'rovlari uchun.
+  // Navigatsiya → avval tarmoqdan oling. Cache-first HTML eski JS chunk'larni
+  // qaytarib, yangi deploydan keyin ayrim telefonlarda oq ekran chiqarishi mumkin.
   if (req.mode === "navigate" && req.headers.get("accept")?.includes("text/html")) {
     event.respondWith(
-      caches.match("/").then((cached) => cached || fetch(req).then((res) => {
+      fetch(req).then((res) => {
         const copy = res.clone();
         caches.open(CACHE).then((c) => c.put("/", copy)).catch(() => {});
         return res;
-      })),
+      }).catch(() => caches.match("/")),
     );
     return;
   }
