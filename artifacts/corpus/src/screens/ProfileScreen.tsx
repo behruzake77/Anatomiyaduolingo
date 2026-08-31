@@ -13,7 +13,7 @@ import { PREMIUM_DISABLED } from "@/data/premium";
 import { countOpenReports } from "@/lib/reports";
 import { countUnreadBroadcasts } from "@/lib/broadcasts";
 
-type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin" | "inbox" | "quiz-studio"; info?: "about" };
+type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "quiz-studio" | "challenge" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin" | "inbox"; info?: "about" };
 
 export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
@@ -83,7 +83,7 @@ export function ProfileScreen() {
     { id: "battle", label: t.battleTitle, icon: Swords, action: { screen: "battle" } },
     { id: "kahoot", label: t.kahootTitle, icon: Gamepad2, action: { screen: "kahoot" } },
     { id: "quiz-studio", label: t.quizStudio, icon: Pencil, action: { screen: "quiz-studio" } },
-    { id: "challenge", label: t.dailyChallenge, icon: Zap, action: { screen: "exam" } },
+    { id: "challenge", label: t.dailyChallenge, icon: Zap, action: { screen: "challenge" } },
     { id: "review", label: t.reviewTitle, icon: RotateCcw, action: { screen: "review" } },
     { id: "glossary", label: t.glossaryTitle, icon: Library, action: { screen: "glossary" } },
     { id: "models3d", label: t.models3d, icon: Box, action: { screen: "models3d" } },
@@ -194,7 +194,7 @@ export function ProfileScreen() {
               <button
                 onClick={() => void saveProfile()}
                 disabled={saving}
-                className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-primary px-6 py-4 text-base font-semibold text-white shadow-soft transition-all duration-150 active:scale-[.97] disabled:pointer-events-none disabled:opacity-50"
+                className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-primary px-6 py-4 text-base font-semibold text-white shadow-soft transition-all duration-150 active:scale-[.97]"
               >
                 {saving ? (
                   <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
@@ -223,31 +223,33 @@ export function ProfileScreen() {
         ))}
       </div>
 
-      {/* menu */}
-      <Card className="mt-6 overflow-hidden">
-        {menu.map((m, i) => (
-          <button
-            key={m.id}
-            onClick={() => (m.action.info ? openInfo(m.action.info) : m.action.screen && navigate(m.action.screen))}
-            className={
-              "flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2 " +
-              (i > 0 ? "border-t border-line" : "")
-            }
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <m.icon className="h-5 w-5" aria-hidden />
-            </span>
-            <span className="min-w-0 flex-1 break-words text-base font-medium">{m.label}</span>
-            {m.id === "admin" && openReports > 0 && (
-              <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{openReports}</span>
-            )}
-            {m.id === "inbox" && unreadInbox > 0 && (
-              <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{unreadInbox}</span>
-            )}
-            <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
-          </button>
-        ))}
-      </Card>
+      {/* menu - scrollable */}
+      <div className="mt-6 max-h-[600px] overflow-y-auto rounded-2xl">
+        <Card className="overflow-hidden">
+          {menu.map((m, i) => (
+            <button
+              key={m.id}
+              onClick={() => (m.action.info ? openInfo(m.action.info) : m.action.screen && navigate(m.action.screen))}
+              className={
+                "flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2 " +
+                (i > 0 ? "border-t border-line" : "")
+              }
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <m.icon className="h-5 w-5" aria-hidden />
+              </span>
+              <span className="min-w-0 flex-1 break-words text-base font-medium">{m.label}</span>
+              {m.id === "admin" && openReports > 0 && (
+                <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{openReports}</span>
+              )}
+              {m.id === "inbox" && unreadInbox > 0 && (
+                <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{unreadInbox}</span>
+              )}
+              <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
+            </button>
+          ))}
+        </Card>
+      </div>
 
       {picker && <AvatarPicker onClose={() => setPicker(false)} />}
     </Screen>
