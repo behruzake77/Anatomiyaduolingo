@@ -18,6 +18,7 @@ import {
   X,
   Crown,
   Play,
+  Pencil,
 } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Button } from "@/components/ui/Button";
@@ -31,9 +32,11 @@ import {
   KAHOOT_SECONDS,
   battleScopeLabel,
   makeBattleSeed,
+  parseBattleSeed,
   pickKahootQuestions,
   type PoolItem,
 } from "@/utils/quizPool";
+import { getQuiz, quizToPool, snapshotToPool } from "@/lib/userQuizzes";
 import { CONTENT_SYSTEMS } from "@/data/content";
 import { ReportFlagButton } from "@/components/ReportQuestion";
 import {
@@ -65,6 +68,9 @@ export function KahootScreen() {
   const currentUser = useAppStore((s) => s.currentUser);
   const battleScope = useAppStore((s) => s.battleScope);
   const setBattleScope = useAppStore((s) => s.setBattleScope);
+  const pendingQuiz = useAppStore((s) => s.pendingKahootQuiz);
+  const setPendingQuiz = useAppStore((s) => s.setPendingKahootQuiz);
+  const openQuizStudio = useAppStore((s) => s.openQuizStudio);
   const recordKahoot = useAppStore((s) => s.recordKahoot);
   const haptic = useHaptics();
   const topicName = battleScopeLabel(battleScope);
@@ -127,17 +133,38 @@ export function KahootScreen() {
     recorded.current = false;
   };
 
-  const loadItems = (seed: string, count: number) => {
-    const qs = pickKahootQuestions(seed, count);
+  const applyItems = (qs: PoolItem[]) => {
     setItems(qs);
     itemsRef.current = qs;
     return qs;
   };
 
+  const loadItems = async (
+    g: { seed: string; q_count: number; questions?: KahootGame["questions"] },
+    fallbackQuiz = pendingQuiz,
+  ) => {
+    if (g.questions && g.questions.length >= 2) {
+      return applyItems(snapshotToPool(fallbackQuiz?.title || t.quizStudio, g.questions));
+    }
+    if (fallbackQuiz && fallbackQuiz.questions.length >= 2) {
+      return applyItems(quizToPool(fallbackQuiz));
+    }
+    const { scope } = parseBattleSeed(g.seed);
+    if (scope.startsWith("quiz:")) {
+      const quiz = await getQuiz(scope.slice(5));
+      if (quiz && quiz.questions.length >= 2) return applyItems(quizToPool(quiz));
+    }
+    return applyItems(pickKahootQuestions(g.seed, g.q_count));
+  };
+
   const startPractice = () => {
     setError("");
-    const seed = makeBattleSeed(battleScope);
-    const qs = loadItems(seed, KAHOOT_Q_COUNT);
+    const custom = pendingQuiz && pendingQuiz.questions.length >= 2 ? pendingQuiz : null;
+    const seed = custom ? `quiz:${custom.id}::practice` : makeBattleSeed(battleScope);
+    const qs = custom
+      ? quizToPool(custom)
+      : pickKahootQuestions(seed, KAHOOT_Q_COUNT);
+    applyItems(qs);
     const hostName = currentUser?.username || t.you;
     const host: KahootPlayer = {
       id: "me",
@@ -173,6 +200,8 @@ export function KahootScreen() {
       q_index: 0,
       q_started_at: null,
       created_at: new Date().toISOString(),
+      quiz_id: custom?.id ?? null,
+      questions: custom?.questions ?? null,
     };
     setPractice(true);
     setGame(g);
@@ -189,7 +218,7 @@ export function KahootScreen() {
       return;
     }
     setBusy(true);
-    const created = await createKahootGame(currentUser, battleScope);
+    const created = await createKahootGame(currentUser, battleScope, pendingQuiz);
     setBusy(false);
     if (!created) {
       setError(t.kahootNeedLogin);
@@ -199,7 +228,7 @@ export function KahootScreen() {
     setPractice(false);
     setGame(created.game);
     setMeId(created.me.id);
-    loadItems(created.game.seed, created.game.q_count);
+    await loadItems(created.game, pendingQuiz);
     setPlayers([created.me]);
     recorded.current = false;
     setPhase("lobby");
@@ -221,7 +250,7 @@ export function KahootScreen() {
     setPractice(false);
     setGame(joined.game);
     setMeId(joined.me.id);
-    loadItems(joined.game.seed, joined.game.q_count);
+    await loadItems(joined.game);
     const list = await listKahootPlayers(joined.game.id);
     setPlayers(list.length ? list : [joined.me]);
     recorded.current = false;
@@ -471,19 +500,42 @@ export function KahootScreen() {
           <p className="mt-3 text-xs text-white/75">{t.kahootHow}</p>
         </div>
 
-        <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">{t.battlePickTopic}</p>
-        <div className="-mx-5 mt-2 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <Chip active={battleScope === "all"} label={t.battleScopeAll} onClick={() => setBattleScope("all")} />
-          {CONTENT_SYSTEMS.map((s) => (
-            <Chip
-              key={s.id}
-              active={battleScope === `sys:${s.id}`}
-              label={s.name}
-              color={s.color}
-              onClick={() => setBattleScope(`sys:${s.id}`)}
-            />
-          ))}
-        </div>
+        {pendingQuiz ? (
+          <div className="mt-4 rounded-2xl border border-primary/30 bg-primary/10 p-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.kahootCustom}</p>
+            <p className="mt-1 text-sm font-semibold">{pendingQuiz.title}</p>
+            <p className="mt-0.5 text-xs text-muted">{fmt(t.quizN, { n: pendingQuiz.questions.length })}</p>
+            <button type="button" className="mt-2 text-xs font-semibold text-primary" onClick={() => setPendingQuiz(null)}>
+              {t.battleScopeAll}
+            </button>
+          </div>
+        ) : (
+          <>
+            <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">{t.battlePickTopic}</p>
+            <div className="-mx-5 mt-2 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <Chip
+                active={battleScope === "all"}
+                label={t.battleScopeAll}
+                onClick={() => {
+                  setPendingQuiz(null);
+                  setBattleScope("all");
+                }}
+              />
+              {CONTENT_SYSTEMS.map((s) => (
+                <Chip
+                  key={s.id}
+                  active={battleScope === `sys:${s.id}`}
+                  label={s.name}
+                  color={s.color}
+                  onClick={() => {
+                    setPendingQuiz(null);
+                    setBattleScope(`sys:${s.id}`);
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         {!currentUser && (
           <p className="mt-4 rounded-2xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-ink">
@@ -505,6 +557,7 @@ export function KahootScreen() {
             }}
           />
           <ModeCard icon={Bot} color="#26890C" title={t.kahootPractice} hint={t.kahootPracticeHint} onClick={startPractice} />
+          <ModeCard icon={Pencil} color="#D89E00" title={t.kahootMakeQuiz} hint={t.kahootMakeQuizHint} onClick={() => openQuizStudio()} />
         </div>
         {error && <p className="mt-3 text-center text-sm text-danger">{error}</p>}
       </Screen>
@@ -567,7 +620,11 @@ export function KahootScreen() {
             </Button>
           )}
           <p className="mt-3 text-sm text-white/80">
-            {topicName ? fmt(t.kahootOnTopic, { name: topicName }) : t.kahootSubtitle}
+            {pendingQuiz
+              ? pendingQuiz.title
+              : topicName
+                ? fmt(t.kahootOnTopic, { name: topicName })
+                : t.kahootSubtitle}
           </p>
         </div>
 

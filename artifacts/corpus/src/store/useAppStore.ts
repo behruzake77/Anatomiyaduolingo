@@ -29,6 +29,7 @@ import {
 } from "@/lib/auth";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { fetchIsAdmin, isAdminAccount } from "@/lib/reports";
+import type { UserQuiz } from "@/lib/userQuizzes";
 
 export type ScreenId =
   | "splash"
@@ -58,7 +59,8 @@ export type ScreenId =
   | "kahoot"
   | "admin"
   | "feedback"
-  | "inbox";
+  | "inbox"
+  | "quiz-studio";
 
 export type Tab = "home" | "learn" | "library" | "profile";
 
@@ -277,6 +279,10 @@ interface AppState {
   openSystem: (systemId: string) => void;
   openBattle: (scope?: string) => void;
   openKahoot: (scope?: string) => void;
+  pendingKahootQuiz: UserQuiz | null;
+  setPendingKahootQuiz: (quiz: UserQuiz | null) => void;
+  openKahootQuiz: (quiz: UserQuiz) => void;
+  openQuizStudio: () => void;
   setBattleScope: (scope: string) => void;
   completeLesson: (lessonId: string, topicId: string, score: number, totalQ: number) => LessonResult;
   recordAnswer: (key: string, correct: boolean) => void;
@@ -454,9 +460,16 @@ export const useAppStore = create<AppState>()(
         get().navigate("battle");
       },
       openKahoot: (scope) => {
-        if (scope) set({ battleScope: scope });
+        if (scope) set({ battleScope: scope, pendingKahootQuiz: null });
         get().navigate("kahoot");
       },
+      pendingKahootQuiz: null,
+      setPendingKahootQuiz: (quiz) => set({ pendingKahootQuiz: quiz }),
+      openKahootQuiz: (quiz) => {
+        set({ pendingKahootQuiz: quiz });
+        get().navigate("kahoot");
+      },
+      openQuizStudio: () => get().navigate("quiz-studio"),
 
       completeLesson: (lessonId, topicId, score, totalQ) => {
         const earned = Math.round(20 * (score / Math.max(1, totalQ)));

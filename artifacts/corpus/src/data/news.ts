@@ -14,6 +14,18 @@ export interface NewsItem {
 export const NEWS: NewsItem[] = [
   {
     date: "2026-08-31",
+    icon: "📝",
+    uz: {
+      title: "O'z tesingizni tuzing",
+      text: "Kahoot → Test tuzish. Savol yozing, ochiq qiling — do'stlar PIN bilan guruhda o'tkazadi.",
+    },
+    en: {
+      title: "Create your own quiz",
+      text: "Kahoot → Create a quiz. Write questions, go public — friends host it with a PIN.",
+    },
+  },
+  {
+    date: "2026-08-31",
     icon: "🔔",
     uz: {
       title: "Bildirishnomalar — qo'ng'iroq",

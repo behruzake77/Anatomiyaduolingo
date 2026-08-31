@@ -4,9 +4,10 @@
  */
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { AuthUser } from "@/lib/auth";
-import { KAHOOT_Q_COUNT, KAHOOT_SECONDS, makeBattleSeed } from "@/utils/quizPool";
+import { KAHOOT_Q_COUNT, KAHOOT_SECONDS, makeBattleSeed, newBattleSeed } from "@/utils/quizPool";
 import { isOnlineArena } from "@/lib/competition";
 import { hueColor } from "@/utils/league";
+import { asQuizQuestion, type QuizQuestion, type UserQuiz } from "@/lib/userQuizzes";
 
 export type KahootStatus =
   | "lobby"
@@ -37,6 +38,8 @@ export interface KahootGame {
   q_index: number;
   q_started_at: string | null;
   created_at: string;
+  quiz_id: string | null;
+  questions: QuizQuestion[] | null;
 }
 
 export interface KahootPlayer {
@@ -112,6 +115,12 @@ function asAnswers(raw: unknown): KahootAnswer[] {
   });
 }
 
+function asSnapshot(raw: unknown): QuizQuestion[] | null {
+  if (!Array.isArray(raw)) return null;
+  const qs = raw.map(asQuizQuestion).filter((q): q is QuizQuestion => Boolean(q));
+  return qs.length ? qs : null;
+}
+
 function asGame(row: Record<string, unknown>): KahootGame {
   return {
     id: String(row.id),
@@ -125,6 +134,8 @@ function asGame(row: Record<string, unknown>): KahootGame {
     q_index: Number(row.q_index ?? 0),
     q_started_at: (row.q_started_at as string | null) ?? null,
     created_at: String(row.created_at ?? ""),
+    quiz_id: row.quiz_id == null ? null : String(row.quiz_id),
+    questions: asSnapshot(row.questions),
   };
 }
 
@@ -145,26 +156,39 @@ function asPlayer(row: Record<string, unknown>): KahootPlayer {
 export async function createKahootGame(
   user: AuthUser,
   scope = "all",
+  quiz?: UserQuiz | null,
 ): Promise<{ game: KahootGame; me: KahootPlayer } | null> {
   if (!isKahootOnline()) return null;
+  const custom = quiz && quiz.questions.length >= 2 ? quiz : null;
+  const seed = custom ? `quiz:${custom.id}::${newBattleSeed()}` : makeBattleSeed(scope || "all");
+  const qCount = custom ? Math.min(20, custom.questions.length) : KAHOOT_Q_COUNT;
+  const snapshot = custom ? custom.questions.slice(0, qCount) : null;
+  const quizId = custom && !custom.id.startsWith("local-") ? custom.id : null;
   for (let i = 0; i < 6; i++) {
     const pin = randomKahootPin();
-    const { data, error } = await supabase
+    const base = {
+      pin,
+      host_id: user.id,
+      host_name: user.username,
+      seed,
+      q_count: qCount,
+      q_seconds: KAHOOT_SECONDS,
+      status: "lobby",
+      q_index: 0,
+    };
+    let { data, error } = await supabase
       .from("kahoot_games")
-      .insert({
-        pin,
-        host_id: user.id,
-        host_name: user.username,
-        seed: makeBattleSeed(scope || "all"),
-        q_count: KAHOOT_Q_COUNT,
-        q_seconds: KAHOOT_SECONDS,
-        status: "lobby",
-        q_index: 0,
-      })
+      .insert({ ...base, quiz_id: quizId, questions: snapshot })
       .select("*")
       .maybeSingle();
+    if (error) {
+      const retry = await supabase.from("kahoot_games").insert(base).select("*").maybeSingle();
+      data = retry.data;
+      error = retry.error;
+    }
     if (error || !data) continue;
     const game = asGame(data as Record<string, unknown>);
+    if (!game.questions && snapshot) game.questions = snapshot;
     const { data: p, error: pe } = await supabase
       .from("kahoot_players")
       .insert({

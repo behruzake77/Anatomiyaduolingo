@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown, Swords, Gamepad2, Flag, Shield, Bell } from "lucide-react";
+import { Trophy, Bookmark, TrendingUp, Settings, Info, ChevronRight, Flame, Zap, BookOpen, GraduationCap, Library, RotateCcw, Box, Camera, Crown, Swords, Gamepad2, Flag, Shield, Bell, Pencil } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { AvatarPicker } from "@/components/AvatarPicker";
@@ -13,7 +13,7 @@ import { PREMIUM_DISABLED } from "@/data/premium";
 import { countOpenReports } from "@/lib/reports";
 import { countUnreadBroadcasts } from "@/lib/broadcasts";
 
-type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin" | "inbox"; info?: "about" };
+type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin" | "inbox" | "quiz-studio"; info?: "about" };
 
 export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
@@ -45,6 +45,7 @@ export function ProfileScreen() {
     { id: "exam", label: t.examTitle, icon: GraduationCap, action: { screen: "exam" } },
     { id: "battle", label: t.battleTitle, icon: Swords, action: { screen: "battle" } },
     { id: "kahoot", label: t.kahootTitle, icon: Gamepad2, action: { screen: "kahoot" } },
+    { id: "quiz-studio", label: t.quizStudio, icon: Pencil, action: { screen: "quiz-studio" } },
     { id: "challenge", label: t.dailyChallenge, icon: Zap, action: { screen: "exam" } },
     { id: "review", label: t.reviewTitle, icon: RotateCcw, action: { screen: "review" } },
     { id: "glossary", label: t.glossaryTitle, icon: Library, action: { screen: "glossary" } },
