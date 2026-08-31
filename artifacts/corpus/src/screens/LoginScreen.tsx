@@ -77,22 +77,31 @@ export function LoginScreen() {
 
     setLoading(true);
 
-    const result =
-      mode === "register"
-        ? await register(cleanEmail, password, username.trim(), year)
-        : await login(cleanEmail, password);
+    // Select qiymati string bo'ladi. Oldingi kod bu yerda mavjud bo'lmagan
+    // `year` o'zgaruvchisidan foydalangan va ro'yxatdan o'tish tugmasi bosilganda
+    // ReferenceError sabab loading holatida abadiy qolib ketgan.
+    const year = birthYear ? Number(birthYear) : undefined;
 
-    if (result.needsVerification) {
-      setEmail(cleanEmail);
+    try {
+      const result =
+        mode === "register"
+          ? await register(cleanEmail, password, username.trim(), year)
+          : await login(cleanEmail, password);
+
+      if (result.needsVerification) {
+        setEmail(cleanEmail);
+        goToOtp();
+        if (result.error) setInfo(result.error);
+        return;
+      }
+
+      if (!result.success) {
+        setError(result.error || (mode === "register" ? t.errExists : t.errLogin));
+      }
+    } catch {
+      setError(mode === "register" ? "Ro'yxatdan o'tishda xatolik" : "Kirishda xatolik");
+    } finally {
       setLoading(false);
-      goToOtp();
-      if (result.error) setInfo(result.error);
-      return;
-    }
-
-    setLoading(false);
-    if (!result.success) {
-      setError(result.error || (mode === "register" ? t.errExists : t.errLogin));
     }
   };
 

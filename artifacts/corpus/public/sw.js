@@ -5,7 +5,9 @@
  *  - PDF kitoblar: SW umuman aralashmaydi (to'g'ridan-to'g'ri yuklanadi, keshga olinmaydi)
  *  - boshqa so'rovlar: network-first, muvaffaqiyatsiz bo'lsa keshdan
  */
-const CACHE = "corpus-v3";
+// Increment whenever the app shell changes so installed PWAs do not stay on an
+// old build (which made new profile menu items appear to disappear).
+const CACHE = "corpus-v4";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -35,14 +37,15 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Navigatsiya → cache-first (app shell). Faqat HTML sahifa so'rovlari uchun.
+  // Navigatsiya → avval tarmoqdan oling. Cache-first HTML eski JS chunk'larni
+  // qaytarib, yangi deploydan keyin ayrim telefonlarda oq ekran chiqarishi mumkin.
   if (req.mode === "navigate" && req.headers.get("accept")?.includes("text/html")) {
     event.respondWith(
-      caches.match("/").then((cached) => cached || fetch(req).then((res) => {
+      fetch(req).then((res) => {
         const copy = res.clone();
         caches.open(CACHE).then((c) => c.put("/", copy)).catch(() => {});
         return res;
-      })),
+      }).catch(() => caches.match("/")),
     );
     return;
   }
