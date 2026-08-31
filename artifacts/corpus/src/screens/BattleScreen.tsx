@@ -646,7 +646,7 @@ export function BattleScreen() {
   const isLast = idx + 1 >= items.length;
 
   return (
-    <div className="flex flex-1 flex-col px-5 pb-6 pt-4">
+    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-6 pt-4">
       <header className="flex items-center gap-3">
         <button
           onClick={() => {

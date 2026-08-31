@@ -14,7 +14,11 @@ export function Screen({
 }) {
   return (
     <main
-      className={cn("flex flex-1 flex-col overflow-y-auto", padded && "px-5 pb-28", className)}
+      className={cn(
+        "flex min-h-0 flex-1 flex-col overflow-y-auto",
+        padded && "px-5 pb-28",
+        className,
+      )}
     >
       {children}
     </main>

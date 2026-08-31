@@ -228,16 +228,16 @@ export function AppNavigator() {
   ) : null;
 
   return (
-    <div className="relative mx-auto flex min-h-screen min-h-[100dvh] w-full max-w-md flex-1 flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">
+    <div className="relative mx-auto flex h-dvh w-full max-w-md flex-1 flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">
       {lowEnd ? (
-        <div key={screenId} className="flex min-h-screen min-h-[100dvh] flex-1 flex-col">
+        <div key={screenId} className="flex min-h-0 flex-1 flex-col">
           {body}
         </div>
       ) : (
         <AnimatePresence mode="wait">
           <motion.div
             key={screenId}
-            className="flex min-h-screen min-h-[100dvh] flex-1 flex-col"
+            className="flex min-h-0 flex-1 flex-col"
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -16 }}

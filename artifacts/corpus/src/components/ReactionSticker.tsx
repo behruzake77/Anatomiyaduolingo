@@ -1,26 +1,22 @@
 "use client";
 
 /**
- * Javobdan keyin chiqadigan qurbaqa sticker to'plami.
+ * Javobdan keyin chiqadigan harakatli (animatsiyali) sticker to'plami.
  * To'g'ri / noto'g'ri pooldan savol seediga qarab aylanadi.
  */
 import { motion } from "motion/react";
 import { cn } from "@/utils/cn";
 
 const OK = [
-  "/img/stickers/ok-1.jpg",
-  "/img/stickers/ok-2.jpg",
-  "/img/stickers/ok-3.jpg",
-  "/img/stickers/ok-4.jpg",
-  "/img/stickers/ok-5.jpg",
-  "/img/stickers/ok-6.jpg",
+  "/img/stickers/ok-1.gif", // Well done lampochka
+  "/img/stickers/ok-2.gif", // Chapak chalgan qiz
+  "/img/stickers/ok-3.gif", // Quchoqlab olgan otter
 ] as const;
 
 const BAD = [
-  "/img/stickers/bad-1.jpg",
-  "/img/stickers/bad-2.jpg",
-  "/img/stickers/bad-3.jpg",
-  "/img/stickers/bad-4.jpg",
+  "/img/stickers/bad-1.gif", // Yig'layotgan emoji
+  "/img/stickers/bad-2.gif", // Yig'lab ko'l
+  "/img/stickers/bad-3.gif", // Qichqirgan yig'loq
 ] as const;
 
 function hashSeed(seed: string | number): number {

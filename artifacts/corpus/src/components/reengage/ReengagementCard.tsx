@@ -6,9 +6,33 @@
  */
 
 import { ChevronRight, Zap } from "lucide-react";
-import { AnatomyTutor } from "./AnatomyTutor";
-import type { ActivityState } from "@/utils/activity";
+import { Mascot3D } from "@/components/Mascot3D";
+import type { ActivityState, TutorState } from "@/utils/activity";
+import type { MascotClip } from "@/components/MascotR3F";
 import { useStrings, fmt } from "@/i18n";
+
+/** Tutor holati -> 3D animatsiya. */
+function clipFor(state: TutorState): MascotClip {
+  switch (state) {
+    case "HAPPY":
+    case "IDLE":
+      return "Idle";
+    case "CURIOUS":
+      return "Sitting";
+    case "THINKING":
+      return "Sitting";
+    case "CONCERNED":
+      return "No";
+    case "ENCOURAGING":
+      return "Wave";
+    case "CELEBRATING":
+      return "Dance";
+    case "WELCOME_BACK":
+      return "Wave";
+    default:
+      return "Idle";
+  }
+}
 
 export function ReengagementCard(props: {
   activity: ActivityState;
@@ -23,7 +47,7 @@ export function ReengagementCard(props: {
   return (
     <div className="rx-pop-in mt-4 rounded-2xl border border-line bg-surface p-3 shadow-card">
       <div className="flex items-center gap-3">
-        <AnatomyTutor state={activity.state} size={76} />
+        <Mascot3D clip={clipFor(activity.state)} size={84} title={fmt(t[activity.messageKey], { n: streak })} />
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold leading-snug">{fmt(t[activity.messageKey], { n: streak })}</p>
           <p className="mt-0.5 text-xs text-muted">

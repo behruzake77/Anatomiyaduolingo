@@ -692,7 +692,7 @@ export function KahootScreen() {
   const answeredN = players.filter((p) => p.answers.some((a) => a.i === qIndex)).length;
 
   return (
-    <div className={cn("flex min-h-screen min-h-[100dvh] flex-1 flex-col text-white", playBg)}>
+    <div className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto text-white", playBg)}>
       <header className="flex items-center gap-3 px-5 pt-4">
         <button
           onClick={() => void goHub()}
