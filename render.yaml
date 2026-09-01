@@ -1,18 +1,19 @@
-# Render Blueprint for the CORPUS Vite SPA.
-# The repository root must remain the service root; the app lives in
-# artifacts/corpus inside this PNPM workspace.
+# CORPUS — Render Blueprint (one-click deploy)
+# https://render.com/docs/blueprint-spec
 services:
   - type: web
     name: corpus
-    runtime: static
-    buildCommand: pnpm install --frozen-lockfile --prod=false && PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run build
-    staticPublishPath: ./artifacts/corpus/dist/public
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+    runtime: node
+    rootDir: .migration-backup/corpus
+    plan: free
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /
     envVars:
-      - key: VITE_SUPABASE_URL
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SUPABASE_URL
         sync: false
-      - key: VITE_SUPABASE_ANON_KEY
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
         sync: false
