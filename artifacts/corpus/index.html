@@ -24,6 +24,24 @@
         const stored = JSON.parse(localStorage.getItem("corpus-storage-remote") || localStorage.getItem("corpus-storage") || "{}");
         if (stored.state?.settings?.darkMode) document.documentElement.classList.add("dark");
       } catch {}
+      // App shell height: use the *visual* viewport so the bottom nav is never
+      // cut by the browser toolbar / unsupported `dvh` on old Android WebViews.
+      try {
+        (function () {
+          function update() {
+            var vv = window.visualViewport;
+            var h = (vv && vv.height) || window.innerHeight || document.documentElement.clientHeight;
+            document.documentElement.style.setProperty("--app-height", h + "px");
+          }
+          update();
+          window.addEventListener("resize", update);
+          window.addEventListener("orientationchange", update);
+          if (window.visualViewport) {
+            window.visualViewport.addEventListener("resize", update);
+            window.visualViewport.addEventListener("scroll", update);
+          }
+        })();
+      } catch (e) {}
     </script>
   </head>
   <body>

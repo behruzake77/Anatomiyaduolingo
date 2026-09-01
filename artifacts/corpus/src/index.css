@@ -58,6 +58,17 @@ html, body, #root {
   display: flex;
   flex-direction: column;
 }
+
+/*
+ * App shell: reliably fills the *visible* area on every device.
+ * - `100vh` fallback for browsers without `dvh` (old Android WebView / Honor 9S).
+ * - `--app-height` is set from `window.visualViewport` in index.html, so the
+ *   bottom nav is never hidden behind the browser toolbar.
+ */
+.app-shell {
+  height: 100vh;                          /* safe fallback (always valid) */
+  height: var(--app-height, 100vh);       /* JS-driven visual viewport height */
+}
 body {
   background: var(--bg);
   color: var(--ink);
