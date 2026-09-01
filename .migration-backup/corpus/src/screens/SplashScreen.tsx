@@ -25,12 +25,19 @@ export function SplashScreen() {
   const t = useStrings();
   const reduced = useReducedMotion();
 
+  // FIX: Detect low-end devices to reduce animation time
+  const isLowEnd =
+    typeof navigator !== "undefined" &&
+    ((navigator as any).deviceMemory && (navigator as any).deviceMemory < 4);
+  const shouldReducePhase = reduced || isLowEnd;
+
   const [phase, setPhase] = useState<"init" | "grid" | "emblem" | "focus" | "exiting">("init");
   const [gaugeProgress, setGaugeProgress] = useState(0);
 
   useEffect(() => {
-    if (reduced) {
-      const id = setTimeout(() => finish(), 400);
+    if (shouldReducePhase) {
+      // FIX: Reduce splash screen time from 2.75s to 1s for low-end devices
+      const id = setTimeout(() => finish(), 1000);
       return () => clearTimeout(id);
     }
 
@@ -41,7 +48,8 @@ export function SplashScreen() {
       setGaugeProgress(100);
     }, 1500);
     const t4 = setTimeout(() => setPhase("exiting"), 2300);
-    const t5 = setTimeout(() => finish(), 2750);
+    // FIX: Reduce timeout from 2750ms to 2200ms
+    const t5 = setTimeout(() => finish(), 2200);
 
     return () => {
       clearTimeout(t1);
@@ -50,14 +58,14 @@ export function SplashScreen() {
       clearTimeout(t4);
       clearTimeout(t5);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced]);
+  }, [shouldReducePhase]);
 
   function finish() {
     const started = Date.now();
     const go = () => {
       const s = useAppStore.getState();
-      if (s.isLoading && Date.now() - started < 5000) {
+      // FIX: Reduce wait time from 5000ms to 2000ms
+      if (s.isLoading && Date.now() - started < 2000) {
         setTimeout(go, 80);
         return;
       }
@@ -186,7 +194,7 @@ export function SplashScreen() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
           >
             {t.brand}
-            <span className="text-[#A29BFE]">.</span>
+            <span className="text-[#A29BFE]" >.</span>
           </motion.h1>
 
           <motion.p
