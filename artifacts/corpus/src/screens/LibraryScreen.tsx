@@ -29,7 +29,7 @@ export function LibraryScreen() {
   return (
     <Screen padded={false}>
       <TopBar title={t.library} />
-      <div className="px-5 pb-28">
+      <div className="px-5 pb-[calc(5rem+env(safe-area-inset-bottom))]">
         <p className="text-sm text-muted">{t.librarySubtitle}</p>
 
         {/* Darslik */}
