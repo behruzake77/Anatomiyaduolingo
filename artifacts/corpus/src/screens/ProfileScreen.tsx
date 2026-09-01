@@ -223,60 +223,6 @@ export function ProfileScreen() {
         </button>
       </motion.div>
 
-      {/* ============ STATS — 3 cards ============ */}
-      <div className="mt-4 grid grid-cols-3 gap-3">
-        <StatCard icon={Zap} color="#6C5CE7" value={`${xp}`} label={t.totalEarned} />
-        <StatCard icon={Flame} color="#F59E0B" value={`${streak}`} label={t.dayStreak} />
-        <StatCard icon={BookOpen} color="#00B894" value={String(completedLessons)} label={t.lessonsDone} />
-      </div>
-
-      {/* ============ Daily goal + accuracy ============ */}
-      <div className="mt-4 grid grid-cols-1 gap-3">
-        <Card className="overflow-hidden p-4">
-          <div className="flex items-center justify-between">
-            <p className="flex items-center gap-2 text-sm font-bold">
-              <Sparkles className="h-4 w-4 text-primary" aria-hidden /> {t.todayGoal}
-            </p>
-            <p className="text-sm font-extrabold text-primary">
-              {dailyXp}/{dailyGoal} XP
-            </p>
-          </div>
-          <ProgressBar value={dailyPct} color="#6C5CE7" className="mt-2.5" />
-          <p className="mt-2 text-xs text-muted">{fmt(t.goalPercent, { pct: dailyPct })}</p>
-        </Card>
-
-        <Card className="flex items-center justify-between p-4">
-          <p className="flex items-center gap-2 text-sm font-bold">
-            <TrendingUp className="h-4 w-4 text-success" aria-hidden /> {t.accuracyLabel}
-          </p>
-          <p className="text-lg font-extrabold text-success">{fmt(t.accuracyVal, { pct: accuracy })}</p>
-        </Card>
-      </div>
-
-      {/* ============ ACHIEVEMENTS (ochilgan + eng yaqin) ============ */}
-      <div className="mt-6">
-        <h2 className="flex items-center gap-2 text-base font-bold">
-          <Trophy className="h-5 w-5 text-primary" aria-hidden />
-          {t.achievements}
-          <span className="ml-auto rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
-            {unlockedBadges.length}/{ACHIEVEMENTS.length}
-          </span>
-        </h2>
-        <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto pb-1">
-          {ACHIEVEMENTS.map((a) => (
-            <div key={a.id} className="w-[104px] shrink-0">
-              <Badge
-                icon={a.icon}
-                title={a.title}
-                description={a.description}
-                accent={a.accent}
-                locked={!achievements.includes(a.id)}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ============ PROFILNI TAHRIRLASH ============ */}
       {editing && (
         <Card className="mt-5 overflow-hidden">
@@ -341,8 +287,62 @@ export function ProfileScreen() {
         </Card>
       )}
 
+      {/* ============ STATS — 3 cards ============ */}
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        <StatCard icon={Zap} color="#6C5CE7" value={`${xp}`} label={t.totalEarned} />
+        <StatCard icon={Flame} color="#F59E0B" value={`${streak}`} label={t.dayStreak} />
+        <StatCard icon={BookOpen} color="#00B894" value={String(completedLessons)} label={t.lessonsDone} />
+      </div>
+
+      {/* ============ Daily goal + accuracy ============ */}
+      <div className="mt-4 grid grid-cols-1 gap-3">
+        <Card className="overflow-hidden p-4">
+          <div className="flex items-center justify-between">
+            <p className="flex items-center gap-2 text-sm font-bold">
+              <Sparkles className="h-4 w-4 text-primary" aria-hidden /> {t.todayGoal}
+            </p>
+            <p className="text-sm font-extrabold text-primary">
+              {dailyXp}/{dailyGoal} XP
+            </p>
+          </div>
+          <ProgressBar value={dailyPct} color="#6C5CE7" className="mt-2.5" />
+          <p className="mt-2 text-xs text-muted">{fmt(t.goalPercent, { pct: dailyPct })}</p>
+        </Card>
+
+        <Card className="flex items-center justify-between p-4">
+          <p className="flex items-center gap-2 text-sm font-bold">
+            <TrendingUp className="h-4 w-4 text-success" aria-hidden /> {t.accuracyLabel}
+          </p>
+          <p className="text-lg font-extrabold text-success">{fmt(t.accuracyVal, { pct: accuracy })}</p>
+        </Card>
+      </div>
+
+      {/* ============ ACHIEVEMENTS (ochilgan + eng yaqin) ============ */}
+      <div className="mt-6">
+        <h2 className="flex items-center gap-2 text-base font-bold">
+          <Trophy className="h-5 w-5 text-primary" aria-hidden />
+          {t.achievements}
+          <span className="ml-auto rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
+            {unlockedBadges.length}/{ACHIEVEMENTS.length}
+          </span>
+        </h2>
+        <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto pb-1">
+          {ACHIEVEMENTS.map((a) => (
+            <div key={a.id} className="w-[104px] shrink-0">
+              <Badge
+                icon={a.icon}
+                title={a.title}
+                description={a.description}
+                accent={a.accent}
+                locked={!achievements.includes(a.id)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ============ MENU ============ */}
-      <div className="mt-6 max-h-[600px] overflow-y-auto rounded-2xl">
+      <div className="mt-6">
         <Card className="overflow-hidden">
           {menu.map((m, i) => (
             <button
