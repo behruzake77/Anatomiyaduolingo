@@ -4,10 +4,10 @@ services:
   - type: web
     name: corpus
     runtime: node
-    rootDir: .migration-backup/corpus
+    rootDir: .
     plan: free
-    buildCommand: npm install --include=dev && npm run build
-    startCommand: npm start
+    buildCommand: pnpm install --frozen-lockfile --prod=false && PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run build
+    startCommand: PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run serve
     autoDeploy: true
     healthCheckPath: /
     envVars:
