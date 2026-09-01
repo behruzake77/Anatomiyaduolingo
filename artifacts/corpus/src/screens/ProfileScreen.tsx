@@ -211,7 +211,7 @@ export function ProfileScreen() {
     <Screen className="pt-6">
       {/* ============ HERO — level ring + avatar ============ */}
       <motion.div
-        initial={{ opacity: 0, y: 14 }}
+        initial={{ opacity: 1, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="relative overflow-hidden rounded-3xl border border-line bg-surface p-5 shadow-card"
@@ -470,6 +470,8 @@ export function ProfileScreen() {
 }
 
 function ProfileAvatar({ name, avatar }: { name: string; avatar: string | null }) {
+  const [imgFailed, setImgFailed] = useState(false);
+
   if (avatar?.startsWith("emoji:")) {
     return (
       <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -487,10 +489,15 @@ function ProfileAvatar({ name, avatar }: { name: string; avatar: string | null }
       </span>
     );
   }
-  if (avatar) {
+  if (avatar && !imgFailed) {
     return (
       <span className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full">
-        <img src={avatar} alt={name} className="h-full w-full object-cover" />
+        <img
+          src={avatar}
+          alt={name}
+          className="h-full w-full object-cover"
+          onError={() => setImgFailed(true)}
+        />
       </span>
     );
   }

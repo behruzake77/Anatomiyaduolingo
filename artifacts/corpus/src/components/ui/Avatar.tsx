@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { cn } from "@/utils/cn";
 
 export function Avatar({
@@ -13,6 +14,8 @@ export function Avatar({
   src?: string | null;
   className?: string;
 }) {
+  const [failed, setFailed] = useState(false);
+
   const initials = (name || "")
     .split(" ")
     .map((p) => p[0])
@@ -30,9 +33,14 @@ export function Avatar({
       style={{ width: size, height: size, fontSize: size * 0.36 }}
       aria-label={name}
     >
-      {src ? (
+      {src && !failed ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={name} className="h-full w-full object-cover" />
+        <img
+          src={src}
+          alt={name}
+          className="h-full w-full object-cover"
+          onError={() => setFailed(true)}
+        />
       ) : (
         initials || "•"
       )}

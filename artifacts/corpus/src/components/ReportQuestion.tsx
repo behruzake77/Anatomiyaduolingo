@@ -89,7 +89,7 @@ export function ReportModal(props: { q?: Question; ctx?: ReportContext; onClose:
 
   return (
     <div className="fixed inset-0 z-[80] flex items-end justify-center bg-black/40 p-4 sm:items-center" role="dialog" aria-modal>
-      <div className="max-h-[88dvh] w-full max-w-md overflow-y-auto rounded-3xl border border-line bg-bg p-5 shadow-pop">
+      <div className="max-h-[88vh] w-full max-w-md overflow-y-auto rounded-3xl border border-line bg-bg p-5 shadow-pop">
         <div className="flex items-start gap-3">
           <h2 className="min-w-0 flex-1 text-lg font-semibold">{prompt ? t.reportTitle : t.feedbackTitle}</h2>
           <button
