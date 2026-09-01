@@ -16,7 +16,7 @@ export function Screen({
     <main
       className={cn(
         "flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]",
-        padded && "px-5 pb-[calc(7rem+env(safe-area-inset-bottom))]",
+        padded && "px-5 pb-[calc(5rem+env(safe-area-inset-bottom))]",
         className,
       )}
     >

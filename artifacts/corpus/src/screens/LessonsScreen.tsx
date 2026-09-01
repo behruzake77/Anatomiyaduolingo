@@ -84,7 +84,7 @@ export function LessonsScreen() {
         }
       />
 
-      <div className="px-5 pb-28">
+      <div className="px-5 pb-[calc(5rem+env(safe-area-inset-bottom))]">
         {/* umumiy progress */}
         <Card className="p-4">
           <div className="flex items-center gap-3">

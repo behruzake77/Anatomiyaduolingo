@@ -238,6 +238,7 @@ export function AppNavigator() {
       };
     } catch (err) {
       console.error("Back button setup error:", err);
+      return undefined;
     }
   }, []);
 

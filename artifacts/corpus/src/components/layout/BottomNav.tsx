@@ -21,8 +21,8 @@ export function BottomNav() {
 
   return (
     <nav
-      className="absolute inset-x-0 bottom-0 z-20 flex border-t border-line bg-surface/90 backdrop-blur-lg"
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      className="absolute inset-x-0 bottom-0 z-20 flex border-t border-line bg-surface/95 backdrop-blur-lg"
+      style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0.5rem)" }}
       aria-label="Primary"
     >
       {items(t).map(({ id, label, icon: Icon }) => {
@@ -33,19 +33,25 @@ export function BottomNav() {
             onClick={() => setTab(id)}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
+              "relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 py-2 text-[11px] font-medium transition-colors active:scale-[.98]",
               active ? "text-primary" : "text-muted",
             )}
           >
+            {active && (
+              <span
+                className="absolute left-1/2 top-0 h-[3px] w-8 -translate-x-1/2 rounded-b-full bg-primary"
+                aria-hidden
+              />
+            )}
             <span
               className={cn(
-                "flex h-8 w-14 items-center justify-center rounded-full transition-colors",
+                "flex h-9 w-full max-w-[4.5rem] items-center justify-center rounded-2xl transition-colors",
                 active && "bg-primary/10",
               )}
             >
-              <Icon className="h-5 w-5" aria-hidden />
+              <Icon className="h-[22px] w-[22px]" aria-hidden />
             </span>
-            {label}
+            <span className="max-w-full truncate px-1 leading-none">{label}</span>
           </button>
         );
       })}

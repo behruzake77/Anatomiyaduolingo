@@ -9,6 +9,7 @@ import {
   Settings,
   Info,
   ChevronRight,
+  ChevronDown,
   Flame,
   Zap,
   BookOpen,
@@ -27,6 +28,7 @@ import {
   User,
   Check,
   Sparkles,
+  type LucideIcon,
 } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Avatar } from "@/components/ui/Avatar";
@@ -35,6 +37,7 @@ import { Card } from "@/components/ui/Card";
 import { Donut } from "@/components/ui/Donut";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Badge } from "@/components/ui/Badge";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier, xpToNextLevel } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
@@ -43,8 +46,23 @@ import { LEAGUES } from "@/utils/league";
 import { ACHIEVEMENTS } from "@/data/achievements";
 import { countOpenReports } from "@/lib/reports";
 import { countUnreadBroadcasts } from "@/lib/broadcasts";
+import { cn } from "@/utils/cn";
 
 type MenuAction = { screen?: "premium" | "exam" | "battle" | "kahoot" | "quiz-studio" | "review" | "glossary" | "models3d" | "achievements" | "bookmarks" | "progress" | "study" | "settings" | "feedback" | "admin" | "inbox"; info?: "about" };
+
+type MenuItem = {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  action: MenuAction;
+};
+
+type MenuGroup = {
+  id: string;
+  title: string;
+  icon: LucideIcon;
+  items: MenuItem[];
+};
 
 export function ProfileScreen() {
   const xp = useAppStore((s) => s.xp);
@@ -68,6 +86,7 @@ export function ProfileScreen() {
   const [picker, setPicker] = useState(false);
   const [openReports, setOpenReports] = useState(0);
   const [unreadInbox, setUnreadInbox] = useState(0);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({ profile: true });
 
   // Profilni tahrirlash (username + tug'ilgan yil)
   const [editing, setEditing] = useState(false);
@@ -119,7 +138,7 @@ export function ProfileScreen() {
   const dailyPct = Math.min(100, Math.round((dailyXp / Math.max(1, dailyGoal)) * 100));
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-  const allMenu: { id: string; label: string; icon: typeof Trophy; action: MenuAction }[] = [
+  const allMenu: MenuItem[] = [
     { id: "premium", label: t.premium, icon: Crown, action: { screen: "premium" } },
     { id: "exam", label: t.examTitle, icon: GraduationCap, action: { screen: "exam" } },
     { id: "battle", label: t.battleTitle, icon: Swords, action: { screen: "battle" } },
@@ -140,6 +159,51 @@ export function ProfileScreen() {
     { id: "about", label: t.about, icon: Info, action: { info: "about" } },
   ];
   const menu = allMenu.filter((m) => !(PREMIUM_DISABLED && m.id === "premium") && !(m.id === "admin" && !isAdmin));
+  const byId = new Map(menu.map((m) => [m.id, m]));
+
+  const menuGroups: MenuGroup[] = [
+    {
+      id: "profile",
+      title: t.menuMyProfile,
+      icon: User,
+      items: ["premium", "achievements", "bookmarks", "progress", "inbox"]
+        .map((id) => byId.get(id))
+        .filter((m): m is MenuItem => Boolean(m)),
+    },
+    {
+      id: "reading",
+      title: t.menuReading,
+      icon: BookOpen,
+      items: ["challenge", "exam", "glossary", "models3d", "review", "study"]
+        .map((id) => byId.get(id))
+        .filter((m): m is MenuItem => Boolean(m)),
+    },
+    {
+      id: "activities",
+      title: t.menuActivities,
+      icon: Gamepad2,
+      items: ["battle", "kahoot", "quiz-studio", "feedback", "admin"]
+        .map((id) => byId.get(id))
+        .filter((m): m is MenuItem => Boolean(m)),
+    },
+    {
+      id: "settings",
+      title: t.menuSettings,
+      icon: Settings,
+      items: ["settings", "about"]
+        .map((id) => byId.get(id))
+        .filter((m): m is MenuItem => Boolean(m)),
+    },
+  ].filter((g) => g.items.length > 0);
+
+  const toggleGroup = (id: string) => {
+    setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const runAction = (item: MenuItem) => {
+    if (item.action.info) openInfo(item.action.info);
+    else if (item.action.screen) navigate(item.action.screen);
+  };
 
   const unlockedBadges = useMemo(() => ACHIEVEMENTS.filter((a) => achievements.includes(a.id)), [achievements]);
 
@@ -163,7 +227,7 @@ export function ProfileScreen() {
         />
 
         <div className="relative flex items-center gap-4">
-          <button onClick={() => setPicker(true)} className="relative shrink-0" aria-label={t.avatarTitle}>
+          <button onClick={() => setPicker(true)} className="relative shrink-0 rounded-full" aria-label={t.avatarTitle}>
             <Donut value={progress} size={96} stroke={9} color={league.color}>
               <ProfileAvatar name={name} avatar={avatar} />
             </Donut>
@@ -201,7 +265,7 @@ export function ProfileScreen() {
 
         {/* XP bar */}
         <div className="relative mt-4">
-          <div className="flex items-center justify-between text-xs font-semibold text-muted">
+          <div className="flex items-center justify-between gap-3 text-xs font-semibold text-muted">
             <span>{t.xpToNext} → {t.level} {level + 1}</span>
             <span>{fmt(t.xpLeft, { n: Math.max(0, xpProg.next - xp) })}</span>
           </div>
@@ -297,30 +361,32 @@ export function ProfileScreen() {
       {/* ============ Daily goal + accuracy ============ */}
       <div className="mt-4 grid grid-cols-1 gap-3">
         <Card className="overflow-hidden p-4">
-          <div className="flex items-center justify-between">
-            <p className="flex items-center gap-2 text-sm font-bold">
-              <Sparkles className="h-4 w-4 text-primary" aria-hidden /> {t.todayGoal}
+          <div className="flex items-center justify-between gap-3">
+            <p className="flex min-w-0 items-center gap-2 text-sm font-bold">
+              <Sparkles className="h-4 w-4 shrink-0 text-primary" aria-hidden /> {t.todayGoal}
             </p>
-            <p className="text-sm font-extrabold text-primary">
+            <p className="shrink-0 text-sm font-extrabold text-primary">
               {dailyXp}/{dailyGoal} XP
             </p>
           </div>
           <ProgressBar value={dailyPct} color="#6C5CE7" className="mt-2.5" />
-          <p className="mt-2 text-xs text-muted">{fmt(t.goalPercent, { pct: dailyPct })}</p>
+          <p className="mt-2 text-xs text-muted">
+            {dailyPct >= 100 ? t.goalCompleted : fmt(t.goalPercent, { pct: dailyPct })}
+          </p>
         </Card>
 
-        <Card className="flex items-center justify-between p-4">
-          <p className="flex items-center gap-2 text-sm font-bold">
-            <TrendingUp className="h-4 w-4 text-success" aria-hidden /> {t.accuracyLabel}
+        <Card className="flex items-center justify-between gap-3 p-4">
+          <p className="flex min-w-0 items-center gap-2 text-sm font-bold">
+            <TrendingUp className="h-4 w-4 shrink-0 text-success" aria-hidden /> {t.accuracyLabel}
           </p>
-          <p className="text-lg font-extrabold text-success">{fmt(t.accuracyVal, { pct: accuracy })}</p>
+          <p className="shrink-0 text-lg font-extrabold text-success">{fmt(t.accuracyVal, { pct: accuracy })}</p>
         </Card>
       </div>
 
       {/* ============ ACHIEVEMENTS (ochilgan + eng yaqin) ============ */}
       <div className="mt-6">
         <h2 className="flex items-center gap-2 text-base font-bold">
-          <Trophy className="h-5 w-5 text-primary" aria-hidden />
+          <Sticker3D src="/img/3d/trophy-3d.webp" size={28} className="shrink-0" />
           {t.achievements}
           <span className="ml-auto rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
             {unlockedBadges.length}/{ACHIEVEMENTS.length}
@@ -341,32 +407,61 @@ export function ProfileScreen() {
         </div>
       </div>
 
-      {/* ============ MENU ============ */}
-      <div className="mt-6">
-        <Card className="overflow-hidden">
-          {menu.map((m, i) => (
-            <button
-              key={m.id}
-              onClick={() => (m.action.info ? openInfo(m.action.info) : m.action.screen && navigate(m.action.screen))}
-              className={
-                "flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2 " +
-                (i > 0 ? "border-t border-line" : "")
-              }
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <m.icon className="h-5 w-5" aria-hidden />
-              </span>
-              <span className="min-w-0 flex-1 break-words text-base font-medium">{m.label}</span>
-              {m.id === "admin" && openReports > 0 && (
-                <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{openReports}</span>
+      {/* ============ MENU — kategoriyalarga guruhlangan ============ */}
+      <div className="mt-6 space-y-4">
+        {menuGroups.map((group) => {
+          const open = Boolean(openGroups[group.id]);
+          return (
+            <section key={group.id}>
+              <button
+                onClick={() => toggleGroup(group.id)}
+                aria-expanded={open}
+                className="flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-transform duration-150 active:scale-[.98]"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <group.icon className="h-5 w-5" aria-hidden />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block break-words text-base font-semibold">{group.title}</span>
+                  <span className="mt-0.5 block text-xs text-muted">
+                    {fmt(t.menuItems, { n: group.items.length })}
+                  </span>
+                </span>
+                <ChevronDown
+                  className={cn("h-5 w-5 shrink-0 text-muted transition-transform duration-200", open && "rotate-180")}
+                  aria-hidden
+                />
+              </button>
+
+              {open && (
+                <Card className="mt-2 overflow-hidden">
+                  {group.items.map((item, index) => (
+                    <button
+                      key={item.id}
+                      onClick={() => runAction(item)}
+                      className={cn(
+                        "flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface2",
+                        index > 0 && "border-t border-line",
+                      )}
+                    >
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <item.icon className="h-5 w-5" aria-hidden />
+                      </span>
+                      <span className="min-w-0 flex-1 break-words text-base font-medium">{item.label}</span>
+                      {item.id === "admin" && openReports > 0 && (
+                        <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{openReports}</span>
+                      )}
+                      {item.id === "inbox" && unreadInbox > 0 && (
+                        <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{unreadInbox}</span>
+                      )}
+                      <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
+                    </button>
+                  ))}
+                </Card>
               )}
-              {m.id === "inbox" && unreadInbox > 0 && (
-                <span className="rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-white">{unreadInbox}</span>
-              )}
-              <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
-            </button>
-          ))}
-        </Card>
+            </section>
+          );
+        })}
       </div>
 
       {picker && <AvatarPicker onClose={() => setPicker(false)} />}
@@ -377,15 +472,15 @@ export function ProfileScreen() {
 function ProfileAvatar({ name, avatar }: { name: string; avatar: string | null }) {
   if (avatar?.startsWith("emoji:")) {
     return (
-      <span className="flex h-[62px] w-[62px] items-center justify-center rounded-full bg-primary/10">
-        <span style={{ fontSize: 30 }}>{avatar.slice(6)}</span>
+      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+        <span style={{ fontSize: 32 }}>{avatar.slice(6)}</span>
       </span>
     );
   }
   if (avatar?.startsWith("color:")) {
     return (
       <span
-        className="flex h-[62px] w-[62px] items-center justify-center rounded-full text-2xl font-bold text-white"
+        className="flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white"
         style={{ backgroundColor: avatar.slice(6) }}
       >
         {name.slice(0, 1).toUpperCase()}
@@ -394,13 +489,13 @@ function ProfileAvatar({ name, avatar }: { name: string; avatar: string | null }
   }
   if (avatar) {
     return (
-      <span className="flex h-[62px] w-[62px] items-center justify-center overflow-hidden rounded-full">
+      <span className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full">
         <img src={avatar} alt={name} className="h-full w-full object-cover" />
       </span>
     );
   }
   return (
-    <span className="flex h-[62px] w-[62px] items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-soft text-2xl font-bold text-white">
+    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-soft text-2xl font-bold text-white">
       {name.slice(0, 1).toUpperCase()}
     </span>
   );
@@ -412,18 +507,18 @@ function StatCard({
   label,
   color,
 }: {
-  icon: typeof Zap;
+  icon: LucideIcon;
   value: string;
   label: string;
   color: string;
 }) {
   return (
-    <Card className="flex min-w-0 flex-col items-center gap-1.5 p-3">
-      <span className="flex h-10 w-10 items-center justify-center rounded-2xl" style={{ backgroundColor: `${color}1a`, color }}>
+    <Card className="flex min-w-0 flex-col items-center justify-center gap-1.5 p-3 text-center">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl" style={{ backgroundColor: `${color}1a`, color }}>
         <Icon className="h-5 w-5" aria-hidden />
       </span>
-      <p className="break-words text-base font-extrabold leading-none">{value}</p>
-      <p className="break-words text-center text-xs text-muted">{label}</p>
+      <p className="min-w-0 break-words text-base font-extrabold leading-none">{value}</p>
+      <p className="min-w-0 break-words text-center text-xs leading-tight text-muted">{label}</p>
     </Card>
   );
 }

@@ -7,7 +7,8 @@ import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
-import { Logo } from "@/components/ui/Logo";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 import { AdBanner } from "@/components/AdBanner";
 import { DashboardBanners } from "@/components/DashboardBanners";
 import { useAppStore } from "@/store/useAppStore";
@@ -24,6 +25,10 @@ import { WelcomeBackModal } from "@/components/reengage/WelcomeBackModal";
 export function DashboardScreen() {
   const xp = useAppStore((s) => s.xp);
   const streak = useAppStore((s) => s.streak);
+  const dailyXp = useAppStore((s) => s.dailyXp);
+  const dailyGoal = useAppStore((s) => s.dailyGoal);
+  const correct = useAppStore((s) => s.correct);
+  const total = useAppStore((s) => s.total);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
@@ -71,16 +76,24 @@ export function DashboardScreen() {
   const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
   const nextSystem = systemOfLesson(nextLesson.id);
   const name = currentUser?.username ?? t.name;
+  const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+  const dailyPct = Math.min(100, Math.round((dailyXp / Math.max(1, dailyGoal)) * 100));
 
   return (
     <Screen className="pt-4">
-      {/* brand header */}
-      <header className="flex items-center gap-2">
-        <Logo size={34} />
-        <span className="text-lg font-bold tracking-tight">
-          {t.brand}
-        </span>
-        <div className="ml-auto flex items-center gap-2">
+      {/* personal mobile-app header */}
+      <header className="flex items-center gap-3">
+        <HeaderAvatar name={name} avatar={avatar} />
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1.5 text-xs font-medium text-muted">
+            <Sun className="h-4 w-4 shrink-0 text-warning" aria-hidden /> {t.goodMorning}
+          </p>
+          <p className="break-words text-[17px] font-semibold leading-snug">{name}</p>
+          <p className="mt-0.5 break-words text-xs font-semibold text-primary">
+            {t.level} {level} · {tier}
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
           {isPremium && (
             <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-2.5 py-1 text-[11px] font-bold text-[#1a1230]">
               <Crown className="h-3 w-3" aria-hidden /> PRO
@@ -88,20 +101,6 @@ export function DashboardScreen() {
           )}
           <InboxBell />
         </div>
-      </header>
-
-      {/* greeting */}
-      <header className="mt-4 flex items-center gap-3">
-        <Avatar name={name} size={44} src={avatar?.startsWith("emoji:") || avatar?.startsWith("color:") ? null : avatar} />
-        <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-1.5 text-sm text-muted">
-            <Sun className="h-4 w-4 shrink-0 text-warning" aria-hidden /> {t.goodMorning}
-          </p>
-          <p className="break-words text-base font-semibold leading-tight">{name}</p>
-        </div>
-        <span className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-          {t.level} {level} · {tier}
-        </span>
       </header>
 
       <StreakCelebration streak={streak} />
@@ -116,20 +115,25 @@ export function DashboardScreen() {
           <div className="relative h-36 w-full overflow-hidden">
             <img src={nextSystem?.image} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            <Sticker3D
+              src="/img/3d/lessons-book.webp"
+              size={64}
+              className="pointer-events-none absolute right-3 top-3"
+            />
             <div className="absolute bottom-3 left-4 right-4 flex items-center gap-3">
-              <div className="flex-1">
-                <p className="text-xs font-medium text-white/80">{nextSystem?.name}</p>
-                <p className="text-base font-semibold text-white">{nextLesson.title}</p>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-medium text-white/80">{nextSystem?.name}</p>
+                <p className="truncate text-base font-semibold text-white">{nextLesson.title}</p>
               </div>
-              <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary">
+              <span className="shrink-0 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary">
                 +{nextLesson.xp} XP
               </span>
             </div>
           </div>
           <div className="p-4">
-            <div className="flex items-center justify-between text-xs text-muted">
+            <div className="flex items-center justify-between gap-3 text-xs text-muted">
               <span>{fmt(t.lessonOf, { n: doneCount + 1, total: ALL_LESSONS.length })}</span>
-              <span className="flex items-center gap-1">
+              <span className="flex shrink-0 items-center gap-1">
                 <Zap className="h-3.5 w-3.5" aria-hidden /> ~{nextLesson.minutes} {t.min}
               </span>
             </div>
@@ -137,6 +141,35 @@ export function DashboardScreen() {
               {t.continue}
             </Button>
           </div>
+        </Card>
+      </section>
+
+      {/* Statistikalar */}
+      <section className="mt-5">
+        <div className="grid grid-cols-2 gap-3">
+          <StatCard sticker="/img/3d/xp-star.webp" color="#6C5CE7" value={`${xp}`} label={t.totalEarned} />
+          <StatCard sticker="/img/3d/streak-flame.webp" color="#F59E0B" value={`${streak}`} label={t.dayStreak} />
+          <StatCard sticker="/img/3d/lessons-book.webp" color="#00B894" value={String(doneCount)} label={t.lessonsDone} />
+          <StatCard sticker="/img/3d/accuracy-check.webp" color="#FD79A8" value={fmt(t.accuracyVal, { pct: accuracy })} label={t.accuracyLabel} />
+        </div>
+      </section>
+
+      {/* Bugungi maqsad */}
+      <section className="mt-3">
+        <Card className="overflow-hidden p-4">
+          <div className="flex items-center justify-between gap-3">
+            <p className="flex min-w-0 items-center gap-2 text-sm font-bold">
+              <Sticker3D src="/img/3d/daily-target.webp" size={24} className="shrink-0" />
+              <span className="min-w-0">{t.todayGoal}</span>
+            </p>
+            <p className="shrink-0 text-sm font-extrabold text-primary">
+              {dailyXp}/{dailyGoal} XP
+            </p>
+          </div>
+          <ProgressBar value={dailyPct} color="#6C5CE7" className="mt-2.5" />
+          <p className="mt-2 text-xs text-muted">
+            {dailyPct >= 100 ? t.goalCompleted : fmt(t.goalPercent, { pct: dailyPct })}
+          </p>
         </Card>
       </section>
 
@@ -159,5 +192,51 @@ export function DashboardScreen() {
         />
       )}
     </Screen>
+  );
+}
+
+function HeaderAvatar({ name, avatar }: { name: string; avatar: string | null }) {
+  if (avatar?.startsWith("emoji:")) {
+    return (
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-2xl shadow-card">
+        {avatar.slice(6)}
+      </span>
+    );
+  }
+  if (avatar?.startsWith("color:")) {
+    return (
+      <span
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-lg font-bold text-white shadow-card"
+        style={{ backgroundColor: avatar.slice(6) }}
+      >
+        {name.slice(0, 1).toUpperCase()}
+      </span>
+    );
+  }
+  return <Avatar name={name} size={44} src={avatar} className="shadow-card" />;
+}
+
+function StatCard({
+  sticker,
+  value,
+  label,
+  color,
+}: {
+  sticker: string;
+  value: string;
+  label: string;
+  color: string;
+}) {
+  return (
+    <Card className="flex min-w-0 flex-col items-center justify-center gap-1.5 px-2 py-3 text-center">
+      <span
+        className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl"
+        style={{ backgroundColor: `${color}1a` }}
+      >
+        <Sticker3D src={sticker} size={28} />
+      </span>
+      <p className="min-w-0 break-words text-base font-extrabold leading-none">{value}</p>
+      <p className="min-w-0 break-words text-xs leading-tight text-muted">{label}</p>
+    </Card>
   );
 }
