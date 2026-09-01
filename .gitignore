@@ -53,3 +53,6 @@ Thumbs.db
 .env.local
 .env.*.local
 artifacts/corpus/.env.local
+
+# AI-generated design mockups (large reference images, not source)
+artifacts/designs/

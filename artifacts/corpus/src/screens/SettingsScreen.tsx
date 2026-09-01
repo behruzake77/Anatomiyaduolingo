@@ -1,6 +1,22 @@
 "use client";
 
-import { Bell, Moon, Languages, Volume2, Shield, FileText, LogOut, ChevronRight, Info, Trash2, Flag } from "lucide-react";
+import {
+  Bell,
+  Moon,
+  Languages,
+  Volume2,
+  Shield,
+  FileText,
+  LogOut,
+  ChevronRight,
+  Info,
+  Trash2,
+  Flag,
+  Mail,
+  AtSign,
+  KeyRound,
+  Check,
+} from "lucide-react";
 import { useState } from "react";
 import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
@@ -10,6 +26,7 @@ import { Toggle } from "@/components/ui/Toggle";
 import { useAppStore, type InfoSection } from "@/store/useAppStore";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useStrings } from "@/i18n";
+import { updateEmail, updatePassword } from "@/lib/auth";
 
 export function SettingsScreen() {
   const settings = useAppStore((s) => s.settings);
@@ -19,9 +36,23 @@ export function SettingsScreen() {
   const deleteAccount = useAppStore((s) => s.deleteAccount);
   const openInfo = useAppStore((s) => s.openInfo);
   const navigate = useAppStore((s) => s.navigate);
+  const currentUser = useAppStore((s) => s.currentUser);
+  const updateUsername = useAppStore((s) => s.updateUsername);
   const t = useStrings();
   const { requestPermission } = useNotifications();
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  // Hisobni boshqarish (email / username / parol)
+  const [editEmail, setEditEmail] = useState(false);
+  const [email, setEmail] = useState("");
+  const [editUsername, setEditUsername] = useState(false);
+  const [username, setUsername] = useState("");
+  const [editPassword, setEditPassword] = useState(false);
+  const [pass, setPass] = useState("");
+  const [pass2, setPass2] = useState("");
+  const [acctMsg, setAcctMsg] = useState<string | null>(null);
+  const [acctErr, setAcctErr] = useState<string | null>(null);
+  const [savingAcct, setSavingAcct] = useState(false);
 
   const onToggle = async (key: "notifications" | "darkMode" | "sound") => {
     if (key === "notifications" && !settings.notifications) {
@@ -45,6 +76,79 @@ export function SettingsScreen() {
     { key: "darkMode" as const, label: t.darkMode, icon: Moon },
     { key: "sound" as const, label: t.soundEffects, icon: Volume2 },
   ];
+
+  const clearAcctMsg = () => {
+    setAcctMsg(null);
+    setAcctErr(null);
+  };
+
+  const toggleEmail = () => {
+    setEditEmail((v) => !v);
+    setEmail(currentUser?.email ?? "");
+    clearAcctMsg();
+  };
+
+  const toggleUsername = () => {
+    setEditUsername((v) => !v);
+    setUsername(currentUser?.username ?? "");
+    clearAcctMsg();
+  };
+
+  const togglePassword = () => {
+    setEditPassword((v) => !v);
+    setPass("");
+    setPass2("");
+    clearAcctMsg();
+  };
+
+  const saveEmail = async () => {
+    clearAcctMsg();
+    setSavingAcct(true);
+    const r = await updateEmail(email);
+    setSavingAcct(false);
+    if (!r.success) {
+      setAcctErr(r.error || t.errEmail);
+      return;
+    }
+    setAcctMsg(t.emailSaved);
+    setEditEmail(false);
+  };
+
+  const saveUsername = async () => {
+    clearAcctMsg();
+    setSavingAcct(true);
+    const r = await updateUsername(username);
+    setSavingAcct(false);
+    if (!r.success) {
+      setAcctErr(r.error || t.errUsernameTaken);
+      return;
+    }
+    setAcctMsg(t.usernameSaved);
+    setEditUsername(false);
+  };
+
+  const savePassword = async () => {
+    clearAcctMsg();
+    if (pass.length < 6) {
+      setAcctErr(t.errPasswordLen);
+      return;
+    }
+    if (pass !== pass2) {
+      setAcctErr(t.errPasswordMatch);
+      return;
+    }
+    setSavingAcct(true);
+    const r = await updatePassword(pass);
+    setSavingAcct(false);
+    if (!r.success) {
+      setAcctErr(r.error || t.resetFail);
+      return;
+    }
+    setAcctMsg(t.passwordSaved);
+    setEditPassword(false);
+    setPass("");
+    setPass2("");
+  };
 
   return (
     <Screen padded={false}>
@@ -83,6 +187,204 @@ export function SettingsScreen() {
               <option value="en">English</option>
             </select>
           </div>
+        </Card>
+
+        {/* Hisob — email / username / parol */}
+        <Card className="mt-4 overflow-hidden">
+          <div className="flex items-center gap-3 border-b border-line px-4 py-3.5">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <KeyRound className="h-5 w-5" aria-hidden />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-base font-medium">{t.account}</p>
+              <p className="text-xs text-muted">{t.accountSubtitle}</p>
+            </div>
+          </div>
+
+          {/* Email */}
+          <div className="border-b border-line px-4 py-3.5">
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
+                <Mail className="h-5 w-5" aria-hidden />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">{t.email}</p>
+                {!editEmail ? (
+                  <p className="truncate text-base font-medium">{currentUser?.email ?? "—"}</p>
+                ) : null}
+              </div>
+              {!editEmail && (
+                <button
+                  onClick={toggleEmail}
+                  className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"
+                >
+                  {t.changeEmail}
+                </button>
+              )}
+            </div>
+
+            {editEmail && (
+              <div className="mt-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t.newEmail}
+                  autoComplete="email"
+                  className="w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+                />
+                <p className="mt-2 text-xs text-muted">{t.emailChangeHint}</p>
+                <div className="mt-3 flex gap-3">
+                  <button
+                    onClick={toggleEmail}
+                    className="flex-1 rounded-3xl bg-surface2 px-6 py-3 text-center text-base font-semibold text-muted transition-all duration-150 active:scale-[.97]"
+                  >
+                    {t.cancel}
+                  </button>
+                  <button
+                    onClick={() => void saveEmail()}
+                    disabled={savingAcct}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-primary px-6 py-3 text-base font-semibold text-white shadow-soft transition-all duration-150 active:scale-[.97]"
+                  >
+                    {savingAcct ? (
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    ) : (
+                      <Check className="h-5 w-5" aria-hidden />
+                    )}
+                    {t.saveProfile}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Username */}
+          <div className="border-b border-line px-4 py-3.5">
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
+                <AtSign className="h-5 w-5" aria-hidden />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">{t.username}</p>
+                {!editUsername ? (
+                  <p className="truncate text-base font-medium">{currentUser?.username ?? "—"}</p>
+                ) : null}
+              </div>
+              {!editUsername && (
+                <button
+                  onClick={toggleUsername}
+                  className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"
+                >
+                  {t.changeUsername}
+                </button>
+              )}
+            </div>
+
+            {editUsername && (
+              <div className="mt-3">
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder={t.newUsername}
+                  autoComplete="username"
+                  maxLength={20}
+                  className="w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+                />
+                <div className="mt-3 flex gap-3">
+                  <button
+                    onClick={toggleUsername}
+                    className="flex-1 rounded-3xl bg-surface2 px-6 py-3 text-center text-base font-semibold text-muted transition-all duration-150 active:scale-[.97]"
+                  >
+                    {t.cancel}
+                  </button>
+                  <button
+                    onClick={() => void saveUsername()}
+                    disabled={savingAcct}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-primary px-6 py-3 text-base font-semibold text-white shadow-soft transition-all duration-150 active:scale-[.97]"
+                  >
+                    {savingAcct ? (
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    ) : (
+                      <Check className="h-5 w-5" aria-hidden />
+                    )}
+                    {t.saveProfile}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Parol */}
+          <div className="px-4 py-3.5">
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-muted">
+                <KeyRound className="h-5 w-5" aria-hidden />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">{t.password}</p>
+                {!editPassword ? (
+                  <p className="text-base font-medium">••••••••</p>
+                ) : null}
+              </div>
+              {!editPassword && (
+                <button
+                  onClick={togglePassword}
+                  className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"
+                >
+                  {t.changePassword}
+                </button>
+              )}
+            </div>
+
+            {editPassword && (
+              <div className="mt-3 flex flex-col gap-3">
+                <input
+                  type="password"
+                  value={pass}
+                  onChange={(e) => setPass(e.target.value)}
+                  placeholder={t.newPassword}
+                  autoComplete="new-password"
+                  className="w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+                />
+                <input
+                  type="password"
+                  value={pass2}
+                  onChange={(e) => setPass2(e.target.value)}
+                  placeholder={t.passwordAgain}
+                  autoComplete="new-password"
+                  className="w-full rounded-xl border border-line bg-surface2 px-3 py-2.5 text-base font-medium outline-none focus:border-primary"
+                />
+                <div className="flex gap-3">
+                  <button
+                    onClick={togglePassword}
+                    className="flex-1 rounded-3xl bg-surface2 px-6 py-3 text-center text-base font-semibold text-muted transition-all duration-150 active:scale-[.97]"
+                  >
+                    {t.cancel}
+                  </button>
+                  <button
+                    onClick={() => void savePassword()}
+                    disabled={savingAcct}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-primary px-6 py-3 text-base font-semibold text-white shadow-soft transition-all duration-150 active:scale-[.97]"
+                  >
+                    {savingAcct ? (
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    ) : (
+                      <Check className="h-5 w-5" aria-hidden />
+                    )}
+                    {t.saveProfile}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {(acctMsg || acctErr) && (
+            <div className="border-t border-line px-4 py-3">
+              {acctErr && <p className="text-sm font-medium text-danger">{acctErr}</p>}
+              {acctMsg && <p className="text-sm font-medium text-success">{acctMsg}</p>}
+            </div>
+          )}
         </Card>
 
         {/* links */}

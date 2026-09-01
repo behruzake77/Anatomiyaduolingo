@@ -37,7 +37,9 @@ export function LeaderboardScreen() {
   const xp = useAppStore((s) => s.xp);
   const battlesWon = useAppStore((s) => s.battlesWon);
   const battlesLost = useAppStore((s) => s.battlesLost);
+  const avatar = useAppStore((s) => s.avatar);
   const publishProfile = useAppStore((s) => s.publishProfile);
+  const openUserProfile = useAppStore((s) => s.openUserProfile);
 
   const [tab, setTab] = useState<RankKind>("week");
   const [liveRows, setLiveRows] = useState<RankEntry[] | null>(null);
@@ -61,6 +63,7 @@ export function LeaderboardScreen() {
       weekXp: myXp,
       wins: battlesWon,
       losses: battlesLost,
+      avatar,
     }).then((res) => {
       if (!alive) return;
       setLive(res.live);
@@ -69,10 +72,10 @@ export function LeaderboardScreen() {
     return () => {
       alive = false;
     };
-  }, [tab, currentUser, xp, myXp, battlesWon, battlesLost, publishProfile]);
+  }, [tab, currentUser, xp, myXp, battlesWon, battlesLost, avatar, publishProfile]);
 
   const useLive = live && (liveRows?.filter((r) => r.live && !r.isYou).length ?? 0) >= 1;
-  const board: Array<BoardEntry & { live?: boolean; wins?: number }> = useLive
+  const board: Array<BoardEntry & { live?: boolean; wins?: number; avatar?: string | null; id?: string }> = useLive
     ? (liveRows ?? []).map((r) => ({
         name: r.name,
         xp: r.xp,
@@ -80,9 +83,11 @@ export function LeaderboardScreen() {
         hue: r.hue,
         live: r.live,
         wins: r.wins,
+        avatar: r.avatar,
+        id: r.id,
       }))
     : tab === "week"
-      ? virtualBoard
+      ? virtualBoard.map((e) => (e.isYou ? { ...e, avatar } : e))
       : [
           {
             name: currentUser?.username ?? t.you,
@@ -91,6 +96,7 @@ export function LeaderboardScreen() {
             hue: 262,
             live: Boolean(currentUser),
             wins: battlesWon,
+            avatar,
           },
         ];
 
@@ -226,20 +232,27 @@ export function LeaderboardScreen() {
                 {tab === "week" && !useLive && r === board.length - DEMOTE_SLOTS && (
                   <ZoneLabel icon={<ArrowDown className="h-3.5 w-3.5" aria-hidden />} text={t.demotionZone} color="#ef4444" />
                 )}
-                <div
-                  className={`flex items-center gap-3 border-b border-line/60 px-4 py-2.5 last:border-b-0 ${
+                <button
+                  type="button"
+                  onClick={() => {
+                    const id = "id" in e ? e.id : undefined;
+                    if (id) openUserProfile({ id, username: e.name });
+                  }}
+                  className={`flex w-full items-center gap-3 border-b border-line/60 px-4 py-2.5 text-left last:border-b-0 ${
                     e.isYou ? "bg-primary/10" : ""
-                  }`}
+                  } ${"id" in e && e.id ? "transition hover:bg-surface2 active:scale-[.995]" : "cursor-default"}`}
                 >
                   <span className="w-6 shrink-0 text-center text-sm font-bold text-muted">
                     {r === 1 ? "🥇" : r === 2 ? "🥈" : r === 3 ? "🥉" : r}
                   </span>
-                  <span
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                    style={{ backgroundColor: e.isYou ? undefined : hueColor(e.hue) }}
-                  >
-                    {e.isYou ? "🙂" : e.name[0]}
-                  </span>
+                  <AvatarBadge
+                    name={e.name}
+                    hue={e.hue}
+                    isYou={e.isYou}
+                    avatar={e.avatar}
+                    size={32}
+                    t={t}
+                  />
                   <span className={`min-w-0 flex-1 truncate text-sm ${e.isYou ? "font-bold" : "font-medium"}`}>
                     {e.isYou ? `${e.name} · ${t.you}` : e.name}
                     {e.live && !e.isYou && (
@@ -256,7 +269,7 @@ export function LeaderboardScreen() {
                   <span className={`shrink-0 text-sm font-bold ${e.isYou ? "text-primary" : "text-muted"}`}>
                     {e.xp} {xpLabel}
                   </span>
-                </div>
+                </button>
               </div>
             );
           })}
@@ -271,6 +284,60 @@ export function LeaderboardScreen() {
         </p>
       </div>
     </Screen>
+  );
+}
+
+/** Avatar yoki (avtomatik rangli) bosh harf ko'rsatadi. */
+function AvatarBadge({
+  name,
+  hue,
+  isYou,
+  avatar,
+  size,
+  t,
+}: {
+  name: string;
+  hue: number;
+  isYou: boolean;
+  avatar?: string | null;
+  size: number;
+  t: Record<string, string>;
+}) {
+  const px = { width: size, height: size, fontSize: Math.max(10, size * 0.4) };
+  if (avatar) {
+    // emoji avatar
+    if (avatar.startsWith("emoji:")) {
+      return (
+        <span className="flex shrink-0 items-center justify-center rounded-full" style={px}>
+          <span style={{ fontSize: size * 0.55 }}>{avatar.slice(6)}</span>
+        </span>
+      );
+    }
+    // rangli avatar
+    if (avatar.startsWith("color:")) {
+      return (
+        <span
+          className="flex shrink-0 items-center justify-center rounded-full font-bold text-white"
+          style={{ ...px, backgroundColor: avatar.slice(6) }}
+        >
+          {name.slice(0, 1).toUpperCase()}
+        </span>
+      );
+    }
+    // rasm (data URL / http)
+    return (
+      <span className="flex shrink-0 items-center justify-center overflow-hidden rounded-full" style={px}>
+        <img src={avatar} alt={name} className="h-full w-full object-cover" loading="lazy" />
+      </span>
+    );
+  }
+  return (
+    <span
+      className="flex shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+      style={{ ...px, backgroundColor: isYou ? undefined : hueColor(hue) }}
+    >
+      {isYou ? "🙂" : name.slice(0, 1).toUpperCase()}
+    </span>
   );
 }
 
@@ -291,7 +358,7 @@ function PodiumSpot({
   place,
   t,
 }: {
-  entry: { name: string; xp: number; isYou: boolean; hue: number };
+  entry: { name: string; xp: number; isYou: boolean; hue: number; avatar?: string | null };
   place: 1 | 2 | 3;
   t: Record<string, string>;
 }) {
@@ -302,14 +369,14 @@ function PodiumSpot({
   return (
     <div className={`flex flex-col items-center ${w}`}>
       <span className="text-lg">{medal}</span>
-      <span
-        className={`mt-1 flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white ${
-          entry.isYou ? "bg-primary" : ""
-        }`}
-        style={{ backgroundColor: entry.isYou ? undefined : hueColor(entry.hue) }}
-      >
-        {entry.isYou ? "🙂" : entry.name[0]}
-      </span>
+      <AvatarBadge
+        name={entry.name}
+        hue={entry.hue}
+        isYou={entry.isYou}
+        avatar={entry.avatar}
+        size={36}
+        t={t}
+      />
       <span className="mt-1 w-full truncate px-1 text-center text-xs font-semibold">
         {entry.isYou ? t.you : entry.name}
       </span>

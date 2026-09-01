@@ -571,3 +571,33 @@ export async function updateBirthYear(year: number): Promise<AuthResult> {
   notify({ ...user, birthYear: y });
   return { success: true };
 }
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Joriy foydalanuvchi emailini o'zgartiradi.
+ * Supabase sozlamasiga qarab yangi emailga tasdiqlash havolasi / kod yuborilishi
+ * mumkin. O'zgartirish muvaffaqiyatli bo'lsa, joriy sessiya ma'lumotlari yangilanadi.
+ */
+export async function updateEmail(email: string): Promise<AuthResult> {
+  const user = getCurrentUser();
+  if (!user) return { success: false, error: "Foydalanuvchi topilmadi" };
+  const clean = email.trim().toLowerCase();
+  if (!EMAIL_RE.test(clean)) {
+    return { success: false, error: "Email manzili noto'g'ri." };
+  }
+  if (clean === user.email) return { success: true };
+  if (!isSupabaseConfigured) {
+    return { success: false, error: "Supabase sozlanmagan" };
+  }
+  try {
+    const { error } = await supabase.auth.updateUser({ email: clean });
+    if (error) return { success: false, error: mapAuthError(error.message) };
+    // Email tasdiqlash yoqilgan bo'lsa, yangi email keyingi tasdiqlashdan keyin
+    // kuchga kiradi — foydalanuvchiga bu haqida xabar ko'rsatamiz.
+    notify({ ...user, email: clean });
+    return { success: true };
+  } catch {
+    return { success: false, error: "Emailni o'zgartirishda xatolik" };
+  }
+}

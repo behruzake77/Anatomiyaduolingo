@@ -1,6 +1,7 @@
 /**
  * Talab/taklif va savol xatoliklari — Supabase inbox + mahalliy zaxira.
- * Admin: profiles.is_admin, VITE_ADMIN_EMAILS, VITE_ADMIN_USERNAMES.
+ * Admin: profiles.is_admin, VITE_ADMIN_EMAILS, VITE_ADMIN_USERNAMES,
+ * va "behruz" / "behruzake77" username'lar avtomatik admin hisoblanadi.
  */
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { AuthUser } from "@/lib/auth";
@@ -54,7 +55,7 @@ function adminEmails(): string[] {
 function adminUsernames(): string[] {
   const env = import.meta.env as Record<string, string | undefined>;
   const fromEnv = splitEnv(env.VITE_ADMIN_USERNAMES);
-  return [...new Set([...fromEnv, "behruzake77"])];
+  return [...new Set([...fromEnv, "behruzake77", "behruz"])];
 }
 
 export function isAdminEmail(email?: string | null): boolean {
