@@ -5,6 +5,7 @@ import { BookOpen, BookMarked, Download, ChevronRight, ExternalLink, Loader2, Fi
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 import { BOOKS, bookUrl, isEmbeddedWebView, type Book } from "@/data/books";
 import { useStrings } from "@/i18n";
 
@@ -28,12 +29,12 @@ export function LibraryScreen() {
 
   return (
     <Screen padded={false}>
-      <TopBar title={t.library} />
+      <TopBar title={t.library} right={<Sticker3D src="/img/3d/lessons-book.webp" size={32} className="shrink-0" />} />
       <div className="px-5 pb-[calc(5rem+env(safe-area-inset-bottom))]">
         <p className="text-sm text-muted">{t.librarySubtitle}</p>
 
         {/* Darslik */}
-        <SectionTitle label={t.textbook} />
+        <SectionTitle label={t.textbook} sticker="/img/3d/lessons-book.webp" />
         <div className="mt-3 flex flex-col gap-3">
           {BOOKS.filter((b) => b.kind === "textbook").map((b) => (
             <BookRow key={b.id} book={b} onOpen={() => setOpen(b)} />
@@ -41,7 +42,7 @@ export function LibraryScreen() {
         </div>
 
         {/* Atlas */}
-        <SectionTitle label={t.atlas} className="mt-6" />
+        <SectionTitle label={t.atlas} sticker="/img/3d/bone-3d.webp" className="mt-6" />
         <div className="mt-3 flex flex-col gap-3">
           {BOOKS.filter((b) => b.kind === "atlas").map((b) => (
             <BookRow key={b.id} book={b} onOpen={() => setOpen(b)} />
@@ -65,8 +66,21 @@ function isPdfIframeUnsupported(): boolean {
   return isIOS || isAndroidWebView;
 }
 
-function SectionTitle({ label, className = "" }: { label: string; className?: string }) {
-  return <h2 className={`text-lg font-semibold ${className}`}>{label}</h2>;
+function SectionTitle({
+  label,
+  sticker,
+  className = "",
+}: {
+  label: string;
+  sticker?: string;
+  className?: string;
+}) {
+  return (
+    <h2 className={`flex items-center gap-2 text-lg font-semibold ${className}`}>
+      {sticker && <Sticker3D src={sticker} size={26} className="shrink-0" />}
+      <span className="min-w-0">{label}</span>
+    </h2>
+  );
 }
 
 function BookRow({ book, onOpen }: { book: Book; onOpen: () => void }) {

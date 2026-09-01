@@ -37,6 +37,7 @@ import { Card } from "@/components/ui/Card";
 import { Donut } from "@/components/ui/Donut";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Badge } from "@/components/ui/Badge";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier, xpToNextLevel } from "@/utils/levels";
 import { useStrings, TIER_KEY, fmt } from "@/i18n";
@@ -385,7 +386,7 @@ export function ProfileScreen() {
       {/* ============ ACHIEVEMENTS (ochilgan + eng yaqin) ============ */}
       <div className="mt-6">
         <h2 className="flex items-center gap-2 text-base font-bold">
-          <Trophy className="h-5 w-5 text-primary" aria-hidden />
+          <Sticker3D src="/img/3d/trophy-3d.webp" size={28} className="shrink-0" />
           {t.achievements}
           <span className="ml-auto rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
             {unlockedBadges.length}/{ACHIEVEMENTS.length}
