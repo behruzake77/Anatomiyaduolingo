@@ -304,7 +304,13 @@ export const useAppStore = create<AppState>()(
         const applyUser = async (user: AuthUser | null) => {
           if (user) {
             const wasLoggedOut = !get().currentUser;
-            const dbProgress = wasLoggedOut ? await loadProgressFromSupabase(user.id) : null;
+            // FIX: Add 2s timeout to prevent blocking on slow networks
+            const dbProgress = wasLoggedOut
+              ? await Promise.race([
+                  loadProgressFromSupabase(user.id),
+                  new Promise<null>((r) => setTimeout(() => r(null), 2000)),
+                ])
+              : null;
             const s = get();
             const enterApp = s.screen === "login";
             const nextScreen = s.onboardingDone ? "dashboard" : "onboarding";
@@ -330,7 +336,11 @@ export const useAppStore = create<AppState>()(
           onAuthChange((user) => {
             void applyUser(user);
           });
-          await libInitAuth();
+          // FIX: Add 3s timeout to libInitAuth to prevent blocking
+          await Promise.race([
+            libInitAuth(),
+            new Promise<void>((r) => setTimeout(() => r(), 3000)),
+          ]);
         } else {
           set({ isLoading: false });
         }
