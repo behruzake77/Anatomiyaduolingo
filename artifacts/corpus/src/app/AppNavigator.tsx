@@ -160,63 +160,95 @@ export function AppNavigator() {
   const lowEnd = isLowEndDevice();
 
   useEffect(() => {
-    applyDeviceClass();
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-  }, [darkMode]);
-
-  useEffect(() => {
-    initAuth();
-  }, [initAuth]);
-
-  useEffect(() => {
-    useAppStore.getState().syncLeague();
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const target = new URLSearchParams(window.location.search).get("screen");
-    const safe = [
-      "topics",
-      "library",
-      "leaderboard",
-      "profile",
-      "glossary",
-      "exam",
-      "battle",
-      "kahoot",
-    ];
-    if (target && safe.includes(target)) {
-      useAppStore.getState().navigate(target as ScreenId);
+    try {
+      applyDeviceClass();
+    } catch (err) {
+      console.error("Device class error:", err);
     }
   }, []);
 
   useEffect(() => {
-    const w = window as unknown as { __corpusBack?: () => string };
-    w.__corpusBack = () => {
-      const s = useAppStore.getState();
-      if (s.screen === "splash") return "false";
-      if (s.history.length > 0) {
-        s.back();
-        return "true";
-      }
-      if (s.screen !== "dashboard") {
-        s.setTab("home");
-        return "true";
-      }
-      return "false";
-    };
-    return () => {
-      delete w.__corpusBack;
-    };
+    try {
+      document.documentElement.classList.toggle("dark", darkMode);
+    } catch (err) {
+      console.error("Dark mode toggle error:", err);
+    }
+  }, [darkMode]);
+
+  // Initialize auth with timeout to prevent blocking
+  useEffect(() => {
+    const authTimeout = setTimeout(() => {
+      initAuth().catch((err) => {
+        console.error("Auth initialization error:", err);
+        // Continue anyway - use localStorage fallback
+      });
+    }, 100);
+
+    return () => clearTimeout(authTimeout);
+  }, [initAuth]);
+
+  useEffect(() => {
+    try {
+      useAppStore.getState().syncLeague();
+    } catch (err) {
+      console.error("League sync error:", err);
+    }
   }, []);
 
   useEffect(() => {
-    if (screenId in TAB_SCREEN || TABS.includes(screenId)) {
-      const found = (Object.keys(TAB_SCREEN) as Tab[]).find((t) => TAB_SCREEN[t] === screenId);
-      if (found && found !== tab) useAppStore.setState({ tab: found });
+    try {
+      if (typeof window === "undefined") return;
+      const target = new URLSearchParams(window.location.search).get("screen");
+      const safe = [
+        "topics",
+        "library",
+        "leaderboard",
+        "profile",
+        "glossary",
+        "exam",
+        "battle",
+        "kahoot",
+      ];
+      if (target && safe.includes(target)) {
+        useAppStore.getState().navigate(target as ScreenId);
+      }
+    } catch (err) {
+      console.error("URL param navigation error:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const w = window as unknown as { __corpusBack?: () => string };
+      w.__corpusBack = () => {
+        const s = useAppStore.getState();
+        if (s.screen === "splash") return "false";
+        if (s.history.length > 0) {
+          s.back();
+          return "true";
+        }
+        if (s.screen !== "dashboard") {
+          s.setTab("home");
+          return "true";
+        }
+        return "false";
+      };
+      return () => {
+        delete w.__corpusBack;
+      };
+    } catch (err) {
+      console.error("Back button setup error:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (screenId in TAB_SCREEN || TABS.includes(screenId)) {
+        const found = (Object.keys(TAB_SCREEN) as Tab[]).find((t) => TAB_SCREEN[t] === screenId);
+        if (found && found !== tab) useAppStore.setState({ tab: found });
+      }
+    } catch (err) {
+      console.error("Tab sync error:", err);
     }
   }, [screenId, tab]);
 
