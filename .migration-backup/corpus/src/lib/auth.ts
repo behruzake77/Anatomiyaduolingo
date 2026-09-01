@@ -378,3 +378,84 @@ export async function resetPassword(email: string): Promise<AuthResult> {
     return { success: false, error: "Parol tiklashda xatolik" };
   }
 }
+
+// NEW: Update username in profiles table
+export async function updateUsername(newUsername: string): Promise<AuthResult> {
+  const user = getCurrentUser();
+  if (!user) return { success: false, error: "Foydalanuvchi topilmadi" };
+
+  try {
+    const { error } = await supabase
+      .from("profiles")
+      .update({ username: newUsername.trim() })
+      .eq("id", user.id);
+
+    if (error) {
+      return { success: false, error: mapAuthError(error.message) };
+    }
+
+    // Update user metadata in auth
+    const { error: authError } = await supabase.auth.updateUser({
+      data: { username: newUsername.trim() },
+    });
+
+    if (authError) {
+      return { success: false, error: mapAuthError(authError.message) };
+    }
+
+    // Notify listeners
+    notify({
+      ...user,
+      username: newUsername.trim(),
+    });
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Username o'zgartirishda xatolik" };
+  }
+}
+
+// NEW: Update email (requires OTP verification)
+export async function updateEmail(newEmail: string): Promise<AuthResult> {
+  const user = getCurrentUser();
+  if (!user) return { success: false, error: "Foydalanuvchi topilmadi" };
+
+  try {
+    const cleanEmail = newEmail.trim().toLowerCase();
+    const { error } = await supabase.auth.updateUser({
+      email: cleanEmail,
+    });
+
+    if (error) {
+      return { success: false, error: mapAuthError(error.message) };
+    }
+
+    return { success: true, needsVerification: true };
+  } catch {
+    return { success: false, error: "Emailni o'zgartirishda xatolik" };
+  }
+}
+
+// NEW: Update password
+export async function updatePassword(newPassword: string): Promise<AuthResult> {
+  const user = getCurrentUser();
+  if (!user) return { success: false, error: "Foydalanuvchi topilmadi" };
+
+  try {
+    if (newPassword.length < 6) {
+      return { success: false, error: "Parol kamida 6 ta belgidan iborat bo'lishi kerak" };
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) {
+      return { success: false, error: mapAuthError(error.message) };
+    }
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Parol o'zgartirishda xatolik" };
+  }
+}
