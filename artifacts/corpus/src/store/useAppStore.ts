@@ -63,7 +63,8 @@ export type ScreenId =
   | "admin"
   | "feedback"
   | "inbox"
-  | "quiz-studio";
+  | "quiz-studio"
+  | "user-profile";
 
 export type Tab = "home" | "learn" | "library" | "profile";
 
@@ -170,6 +171,7 @@ async function saveProgressToSupabase(userId: string, progress: Partial<typeof f
     league_index: progress.leagueIndex ?? 0,
     battles_won: progress.battlesWon ?? 0,
     battles_lost: progress.battlesLost ?? 0,
+    avatar: progress.avatar ?? null,
   };
 
   try {
@@ -202,6 +204,7 @@ async function loadProgressFromSupabase(userId: string) {
       battlesWon: data.battles_won ?? 0,
       battlesLost: data.battles_lost ?? 0,
       isAdmin: Boolean(data.is_admin),
+      avatar: (data.avatar as string | null) ?? null,
     };
   } catch (err) {
     console.error('Supabase load error:', err);
@@ -222,6 +225,10 @@ interface AppState {
   currentUser: AuthUser | null;
   isAdmin: boolean;
   isLoading: boolean;
+  /** Boshqa foydalanuvchi profilini ko'rish (user-profile ekrani). */
+  viewProfileUser: { id: string; username: string } | null;
+  openUserProfile: (user: { id: string; username: string }) => void;
+  closeUserProfile: () => void;
   register: (email: string, password: string, username: string, birthYear?: number) => Promise<AuthResult>;
   login: (email: string, password: string) => Promise<AuthResult>;
   verifyOtp: (email: string, token: string) => Promise<AuthResult>;
@@ -331,6 +338,13 @@ export const useAppStore = create<AppState>()(
       isAdmin: false,
       isLoading: true,
 
+      viewProfileUser: null,
+      openUserProfile: (user) => {
+        set({ viewProfileUser: user });
+        get().navigate("user-profile");
+      },
+      closeUserProfile: () => set({ viewProfileUser: null }),
+
       initAuth: async () => {
         if (!isSupabaseConfigured) {
           set({ isLoading: false });
@@ -433,7 +447,16 @@ export const useAppStore = create<AppState>()(
       setLanguage: (lang) => set((s) => ({ settings: { ...s.settings, language: lang } })),
 
       avatar: null,
-      setAvatar: (dataUrl) => set({ avatar: dataUrl }),
+      setAvatar: (dataUrl) => {
+        set({ avatar: dataUrl });
+        const u = get().currentUser;
+        if (u && isSupabaseConfigured) {
+          // Reytinglarda avatar ko'rinishi uchun Supabase'ga yozamiz.
+          void supabase.from("profiles").update({ avatar: dataUrl }).eq("id", u.id).then(({ error }) => {
+            if (error) console.error("Avatar save error:", error);
+          });
+        }
+      },
       infoSection: "about",
       openInfo: (section) => {
         set({ infoSection: section });

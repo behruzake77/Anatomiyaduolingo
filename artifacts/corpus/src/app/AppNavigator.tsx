@@ -96,6 +96,9 @@ const InboxScreen = screen(() =>
 const QuizStudioScreen = screen(() =>
   import("@/screens/QuizStudioScreen").then((m) => ({ default: m.QuizStudioScreen })),
 );
+const UserProfileScreen = screen(() =>
+  import("@/screens/UserProfileScreen").then((m) => ({ default: m.UserProfileScreen })),
+);
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -127,6 +130,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   feedback: FeedbackScreen,
   inbox: InboxScreen,
   "quiz-studio": QuizStudioScreen,
+  "user-profile": UserProfileScreen,
 };
 
 const TABS: ScreenId[] = ["dashboard", "topics", "library", "profile"];

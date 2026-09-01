@@ -39,6 +39,7 @@ export interface RankEntry {
   streak?: number;
   wins?: number;
   losses?: number;
+  avatar?: string | null;
 }
 
 export type RankKind = "week" | "all" | "arena";
@@ -86,7 +87,7 @@ export async function fetchOnlineCount(): Promise<number> {
 
 export async function fetchRankings(
   kind: RankKind,
-  you: { id?: string; name: string; xp: number; weekXp: number; wins: number; losses: number },
+  you: { id?: string; name: string; xp: number; weekXp: number; wins: number; losses: number; avatar?: string | null },
 ): Promise<{ live: boolean; rows: RankEntry[] }> {
   const youEntry = (xp: number): RankEntry => ({
     id: you.id,
@@ -97,6 +98,7 @@ export async function fetchRankings(
     live: Boolean(you.id),
     wins: you.wins,
     losses: you.losses,
+    avatar: you.avatar ?? null,
   });
 
   if (!isSupabaseConfigured) {
@@ -109,14 +111,14 @@ export async function fetchRankings(
   try {
     let q = supabase
       .from("profiles")
-      .select("id, username, xp, streak, week_xp, week_key, battles_won, battles_lost")
+      .select("id, username, xp, streak, week_xp, week_key, battles_won, battles_lost, avatar")
       .order(orderCol, { ascending: false })
       .limit(40);
 
     const { data, error } = await q;
     if (error || !data) {
       // Eski schema (week_xp yo'q) — faqat xp.
-      const fallback = await supabase.from("profiles").select("id, username, xp, streak").order("xp", { ascending: false }).limit(40);
+      const fallback = await supabase.from("profiles").select("id, username, xp, streak, avatar").order("xp", { ascending: false }).limit(40);
       if (fallback.error || !fallback.data) return { live: false, rows: [youEntry(you.xp)] };
       const rows = mergeYou(
         fallback.data.map((p) => ({
@@ -127,6 +129,7 @@ export async function fetchRankings(
           hue: hueFromId(String(p.id)),
           live: true,
           streak: Number(p.streak ?? 0),
+          avatar: asAvatar(p as Record<string, unknown>, String(p.id)),
         })),
         youEntry(you.xp),
       );
@@ -152,6 +155,7 @@ export async function fetchRankings(
           streak: Number(p.streak ?? 0),
           wins: Number(p.battles_won ?? 0),
           losses: Number(p.battles_lost ?? 0),
+          avatar: asAvatar(p as Record<string, unknown>, String(p.id)),
         };
       });
 
@@ -172,6 +176,11 @@ function hueFromId(id: string): number {
   let h = 0;
   for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
   return h % 360;
+}
+
+function asAvatar(row: Record<string, unknown>, id: string): string | null {
+  const a = row.avatar as string | null | undefined;
+  return a || null;
 }
 
 function currentWeekKey(): string {

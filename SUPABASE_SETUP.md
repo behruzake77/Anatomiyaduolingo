@@ -47,6 +47,13 @@ Agar `schema.sql` avval ishlatilgan bo'lsa, qo'shimchalarni yuguring:
   where id in (select id from auth.users where email = 'SIZNING_EMAIL');
   ```
   Yoki `.env.local`: `VITE_ADMIN_EMAILS=siz@email.com` / `VITE_ADMIN_USERNAMES=login`.
+  > **Eslatma:** `.env` bo'lmasa ham `behruz` yoki `behruzake77` usernameli akkaunt
+  > avtomatik admin hisoblanadi. Admin panelga kirish uchun maxfiy PIN **1030**
+  > kiritiladi (bu kod tarafidagi qo'shimcha himoya qatlami, `lib/admin.ts` da).
+- `artifacts/corpus/supabase/admin_messages.sql` — admin panel kengaytmasi:
+  - `profiles.avatar` ustuni (reytinglarda avatar ko'rinishi uchun).
+  - `admin_messages` jadvali (admin ↔ foydalanuvchi yozishmalar / chat).
+  Buni ham Supabase SQL Editor'da bir marta ishga tushiring.
 - `artifacts/corpus/supabase/broadcasts.sql` — admin umumiy xabarlari (bosh sahifadagi qo'ng'iroq). Barcha foydalanuvchilarga yuborish uchun `profiles.is_admin = true` kerak.
 - `artifacts/corpus/supabase/user_quizzes.sql` — foydalanuvchi testlari (Kahoot: o'zi tuzadi, jamoa o'tkazadi).
 - `artifacts/corpus/supabase/profile_username.sql` — username unique + tug'ilgan yil.
