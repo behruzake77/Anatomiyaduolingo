@@ -47,10 +47,12 @@ export function Button({
       disabled={disabled || loading}
       {...rest}
     >
-      {loading && (
-        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-      )}
-      {children}
+      <span className="ui-button__content">
+        {loading && (
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+        )}
+        {children}
+      </span>
     </button>
   );
 }
