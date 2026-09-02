@@ -37,7 +37,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex select-none items-center justify-center gap-2 rounded-3xl font-semibold transition-all duration-150 active:scale-[.97] disabled:pointer-events-none disabled:opacity-50",
+        "ui-button relative inline-flex select-none items-center justify-center gap-2 overflow-hidden rounded-[var(--button-radius,1.5rem)] font-semibold transition-all duration-150 active:scale-[.97] disabled:pointer-events-none disabled:opacity-50",
         VARIANTS[variant],
         SIZES[size],
         className,
