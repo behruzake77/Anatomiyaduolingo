@@ -11,16 +11,43 @@
 :root[data-button-style="rounded"] { --button-radius:16px; }
 :root[data-button-style="square"] { --button-radius:8px; }
 
-/* Uiverse-inspired micro-interaction: a restrained light sweep on primary actions. */
+/* Uiverse-inspired action system: animated edge, gradient depth and shine.
+   It stays on the shared Button component, so every feature gets the same polish. */
+.ui-button {
+  isolation: isolate;
+  transform: translateZ(0);
+}
+.ui-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(120deg, rgba(255,255,255,.52), transparent 35%, rgba(255,255,255,.22));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: .75;
+  pointer-events: none;
+}
 .ui-button::after {
   content: "";
   position: absolute;
-  inset: 0 auto 0 -55%;
-  width: 35%;
+  inset: 0 auto 0 -60%;
+  z-index: 0;
+  width: 42%;
   transform: skewX(-18deg);
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.34), transparent);
   pointer-events: none;
-  transition: left .55s ease;
+  transition: left .65s cubic-bezier(.22,1,.36,1);
 }
-.ui-button:hover::after, .ui-button:focus-visible::after { left: 120%; }
+.ui-button:hover::after, .ui-button:focus-visible::after { left: 125%; }
+.ui-button[data-variant="primary"] {
+  background-image: linear-gradient(135deg, var(--theme-primary, #6C5CE7), var(--theme-primary-deep, #5A4BD1));
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-primary, #6C5CE7) 28%, transparent);
+}
+.ui-button[data-variant="primary"]:hover { filter: saturate(1.08) brightness(1.04); box-shadow: 0 11px 27px color-mix(in srgb, var(--theme-primary, #6C5CE7) 38%, transparent); }
+.ui-button[data-variant="secondary"] { border: 1px solid color-mix(in srgb, var(--theme-primary, #6C5CE7) 25%, transparent); }
+.ui-button[data-variant="outline"]:hover { border-color: var(--theme-primary, #6C5CE7); color: var(--theme-primary, #6C5CE7); box-shadow: 0 5px 16px color-mix(in srgb, var(--theme-primary, #6C5CE7) 14%, transparent); }
 .ui-button > * { position: relative; z-index: 1; }
