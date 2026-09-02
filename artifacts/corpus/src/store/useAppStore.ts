@@ -123,6 +123,7 @@ const freshProgress = {
     language: "uz",
   } as Settings,
   avatar: null as string | null,
+  kahootName: "" as string,
   isPremium: false,
 };
 
@@ -276,6 +277,9 @@ interface AppState {
 
   avatar: string | null;
   setAvatar: (dataUrl: string | null) => void;
+  /** Kahoot o'yinlarida ko'rinadigan ism (bo'sh bo'lsa — username ishlatiladi) */
+  kahootName: string;
+  setKahootName: (name: string) => void;
   infoSection: InfoSection;
   openInfo: (section: InfoSection) => void;
 
@@ -456,6 +460,10 @@ export const useAppStore = create<AppState>()(
             if (error) console.error("Avatar save error:", error);
           });
         }
+      },
+      kahootName: "",
+      setKahootName: (name) => {
+        set({ kahootName: name.trim().slice(0, 20) });
       },
       infoSection: "about",
       openInfo: (section) => {

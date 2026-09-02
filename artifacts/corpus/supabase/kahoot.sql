@@ -39,6 +39,10 @@ create unique index if not exists kahoot_players_user_uniq
 
 create index if not exists kahoot_players_game_idx on public.kahoot_players (game_id);
 
+-- O'yinchi avatar (xona ro'yxatida ko'rinadi). Eski o'rnatishlar uchun:
+alter table public.kahoot_players
+  add column if not exists avatar text;
+
 alter table public.kahoot_games enable row level security;
 alter table public.kahoot_players enable row level security;
 
