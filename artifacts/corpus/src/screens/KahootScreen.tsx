@@ -926,21 +926,27 @@ export function KahootScreen() {
             myChoice={selected ?? myAns?.choice ?? null}
           />
           <div className="mt-auto flex flex-col items-center pt-5 text-center">
-            <ReactionSticker
-              ok={Boolean(myAns?.correct || selected === item.q.answer)}
-              seed={`${game?.id ?? "k"}-${qIndex}`}
-              size="lg"
-              label={myAns?.correct || selected === item.q.answer ? t.kahootCorrect : t.kahootWrong}
-            />
-            {myAns?.correct || selected === item.q.answer ? (
-              <p className="mt-1 text-2xl font-black text-[#7CFC98]">{t.kahootCorrect}</p>
+            {isModerator ? (
+              <p className="max-w-xs text-sm font-bold text-white/70">{t.kahootHostWatching}</p>
             ) : (
-              <p className="mt-1 text-2xl font-black text-[#FF8A8A]">{t.kahootWrong}</p>
+              <>
+                <ReactionSticker
+                  ok={Boolean(myAns?.correct || selected === item.q.answer)}
+                  seed={`${game?.id ?? "k"}-${qIndex}`}
+                  size="lg"
+                  label={myAns?.correct || selected === item.q.answer ? t.kahootCorrect : t.kahootWrong}
+                />
+                {myAns?.correct || selected === item.q.answer ? (
+                  <p className="mt-1 text-2xl font-black text-[#7CFC98]">{t.kahootCorrect}</p>
+                ) : (
+                  <p className="mt-1 text-2xl font-black text-[#FF8A8A]">{t.kahootWrong}</p>
+                )}
+                <p className="mt-1 text-lg font-bold">
+                  {fmt(t.kahootPts, { n: myAns?.pts ?? 0 })}
+                  {(me?.streak ?? 0) >= 2 && ` · ${fmt(t.kahootStreakN, { n: me?.streak ?? 0 })}`}
+                </p>
+              </>
             )}
-            <p className="mt-1 text-lg font-bold">
-              {fmt(t.kahootPts, { n: myAns?.pts ?? 0 })}
-              {(me?.streak ?? 0) >= 2 && ` · ${fmt(t.kahootStreakN, { n: me?.streak ?? 0 })}`}
-            </p>
             <p className="mt-1 rounded-full bg-white/15 px-3 py-1 text-sm font-bold text-white/90">
               {fmt(t.kahootCorrectAns, { n: String.fromCharCode(65 + (item.q.answer ?? 0)) })}
             </p>
