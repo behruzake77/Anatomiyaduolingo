@@ -13,6 +13,8 @@ export interface Question {
   options?: string[];
   answer?: number;
   image?: string;
+  /** Foydalanuvchi testlari: variantlar rasmi (Kahoot "rasmni tanlang" turi) */
+  optionImages?: string[];
   pairs?: [string, string][];
   answerText?: string;
   extra?: string[];

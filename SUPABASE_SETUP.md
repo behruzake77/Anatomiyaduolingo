@@ -41,6 +41,9 @@ har bir yangi foydalanuvchi uchun avtomatik profil yaratuvchi trigger-ni o'rnata
 Agar `schema.sql` avval ishlatilgan bo'lsa, qo'shimchalarni yuguring:
 - `artifacts/corpus/supabase/competition.sql` — jonli reyting ustunlari + 1ga-1 bellashuv jadvali.
 - `artifacts/corpus/supabase/kahoot.sql` — Kahoot sinf o'yini (PIN lobby, o'yinchilar, realtime).
+  - **Yangi:** o'yin boshlangandan keyin ham PIN bilan qo'shilish mumkin (faqat tugagan xonalar yopilgan).
+    Agar `kahoot.sql` ni oldin ishlatgan bo'lsangiz, **qayta ishga tushiring** (idempotent, hech narsani buzmaydi) —
+    shunda "boshlanib bo'lgan" o'yinga kirish ishlashini boshlaydi.
 - `artifacts/corpus/supabase/reports.sql` — talab/taklif va savol xatoliklari (admin inbox). O'zingizni admin qilish:
   ```sql
   update public.profiles set is_admin = true

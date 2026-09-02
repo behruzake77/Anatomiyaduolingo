@@ -19,6 +19,7 @@ import {
   Crown,
   Play,
   Pencil,
+  SkipForward,
 } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Button } from "@/components/ui/Button";
@@ -85,6 +86,8 @@ export function KahootScreen() {
   const [meId, setMeId] = useState<string>("");
   const [items, setItems] = useState<PoolItem[]>([]);
   const [pinInput, setPinInput] = useState("");
+  const [joinHint, setJoinHint] = useState("");
+  const [lateJoin, setLateJoin] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -133,6 +136,7 @@ export function KahootScreen() {
     setPhase("hub");
     setPractice(false);
     setError("");
+    setLateJoin(false);
     recorded.current = false;
   };
 
@@ -242,6 +246,7 @@ export function KahootScreen() {
 
   const doJoin = async (rawPin = pinInput) => {
     setError("");
+    setJoinHint("");
     if (!currentUser || !isKahootOnline()) {
       setError(t.kahootNeedLogin);
       return;
@@ -249,8 +254,10 @@ export function KahootScreen() {
     setBusy(true);
     const joined = await joinKahootByPin(currentUser, rawPin);
     setBusy(false);
-    if (!joined) {
-      setError(t.kahootBadPin);
+    if (!joined.ok) {
+      // Xona topilmadi — faqat haqiqiy mavjud xonalarga kiriladi
+      setError(joined.reason === "full" ? t.kahootFull : t.kahootNoRoom);
+      setJoinHint(joined.reason === "full" ? "" : t.kahootNoRoomHint);
       return;
     }
     setPractice(false);
@@ -260,7 +267,13 @@ export function KahootScreen() {
     const list = await listKahootPlayers(joined.game.id);
     setPlayers(list.length ? list : [joined.me]);
     recorded.current = false;
-    setPhase("lobby");
+    if (joined.inProgress) {
+      // O'yin allaqachon boshlangan — o'yin oqimiga to'g'ridan-to'g'ri tushamiz
+      setLateJoin(true);
+      setPhase("play");
+    } else {
+      setPhase("lobby");
+    }
   };
 
   const patch = useCallback(async (next: Partial<KahootGame>) => {
@@ -311,6 +324,10 @@ export function KahootScreen() {
     };
   }, [game?.id, practice]);
 
+  // Joriy savolga javob bergan o'yinchilar soni
+  const answeredN = players.filter((p) => p.answers.some((a) => a.i === qIndex)).length;
+  const allAnswered = players.length > 0 && answeredN >= players.length;
+
   // Host auto-advance
   useEffect(() => {
     if (phase !== "play" || !isHost) return;
@@ -324,10 +341,13 @@ export function KahootScreen() {
       return () => clearTimeout(id);
     }
     if (status === "question") {
+      // Vaqt tugasa yoki HAMMA javob bersa — keyingiga o'tamiz
+      const fullMs = (g.q_seconds + 0.4) * 1000;
+      const delay = allAnswered ? 900 : fullMs;
       const id = setTimeout(() => {
         if (gameRef.current?.status !== "question") return;
         void patch({ status: "reveal" });
-      }, (g.q_seconds + 0.4) * 1000);
+      }, delay);
       return () => clearTimeout(id);
     }
     if (status === "reveal") {
@@ -348,7 +368,7 @@ export function KahootScreen() {
       return () => clearTimeout(id);
     }
     return undefined;
-  }, [phase, isHost, status, qIndex, patch]);
+  }, [phase, isHost, status, qIndex, allAnswered, patch]);
 
   // Countdown number
   useEffect(() => {
@@ -609,7 +629,12 @@ export function KahootScreen() {
           className="mt-3 w-full rounded-2xl border-2 border-line bg-surface px-4 py-5 text-center font-mono text-4xl font-extrabold tracking-[0.35em] outline-none focus:border-[#1368CE]"
           placeholder="••••••"
         />
-        {error && <p className="mt-3 text-center text-sm font-semibold text-danger">{error}</p>}
+        {error && (
+          <div className="mt-4 rounded-2xl border border-danger/30 bg-danger/10 px-4 py-3 text-center">
+            <p className="text-sm font-bold text-danger">{error}</p>
+            {joinHint && <p className="mt-1 text-xs text-muted">{joinHint}</p>}
+          </div>
+        )}
         <Button className="mt-6 w-full" size="lg" loading={busy} disabled={pinInput.length < 6} onClick={() => void doJoin()}>
           {t.kahootJoinCta}
         </Button>
@@ -689,7 +714,6 @@ export function KahootScreen() {
         : "bg-[#46178F]";
 
   const myAns = me?.answers.find((a) => a.i === qIndex);
-  const answeredN = players.filter((p) => p.answers.some((a) => a.i === qIndex)).length;
 
   return (
     <div className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto text-white", playBg)}>
@@ -723,10 +747,19 @@ export function KahootScreen() {
         )}
       </header>
 
+      {lateJoin && (status === "countdown" || status === "question") && (
+        <div className="mx-5 mt-3 rounded-2xl bg-white/20 px-4 py-2.5 text-center text-sm font-bold backdrop-blur">
+          {t.kahootJoinedInProgress}
+        </div>
+      )}
+
       {status === "countdown" && (
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-5 text-center">
           <p className="text-sm font-bold uppercase tracking-widest text-white/70">{t.kahootGetReady}</p>
           {item && <h2 className="max-w-sm text-xl font-bold leading-snug">{item.q.prompt}</h2>}
+          {item?.q.image && (
+            <img src={item.q.image} alt="" className="max-h-28 rounded-xl object-contain" />
+          )}
           <motion.p
             key={cd}
             initial={{ scale: 0.4, opacity: 0 }}
@@ -751,37 +784,49 @@ export function KahootScreen() {
           <h1 className="mt-2 text-xl font-bold leading-snug">{item.q.prompt}</h1>
           {item.q.image && (
             <div className="mt-3 overflow-hidden rounded-2xl bg-white">
-              <img src={item.q.image} alt="" className="mx-auto max-h-36 object-contain" />
+              <img src={item.q.image} alt="" className="mx-auto max-h-40 object-contain" />
             </div>
           )}
+          <div className="mt-3 flex items-center justify-between gap-2">
+            <span
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold",
+                allAnswered ? "bg-[#26890C] text-white" : "bg-white/15 text-white/85",
+              )}
+            >
+              <Users className="h-3.5 w-3.5" aria-hidden />
+              {fmt(t.kahootAnsweredCount, { a: answeredN, b: players.length })}
+              {allAnswered && <Check className="h-3.5 w-3.5" aria-hidden />}
+            </span>
+            {isHost && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (gameRef.current?.status !== "question") return;
+                  void patch({ status: "reveal" });
+                }}
+                className="inline-flex items-center gap-1 rounded-full bg-white/25 px-3 py-1 text-xs font-bold text-white active:scale-95"
+              >
+                <SkipForward className="h-3.5 w-3.5" aria-hidden /> {t.kahootSkip}
+              </button>
+            )}
+          </div>
           {locked ? (
             <div className="mt-auto flex flex-1 flex-col items-center justify-center gap-2">
               <Check className="h-16 w-16" aria-hidden />
               <p className="text-lg font-bold">{t.kahootAnswered}</p>
               <p className="text-sm text-white/70">
-                {answeredN}/{players.length}
+                {fmt(t.kahootAnsweredCount, { a: answeredN, b: players.length })}
               </p>
             </div>
           ) : (
-            <div className={cn("mt-4 grid flex-1 gap-3", (item.q.options?.length ?? 0) <= 2 ? "grid-cols-1" : "grid-cols-2")}>
-              {item.q.options?.map((opt, i) => {
-                const pal = KAHOOT_PALETTE[i % KAHOOT_PALETTE.length];
-                return (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => void lockIn(i)}
-                    disabled={locked}
-                    aria-label={`${t.kahootTapAnswer}: ${opt}`}
-                    className="flex min-h-[96px] items-center gap-2 rounded-2xl px-3 py-3 text-left text-sm font-bold text-white shadow-lg transition active:scale-[.97] disabled:opacity-70"
-                    style={{ backgroundColor: pal.bg }}
-                  >
-                    <KahootShape kind={pal.shape} />
-                    <span className="min-w-0 flex-1 leading-snug">{opt}</span>
-                  </button>
-                );
-              })}
-            </div>
+            <KahootOptionsGrid
+              options={item.q.options ?? []}
+              optionImages={item.q.optionImages}
+              onPick={(i) => void lockIn(i)}
+              disabled={locked}
+              tapLabel={t.kahootTapAnswer}
+            />
           )}
         </div>
       )}
@@ -789,28 +834,18 @@ export function KahootScreen() {
       {status === "reveal" && item && (
         <div className="flex flex-1 flex-col px-5 pb-6 pt-4">
           <h2 className="text-lg font-bold leading-snug">{item.q.prompt}</h2>
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            {item.q.options?.map((opt, i) => {
-              const pal = KAHOOT_PALETTE[i % KAHOOT_PALETTE.length];
-              const good = i === item.q.answer;
-              const mine = selected === i || myAns?.choice === i;
-              return (
-                <div
-                  key={i}
-                  className={cn(
-                    "flex min-h-[72px] items-center gap-2 rounded-2xl px-3 py-3 text-sm font-bold",
-                    good ? "ring-4 ring-white" : "opacity-45",
-                  )}
-                  style={{ backgroundColor: pal.bg }}
-                >
-                  <KahootShape kind={pal.shape} />
-                  <span className="min-w-0 flex-1">{opt}</span>
-                  {good && <Check className="h-5 w-5 shrink-0" aria-hidden />}
-                  {mine && !good && <X className="h-5 w-5 shrink-0" aria-hidden />}
-                </div>
-              );
-            })}
-          </div>
+          {item.q.image && (
+            <div className="mt-2 overflow-hidden rounded-2xl bg-white">
+              <img src={item.q.image} alt="" className="mx-auto max-h-28 object-contain" />
+            </div>
+          )}
+          <KahootOptionsGrid
+            options={item.q.options ?? []}
+            optionImages={item.q.optionImages}
+            mode="reveal"
+            answer={item.q.answer}
+            myChoice={selected ?? myAns?.choice ?? null}
+          />
           <div className="mt-auto flex flex-col items-center pt-5 text-center">
             <ReactionSticker
               ok={Boolean(myAns?.correct || selected === item.q.answer)}
@@ -826,6 +861,9 @@ export function KahootScreen() {
             <p className="mt-1 text-lg font-bold">
               {fmt(t.kahootPts, { n: myAns?.pts ?? 0 })}
               {(me?.streak ?? 0) >= 2 && ` · ${fmt(t.kahootStreakN, { n: me?.streak ?? 0 })}`}
+            </p>
+            <p className="mt-1 rounded-full bg-white/15 px-3 py-1 text-sm font-bold text-white/90">
+              {fmt(t.kahootCorrectAns, { n: String.fromCharCode(65 + (item.q.answer ?? 0)) })}
             </p>
           </div>
         </div>
@@ -1045,6 +1083,96 @@ function ModeCard({
         <span className="mt-0.5 block text-[11px] leading-snug text-white/80">{hint}</span>
       </span>
     </button>
+  );
+}
+
+/**
+ * Kahoot variantlar to'rasi — 2 rejim:
+ *  - "pick"   — o'yinchi tanlaydi (rangli tugmalar)
+ *  - "reveal" — to'g'ri/noto'g'ri belgilanadi (oq halqa + ✓ / ✗)
+ * Rasmli variantlarni (pickImage) ham ko'rsatadi.
+ */
+function KahootOptionsGrid({
+  options,
+  optionImages,
+  mode = "pick",
+  answer,
+  myChoice,
+  onPick,
+  disabled,
+  tapLabel,
+}: {
+  options: string[];
+  optionImages?: string[];
+  mode?: "pick" | "reveal";
+  answer?: number;
+  myChoice?: number | null;
+  onPick?: (i: number) => void;
+  disabled?: boolean;
+  tapLabel?: string;
+}) {
+  const hasImgs = Boolean(optionImages?.some(Boolean));
+  const shortTwo =
+    options.length === 2 &&
+    (options[0]?.length ?? 99) <= 20 &&
+    (options[1]?.length ?? 99) <= 20;
+  const cols = hasImgs || options.length >= 3 || shortTwo ? "grid-cols-2" : "grid-cols-1";
+  return (
+    <div className={cn("mt-3 grid flex-1 content-start gap-3", cols)}>
+      {options.map((opt, i) => {
+        const pal = KAHOOT_PALETTE[i % KAHOOT_PALETTE.length];
+        const label = opt || String.fromCharCode(65 + i);
+        const img = optionImages?.[i];
+        const imgBlock = hasImgs ? (
+          img ? (
+            <img src={img} alt="" className="h-24 w-full rounded-xl bg-white object-contain p-1" />
+          ) : (
+            <span className="flex h-24 w-full items-center justify-center rounded-xl bg-white/25 text-2xl font-black">
+              {String.fromCharCode(65 + i)}
+            </span>
+          )
+        ) : null;
+        if (mode === "reveal") {
+          const good = i === answer;
+          const mine = myChoice === i;
+          return (
+            <div
+              key={i}
+              className={cn(
+                "flex items-center gap-2 rounded-2xl px-3 py-3 text-sm font-bold text-white shadow-lg",
+                hasImgs ? "min-h-[140px] flex-col" : "min-h-[72px]",
+                good ? "ring-4 ring-white" : "opacity-45",
+              )}
+              style={{ backgroundColor: pal.bg }}
+            >
+              {imgBlock && <div className="w-full">{imgBlock}</div>}
+              {!hasImgs && <KahootShape kind={pal.shape} />}
+              <span className="min-w-0 flex-1 leading-snug">{label}</span>
+              {good && <Check className="h-5 w-5 shrink-0" aria-hidden />}
+              {mine && !good && <X className="h-5 w-5 shrink-0" aria-hidden />}
+            </div>
+          );
+        }
+        return (
+          <button
+            key={i}
+            type="button"
+            onClick={() => onPick?.(i)}
+            disabled={disabled}
+            aria-label={`${tapLabel ?? "Javob"}: ${label}`}
+            className={cn(
+              "flex rounded-2xl px-3 py-3 text-left text-sm font-bold text-white shadow-lg transition active:scale-[.97] disabled:opacity-70",
+              hasImgs ? "min-h-[140px] flex-col" : "min-h-[96px] items-center gap-2",
+            )}
+            style={{ backgroundColor: pal.bg }}
+          >
+            {imgBlock && <div className="w-full">{imgBlock}</div>}
+            {!hasImgs && <KahootShape kind={pal.shape} />}
+            <span className="min-w-0 flex-1 leading-snug">{label}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
