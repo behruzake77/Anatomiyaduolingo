@@ -39,6 +39,10 @@ create unique index if not exists kahoot_players_user_uniq
 
 create index if not exists kahoot_players_game_idx on public.kahoot_players (game_id);
 
+-- O'yinchi avatar (xona ro'yxatida ko'rinadi). Eski o'rnatishlar uchun:
+alter table public.kahoot_players
+  add column if not exists avatar text;
+
 alter table public.kahoot_games enable row level security;
 alter table public.kahoot_players enable row level security;
 
@@ -62,13 +66,17 @@ drop policy if exists "kahoot players read" on public.kahoot_players;
 create policy "kahoot players read" on public.kahoot_players
   for select using (auth.uid() is not null);
 
+-- O'yin boshlanganidan keyin (countdown/question/reveal/scoreboard) ham
+-- PIN bilan qo'shilish mumkin — faqat tugagan (podium) va bekor qilingan
+-- (cancelled) o'yinlarga kirish taqiqlanadi.
 drop policy if exists "kahoot players insert" on public.kahoot_players;
 create policy "kahoot players insert" on public.kahoot_players
   for insert with check (
     auth.uid() = user_id
     and exists (
       select 1 from public.kahoot_games g
-      where g.id = game_id and g.status = 'lobby'
+      where g.id = game_id
+        and g.status in ('lobby','countdown','question','reveal','scoreboard')
     )
   );
 

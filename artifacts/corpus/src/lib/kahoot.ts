@@ -52,6 +52,13 @@ export interface KahootPlayer {
   answers: KahootAnswer[];
   is_bot: boolean;
   joined_at: string;
+  /** Profil avatar (URL yoki data URL; bo'sh bo'lsa harf bilan ko'rsatiladi) */
+  avatar: string | null;
+}
+
+/** Kahootda ko'rinadigan ism/avatar (mahalliy sozlamalardan). */
+export function kahootIdentity(name?: string, avatar?: string | null): { name: string; avatar: string | null } {
+  return { name: (name ?? "").trim().slice(0, 20), avatar: avatar ?? null };
 }
 
 export const KAHOOT_MAX_PLAYERS = 30;
@@ -150,15 +157,26 @@ function asPlayer(row: Record<string, unknown>): KahootPlayer {
     answers: asAnswers(row.answers),
     is_bot: Boolean(row.is_bot),
     joined_at: String(row.joined_at ?? ""),
+    avatar: row.avatar == null ? null : String(row.avatar),
   };
+}
+
+export interface KahootIdentityOpts {
+  /** Kahootdagi ko'rinadigan ism (bo'sh bo'lsa username) */
+  name?: string;
+  /** Profil avatar (URL / data URL) */
+  avatar?: string | null;
 }
 
 export async function createKahootGame(
   user: AuthUser,
   scope = "all",
   quiz?: UserQuiz | null,
+  identity: KahootIdentityOpts = {},
 ): Promise<{ game: KahootGame; me: KahootPlayer } | null> {
   if (!isKahootOnline()) return null;
+  const name = kahootIdentity(identity.name, identity.avatar).name || user.username;
+  const avatar = kahootIdentity(identity.name, identity.avatar).avatar;
   const custom = quiz && quiz.questions.length >= 2 ? quiz : null;
   const seed = custom ? `quiz:${custom.id}::${newBattleSeed()}` : makeBattleSeed(scope || "all");
   const qCount = custom ? Math.min(20, custom.questions.length) : KAHOOT_Q_COUNT;
@@ -169,7 +187,7 @@ export async function createKahootGame(
     const base = {
       pin,
       host_id: user.id,
-      host_name: user.username,
+      host_name: name,
       seed,
       q_count: qCount,
       q_seconds: KAHOOT_SECONDS,
@@ -189,12 +207,14 @@ export async function createKahootGame(
     if (error || !data) continue;
     const game = asGame(data as Record<string, unknown>);
     if (!game.questions && snapshot) game.questions = snapshot;
-    const { data: p, error: pe } = await supabase
+    // avatar ustuni eski DB'da bo'lmasa — avatar'siz qayta urinamiz
+    let { data: p, error: pe } = await supabase
       .from("kahoot_players")
       .insert({
         game_id: game.id,
         user_id: user.id,
-        name: user.username,
+        name,
+        avatar,
         score: 0,
         streak: 0,
         answers: [],
@@ -202,6 +222,23 @@ export async function createKahootGame(
       })
       .select("*")
       .maybeSingle();
+    if (pe || !p) {
+      const retry = await supabase
+        .from("kahoot_players")
+        .insert({
+          game_id: game.id,
+          user_id: user.id,
+          name,
+          score: 0,
+          streak: 0,
+          answers: [],
+          is_bot: false,
+        })
+        .select("*")
+        .maybeSingle();
+      p = retry.data;
+      pe = retry.error;
+    }
     if (pe || !p) {
       await supabase.from("kahoot_games").delete().eq("id", game.id);
       return null;
@@ -211,21 +248,39 @@ export async function createKahootGame(
   return null;
 }
 
+/** Boshlagan (o'ynalmoqda) o'yinlarga ham qo'shilish mumkin. */
+export const KAHOOT_JOINABLE_STATUS: KahootStatus[] = [
+  "lobby",
+  "countdown",
+  "question",
+  "reveal",
+  "scoreboard",
+];
+
+export type KahootJoinResult =
+  | { ok: true; game: KahootGame; me: KahootPlayer; inProgress: boolean }
+  | { ok: false; reason: "not_found" | "full" | "offline" };
+
 export async function joinKahootByPin(
   user: AuthUser,
   pin: string,
-): Promise<{ game: KahootGame; me: KahootPlayer } | null> {
-  if (!isKahootOnline()) return null;
+  identity: KahootIdentityOpts = {},
+): Promise<KahootJoinResult> {
+  if (!isKahootOnline()) return { ok: false, reason: "offline" };
+  const name = kahootIdentity(identity.name, identity.avatar).name || user.username;
+  const avatar = kahootIdentity(identity.name, identity.avatar).avatar;
   const clean = pin.replace(/\D/g, "").slice(0, 6);
-  if (clean.length < 6) return null;
+  if (clean.length < 6) return { ok: false, reason: "not_found" };
   const { data: found } = await supabase
     .from("kahoot_games")
     .select("*")
     .eq("pin", clean)
-    .eq("status", "lobby")
+    .in("status", KAHOOT_JOINABLE_STATUS)
     .maybeSingle();
-  if (!found) return null;
+  if (!found) return { ok: false, reason: "not_found" }; // bunday xona mavjud emas
   const game = asGame(found as Record<string, unknown>);
+  if (!KAHOOT_JOINABLE_STATUS.includes(game.status)) return { ok: false, reason: "not_found" };
+  const inProgress = game.status !== "lobby";
   if (game.host_id === user.id) {
     const { data: mine } = await supabase
       .from("kahoot_players")
@@ -233,13 +288,13 @@ export async function joinKahootByPin(
       .eq("game_id", game.id)
       .eq("user_id", user.id)
       .maybeSingle();
-    if (mine) return { game, me: asPlayer(mine as Record<string, unknown>) };
+    if (mine) return { ok: true, game, me: asPlayer(mine as Record<string, unknown>), inProgress };
   }
   const { count } = await supabase
     .from("kahoot_players")
     .select("id", { count: "exact", head: true })
     .eq("game_id", game.id);
-  if ((count ?? 0) >= KAHOOT_MAX_PLAYERS) return null;
+  if ((count ?? 0) >= KAHOOT_MAX_PLAYERS) return { ok: false, reason: "full" };
 
   const { data: existing } = await supabase
     .from("kahoot_players")
@@ -247,14 +302,16 @@ export async function joinKahootByPin(
     .eq("game_id", game.id)
     .eq("user_id", user.id)
     .maybeSingle();
-  if (existing) return { game, me: asPlayer(existing as Record<string, unknown>) };
+  if (existing) return { ok: true, game, me: asPlayer(existing as Record<string, unknown>), inProgress };
 
-  const { data: p, error } = await supabase
+  // avatar ustuni eski DB'da bo'lmasa — avatar'siz qayta urinamiz
+  let { data: p, error } = await supabase
     .from("kahoot_players")
     .insert({
       game_id: game.id,
       user_id: user.id,
-      name: user.username,
+      name,
+      avatar,
       score: 0,
       streak: 0,
       answers: [],
@@ -262,8 +319,25 @@ export async function joinKahootByPin(
     })
     .select("*")
     .maybeSingle();
-  if (error || !p) return null;
-  return { game, me: asPlayer(p as Record<string, unknown>) };
+  if (error || !p) {
+    const retry = await supabase
+      .from("kahoot_players")
+      .insert({
+        game_id: game.id,
+        user_id: user.id,
+        name,
+        score: 0,
+        streak: 0,
+        answers: [],
+        is_bot: false,
+      })
+      .select("*")
+      .maybeSingle();
+    p = retry.data;
+    error = retry.error;
+  }
+  if (error || !p) return { ok: false, reason: "not_found" };
+  return { ok: true, game, me: asPlayer(p as Record<string, unknown>), inProgress };
 }
 
 export async function getKahootGame(id: string): Promise<KahootGame | null> {
