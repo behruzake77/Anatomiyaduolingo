@@ -971,7 +971,7 @@ export function KahootScreen() {
           </div>
           {isHost && (
             <Button
-              className="mt-auto w-full bg-white text-[#46178F] hover:bg-white/90"
+              className="mt-auto w-full bg-white !text-[#46178F] hover:bg-white/90"
               onClick={() => {
                 if (gameRef.current?.status !== "scoreboard") return;
                 const last = qIndex + 1 >= (game?.q_count || items.length);
@@ -1036,7 +1036,7 @@ export function KahootScreen() {
               {t.battleHome}
             </Button>
             <Button
-              className="flex-1 bg-white text-[#46178F] hover:bg-white/90"
+              className="flex-1 bg-white !text-[#46178F] hover:bg-white/90"
               onClick={() => {
                 void goHub();
               }}

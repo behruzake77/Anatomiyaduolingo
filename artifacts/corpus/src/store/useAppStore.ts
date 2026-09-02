@@ -710,6 +710,7 @@ export const useAppStore = create<AppState>()(
         battlesLost: s.battlesLost,
         settings: s.settings,
         avatar: s.avatar,
+        kahootName: s.kahootName,
         isPremium: s.isPremium,
       }),
     },
