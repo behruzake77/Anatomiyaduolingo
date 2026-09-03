@@ -36,8 +36,10 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
+      data-ui-button="true"
+      data-variant={variant}
       className={cn(
-        "inline-flex select-none items-center justify-center gap-2 rounded-3xl font-semibold transition-all duration-150 active:scale-[.97] disabled:pointer-events-none disabled:opacity-50",
+        "ui-button relative inline-flex select-none items-center justify-center gap-2 overflow-hidden rounded-[var(--button-radius,1.5rem)] font-semibold transition-all duration-200 active:scale-[.97] disabled:pointer-events-none disabled:opacity-50",
         VARIANTS[variant],
         SIZES[size],
         className,
@@ -45,10 +47,12 @@ export function Button({
       disabled={disabled || loading}
       {...rest}
     >
-      {loading && (
-        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-      )}
-      {children}
+      <span className="ui-button__content">
+        {loading && (
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+        )}
+        {children}
+      </span>
     </button>
   );
 }
