@@ -15,8 +15,9 @@ export function Card({
   return (
     <Tag
       onClick={onClick}
+      data-ui-card="true"
       className={cn(
-        "rounded-2xl border border-line bg-surface shadow-card",
+        "ui-card rounded-2xl border border-line bg-surface shadow-card",
         onClick && "w-full text-left transition-transform duration-150 active:scale-[.98]",
         className,
       )}
