@@ -7,10 +7,10 @@ import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
-import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Sticker3D } from "@/components/ui/Sticker3D";
 import { AdBanner } from "@/components/AdBanner";
 import { DashboardBanners } from "@/components/DashboardBanners";
+import { ProjectStories } from "@/components/ProjectStories";
 import { useAppStore } from "@/store/useAppStore";
 import { ALL_LESSONS, systemOfLesson } from "@/data/content";
 import { activityState } from "@/utils/activity";
@@ -25,10 +25,6 @@ import { WelcomeBackModal } from "@/components/reengage/WelcomeBackModal";
 export function DashboardScreen() {
   const xp = useAppStore((s) => s.xp);
   const streak = useAppStore((s) => s.streak);
-  const dailyXp = useAppStore((s) => s.dailyXp);
-  const dailyGoal = useAppStore((s) => s.dailyGoal);
-  const correct = useAppStore((s) => s.correct);
-  const total = useAppStore((s) => s.total);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
@@ -76,8 +72,6 @@ export function DashboardScreen() {
   const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
   const nextSystem = systemOfLesson(nextLesson.id);
   const name = currentUser?.username ?? t.name;
-  const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-  const dailyPct = Math.min(100, Math.round((dailyXp / Math.max(1, dailyGoal)) * 100));
 
   return (
     <Screen className="pt-4">
@@ -85,6 +79,7 @@ export function DashboardScreen() {
       <header className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#6C5CE7] via-[#7B6CF0] to-[#FD79A8] p-4 text-white shadow-pop">
         <div className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-white/15" aria-hidden />
         <div className="pointer-events-none absolute -bottom-14 -left-8 h-32 w-32 rounded-full bg-white/10" aria-hidden />
+        <Sticker3D src="/img/3d/3dicons/bone.webp" size={92} className="pointer-events-none absolute -bottom-5 right-10 opacity-35" />
         <div className="relative flex items-center gap-3">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/25 ring-2 ring-white/40">
             <HeaderAvatar name={name} avatar={avatar} light />
@@ -108,6 +103,9 @@ export function DashboardScreen() {
           </div>
         </div>
       </header>
+
+      {/* Instagram uslubidagi loyiha haqida hikoyalar */}
+      <ProjectStories />
 
       <StreakCelebration streak={streak} />
 
@@ -157,7 +155,7 @@ export function DashboardScreen() {
             <img src={nextSystem?.image} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <Sticker3D
-              src="/img/3d/lessons-book.webp"
+              src="/img/3d/3dicons/book.webp"
               size={64}
               className="pointer-events-none absolute right-3 top-3"
             />
@@ -185,39 +183,6 @@ export function DashboardScreen() {
               {t.continue}
             </Button>
           </div>
-        </Card>
-      </section>
-
-      {/* Statistikalar — rangli kartalar */}
-      <section className="mt-4">
-        <div className="grid grid-cols-2 gap-3">
-          <StatCard sticker="/img/3d/xp-star.webp" color="#6C5CE7" value={`${xp}`} label={t.totalEarned} />
-          <StatCard sticker="/img/3d/streak-flame.webp" color="#F59E0B" value={`${streak}`} label={t.dayStreak} />
-          <StatCard sticker="/img/3d/lessons-book.webp" color="#00B894" value={String(doneCount)} label={t.lessonsDone} />
-          <StatCard sticker="/img/3d/accuracy-check.webp" color="#FD79A8" value={fmt(t.accuracyVal, { pct: accuracy })} label={t.accuracyLabel} />
-        </div>
-      </section>
-
-      {/* Bugungi maqsad */}
-      <section className="mt-4">
-        <Card className="overflow-hidden p-4">
-          <div className="flex items-center justify-between gap-3">
-            <p className="flex min-w-0 items-center gap-2 text-sm font-bold">
-              <Sticker3D src="/img/3d/daily-target.webp" size={24} className="shrink-0" />
-              <span className="min-w-0">{t.todayGoal}</span>
-            </p>
-            <p className="shrink-0 bg-gradient-to-r from-[#6C5CE7] to-[#FD79A8] bg-clip-text text-sm font-extrabold text-transparent">
-              {dailyXp}/{dailyGoal} XP
-            </p>
-          </div>
-          <ProgressBar
-            value={dailyPct}
-            color="linear-gradient(90deg, #6C5CE7 0%, #8E7CF3 55%, #FD79A8 100%)"
-            className="mt-2.5 h-3"
-          />
-          <p className="mt-2 text-xs text-muted">
-            {dailyPct >= 100 ? t.goalCompleted : fmt(t.goalPercent, { pct: dailyPct })}
-          </p>
         </Card>
       </section>
 
@@ -288,39 +253,5 @@ function QuickTile({
       <span className="w-full truncate text-[11px] font-bold leading-tight">{title}</span>
       <span className="w-full truncate text-[9px] font-medium leading-tight text-white/80">{sub}</span>
     </button>
-  );
-}
-
-function StatCard({
-  sticker,
-  value,
-  label,
-  color,
-}: {
-  sticker: string;
-  value: string;
-  label: string;
-  color: string;
-}) {
-  return (
-    <Card
-      className="flex min-w-0 flex-col items-center justify-center gap-1.5 border-0 px-2 py-3 text-center"
-    >
-      <div
-        className="flex min-w-0 flex-col items-center justify-center gap-1.5 px-2 py-2"
-        style={{ background: `linear-gradient(160deg, ${color}14 0%, ${color}26 100%)` }}
-      >
-        <span
-          className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl"
-          style={{ backgroundColor: `${color}1f` }}
-        >
-          <Sticker3D src={sticker} size={28} />
-        </span>
-        <p className="min-w-0 break-words text-base font-extrabold leading-none" style={{ color }}>
-          {value}
-        </p>
-        <p className="min-w-0 break-words text-xs leading-tight text-muted">{label}</p>
-      </div>
-    </Card>
   );
 }

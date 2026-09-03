@@ -26,6 +26,7 @@ export function AchievementsScreen() {
               title={a.title}
               description={a.description}
               accent={a.accent}
+              sticker={a.sticker}
               locked={!unlocked.includes(a.id)}
             />
           ))}

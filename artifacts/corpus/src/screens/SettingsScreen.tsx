@@ -16,6 +16,8 @@ import {
   AtSign,
   KeyRound,
   Check,
+  Palette,
+  Paintbrush,
 } from "lucide-react";
 import { useState } from "react";
 import { Screen } from "@/components/layout/Screen";
@@ -32,6 +34,7 @@ export function SettingsScreen() {
   const settings = useAppStore((s) => s.settings);
   const toggleSetting = useAppStore((s) => s.toggleSetting);
   const setLanguage = useAppStore((s) => s.setLanguage);
+  const setThemeOption = useAppStore((s) => s.setThemeOption);
   const logout = useAppStore((s) => s.logout);
   const deleteAccount = useAppStore((s) => s.deleteAccount);
   const openInfo = useAppStore((s) => s.openInfo);
@@ -187,6 +190,29 @@ export function SettingsScreen() {
               <option value="en">English</option>
             </select>
           </div>
+        </Card>
+
+        {/* Telegram uslubidagi shaxsiylashtirish */}
+        <Card className="mt-4 p-4">
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"><Palette className="h-5 w-5" aria-hidden /></span>
+            <div><p className="text-base font-semibold">Dizaynni sozlash</p><p className="text-xs text-muted">Ilovani o‘zingizga moslang</p></div>
+          </div>
+          <ThemeChoice label="Profil rangi" icon={<span className="h-4 w-4 rounded-full bg-gradient-to-br from-[#6C5CE7] to-[#FD79A8]" />}>
+            {[{ id: "purple", color: "#6C5CE7" }, { id: "ocean", color: "#0984E3" }, { id: "coral", color: "#E84393" }, { id: "emerald", color: "#00B894" }].map((item) => (
+              <button key={item.id} type="button" onClick={() => setThemeOption("themeColor", item.id as "purple" | "ocean" | "coral" | "emerald")} aria-label={`${item.id} profil rangi`} className={`h-8 w-8 rounded-full border-2 p-0.5 transition-transform active:scale-90 ${settings.themeColor === item.id ? "border-ink scale-110" : "border-transparent"}`}><span className="block h-full w-full rounded-full" style={{ backgroundColor: item.color }} /></button>
+            ))}
+          </ThemeChoice>
+          <ThemeChoice label="Orqa fon" icon={<Paintbrush className="h-4 w-4" />}>
+            {[{ id: "clean", label: "Toza", className: "bg-[#F8F9FA]" }, { id: "lavender", label: "Lavanda", className: "bg-[#F4F1FF]" }, { id: "mint", label: "Yashil", className: "bg-[#EFFBF8]" }, { id: "midnight", label: "Tun", className: "bg-[#202231]" }].map((item) => (
+              <button key={item.id} type="button" onClick={() => setThemeOption("backgroundStyle", item.id as "clean" | "lavender" | "mint" | "midnight")} className={`rounded-xl border px-2 py-1.5 text-[10px] font-semibold transition active:scale-95 ${item.className} ${settings.backgroundStyle === item.id ? "border-primary ring-2 ring-primary/20" : "border-line text-muted"}`}>{item.label}</button>
+            ))}
+          </ThemeChoice>
+          <ThemeChoice label="Tugmalar" icon={<span className="text-xs font-bold">Aa</span>}>
+            {[{ id: "pill", label: "Pill" }, { id: "rounded", label: "Yumaloq" }, { id: "square", label: "Klassik" }].map((item) => (
+              <button key={item.id} type="button" onClick={() => setThemeOption("buttonStyle", item.id as "pill" | "rounded" | "square")} className={`rounded-[var(--button-radius,1rem)] border px-3 py-1.5 text-[10px] font-semibold transition active:scale-95 ${settings.buttonStyle === item.id ? "border-primary bg-primary text-white" : "border-line bg-surface2 text-muted"}`}>{item.label}</button>
+            ))}
+          </ThemeChoice>
         </Card>
 
         {/* Hisob — email / username / parol */}
@@ -459,4 +485,8 @@ export function SettingsScreen() {
       </div>
     </Screen>
   );
+}
+
+function ThemeChoice({ label, icon, children }: { label: string; icon: React.ReactNode; children: React.ReactNode }) {
+  return <div className="mt-4 flex items-center gap-3"><div className="flex min-w-0 flex-1 items-center gap-2 text-xs font-semibold text-muted">{icon}{label}</div><div className="flex shrink-0 items-center gap-2">{children}</div></div>;
 }

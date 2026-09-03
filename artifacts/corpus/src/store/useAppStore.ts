@@ -70,12 +70,19 @@ export type Tab = "home" | "learn" | "library" | "profile";
 
 export type InfoSection = "about" | "terms" | "privacy";
 
+export type ThemeColor = "purple" | "ocean" | "coral" | "emerald";
+export type BackgroundStyle = "clean" | "lavender" | "mint" | "midnight";
+export type ButtonStyle = "pill" | "rounded" | "square";
+
 export interface Settings {
   darkMode: boolean;
   sound: boolean;
   notifications: boolean;
   haptics: boolean;
   language: "en" | "uz";
+  themeColor: ThemeColor;
+  backgroundStyle: BackgroundStyle;
+  buttonStyle: ButtonStyle;
 }
 
 export interface LessonResult {
@@ -121,6 +128,9 @@ const freshProgress = {
     notifications: true,
     haptics: true,
     language: "uz",
+    themeColor: "purple",
+    backgroundStyle: "clean",
+    buttonStyle: "pill",
   } as Settings,
   avatar: null as string | null,
   kahootName: "" as string,
@@ -274,6 +284,7 @@ interface AppState {
   settings: Settings;
   toggleSetting: (key: keyof Settings) => void;
   setLanguage: (lang: "en" | "uz") => void;
+  setThemeOption: <K extends "themeColor" | "backgroundStyle" | "buttonStyle">(key: K, value: Settings[K]) => void;
 
   avatar: string | null;
   setAvatar: (dataUrl: string | null) => void;
@@ -449,6 +460,7 @@ export const useAppStore = create<AppState>()(
       toggleSetting: (key) =>
         set((s) => ({ settings: { ...s.settings, [key]: !s.settings[key] } })),
       setLanguage: (lang) => set((s) => ({ settings: { ...s.settings, language: lang } })),
+      setThemeOption: (key, value) => set((s) => ({ settings: { ...s.settings, [key]: value } })),
 
       avatar: null,
       setAvatar: (dataUrl) => {

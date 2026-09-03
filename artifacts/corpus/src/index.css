@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./theme/customization.css";
 
 /* Dark-mode custom variant: `.dark` class on <html> */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -30,9 +31,9 @@
 
 /* ---------- Design tokens → Tailwind utilities ---------- */
 @theme inline {
-  --color-primary: #6C5CE7;
-  --color-primary-soft: #A29BFE;
-  --color-primary-deep: #5A4BD1;
+  --color-primary: var(--theme-primary, #6C5CE7);
+  --color-primary-soft: var(--theme-primary-soft, #A29BFE);
+  --color-primary-deep: var(--theme-primary-deep, #5A4BD1);
   --color-success: #00B894;
   --color-accent: #FD79A8;
   --color-danger: #EF4444;
