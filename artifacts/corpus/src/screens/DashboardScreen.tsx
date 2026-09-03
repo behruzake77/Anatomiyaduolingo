@@ -69,6 +69,7 @@ export function DashboardScreen() {
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
   const doneCount = completedLessons.filter((id) => ALL_LESSONS.some((l) => l.id === id)).length;
+  const allLessonsDone = doneCount >= ALL_LESSONS.length;
   const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
   const nextSystem = systemOfLesson(nextLesson.id);
   const name = currentUser?.username ?? t.name;
@@ -149,7 +150,7 @@ export function DashboardScreen() {
 
       {/* Continue learning */}
       <section className="mt-5">
-        <h2 className="text-lg font-semibold">{t.continueLearning}</h2>
+        <h2 className="text-lg font-semibold">{allLessonsDone ? t.whatNext : t.continueLearning}</h2>
         <Card className="mt-3 overflow-hidden ring-1 ring-primary/20">
           <div className="relative h-36 w-full overflow-hidden">
             <img src={nextSystem?.image} alt="" className="h-full w-full object-cover" />
@@ -171,16 +172,16 @@ export function DashboardScreen() {
           </div>
           <div className="p-4">
             <div className="flex items-center justify-between gap-3 text-xs text-muted">
-              <span>{fmt(t.lessonOf, { n: doneCount + 1, total: ALL_LESSONS.length })}</span>
+              <span>{allLessonsDone ? t.allLessonsComplete : fmt(t.lessonOf, { n: doneCount + 1, total: ALL_LESSONS.length })}</span>
               <span className="flex shrink-0 items-center gap-1">
                 <Zap className="h-3.5 w-3.5 text-warning" aria-hidden /> ~{nextLesson.minutes} {t.min}
               </span>
             </div>
             <Button
               className="mt-3 w-full bg-gradient-to-r from-[#6C5CE7] to-[#8E7CF3] shadow-soft hover:from-[#5A4BD1] hover:to-[#6C5CE7]"
-              onClick={() => openLesson(nextLesson.id)}
+              onClick={() => (allLessonsDone ? navigate("topics") : openLesson(nextLesson.id))}
             >
-              {t.continue}
+              {allLessonsDone ? t.exploreTopics : t.continue}
             </Button>
           </div>
         </Card>
@@ -196,7 +197,8 @@ export function DashboardScreen() {
           onClose={closeWelcomeBack}
           onContinue={() => {
             closeWelcomeBack();
-            openLesson(nextLesson.id);
+            if (allLessonsDone) navigate("topics");
+            else openLesson(nextLesson.id);
           }}
           onChallenge={() => {
             closeWelcomeBack();
