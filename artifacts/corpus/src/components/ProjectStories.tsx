@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { PROJECT_STORIES, type ProjectStory } from "@/data/projectStories";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 
 export function ProjectStories() {
   const [activeStory, setActiveStory] = useState<ProjectStory | null>(null);
@@ -116,10 +117,18 @@ export function ProjectStories() {
                 ))}
               </div>
               <div className="absolute left-5 top-9 z-10 flex items-center gap-2 text-sm font-semibold">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ backgroundColor: activeStory.color }}><Check className="h-4 w-4" /></span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/20">
+                  <Sticker3D src={activeStory.cover} size={31} round />
+                </span>
                 {activeStory.label}
               </div>
               <button type="button" onClick={() => setActiveStory(null)} aria-label="Storyni yopish" className="absolute right-4 top-9 z-10 rounded-full bg-black/30 p-2"><X className="h-5 w-5" /></button>
+              <Sticker3D
+                src={activeStory.cover}
+                size={92}
+                className="pointer-events-none absolute right-5 top-24 z-10 opacity-90 drop-shadow-[0_8px_18px_rgba(0,0,0,0.32)]"
+                round
+              />
 
               <button type="button" aria-label="Oldingi story" onClick={() => changePage(-1)} className="absolute inset-y-20 left-0 z-10 w-1/3" />
               <button type="button" aria-label="Keyingi story" onClick={() => changePage(1)} className="absolute inset-y-20 right-0 z-10 w-2/3" />

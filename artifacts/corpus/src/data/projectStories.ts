@@ -20,7 +20,7 @@ export const PROJECT_STORIES: ProjectStory[] = [
     label: "Loyiha haqida",
     icon: "book",
     color: "#6C5CE7",
-    cover: "/img/3d/3dicons/bone.webp",
+    cover: "/img/3d/heart-3d.webp",
     pages: [
       { title: "Loyiha nima?", text: "AnatomiyaDuolingo — anatomiya fanini oson, qiziqarli va interaktiv o‘rganish uchun yaratilgan platforma.", image: "/img/atlas/miya.jpg" },
       { title: "Nima uchun yaratildi?", text: "Murakkab mavzularni qisqa darslar, rangli rasmlar va amaliy savollar orqali yodda saqlash oson bo‘lishi uchun.", image: "/img/atlas/skelet.jpg" },
@@ -33,7 +33,7 @@ export const PROJECT_STORIES: ProjectStory[] = [
     label: "Qanday ishlaydi",
     icon: "settings",
     color: "#00B894",
-    cover: "/img/3d/3dicons/book.webp",
+    cover: "/img/3d/lessons-book.webp",
     pages: [
       { title: "1. Bo‘limni tanlang", text: "Bosh sahifadan yoki O‘rganish bo‘limidan kerakli anatomiya tizimini tanlang.", image: "/img/atlas/skelet.jpg" },
       { title: "2. Mavzuni o‘rganing", text: "Darsni o‘qing, rasmlarni ko‘ring va muhim lotincha atamalarni o‘zlashtiring.", image: "/img/atlas/digestorium.jpg" },
@@ -46,7 +46,7 @@ export const PROJECT_STORIES: ProjectStory[] = [
     label: "Yangiliklar",
     icon: "sparkles",
     color: "#FD79A8",
-    cover: "/img/3d/3dicons/progress.webp",
+    cover: "/img/3d/daily-target.webp",
     pages: [{ title: "Yangiliklar shu yerda", text: "Platformadagi yangi darslar, imkoniyatlar va foydali yangilanishlarni birinchi bo‘lib bilib oling.", image: "/img/atlas/endokrin.jpg" }],
   },
   {
@@ -54,7 +54,7 @@ export const PROJECT_STORIES: ProjectStory[] = [
     label: "Foydali maslahatlar",
     icon: "bulb",
     color: "#F59E0B",
-    cover: "/img/3d/3dicons/fire.webp",
+    cover: "/img/3d/streak-flame.webp",
     pages: [{ title: "Oz-ozdan, lekin har kuni", text: "Kuniga bir nechta savol yeching. Muntazam takrorlash anatomiya bilimlarini uzoq vaqt saqlashga yordam beradi.", image: "/img/atlas/respiratorium.jpg" }],
   },
   {
@@ -62,7 +62,7 @@ export const PROJECT_STORIES: ProjectStory[] = [
     label: "Biz haqimizda",
     icon: "team",
     color: "#06B6D4",
-    cover: "/img/3d/3dicons/trophy.webp",
+    cover: "/img/3d/trophy-3d.webp",
     pages: [{ title: "Birgalikda rivojlanamiz", text: "AnatomiyaDuolingo jamoasi siz uchun qulay va zamonaviy ta’lim tajribasini yaratishda davom etadi.", image: "/img/atlas/umurtqa.jpg" }],
   },
 ];

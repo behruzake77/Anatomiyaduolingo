@@ -80,7 +80,7 @@ export function DashboardScreen() {
       <header className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#6C5CE7] via-[#7B6CF0] to-[#FD79A8] p-4 text-white shadow-pop">
         <div className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-white/15" aria-hidden />
         <div className="pointer-events-none absolute -bottom-14 -left-8 h-32 w-32 rounded-full bg-white/10" aria-hidden />
-        <Sticker3D src="/img/3d/3dicons/bone.webp" size={92} className="pointer-events-none absolute -bottom-5 right-10 opacity-35" />
+        <Sticker3D src="/img/3d/heart-3d.webp" size={88} className="pointer-events-none absolute -bottom-5 right-10 opacity-35" />
         <div className="relative flex items-center gap-3">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/25 ring-2 ring-white/40">
             <HeaderAvatar name={name} avatar={avatar} light />
@@ -156,7 +156,7 @@ export function DashboardScreen() {
             <img src={nextSystem?.image} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <Sticker3D
-              src="/img/3d/3dicons/book.webp"
+              src="/img/3d/lessons-book.webp"
               size={64}
               className="pointer-events-none absolute right-3 top-3"
             />
