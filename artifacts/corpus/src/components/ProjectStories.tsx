@@ -2,10 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, BookOpen, Check, Lightbulb, Settings, Sparkles, Users, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { PROJECT_STORIES, type ProjectStory } from "@/data/projectStories";
-
-const ICONS = { book: BookOpen, settings: Settings, sparkles: Sparkles, bulb: Lightbulb, team: Users } as const;
 
 export function ProjectStories() {
   const [activeStory, setActiveStory] = useState<ProjectStory | null>(null);
@@ -45,7 +43,6 @@ export function ProjectStories() {
       <section aria-label="Project Stories" className="mt-4">
         <div className="-mr-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1 pr-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {PROJECT_STORIES.map((story) => {
-            const Icon = ICONS[story.icon];
             return (
               <button
                 key={story.id}
@@ -56,7 +53,7 @@ export function ProjectStories() {
               >
                 <span className="rounded-full p-[3px] shadow-soft" style={{ background: `linear-gradient(135deg, ${story.color}, #FD79A8 50%, #F5C04E)` }}>
                   <span className="flex h-[62px] w-[62px] items-center justify-center rounded-full border-2 border-bg bg-surface" style={{ color: story.color }}>
-                    <Icon className="h-7 w-7" strokeWidth={1.8} aria-hidden />
+                    <img src={story.cover} alt="" loading="lazy" decoding="async" className="h-12 w-12 object-contain drop-shadow-[0_3px_7px_rgba(108,92,231,0.2)]" />
                   </span>
                 </span>
                 <span className="w-full truncate text-[10px] font-semibold leading-tight text-ink">{story.label}</span>

@@ -3,18 +3,21 @@
 import type { LucideIcon } from "lucide-react";
 import { Lock } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 
 export function Badge({
   icon: Icon,
   title,
   description,
   accent,
+  sticker,
   locked,
 }: {
   icon: LucideIcon;
   title: string;
   description: string;
   accent: string;
+  sticker?: string;
   locked?: boolean;
 }) {
   return (
@@ -28,7 +31,7 @@ export function Badge({
         className="relative flex h-14 w-14 items-center justify-center rounded-2xl"
         style={{ background: `${accent}1f`, color: accent }}
       >
-        <Icon className="h-7 w-7" aria-hidden />
+        {sticker ? <Sticker3D src={sticker} size={38} /> : <Icon className="h-7 w-7" aria-hidden />}
         {locked && (
           <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-surface text-muted">
             <Lock className="h-3 w-3" aria-hidden />
