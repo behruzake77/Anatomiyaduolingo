@@ -155,7 +155,8 @@ function ScreenFallback() {
 export function AppNavigator() {
   const screenId = useAppStore((s) => s.screen);
   const tab = useAppStore((s) => s.tab);
-  const darkMode = useAppStore((s) => s.settings.darkMode);
+  const settings = useAppStore((s) => s.settings);
+  const darkMode = settings.darkMode;
   const initAuth = useAppStore((s) => s.initAuth);
   const lowEnd = isLowEndDevice();
 
@@ -169,11 +170,15 @@ export function AppNavigator() {
 
   useEffect(() => {
     try {
-      document.documentElement.classList.toggle("dark", darkMode);
+      const root = document.documentElement;
+      root.classList.toggle("dark", darkMode);
+      root.dataset.themeColor = settings.themeColor ?? "purple";
+      root.dataset.backgroundStyle = settings.backgroundStyle ?? "clean";
+      root.dataset.buttonStyle = settings.buttonStyle ?? "pill";
     } catch (err) {
-      console.error("Dark mode toggle error:", err);
+      console.error("Theme toggle error:", err);
     }
-  }, [darkMode]);
+  }, [darkMode, settings.themeColor, settings.backgroundStyle, settings.buttonStyle]);
 
   // Initialize auth with timeout to prevent blocking
   useEffect(() => {

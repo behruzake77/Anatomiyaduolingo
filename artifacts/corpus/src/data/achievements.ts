@@ -8,6 +8,7 @@ export interface Achievement {
   description: string;
   icon: LucideIcon;
   accent: string; // hex accent used for the badge
+  sticker?: string;
   condition: (s: ProgressSnapshot) => boolean;
 }
 
@@ -19,6 +20,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: "Birinchi darsni tugating",
     icon: Sparkles,
     accent: "#6C5CE7",
+    sticker: "/img/3d/3dicons/book.webp",
     condition: (s) => s.completedLessons >= 1,
   },
   {
@@ -27,6 +29,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: "7 kunlik seriyaga erishing",
     icon: Flame,
     accent: "#F59E0B",
+    sticker: "/img/3d/3dicons/fire.webp",
     condition: (s) => s.streak >= 7,
   },
   {
@@ -51,6 +54,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: "5 ta mavzuni tugating",
     icon: Trophy,
     accent: "#A29BFE",
+    sticker: "/img/3d/3dicons/trophy.webp",
     condition: (s) => s.completedTopics >= 5,
   },
   {
@@ -59,6 +63,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: "O'rtacha 90%+ aniqlik",
     icon: Target,
     accent: "#EF4444",
+    sticker: "/img/3d/3dicons/progress.webp",
     condition: (s) => s.total >= 10 && s.correct / s.total >= 0.9,
   },
 ];
