@@ -68,6 +68,11 @@
 .ui-button[data-variant="outline"]:hover { border-color: var(--theme-primary, #6C5CE7); color: var(--theme-primary, #6C5CE7); box-shadow: 0 5px 16px color-mix(in srgb, var(--theme-primary, #6C5CE7) 14%, transparent); }
 .ui-button > * { position: relative; z-index: 1; }
 
+@keyframes project-story-ring { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(3deg); } }
+@keyframes story-progress-fill { from { width: 0; } to { width: 100%; } }
+.project-story-ring { animation: project-story-ring 8s ease-in-out infinite; }
+.story-progress-active { width: 100%; animation: story-progress-fill 6s linear both; }
+
 .ui-card { transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
 .ui-card[data-ui-card="true"]:is(button):hover { border-color: color-mix(in srgb, var(--theme-primary, #6C5CE7) 24%, var(--line)); }
 @media (hover: hover) {

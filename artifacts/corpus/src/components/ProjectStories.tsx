@@ -13,11 +13,23 @@ export function ProjectStories() {
 
   useEffect(() => {
     if (!activeStory) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActiveStory(null);
+      if (event.key === "ArrowLeft") changePage(-1);
+      if (event.key === "ArrowRight") changePage(1);
+    };
+    window.addEventListener("keydown", onKeyDown);
     const timer = window.setTimeout(() => {
       if (page < activeStory.pages.length - 1) setPage((value) => value + 1);
       else setActiveStory(null);
     }, 6000);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [activeStory, page]);
 
   const openStory = (story: ProjectStory) => {
@@ -51,7 +63,7 @@ export function ProjectStories() {
                 className="flex w-[76px] shrink-0 snap-start flex-col items-center gap-1.5 text-center transition-transform active:scale-95"
                 aria-label={`${story.label} storiesini ochish`}
               >
-                <span className="rounded-full p-[3px] shadow-soft" style={{ background: `linear-gradient(135deg, ${story.color}, #FD79A8 50%, #F5C04E)` }}>
+                <span className="project-story-ring rounded-full p-[3px] shadow-soft" style={{ background: `linear-gradient(135deg, ${story.color}, #FD79A8 50%, #F5C04E)` }}>
                   <span className="flex h-[62px] w-[62px] items-center justify-center rounded-full border-2 border-bg bg-surface" style={{ color: story.color }}>
                     <img src={story.cover} alt="" loading="lazy" decoding="async" className="h-12 w-12 object-contain drop-shadow-[0_3px_7px_rgba(108,92,231,0.2)]" />
                   </span>
@@ -99,7 +111,7 @@ export function ProjectStories() {
               <div className="absolute left-4 right-4 top-4 z-10 flex gap-1.5" aria-label={`Story ${page + 1} / ${activeStory.pages.length}`}>
                 {activeStory.pages.map((_, item) => (
                   <span key={item} className="h-1 flex-1 overflow-hidden rounded-full bg-white/35">
-                    <span className={`block h-full rounded-full bg-white ${item < page ? "w-full" : item === page ? "w-1/2" : "w-0"}`} />
+                    <span className={`block h-full rounded-full bg-white ${item < page ? "w-full" : item === page ? "story-progress-active" : "w-0"}`} />
                   </span>
                 ))}
               </div>
