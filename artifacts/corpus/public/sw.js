@@ -7,7 +7,7 @@
  */
 // Increment whenever the app shell changes so installed PWAs do not stay on an
 // old build (which made new profile menu items appear to disappear).
-const CACHE = "corpus-v4";
+const CACHE = "corpus-v5";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

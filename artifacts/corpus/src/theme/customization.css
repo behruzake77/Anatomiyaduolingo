@@ -70,10 +70,20 @@
 .ui-button[data-variant="outline"]:hover { border-color: var(--theme-primary, #6C5CE7); color: var(--theme-primary, #6C5CE7); box-shadow: 0 5px 16px color-mix(in srgb, var(--theme-primary, #6C5CE7) 14%, transparent); }
 .ui-button > * { position: relative; z-index: 1; }
 
-@keyframes project-story-ring { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(3deg); } }
-@keyframes story-progress-fill { from { width: 0; } to { width: 100%; } }
-.project-story-ring { animation: project-story-ring 8s ease-in-out infinite; }
-.story-progress-active { width: 100%; animation: story-progress-fill 6s linear both; }
+/* Project Stories — ko'rilmagan story halqasi sekin aylanadi (conic-gradient). */
+@keyframes story-ring-spin { to { transform: rotate(360deg); } }
+.story-ring-live { position: relative; isolation: isolate; }
+.story-ring-live::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: var(--story-ring, conic-gradient(#6C5CE7, #FD79A8, #F5C04E, #6C5CE7));
+  animation: story-ring-spin 6s linear infinite;
+}
+.story-viewer { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.story-viewer img { -webkit-user-drag: none; }
 
 .ui-card { transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
 .ui-card[data-ui-card="true"]:is(button):hover { border-color: color-mix(in srgb, var(--theme-primary, #6C5CE7) 24%, var(--line)); }

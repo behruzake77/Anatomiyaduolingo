@@ -35,3 +35,15 @@ These are design references for future additions, not vendored libraries:
 Only assets with a clear redistribution license should be copied into this
 repository. Check the individual license before adding a Figma, Iconscout,
 LottieFiles, Lordicon, Canva, Drawkit, Storyset, or UI kit asset.
+## Story banners (`../stories/`)
+
+`public/img/stories/*.webp` (720×1280, 9:16) and `public/img/stories/covers/*.webp`
+(176×176) are the backgrounds and cover thumbnails for the Home "Hikoyalar"
+(Project Stories) feature. `about-*`, `how-*` and `news-*` were AI-generated for
+CORPUS in a soft 3D clay style with the lower third kept dark for text; `tips-*`
+and `team-*` are composed from the local stickers above plus gradients
+(ImageMagick). All are project-owned — no third-party media.
+
+To add a page: drop a 720×1280 WebP here (keep it ≲ 50 KB), reference it from
+`src/data/projectStories.ts`, and bump that story's `version` so the ring shows
+as unseen again.
