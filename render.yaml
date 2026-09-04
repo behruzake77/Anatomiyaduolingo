@@ -1,18 +1,35 @@
 # CORPUS — Render Blueprint (one-click deploy)
 # https://render.com/docs/blueprint-spec
+#
+# Render'da yangi "Blueprint" yaratganda shu fayl o'qiladi. Mavjud servisda esa
+# Dashboard → Settings dagi Build/Start Command va Environment qiymatlari
+# shu yerdagilar bilan bir xil bo'lishi kerak.
 services:
   - type: web
     name: corpus
     runtime: node
     rootDir: .
     plan: free
+    # pnpm Render'da tayyor; `corepack enable` ISHLATMANG (EROFS xatosi beradi).
+    # `--prod=false` shart: vite/tailwind devDependencies'da, NODE_ENV=production
+    # bo'lganda ular o'rnatilmay qoladi va build "vite: not found" bilan yiqiladi.
     buildCommand: pnpm install --frozen-lockfile --prod=false && PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run build
     startCommand: PORT=10000 BASE_PATH=/ pnpm --filter @workspace/corpus run serve
     autoDeploy: true
     healthCheckPath: /
     envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
       - key: NODE_ENV
         value: production
+      # Supabase brauzer kalitlari — Vite BUILD vaqtida bundle'ga kiradi.
+      # Render Dashboard → Environment da qiymatini kiriting (Secret).
+      # Bo'sh qolsa ilova "Supabase sozlanmagan" holatida ochiladi (login ishlamaydi).
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      # Eski nomlar — mavjud servislar uchun mos kelish; ikkalasidan biri yetarli.
       - key: NEXT_PUBLIC_SUPABASE_URL
         sync: false
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
