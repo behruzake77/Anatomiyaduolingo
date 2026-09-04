@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { X, Bookmark, Trash2, ChevronRight, Volume2 } from "lucide-react";
+import { X, Trash2, ChevronRight, Volume2 } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { useAppStore } from "@/store/useAppStore";
 import { useSpeech } from "@/hooks/useSpeech";
 import { lessonById, sortByDifficulty } from "@/data/content";
@@ -70,10 +71,12 @@ export function BookmarksScreen() {
       </header>
 
       {entries.length === 0 ? (
-        <div className="mt-16 flex flex-col items-center gap-3 text-center">
-          <Bookmark className="h-10 w-10 text-line" aria-hidden />
-          <p className="text-sm text-muted">{t.bookmarkEmpty}</p>
-          <p className="max-w-xs text-xs text-muted">{t.bookmarkEmptyHint}</p>
+        <div className="mt-10">
+          <EmptyState
+            illustration="/img/3d/empty-bookmarks.png"
+            title={t.bookmarkEmpty}
+            description={t.bookmarkEmptyHint}
+          />
         </div>
       ) : (
         <ul className="mt-4 flex flex-col gap-2">

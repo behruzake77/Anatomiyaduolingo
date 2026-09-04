@@ -7,17 +7,38 @@ import { Sticker3D } from "@/components/ui/Sticker3D";
 export function EmptyState({
   icon: Icon = Inbox,
   sticker,
+  illustration,
   title,
   description,
 }: {
   icon?: LucideIcon;
   sticker?: string;
+  /** Large 3D illustration (transparent PNG/WebP) shown inside a soft halo. */
+  illustration?: string;
   title: string;
   description: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-line bg-surface/50 px-6 py-12 text-center">
-      {sticker ? <Sticker3D src={sticker} size={64} className="rx-float" /> : <Icon className="h-10 w-10 text-muted" aria-hidden />}
+    <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-line bg-surface/50 px-6 py-12 text-center">
+      {illustration ? (
+        <div className="relative flex h-32 w-32 items-center justify-center">
+          <span
+            aria-hidden
+            className="absolute inset-0 rounded-full bg-primary/10 blur-md"
+          />
+          <img
+            src={illustration || "/placeholder.svg"}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="rx-float relative h-28 w-28 select-none object-contain drop-shadow-[0_8px_20px_rgba(108,92,231,0.22)]"
+          />
+        </div>
+      ) : sticker ? (
+        <Sticker3D src={sticker} size={64} className="rx-float" />
+      ) : (
+        <Icon className="h-10 w-10 text-muted" aria-hidden />
+      )}
       <p className="text-base font-semibold">{title}</p>
       <p className="max-w-[240px] text-sm text-muted">{description}</p>
     </div>
