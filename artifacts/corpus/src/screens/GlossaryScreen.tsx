@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Search, Volume2, ChevronRight, X, BookOpen } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { useAppStore } from "@/store/useAppStore";
 import { useSpeech } from "@/hooks/useSpeech";
 import { searchGlossary } from "@/data/glossary";
@@ -92,10 +93,11 @@ export function GlossaryScreen() {
       </ul>
 
       {results.length === 0 && (
-        <div className="mt-12 text-center text-sm text-muted">
-          <Search className="mx-auto mb-2 h-8 w-8 text-line" aria-hidden />
-          {t.glossaryEmpty}
-        </div>
+        <EmptyState
+          illustration="/img/3d/empty-search.png"
+          title={t.glossaryEmpty}
+          className="mt-8"
+        />
       )}
 
       <div className="h-4" />
