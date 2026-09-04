@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { Frown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { ReactionSticker } from "@/components/ReactionSticker";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 
@@ -21,6 +22,7 @@ export function ResultWrongScreen() {
       >
         <Frown className="h-14 w-14" aria-hidden />
       </motion.div>
+      <ReactionSticker ok={false} seed="result-wrong" size="sm" label="" />
 
       <h1 className="text-3xl font-bold">{t.tryAgain}</h1>
       <p className="max-w-xs text-sm leading-relaxed text-muted">

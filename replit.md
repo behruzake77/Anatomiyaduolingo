@@ -1,44 +1,54 @@
-# [Project name]
+# CORPUS Anatomy Learning
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Uzbek tilidagi, darslar, testlar, takrorlash, progress va anatomiya atlasini birlashtirgan o‘quv ilovasi.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `corepack pnpm install --frozen-lockfile` — restore workspace dependencies after import
+- `PORT=22229 BASE_PATH=/ corepack pnpm --filter @workspace/corpus run dev` — run the CORPUS preview
+- `corepack pnpm --filter @workspace/corpus run typecheck` — check the web app types
+- `PORT=4173 BASE_PATH=/ corepack pnpm --filter @workspace/corpus run build` — build the web app
+- The managed Replit workflow is `artifacts/corpus: web`; it supplies `PORT=22229` and `BASE_PATH=/`.
+- Supabase/auth configuration is read from the project’s local environment files; do not commit or expose those values.
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- React + Vite + Tailwind CSS
+- Supabase client for authentication and optional persistence
+- Zustand for local app state and offline-friendly persistence
+- Motion, Three.js, and React Three Fiber for lightweight interaction and 3D content
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/corpus/src/screens/` — app screens and navigation destinations
+- `artifacts/corpus/src/components/` — shared UI, animation, mascot, and 3D sticker components
+- `artifacts/corpus/src/data/` — lesson, onboarding, achievement, atlas, and UI data
+- `artifacts/corpus/public/img/3d/` — local 3D stickers and `ASSET_SOURCES.md`
+- `artifacts/corpus/public/3d/mascot.glb` — local mascot model
+- `artifacts/corpus/public/img/stickers/` — existing animated reaction GIFs
+- `artifacts/corpus/src/index.css` — design tokens and reduced-motion-safe animation utilities
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Keep the app frontend-first and offline-friendly; local store state handles the learning flow while Supabase is optional for account/persistence features.
+- Keep visual assets local so onboarding, loading, achievement, and result states do not depend on third-party CDNs.
+- Use open-license 3D previews and document their sources beside the assets; check individual licenses before adding new packs.
+- Preserve the existing visual system and use stickers as small decorative replacements rather than redesigning screens.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Users can register or sign in, study anatomy lessons and atlas pages, take adaptive quizzes, review mistakes, track XP/streak/progress, earn achievements, and use 3D anatomy/mascot content.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- User prefers quick, practical additions and wants supplied visual resources used in the appropriate product states.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Use `corepack pnpm`; plain `pnpm` may not be on PATH in a fresh environment.
+- Vite needs both `PORT` and `BASE_PATH`; the managed workflow already supplies them.
+- Do not copy third-party media without checking its license. Reference libraries are documented in `public/img/3d/ASSET_SOURCES.md`.
 
 ## Pointers
 

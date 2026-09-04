@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Trophy, PartyPopper, Crown } from "lucide-react";
+import { PartyPopper, Crown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Donut } from "@/components/ui/Donut";
 import { Confetti } from "@/components/ui/Confetti";
+import { ReactionSticker } from "@/components/ReactionSticker";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 import { useAppStore } from "@/store/useAppStore";
 import { levelFromXp, levelTier } from "@/utils/levels";
 import { useStrings, TIER_KEY } from "@/i18n";
@@ -63,6 +65,7 @@ export function ResultCorrectScreen() {
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className={`relative flex items-center gap-2 ${isPremium ? "text-white" : ""}`}
       >
+        <ReactionSticker ok seed="result-correct" size="sm" className="absolute -left-20 -top-8" label="" />
         {isPremium ? (
           <>
             <Crown className="h-8 w-8 text-[#F5C04E]" aria-hidden />
@@ -85,7 +88,7 @@ export function ResultCorrectScreen() {
           {isPremium ? (
             <Crown className="h-10 w-10 text-[#F5C04E]" aria-hidden />
           ) : (
-            <Trophy className="h-10 w-10 text-warning" aria-hidden />
+            <Sticker3D src="/img/3d/trophy-3d.webp" size={48} />
           )}
         </Donut>
       </motion.div>

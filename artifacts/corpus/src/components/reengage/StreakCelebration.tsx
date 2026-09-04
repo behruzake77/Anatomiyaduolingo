@@ -5,9 +5,9 @@
  * yumshoq nishonlash banneri (confetti overload EMAS, bitta izchil aksent).
  */
 
-import { Flame } from "lucide-react";
 import { isStreakMilestone } from "@/utils/activity";
 import { useStrings, fmt } from "@/i18n";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 
 export function StreakCelebration({ streak }: { streak: number }) {
   const t = useStrings();
@@ -16,7 +16,7 @@ export function StreakCelebration({ streak }: { streak: number }) {
   return (
     <div className="rx-pop-in mt-4 flex items-center gap-2 rounded-2xl border border-accent/30 bg-accent/10 px-3 py-2.5">
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/20">
-        <Flame className="text-accent" aria-hidden style={{ width: 18, height: 18 }} />
+        <Sticker3D src="/img/3d/streak-flame.webp" size={24} />
       </span>
       <p className="flex-1 text-sm font-semibold text-accent">
         {fmt(t.streakMilestone, { n: streak })}

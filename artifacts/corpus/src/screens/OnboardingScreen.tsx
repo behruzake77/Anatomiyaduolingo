@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ONBOARDING } from "@/data/onboarding";
-import { Icon } from "@/components/ui/Icon";
+import { Sticker3D } from "@/components/ui/Sticker3D";
 import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
@@ -55,7 +55,7 @@ export function OnboardingScreen() {
             className="flex flex-col items-center gap-6"
           >
             <div className="flex h-40 w-40 items-center justify-center rounded-3xl bg-primary/10 text-primary shadow-soft">
-              <Icon name={slide.icon} className="h-20 w-20" />
+              <Sticker3D src={slide.sticker} size={96} className="rx-float" />
             </div>
             <div className="max-w-xs">
               <h2 className="text-2xl font-semibold">{slide.title}</h2>

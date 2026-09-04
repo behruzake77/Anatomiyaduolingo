@@ -63,3 +63,5 @@ Generated in-sandbox with a soft-3D image model, then post-processed with Pillow
 - Do not add dependencies.
 - Do not change Lessons-page top icons or bottom nav.
 - Keep edits minimal and preserve the existing design system.
+
+- [Imported artifact workflow](imported-artifact-workflow.md) — imported apps may need metadata registration; stop duplicate legacy workflows before starting the managed service.
