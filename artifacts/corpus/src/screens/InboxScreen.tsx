@@ -6,6 +6,7 @@ import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
@@ -124,12 +125,12 @@ export function InboxScreen() {
 
         {busy && <p className="mt-6 text-center text-sm text-muted">{t.pleaseWait}</p>}
         {!busy && rows.length === 0 && (
-          <div className="mt-10 flex flex-col items-center gap-3 text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Bell className="h-7 w-7" aria-hidden />
-            </span>
-            <p className="text-sm font-semibold">{t.inboxEmpty}</p>
-            <p className="text-xs text-muted">{t.inboxEmptyHint}</p>
+          <div className="mt-8">
+            <EmptyState
+              illustration="/img/3d/empty-inbox.png"
+              title={t.inboxEmpty}
+              description={t.inboxEmptyHint}
+            />
           </div>
         )}
 

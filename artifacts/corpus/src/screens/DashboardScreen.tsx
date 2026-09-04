@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Sun, Zap, Crown, Gamepad2, Swords, ClipboardList, Pencil } from "lucide-react";
+import { Sun, Zap, Crown, Gamepad2, Swords, ClipboardList, Pencil, Flame, Check } from "lucide-react";
 import { InboxBell } from "@/components/InboxBell";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
+import { Donut } from "@/components/ui/Donut";
 import { Sticker3D } from "@/components/ui/Sticker3D";
 import { AdBanner } from "@/components/AdBanner";
 import { DashboardBanners } from "@/components/DashboardBanners";
@@ -25,6 +26,8 @@ import { WelcomeBackModal } from "@/components/reengage/WelcomeBackModal";
 export function DashboardScreen() {
   const xp = useAppStore((s) => s.xp);
   const streak = useAppStore((s) => s.streak);
+  const dailyGoal = useAppStore((s) => s.dailyGoal);
+  const xpHistory = useAppStore((s) => s.xpHistory);
   const completedLessons = useAppStore((s) => s.completedLessons);
   const currentUser = useAppStore((s) => s.currentUser);
   const avatar = useAppStore((s) => s.avatar);
@@ -68,6 +71,7 @@ export function DashboardScreen() {
   };
   const level = levelFromXp(xp);
   const tier = t[TIER_KEY[levelTier(level)]];
+  const todayXp = xpHistory[new Date().toISOString().slice(0, 10)] ?? 0;
   const doneCount = completedLessons.filter((id) => ALL_LESSONS.some((l) => l.id === id)).length;
   const allLessonsDone = doneCount >= ALL_LESSONS.length;
   const nextLesson = ALL_LESSONS.find((l) => !completedLessons.includes(l.id)) ?? ALL_LESSONS[0];
@@ -104,6 +108,14 @@ export function DashboardScreen() {
           </div>
         </div>
       </header>
+
+      {/* Kunlik maqsad + seriya — ushlab turish mexanikasi */}
+      <DailyGoalStrip
+        todayXp={todayXp}
+        dailyGoal={dailyGoal}
+        streak={streak}
+        onContinue={() => (allLessonsDone ? navigate("topics") : openLesson(nextLesson.id))}
+      />
 
       {/* Instagram uslubidagi loyiha haqida hikoyalar */}
       <ProjectStories />
@@ -207,6 +219,63 @@ export function DashboardScreen() {
         />
       )}
     </Screen>
+  );
+}
+
+function DailyGoalStrip({
+  todayXp,
+  dailyGoal,
+  streak,
+  onContinue,
+}: {
+  todayXp: number;
+  dailyGoal: number;
+  streak: number;
+  onContinue: () => void;
+}) {
+  const t = useStrings();
+  const goal = Math.max(1, dailyGoal);
+  const pct = Math.min(100, Math.round((todayXp / goal) * 100));
+  const done = todayXp >= goal;
+  const remaining = Math.max(0, goal - todayXp);
+
+  return (
+    <Card className="mt-4 flex items-center gap-4 p-4 ring-1 ring-primary/15">
+      {/* Kunlik maqsad progress halqasi */}
+      <div className="shrink-0">
+        <Donut value={pct} size={76} stroke={9} color={done ? "#00B894" : "#6C5CE7"}>
+          {done ? (
+            <Check className="h-7 w-7 text-[#00B894]" aria-hidden />
+          ) : (
+            <div className="text-center leading-none">
+              <p className="text-base font-extrabold">{todayXp}</p>
+              <p className="text-[10px] font-medium text-muted">/ {goal} XP</p>
+            </div>
+          )}
+        </Donut>
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-sm font-semibold">{t.todayGoal}</p>
+          {/* Seriya chipi */}
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-bold text-accent">
+            <Flame className="h-3.5 w-3.5" aria-hidden /> {streak} {t.days}
+          </span>
+        </div>
+        <p className="mt-0.5 text-xs text-muted">
+          {done ? t.goalCompleted : fmt(t.goalPercent, { pct })}
+        </p>
+        {!done && (
+          <Button
+            className="mt-2.5 h-9 w-full bg-gradient-to-r from-[#6C5CE7] to-[#8E7CF3] text-xs shadow-soft hover:from-[#5A4BD1] hover:to-[#6C5CE7]"
+            onClick={onContinue}
+          >
+            {t.continue} · +{remaining} XP
+          </Button>
+        )}
+      </div>
+    </Card>
   );
 }
 

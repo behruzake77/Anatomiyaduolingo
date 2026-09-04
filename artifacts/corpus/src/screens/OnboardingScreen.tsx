@@ -54,9 +54,20 @@ export function OnboardingScreen() {
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col items-center gap-6"
           >
-            <div className="flex h-40 w-40 items-center justify-center rounded-3xl bg-primary/10 text-primary shadow-soft">
-              <Sticker3D src={slide.sticker} size={96} className="rx-float" />
-            </div>
+            {slide.illustration ? (
+              <div className="relative flex h-52 w-52 items-center justify-center">
+                <div className="absolute inset-4 rounded-full bg-primary/10 blur-xl" aria-hidden />
+                <img
+                  src={slide.illustration || "/placeholder.svg"}
+                  alt=""
+                  className="rx-float relative h-full w-full object-contain drop-shadow-[0_12px_24px_rgba(108,92,231,0.35)]"
+                />
+              </div>
+            ) : (
+              <div className="flex h-40 w-40 items-center justify-center rounded-3xl bg-primary/10 text-primary shadow-soft">
+                <Sticker3D src={slide.sticker} size={96} className="rx-float" />
+              </div>
+            )}
             <div className="max-w-xs">
               <h2 className="text-2xl font-semibold">{slide.title}</h2>
               <p className="mt-3 text-sm leading-relaxed text-muted">{slide.description}</p>
