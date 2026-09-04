@@ -14,8 +14,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronRight, Pause, X } from "lucide-react";
-import { PROJECT_STORIES, STORY_PAGE_DURATION, type ProjectStory, type StoryText } from "@/data/projectStories";
+import { Check, ChevronRight, Pause, Pointer, X } from "lucide-react";
+import {
+  PROJECT_STORIES,
+  STORY_PAGE_DURATION,
+  type ProjectStory,
+  type ProjectStoryPage,
+  type StoryCta,
+  type StoryText,
+} from "@/data/projectStories";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings, fmt } from "@/i18n";
 import { useHaptics } from "@/hooks/useHaptics";
@@ -223,6 +230,8 @@ function StoryViewer({
 }) {
   const t = useStrings();
   const navigate = useAppStore((s) => s.navigate);
+  const openSystem = useAppStore((s) => s.openSystem);
+  const openLesson = useAppStore((s) => s.openLesson);
   const haptic = useHaptics();
 
   const [storyIndex, setStoryIndex] = useState(startIndex);
@@ -230,6 +239,20 @@ function StoryViewer({
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0); // 0..1 joriy sahifa uchun
   const [direction, setDirection] = useState<1 | -1>(1);
+
+  // Pastki matn blokining balandligi — telefon ramkasi shu joyni bo'sh qoldiradi.
+  const textBlockRef = useRef<HTMLDivElement | null>(null);
+  const [textHeight, setTextHeight] = useState(200);
+  useEffect(() => {
+    const el = textBlockRef.current;
+    if (!el) return;
+    const measure = () => setTextHeight(Math.round(el.getBoundingClientRect().height));
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const story = stories[storyIndex];
   const current = story.pages[page];
@@ -317,11 +340,20 @@ function StoryViewer({
     if (page === story.pages.length - 1) onSeen(story);
   }, [page, story, onSeen]);
 
-  // Keyingi rasmni oldindan yuklash.
+  // Joriy story ochilganda uning barcha ekran skrinshotlari (kichik fayllar) oldindan yuklanadi —
+  // telefon ramkasi hech qachon bo'sh ko'rinmasin.
   useEffect(() => {
-    const nextPage = story.pages[page + 1];
-    if (nextPage) preload(nextPage.image);
-    else if (stories[storyIndex + 1]) preload(stories[storyIndex + 1].pages[0].image);
+    story.pages.forEach((pg) => {
+      if (pg.screen) preload(pg.screen);
+    });
+  }, [story]);
+
+  // Keyingi sahifa rasmlarini (fon + ekran) oldindan yuklash.
+  useEffect(() => {
+    const nextPage = story.pages[page + 1] ?? stories[storyIndex + 1]?.pages[0];
+    if (!nextPage) return;
+    preload(nextPage.image);
+    if (nextPage.screen) preload(nextPage.screen);
   }, [story, page, stories, storyIndex]);
 
   // Body scroll qulf + klaviatura + ilova fonga o'tsa pauza.
@@ -411,10 +443,12 @@ function StoryViewer({
     heldRef.current = false;
   };
 
-  const handleCta = (screen: Parameters<typeof navigate>[0]) => {
+  const handleCta = (cta: StoryCta) => {
     onSeen(story);
     onClose();
-    navigate(screen);
+    if (cta.lessonId) openLesson(cta.lessonId);
+    else if (cta.systemId) openSystem(cta.systemId);
+    else if (cta.screen) navigate(cta.screen);
   };
 
   const label = pick(story.label, lang);
@@ -456,27 +490,44 @@ function StoryViewer({
             exit={{ opacity: 0, scale: 0.98, x: direction * -24 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <img
-              src={current.image}
-              alt=""
-              className="h-full w-full object-cover"
-              draggable={false}
-              decoding="async"
-              style={{ backgroundColor: story.color }}
-            />
-            {/* Ken Burns — sekin yaqinlashish */}
+            {/* Ken Burns — sekin yaqinlashish (ekranli sahifada fon xiraroq va tinchroq) */}
             <motion.img
               src={current.image}
               alt=""
-              aria-hidden
               draggable={false}
-              className="absolute inset-0 h-full w-full object-cover"
+              decoding="async"
+              className={cn("h-full w-full object-cover", current.screen && "opacity-60")}
+              style={{ backgroundColor: "#141222" }}
               initial={{ scale: 1 }}
-              animate={{ scale: paused ? 1.04 : 1.08 }}
+              animate={{ scale: paused ? 1.03 : current.screen ? 1.05 : 1.08 }}
               transition={{ duration: duration / 1000, ease: "linear" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/0 via-35% to-black/90" />
+            <div
+              className={cn(
+                "absolute inset-0 bg-gradient-to-b from-black/60 via-black/10 to-black/95",
+                current.screen ? "via-30%" : "via-40%",
+              )}
+            />
+            {current.screen && (
+              <div
+                className="absolute inset-0"
+                style={{ background: `radial-gradient(60% 45% at 50% 42%, ${story.color}33 0%, transparent 70%)` }}
+              />
+            )}
           </motion.div>
+        </AnimatePresence>
+
+        {/* Ilova ekrani — telefon ramkasida, «shu yerni bosing» belgisi bilan */}
+        <AnimatePresence mode="wait" initial={false}>
+          {current.screen && (
+            <PhoneMock
+              key={`${story.id}-${page}-phone`}
+              page={current}
+              color={story.color}
+              paused={paused}
+              bottomReserve={textHeight}
+            />
+          )}
         </AnimatePresence>
 
         {/* Yuqori panel: progress + muallif + yopish */}
@@ -533,7 +584,10 @@ function StoryViewer({
         </div>
 
         {/* Pastki matn bloki */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-5 pb-[max(24px,env(safe-area-inset-bottom))]">
+        <div
+          ref={textBlockRef}
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-5 pb-[max(20px,env(safe-area-inset-bottom))]"
+        >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={`${story.id}-${page}-text`}
@@ -550,15 +604,39 @@ function StoryViewer({
                   {pick(current.kicker, lang)}
                 </span>
               )}
-              <p className="text-[26px] font-extrabold leading-[1.15] drop-shadow-md">{pick(current.title, lang)}</p>
-              <p className="mt-2 text-[15px] leading-relaxed text-white/88">{pick(current.text, lang)}</p>
+              <p
+                className={cn(
+                  "font-extrabold leading-[1.15] drop-shadow-md",
+                  current.screen ? "text-[22px]" : "text-[26px]",
+                )}
+              >
+                {pick(current.title, lang)}
+              </p>
+              <p
+                className={cn(
+                  "mt-1.5 leading-relaxed text-white/88",
+                  current.screen ? "text-[13.5px]" : "text-[15px]",
+                )}
+              >
+                {pick(current.text, lang)}
+              </p>
+              {current.tips && current.tips.length > 0 && (
+                <ul className="mt-2.5 space-y-1">
+                  {current.tips.map((tip, i) => (
+                    <li key={i} className="flex items-start gap-2 text-[12.5px] leading-snug text-white/80">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0" style={{ color: story.color }} aria-hidden />
+                      <span>{pick(tip, lang)}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {current.cta && (
                 <button
                   type="button"
-                  onClick={() => handleCta(current.cta!.screen)}
+                  onClick={() => handleCta(current.cta!)}
                   onPointerDown={(event) => event.stopPropagation()}
                   onPointerUp={(event) => event.stopPropagation()}
-                  className="pointer-events-auto mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#1a1230] shadow-lg transition active:scale-[.97]"
+                  className="pointer-events-auto mt-3.5 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#1a1230] shadow-lg transition active:scale-[.97]"
                 >
                   {pick(current.cta.label, lang)}
                   <ChevronRight className="h-4 w-4" aria-hidden />
@@ -566,10 +644,106 @@ function StoryViewer({
               )}
             </motion.div>
           </AnimatePresence>
-          <p className="mt-3 text-center text-[10px] font-medium text-white/40">{t.storyHoldHint}</p>
+          <p className="mt-2 text-center text-[10px] font-medium leading-none text-white/40">{t.storyHoldHint}</p>
         </div>
       </motion.div>
     </motion.div>,
     document.body,
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Telefon ramkasidagi haqiqiy ilova ekrani + «shu yerni bosing»     */
+/* ------------------------------------------------------------------ */
+
+function PhoneMock({
+  page,
+  color,
+  paused,
+  bottomReserve,
+}: {
+  page: ProjectStoryPage;
+  color: string;
+  paused: boolean;
+  /** Pastdagi matn blokining o'lchangan balandligi (px) — telefon shu joyni bo'sh qoldiradi. */
+  bottomReserve: number;
+}) {
+  const hs = page.hotspot;
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute inset-x-0 top-0 z-[5] flex justify-center"
+      style={{ paddingTop: "max(84px, calc(env(safe-area-inset-top) + 72px))", bottom: bottomReserve + 8 }}
+      initial={{ opacity: 0, y: 28, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -12, scale: 0.98 }}
+      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <motion.div
+        className="relative h-full max-h-full"
+        style={{ aspectRatio: "9 / 19.2" }}
+        animate={paused ? { y: 0 } : { y: [0, -4, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        {/* Ramka */}
+        <div
+          className="absolute inset-0 rounded-[26px] border border-white/15 bg-[#0d0c14] p-[5px] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.75)]"
+          style={{ boxShadow: `0 24px 60px -12px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.06), 0 0 48px -8px ${color}66` }}
+        >
+          <div className="relative h-full w-full overflow-hidden rounded-[21px] bg-[#f8f9fa]">
+            <img
+              src={page.screen}
+              alt=""
+              draggable={false}
+              loading="eager"
+              decoding="sync"
+              className="absolute inset-x-0 top-0 w-full"
+            />
+            {/* Dinamik orol */}
+            <span className="absolute left-1/2 top-1.5 h-[14px] w-[58px] -translate-x-1/2 rounded-full bg-black/90" aria-hidden />
+
+            {/* Hotspot — «shu yerni bosing» */}
+            {hs && (
+              <>
+                {/* Qorong'ilashtirish maskasi — hotspot atrofi biroz xira */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: `radial-gradient(ellipse ${Math.max(hs.w ?? 12, 12) * 0.9 + 12}% ${Math.max(hs.h ?? 8, 8) * 0.9 + 10}% at ${hs.x + (hs.w ?? 12) / 2}% ${hs.y + (hs.h ?? 8) / 2}%, transparent 55%, rgba(8,6,20,0.42) 100%)`,
+                  }}
+                />
+                <motion.span
+                  className="absolute rounded-xl border-2"
+                  style={{
+                    left: `${hs.x}%`,
+                    top: `${hs.y}%`,
+                    width: `${hs.w ?? 12}%`,
+                    height: `${hs.h ?? 8}%`,
+                    borderColor: color,
+                    boxShadow: `0 0 0 3px ${color}40, 0 0 22px ${color}99`,
+                  }}
+                  animate={paused ? { opacity: 1 } : { opacity: [0.85, 1, 0.85], scale: [1, 1.02, 1] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                />
+                {/* Barmoq belgisi — hotspotning pastki-o'ng burchagida */}
+                <motion.span
+                  className="absolute flex h-7 w-7 items-center justify-center rounded-full text-white shadow-lg ring-2 ring-white/80"
+                  style={{
+                    left: `calc(${hs.x + (hs.w ?? 12)}% - 14px)`,
+                    top: `calc(${hs.y + (hs.h ?? 8)}% - 6px)`,
+                    backgroundColor: color,
+                  }}
+                  animate={paused ? { scale: 1 } : { scale: [1, 0.86, 1] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                  aria-hidden
+                >
+                  <Pointer className="h-4 w-4" strokeWidth={2.5} />
+                </motion.span>
+              </>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
