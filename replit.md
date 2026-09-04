@@ -27,6 +27,7 @@ Uzbek tilidagi, darslar, testlar, takrorlash, progress va anatomiya atlasini bir
 - `artifacts/corpus/public/img/3d/` — local 3D stickers and `ASSET_SOURCES.md`
 - `artifacts/corpus/public/3d/mascot.glb` — local mascot model
 - `artifacts/corpus/public/img/stickers/` — existing animated reaction GIFs
+- `artifacts/corpus/public/img/stories/` — 9:16 story banners + `covers/` thumbnails for the Home "Hikoyalar" (Project Stories); content lives in `src/data/projectStories.ts` (bilingual, `version` bump = show as unseen again)
 - `artifacts/corpus/src/index.css` — design tokens and reduced-motion-safe animation utilities
 
 ## Architecture decisions

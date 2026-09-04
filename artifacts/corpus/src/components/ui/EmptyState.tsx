@@ -3,6 +3,7 @@
 import type { LucideIcon } from "lucide-react";
 import { Inbox } from "lucide-react";
 import { Sticker3D } from "@/components/ui/Sticker3D";
+import { cn } from "@/utils/cn";
 
 export function EmptyState({
   icon: Icon = Inbox,
@@ -10,16 +11,23 @@ export function EmptyState({
   illustration,
   title,
   description,
+  className,
 }: {
   icon?: LucideIcon;
   sticker?: string;
   /** Large 3D illustration (transparent PNG/WebP) shown inside a soft halo. */
   illustration?: string;
   title: string;
-  description: string;
+  description?: string;
+  className?: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-line bg-surface/50 px-6 py-12 text-center">
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-line bg-surface/50 px-6 py-12 text-center",
+        className,
+      )}
+    >
       {illustration ? (
         <div className="relative flex h-32 w-32 items-center justify-center">
           <span
@@ -40,7 +48,7 @@ export function EmptyState({
         <Icon className="h-10 w-10 text-muted" aria-hidden />
       )}
       <p className="text-base font-semibold">{title}</p>
-      <p className="max-w-[240px] text-sm text-muted">{description}</p>
+      {description && <p className="max-w-[240px] text-sm text-muted">{description}</p>}
     </div>
   );
 }

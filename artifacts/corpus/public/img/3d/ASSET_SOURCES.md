@@ -35,3 +35,22 @@ These are design references for future additions, not vendored libraries:
 Only assets with a clear redistribution license should be copied into this
 repository. Check the individual license before adding a Figma, Iconscout,
 LottieFiles, Lordicon, Canva, Drawkit, Storyset, or UI kit asset.
+## Story banners (`../stories/`)
+
+Assets for the Home "Hikoyalar" (Project Stories) onboarding feature. Content
+lives in `src/data/projectStories.ts`.
+
+- `bg-*.webp` (720×1280, 9:16, 35–70 KB) — photorealistic anatomical backgrounds
+  (skeleton, heart, brain, cervical spine, lungs, muscles, skull, abdominal organs,
+  urinary system, hand). AI-generated for CORPUS in a medical-atlas render style;
+  the lower third is kept dark for the text overlay. Project-owned, no third-party media.
+- `covers/*.webp` (176×176) — square crops of the backgrounds used as story rings.
+- `screens/*.webp` (360 px wide) — real screenshots of the app itself (dashboard,
+  lessons, color diagram, quiz, review, exam, leaderboard, battle, Kahoot, 3D,
+  glossary, library, progress). They are shown inside a phone frame with a
+  "tap here" hotspot so users learn where to tap. Re-capture them whenever the
+  corresponding screen changes visibly.
+
+To add a page: add a `bg-*.webp` (keep ≲ 70 KB) and optionally a `screens/*.webp`,
+reference them from `projectStories.ts`, set `hotspot` in percentages of the
+screenshot, and bump that story's `version` so the ring shows as unseen again.
