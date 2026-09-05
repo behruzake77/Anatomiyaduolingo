@@ -19,7 +19,7 @@ import {
   Palette,
   Paintbrush,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useId } from "react";
 import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
 import { Card } from "@/components/ui/Card";
@@ -28,6 +28,7 @@ import { Toggle } from "@/components/ui/Toggle";
 import { ThemeSwitch } from "@/components/ui/ThemeSwitch";
 import { useAppStore, type InfoSection } from "@/store/useAppStore";
 import { useNotifications } from "@/hooks/useNotifications";
+import { useHaptics } from "@/hooks/useHaptics";
 import { useStrings } from "@/i18n";
 import { updateEmail, updatePassword } from "@/lib/auth";
 
@@ -44,6 +45,8 @@ export function SettingsScreen() {
   const updateUsername = useAppStore((s) => s.updateUsername);
   const t = useStrings();
   const { requestPermission } = useNotifications();
+  const haptic = useHaptics();
+  const themeSwitchId = useId();
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Hisobni boshqarish (email / username / parol)
@@ -71,6 +74,7 @@ export function SettingsScreen() {
         }
       }
     } else {
+      haptic(10);
       toggleSetting(key);
     }
   };
@@ -170,12 +174,23 @@ export function SettingsScreen() {
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <r.icon className="h-5 w-5" aria-hidden />
               </span>
-              <span className="min-w-0 flex-1 break-words text-base font-medium">{r.label}</span>
+              {r.key === "darkMode" ? (
+                /* Matn ham <label> — qatorning o'zi bosilganda rejim almashadi. */
+                <label
+                  htmlFor={themeSwitchId}
+                  className="min-w-0 flex-1 cursor-pointer break-words text-base font-medium"
+                >
+                  {r.label}
+                </label>
+              ) : (
+                <span className="min-w-0 flex-1 break-words text-base font-medium">{r.label}</span>
+              )}
               {r.key === "darkMode" ? (
                 <ThemeSwitch
+                  id={themeSwitchId}
                   checked={settings.darkMode}
                   onCheckedChange={() => onToggle("darkMode")}
-                  size={18}
+                  size={12}
                   label={r.label}
                 />
               ) : (
