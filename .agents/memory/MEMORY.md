@@ -1,67 +1,58 @@
-# Arena Session Memory — Corpus UI polish + 3D stickers
+# Arena Session Memory — Uiverse: theme switch + pulse loader + GoBack sweep button
 
 ## Task (current)
 
-The existing CORPUS app UI is already polished. This task ONLY adds soft 3D stickers / 3D illustrations to appropriate places. NOT a redesign. Keep existing layout, colors, fonts, cards, radius, spacing, navigation, icons, buttons. Do NOT touch the top icons on the Lessons screen. Do NOT replace bottom nav icons. No new dependencies.
+Three user-supplied Uiverse widgets, integrated into the CORPUS app with minimal edits (no redesign, no new deps):
 
-## What was already done previously (UI polish, committed-history)
+1. **Galahhad sun/moon theme switch** (uiverse.io/Galahhad/strong-squid-82, MIT) — controls the app's dark/light mode from the Settings screen.
+2. **milley69 heartbeat pulse loader** (Uiverse, `.loading` polyline) — replaces the round 3D sticker (`daily-target.webp`) that sat above "Yuklanmoqda…" in the Suspense fallback screen.
+3. **AKAspidey01 "Go Back" sweep button** (Uiverse Tailwind button) — white pill button with a green rounded pill (back arrow) that expands across the button on hover; added to the two spots the user picked ("both"): the wrong-result screen and the lesson intro slides.
 
-That polish is present in the working tree (uncommitted in this session at one point) but the current build is based on it plus the 3D sticker task.
+## Dark mode wiring (context)
 
-## Current state after 3D sticker additions
+- Store: `settings.darkMode` boolean (`toggleSetting("darkMode")`) in `artifacts/corpus/src/store/useAppStore.ts`.
+- `AppNavigator.tsx` toggles `document.documentElement` `.dark` (+ data-theme attrs); `index.html` pre-applies `.dark` from persisted storage pre-hydration.
+- Settings screen previously used a generic `Toggle` for the darkMode row.
 
-New files:
-- `artifacts/corpus/public/img/3d/` — optimized transparent WebP stickers:
-  - `xp-star.webp` (star, purple/lilac)
-  - `streak-flame.webp` (flame, amber/orange)
-  - `daily-target.webp` (target, purple/lilac)
-  - `lessons-book.webp` (stacked books, purple/lilac)
-  - `accuracy-check.webp` (check, purple/lilac)
-  - `trophy-3d.webp` (trophy, gold/amber)
-  - `bone-3d.webp` (bone, pink/lilac)
-  - `heart-3d.webp` (anatomy heart, pink/coral)
-  - All under ~12 KB each; 256×256; transparent; `loading="lazy"` in component.
-- `artifacts/corpus/src/components/ui/Sticker3D.tsx` — lightweight reusable sticker (`<img loading="lazy">` + optional soft drop-shadow). No new deps.
+## What was done
 
-Modified files:
-- `DashboardScreen.tsx`:
-  - Continue Learning card: added one small `lessons-book` sticker in the top-right of the image/banner area (does not cover text/button).
-  - Stats grid: `StatCard` now uses 3D stickers instead of lucide icons inside the existing colored chip circle (xp-star, streak-flame, lessons-book, accuracy-check).
-  - Daily goal card: replaced the lucide zap with a 24px `daily-target` sticker beside the title.
-  - Unused lucide imports trimmed (`Flame`, `BookOpen`, `TrendingUp`, `LucideIcon` removed; `Zap` kept for the Continue card minutes chip).
-- `ProfileScreen.tsx`:
-  - Achievements heading icon replaced with `trophy-3d` 28px sticker.
-  - No changes to avatar, stats/edit-forms, menu groups, or nav.
-- `LibraryScreen.tsx`:
-  - `TopBar` right side gets a small `lessons-book` sticker.
-  - Section titles (`Darslik`, `Atlas`) get small stickers (`lessons-book`, `bone-3d`) — book cards unchanged.
-- Lessons screen: untouched except for the pre-existing bottom padding change. Top icons on that screen were NOT touched (per explicit instruction).
-- `i18n.ts`, `BottomNav.tsx`, `Screen.tsx`, `AppNavigator.tsx`: unchanged during 3D sticker task (already had the earlier polish).
+Theme switch (session part 1):
+- `src/theme/theme-switch.css` — faithful Galahhad port (canonical CSS fetched from the uiverse page; the user's paste was truncated mid-last-rule). Deliberate deviations: checkbox hidden via 1px clip instead of `display:none` (keyboard-focusable) + `:focus-visible` outline using `var(--theme-primary, #6c5ce7)`; `.theme-switch` made `inline-block; line-height:0; vertical-align:middle`. Everything else pixel-faithful; size scales via `--toggle-size` (px set inline by the component).
+- `src/components/ui/ThemeSwitch.tsx` — controlled `{checked, onCheckedChange, size=20, label, className}`; renders exact original markup; star SVG path verified 77/77 command segments vs user message.
+- `SettingsScreen.tsx` — darkMode row only: `<ThemeSwitch checked={settings.darkMode} onCheckedChange={() => onToggle("darkMode")} size={18} label={r.label} />`; other rows keep `Toggle`.
+- `src/index.css` — imports `theme-switch.css` (after customization.css).
 
-## Asset provenance
+GoBack sweep button (session part 3, user picked "both" spots):
+- `src/components/ui/GoBackButton.tsx` — pure-Tailwind port of the AKAspidey01 widget (no CSS file needed). Original: `button.bg-white.w-48.rounded-2xl.h-14` + `div.bg-green-400.w-1/4.group-hover:w-[184px].duration-500` + back-arrow SVG paths (copied verbatim) + `<p>Go Back</p>`.
+  - Faithful behavior: h-14, rounded-2xl, green-400 pill h-12 top-[4px] left-1, rounded-xl, `group-hover` pill grows `w-[calc(100%-0.5rem)]` (original's 184px = full width minus 8px; % keeps it right at any width), duration-500, arrow SVG 25px.
+  - Structure changed to a reusable component: label is centered in the zone right of the resting pill (`left-[3.75rem]` … `right-3`, `truncate text-center`), so long localized labels stay readable in every state; button `w-full min-w-48` so it stretches in flex stacks; `focus-visible` ring; `dark:bg-surface2 dark:text-ink` (light mode keeps the exact original white/black).
+  - App is LTR-only (uz/en), so the fixed left pill is safe.
+- `ResultWrongScreen.tsx` — bottom stack now: primary `retry` Button + `<GoBackButton label={t.backToTopics}>` (replaces the ghost Button).
+- `LessonScreen.tsx` (`SlideView`) — bottom controls now stacked: primary continue Button on top, `<GoBackButton label={t.backToTopics}>` below (was ghost back + primary side-by-side).
 
-Generated in-sandbox with a soft-3D image model, then post-processed with Pillow:
-- Flood-fill from borders to remove baked-in checkerboard/background.
-- Keep only large connected regions (so stray checker remnant/shadow fragments are dropped).
-- Resized to 256×256 and saved as transparent WebP (quality ~86, method 6).
-- No third-party copyrighted assets were imported. No external bucket downloads used (Supabase CDN SSL handshake failed in this sandbox).
+Pulse loader (session part 2):
+- `src/components/ui/PulseLoader.tsx` + `PulseLoader.css` — exact milley69 markup (`<div class="loading">` > svg 64×48 with `#back`/`#front` polylines, `dash_682` keyframes). Added `role="status"`; also static-stroke fallbacks for `html.low-end` and `prefers-reduced-motion` (mirrors CorpusLoader.css conventions).
+- `AppNavigator.tsx` — `ScreenFallback` (Suspense fallback) now renders `<PulseLoader />` + the unchanged "Yuklanmoqda…" caption; `Sticker3D`/`daily-target.webp` removed from that view and the import swapped.
 
 ## Verification
 
 - `corepack pnpm -r --filter ./artifacts/corpus run typecheck` passes.
-- `PORT=4173 BASE_PATH=/ corepack pnpm -r --filter ./artifacts/corpus run build` passes (existing chunk-size warnings only).
-- Dev server running on port 4173 (`corpus-app-f2e7e4bf`), `/` and all `/img/3d/*.webp` return 200.
+- `PORT=4174 BASE_PATH=/ corepack pnpm -r --filter ./artifacts/corpus run build` passes (pre-existing chunk-size warnings only); built CSS contains `.theme-switch__*` and `dash_682` rules.
+- Dev server via start_process (name "CORPUS app preview", port 4173, `PORT=4173 BASE_PATH=/ corepack pnpm -r --filter @workspace/corpus run dev`); `/` 200; modules/CSS transform cleanly.
+- Not visually inspected in a browser (no browser tool) — user checks the live preview.
+- Commits on `arena/01a071ef-anatomiyaduolingo`: b4eda89 (theme switch) + one for the loader; PR #29 open against main (title/body kept in sync via REST API because `gh pr edit` fails on a legacy "Projects (classic)" GraphQL warning — workaround: `gh api -X PATCH repos/behruzake77/Anatomiyaduolingo/pulls/29 -F body=@file`).
 
-## Workspace notes (unchanged)
+## Prior sessions (already committed history — do not redo)
 
-- pnpm not on PATH; use `corepack pnpm`. `npx` currently `ENOENT` because `artifacts/corpus/node_modules/.bin` is not populated after fresh install until workspace install runs; `corepack pnpm install --frozen-lockfile` fixes it.
-- Vite requires `PORT` and `BASE_PATH`.
+- UI polish pass + 3D stickers task completed earlier on other arena branches (see git history / merge commits).
+- Repo layout: corpus app in `artifacts/corpus` (Vite + React 19 + Tailwind v4 + zustand); screens `src/screens/`, ui components `src/components/ui/`, theme CSS `src/theme/` imported by `src/index.css`, plus colocated component CSS imports (CorpusLoader.css, PulseLoader.css).
 
-## Guardrails
+## Guardrails / workspace notes (unchanged)
 
 - Do not modify backend/DB/API/auth/supabase schema/.env.
 - Do not add dependencies.
 - Do not change Lessons-page top icons or bottom nav.
 - Keep edits minimal and preserve the existing design system.
-
+- pnpm not on PATH — use `corepack pnpm`. Vite requires `PORT` and `BASE_PATH`.
 - [Imported artifact workflow](imported-artifact-workflow.md) — imported apps may need metadata registration; stop duplicate legacy workflows before starting the managed service.
+

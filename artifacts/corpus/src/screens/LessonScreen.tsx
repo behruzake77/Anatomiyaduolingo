@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { GoBackButton } from "@/components/ui/GoBackButton";
 import { Lightbox } from "@/components/ui/Lightbox";
 import { FlashcardDeck } from "@/components/FlashcardDeck";
 import { QuestionCard } from "@/components/quiz/QuestionCard";
@@ -274,13 +275,11 @@ function SlideView(props: {
       <p className="mt-4 text-sm leading-relaxed text-muted">{slide.text}</p>
       {slide.cap && <p className="mt-2 text-xs italic text-muted">{slide.cap}</p>}
 
-      <div className="mt-auto flex gap-3 pt-6">
-        <Button variant="ghost" onClick={onQuit}>
-          {t.backToTopics}
-        </Button>
-        <Button className="flex-1" size="lg" onClick={onNext}>
+      <div className="mt-auto flex flex-col gap-3 pt-6">
+        <Button size="lg" onClick={onNext}>
           {isLast ? t.continue : t.next}
         </Button>
+        <GoBackButton onClick={onQuit} label={t.backToTopics} />
       </div>
     </div>
   );

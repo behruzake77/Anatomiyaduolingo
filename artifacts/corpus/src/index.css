@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./theme/customization.css";
+@import "./theme/theme-switch.css";
 
 /* Dark-mode custom variant: `.dark` class on <html> */
 @custom-variant dark (&:where(.dark, .dark *));
