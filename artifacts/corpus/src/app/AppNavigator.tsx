@@ -7,7 +7,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { applyDeviceClass, isLowEndDevice } from "@/lib/device";
 import { SplashScreen } from "@/screens/SplashScreen";
-import { Sticker3D } from "@/components/ui/Sticker3D";
+import { PulseLoader } from "@/components/ui/PulseLoader";
 
 function screen(loader: () => Promise<{ default: ComponentType }>) {
   return lazy(loader);
@@ -147,7 +147,7 @@ const TAB_SCREEN: Record<Tab, ScreenId> = {
 function ScreenFallback() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-bg px-6 text-center">
-      <Sticker3D src="/img/3d/daily-target.webp" size={48} className="rx-float" />
+      <PulseLoader />
       <p className="mt-3 text-sm text-muted">Yuklanmoqda…</p>
     </div>
   );
