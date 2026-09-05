@@ -1,67 +1,45 @@
-# Arena Session Memory — Corpus UI polish + 3D stickers
+# Arena Session Memory — Galahhad sun/moon theme switch for dark mode
 
 ## Task (current)
 
-The existing CORPUS app UI is already polished. This task ONLY adds soft 3D stickers / 3D illustrations to appropriate places. NOT a redesign. Keep existing layout, colors, fonts, cards, radius, spacing, navigation, icons, buttons. Do NOT touch the top icons on the Lessons screen. Do NOT replace bottom nav icons. No new dependencies.
+User supplied the Uiverse "theme-switch" by Galahhad (animated sun/moon day↔night pill: sliding disc, clouds that sink and stars that rise in the night state) and asked to use it to switch the CORPUS app between dark ("qorong'i") and light ("kunduzgi") mode. NOT a redesign. No new dependencies. Keep the rest of the UI as-is.
 
-## What was already done previously (UI polish, committed-history)
+## How dark mode works in CORPUS (context)
 
-That polish is present in the working tree (uncommitted in this session at one point) but the current build is based on it plus the 3D sticker task.
+- Store: `settings.darkMode` boolean in `artifacts/corpus/src/store/useAppStore.ts` (`toggleSetting("darkMode")`).
+- `AppNavigator.tsx` effect toggles `document.documentElement.classList` `.dark` from it (+ data-theme-color etc.), and `index.html` pre-applies `.dark` from persisted storage before React loads (both stay in sync automatically).
+- Settings screen (`src/screens/SettingsScreen.tsx`) previously showed dark mode as a generic `Toggle` row (rows: notifications / darkMode / sound).
 
-## Current state after 3D sticker additions
+## What was done this session
 
 New files:
-- `artifacts/corpus/public/img/3d/` — optimized transparent WebP stickers:
-  - `xp-star.webp` (star, purple/lilac)
-  - `streak-flame.webp` (flame, amber/orange)
-  - `daily-target.webp` (target, purple/lilac)
-  - `lessons-book.webp` (stacked books, purple/lilac)
-  - `accuracy-check.webp` (check, purple/lilac)
-  - `trophy-3d.webp` (trophy, gold/amber)
-  - `bone-3d.webp` (bone, pink/lilac)
-  - `heart-3d.webp` (anatomy heart, pink/coral)
-  - All under ~12 KB each; 256×256; transparent; `loading="lazy"` in component.
-- `artifacts/corpus/src/components/ui/Sticker3D.tsx` — lightweight reusable sticker (`<img loading="lazy">` + optional soft drop-shadow). No new deps.
+- `artifacts/corpus/src/theme/theme-switch.css` — faithful port of Galahhad's CSS. Source verified by fetching https://uiverse.io/Galahhad/strong-squid-82 (the version pasted by the user was truncated mid-last-rule and HTML-escaped). Changes vs original, deliberately small:
+  - checkbox hidden via 1px clip (sr-only) instead of `display:none`, so Tab/Space still toggle it; added `.theme-switch__checkbox:focus-visible + .theme-switch__container` outline using `var(--theme-primary, #6c5ce7)`.
+  - added `display:inline-block; line-height:0; vertical-align:middle` on `.theme-switch` so it sits cleanly inside flex rows.
+  - everything else (vars, sizes, box-shadows incl. the duplicated layers, clouds box-shadow art, star SVG) copied exactly; colors lowercased; full CSS self-contained (no app tokens needed).
+- `artifacts/corpus/src/components/ui/ThemeSwitch.tsx` — controlled component `{checked, onCheckedChange, size=20px, label, className}`; renders the exact Uiverse markup (clouds div, stars svg with the 7-star path, circle-container > sun-moon-container > moon + 3 spots). SVG path was verified char-by-char against the user message (77/77 command segments identical).
 
-Modified files:
-- `DashboardScreen.tsx`:
-  - Continue Learning card: added one small `lessons-book` sticker in the top-right of the image/banner area (does not cover text/button).
-  - Stats grid: `StatCard` now uses 3D stickers instead of lucide icons inside the existing colored chip circle (xp-star, streak-flame, lessons-book, accuracy-check).
-  - Daily goal card: replaced the lucide zap with a 24px `daily-target` sticker beside the title.
-  - Unused lucide imports trimmed (`Flame`, `BookOpen`, `TrendingUp`, `LucideIcon` removed; `Zap` kept for the Continue card minutes chip).
-- `ProfileScreen.tsx`:
-  - Achievements heading icon replaced with `trophy-3d` 28px sticker.
-  - No changes to avatar, stats/edit-forms, menu groups, or nav.
-- `LibraryScreen.tsx`:
-  - `TopBar` right side gets a small `lessons-book` sticker.
-  - Section titles (`Darslik`, `Atlas`) get small stickers (`lessons-book`, `bone-3d`) — book cards unchanged.
-- Lessons screen: untouched except for the pre-existing bottom padding change. Top icons on that screen were NOT touched (per explicit instruction).
-- `i18n.ts`, `BottomNav.tsx`, `Screen.tsx`, `AppNavigator.tsx`: unchanged during 3D sticker task (already had the earlier polish).
-
-## Asset provenance
-
-Generated in-sandbox with a soft-3D image model, then post-processed with Pillow:
-- Flood-fill from borders to remove baked-in checkerboard/background.
-- Keep only large connected regions (so stray checker remnant/shadow fragments are dropped).
-- Resized to 256×256 and saved as transparent WebP (quality ~86, method 6).
-- No third-party copyrighted assets were imported. No external bucket downloads used (Supabase CDN SSL handshake failed in this sandbox).
+Modified:
+- `src/screens/SettingsScreen.tsx` — only the darkMode row now renders `<ThemeSwitch checked={settings.darkMode} onCheckedChange={() => onToggle("darkMode")} size={18} label={r.label} />`; notifications/sound rows keep the existing `Toggle`; row icons/labels unchanged.
+- `src/index.css` — added `@import "./theme/theme-switch.css";` after the customization.css import.
 
 ## Verification
 
 - `corepack pnpm -r --filter ./artifacts/corpus run typecheck` passes.
-- `PORT=4173 BASE_PATH=/ corepack pnpm -r --filter ./artifacts/corpus run build` passes (existing chunk-size warnings only).
-- Dev server running on port 4173 (`corpus-app-f2e7e4bf`), `/` and all `/img/3d/*.webp` return 200.
+- `PORT=4174 BASE_PATH=/ corepack pnpm -r --filter ./artifacts/corpus run build` passes (pre-existing chunk-size warnings only); built CSS contains all `.theme-switch__*` rules.
+- Dev server running via start_process (name "CORPUS app preview", port 4173, `PORT=4173 BASE_PATH=/ corepack pnpm -r --filter @workspace/corpus run dev`); `/` returns 200; SettingsScreen.tsx + theme-switch.css transform without errors.
+- Not visually inspected in a browser (no browser tool in sandbox) — user should click Settings → "Tungi rejim" row in the live preview to see the animation.
 
-## Workspace notes (unchanged)
+## Prior sessions (already committed history — do not redo)
 
-- pnpm not on PATH; use `corepack pnpm`. `npx` currently `ENOENT` because `artifacts/corpus/node_modules/.bin` is not populated after fresh install until workspace install runs; `corepack pnpm install --frozen-lockfile` fixes it.
-- Vite requires `PORT` and `BASE_PATH`.
+- UI polish pass + 3D stickers task were completed earlier on other arena branches (see git history / merge commits). `.agents/memory` older files may describe them.
+- Repo layout: corpus app lives in `artifacts/corpus` (Vite + React 19 + Tailwind v4 + zustand). UI components `artifacts/corpus/src/components/ui/`, screens in `src/screens/`, theme CSS in `src/theme/` (customization.css, theme-switch.css), imported by `src/index.css`.
 
-## Guardrails
+## Guardrails / workspace notes (unchanged)
 
 - Do not modify backend/DB/API/auth/supabase schema/.env.
 - Do not add dependencies.
 - Do not change Lessons-page top icons or bottom nav.
 - Keep edits minimal and preserve the existing design system.
-
+- pnpm not on PATH — use `corepack pnpm`. Vite requires `PORT` and `BASE_PATH`.
 - [Imported artifact workflow](imported-artifact-workflow.md) — imported apps may need metadata registration; stop duplicate legacy workflows before starting the managed service.

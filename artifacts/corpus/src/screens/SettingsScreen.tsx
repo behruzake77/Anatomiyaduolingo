@@ -25,6 +25,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Toggle } from "@/components/ui/Toggle";
+import { ThemeSwitch } from "@/components/ui/ThemeSwitch";
 import { useAppStore, type InfoSection } from "@/store/useAppStore";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useStrings } from "@/i18n";
@@ -170,7 +171,16 @@ export function SettingsScreen() {
                 <r.icon className="h-5 w-5" aria-hidden />
               </span>
               <span className="min-w-0 flex-1 break-words text-base font-medium">{r.label}</span>
-              <Toggle checked={settings[r.key]} onChange={() => onToggle(r.key)} label={r.label} />
+              {r.key === "darkMode" ? (
+                <ThemeSwitch
+                  checked={settings.darkMode}
+                  onCheckedChange={() => onToggle("darkMode")}
+                  size={18}
+                  label={r.label}
+                />
+              ) : (
+                <Toggle checked={settings[r.key]} onChange={() => onToggle(r.key)} label={r.label} />
+              )}
             </div>
           ))}
 
