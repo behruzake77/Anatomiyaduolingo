@@ -1,22 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Crown } from "lucide-react";
+import { CorpusLoader } from "@/components/ui/CorpusLoader";
 import { Logo } from "@/components/ui/Logo";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 import { PREMIUM_DISABLED } from "@/data/premium";
+import { isLowEndDevice } from "@/lib/device";
 
 /**
- * High-Precision Anatomical Opening Sequence for CORPUS
- *
- * Sequence Chronology (2.8s total):
- * 0.0s - 0.4s :: INITIAL MOMENT — Deep dark ambient canvas, micro grid calibration.
- * 0.3s - 1.0s :: DISCOVERY — Sagittal axis laser line & reticle crosshairs establish anatomical focus.
- * 0.7s - 1.6s :: ANATOMY EMBLEM & BRAND — Central emblem resolves, halo activates, wordmark rises.
- * 1.5s - 2.2s :: MOMENT OF FOCUS — Precision progress calibration gauge completes (11 Systems / 2000+ Items).
- * 2.3s - 2.8s :: TRANSITION — Canvas scales subtly and reveals the active workspace smoothly.
+ * Anatomical opening with the Uiverse-inspired CORPUS stroke animation.
+ * The wordmark starts at 0.3s for a full 2s cycle before the 0.45s exit.
+ * If auth is still loading, keep the wordmark visible (up to 5s extra).
+ * Reduced-motion / low-end devices get the complete, static wordmark instead.
  */
 
 export function SplashScreen() {
@@ -24,57 +22,56 @@ export function SplashScreen() {
   const isPremium = useAppStore((s) => s.isPremium) && !PREMIUM_DISABLED;
   const t = useStrings();
   const reduced = useReducedMotion();
-  const lite =
-    reduced ||
-    (typeof navigator !== "undefined" &&
-      (((navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8) <= 2 ||
-        (navigator.hardwareConcurrency ?? 8) <= 4));
+  const lite = Boolean(reduced) || isLowEndDevice();
 
   const [phase, setPhase] = useState<"init" | "grid" | "emblem" | "focus" | "exiting">("init");
   const [gaugeProgress, setGaugeProgress] = useState(0);
 
   useEffect(() => {
-    if (lite) {
-      const id = setTimeout(() => finish(), 280);
-      return () => clearTimeout(id);
-    }
-
-    const t1 = setTimeout(() => setPhase("grid"), 300);
-    const t2 = setTimeout(() => setPhase("emblem"), 700);
-    const t3 = setTimeout(() => {
-      setPhase("focus");
-      setGaugeProgress(100);
-    }, 1500);
-    const t4 = setTimeout(() => setPhase("exiting"), 2300);
-    const t5 = setTimeout(() => finish(), 2750);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-      clearTimeout(t5);
+    const minimumDuration = lite ? 280 : 2300;
+    const authDeadline = Date.now() + minimumDuration + 5000;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const schedule = (callback: () => void, delay: number) => {
+      timers.push(setTimeout(callback, delay));
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lite]);
 
-  function finish() {
-    const started = Date.now();
-    const go = () => {
+    const finish = () => {
       const s = useAppStore.getState();
-      if (s.isLoading && Date.now() - started < 5000) {
-        setTimeout(go, 80);
+      // A deep link or auth event may already have opened a different screen.
+      if (s.screen !== "splash") return;
+      if (s.isLoading && Date.now() < authDeadline) {
+        schedule(finish, 80);
         return;
       }
-      if (!s.currentUser) navigate("login");
-      else navigate(s.onboardingDone ? "dashboard" : "onboarding");
-    };
-    go();
-  }
 
-  const isGridActive = phase !== "init";
-  const isEmblemActive = phase === "emblem" || phase === "focus" || phase === "exiting";
-  const isExiting = phase === "exiting";
+      if (!lite) setPhase("exiting");
+      schedule(() => {
+        const latest = useAppStore.getState();
+        if (latest.screen !== "splash") return;
+        if (!latest.currentUser) navigate("login");
+        else navigate(latest.onboardingDone ? "dashboard" : "onboarding");
+      }, lite ? 0 : 450);
+    };
+
+    if (!lite) {
+      setPhase("init");
+      setGaugeProgress(0);
+      schedule(() => setPhase("grid"), 100);
+      schedule(() => setPhase("emblem"), 300);
+      schedule(() => {
+        setPhase("focus");
+        setGaugeProgress(100);
+      }, 1500);
+    }
+    schedule(finish, minimumDuration);
+
+    // Includes auth polling and exit timers, not just the visual sequence.
+    return () => timers.forEach(clearTimeout);
+  }, [lite, navigate]);
+
+  const isGridActive = !lite && phase !== "init";
+  const isEmblemActive = lite || phase === "emblem" || phase === "focus" || phase === "exiting";
+  const isExiting = !lite && phase === "exiting";
 
   return (
     <div className="relative flex flex-1 select-none flex-col items-center justify-center overflow-hidden bg-[#060810] text-white">
@@ -148,7 +145,7 @@ export function SplashScreen() {
 
       {/* 5. Main Hero Container */}
       <motion.div
-        className="relative z-10 flex flex-col items-center"
+        className="relative z-10 flex w-full flex-col items-center px-6"
         initial={{ opacity: 1, scale: 1 }}
         animate={isExiting ? { opacity: 0, scale: 1.05 } : { opacity: 1, scale: 1 }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -158,7 +155,7 @@ export function SplashScreen() {
           {/* Concentric Precision Ring */}
           <motion.div
             className="absolute inset-0 rounded-full border border-[#6C5CE7]/20"
-            initial={{ scale: 0.6, opacity: 0 }}
+            initial={lite ? false : { scale: 0.6, opacity: 0 }}
             animate={isEmblemActive ? { scale: 1.25, opacity: 1 } : { scale: 0.6, opacity: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           />
@@ -166,7 +163,7 @@ export function SplashScreen() {
           {/* Halo Glow Ring */}
           <motion.div
             className="absolute inset-0 rounded-full bg-[#6C5CE7]/15 blur-xl"
-            initial={{ scale: 0.5, opacity: 0 }}
+            initial={lite ? false : { scale: 0.5, opacity: 0 }}
             animate={isEmblemActive ? { scale: 1.1, opacity: 0.8 } : { scale: 0.5, opacity: 0 }}
             transition={{ duration: 1.0, ease: "easeOut" }}
           />
@@ -174,7 +171,7 @@ export function SplashScreen() {
           {/* Central Logo */}
           <motion.div
             className="relative flex h-28 w-28 items-center justify-center"
-            initial={{ opacity: 0, scale: 0.82, y: 8 }}
+            initial={lite ? false : { opacity: 0, scale: 0.82, y: 8 }}
             animate={isEmblemActive ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.82, y: 8 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
@@ -182,23 +179,22 @@ export function SplashScreen() {
           </motion.div>
         </div>
 
-        {/* Brand Title Wordmark */}
-        <div className="mt-6 flex flex-col items-center">
+        {/* Animated CORPUS wordmark — the supplied loader, adapted to all six letters. */}
+        <div className="mt-6 flex w-full max-w-sm flex-col items-center">
           <motion.h1
-            className="text-3xl font-extrabold tracking-[0.22em] text-white"
-            initial={{ opacity: 0, y: 12 }}
+            className="w-full"
+            initial={lite ? false : { opacity: 0, y: 12 }}
             animate={isEmblemActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            transition={{ duration: lite ? 0 : 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            {t.brand}
-            <span className="text-[#A29BFE]">.</span>
+            <CorpusLoader animated={!lite && isEmblemActive} />
           </motion.h1>
 
           <motion.p
-            className="mt-1.5 text-[11px] font-medium tracking-[0.26em] text-white/50"
-            initial={{ opacity: 0, y: 8 }}
+            className="mt-3 max-w-full text-center text-[11px] font-medium leading-relaxed tracking-[0.26em] text-white/50"
+            initial={lite ? false : { opacity: 0, y: 8 }}
             animate={isEmblemActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+            transition={{ duration: lite ? 0 : 0.6, ease: [0.16, 1, 0.3, 1], delay: lite ? 0 : 0.25 }}
           >
             {t.tagline.toUpperCase()}
           </motion.p>
@@ -207,7 +203,7 @@ export function SplashScreen() {
         {/* Premium Badge if active */}
         {isPremium && (
           <motion.span
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={lite ? false : { opacity: 0, scale: 0.8 }}
             animate={isEmblemActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.4, delay: 0.35 }}
             className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-3.5 py-1 text-[10px] font-bold tracking-wider text-[#1a1230] shadow-md"
@@ -221,15 +217,15 @@ export function SplashScreen() {
           <div className="relative h-[2px] w-48 overflow-hidden rounded-full bg-white/10">
             <motion.div
               className="h-full bg-gradient-to-r from-[#6C5CE7] via-[#A29BFE] to-[#00B894]"
-              initial={{ width: "0%" }}
-              animate={{ width: `${gaugeProgress}%` }}
+              initial={lite ? false : { width: "0%" }}
+              animate={{ width: `${lite ? 100 : gaugeProgress}%` }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
 
           <motion.div
             className="mt-3 flex items-center gap-3 text-[10px] font-mono tracking-widest text-white/40"
-            initial={{ opacity: 0 }}
+            initial={lite ? false : { opacity: 0 }}
             animate={isEmblemActive ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
