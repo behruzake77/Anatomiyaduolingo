@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { Frown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { GoBackButton } from "@/components/ui/GoBackButton";
 import { ReactionSticker } from "@/components/ReactionSticker";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
@@ -34,9 +35,7 @@ export function ResultWrongScreen() {
         <Button size="lg" onClick={() => resetTo("lesson", ["lessons"])}>
           {t.retry}
         </Button>
-        <Button size="lg" variant="ghost" onClick={() => resetTo("topics")}>
-          {t.backToTopics}
-        </Button>
+        <GoBackButton onClick={() => resetTo("topics")} label={t.backToTopics} />
       </div>
     </div>
   );

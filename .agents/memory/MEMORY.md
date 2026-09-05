@@ -1,11 +1,12 @@
-# Arena Session Memory — Uiverse: sun/moon theme switch + pulse loader
+# Arena Session Memory — Uiverse: theme switch + pulse loader + GoBack sweep button
 
 ## Task (current)
 
-Two user-supplied Uiverse widgets, integrated into the CORPUS app with minimal edits (no redesign, no new deps):
+Three user-supplied Uiverse widgets, integrated into the CORPUS app with minimal edits (no redesign, no new deps):
 
 1. **Galahhad sun/moon theme switch** (uiverse.io/Galahhad/strong-squid-82, MIT) — controls the app's dark/light mode from the Settings screen.
 2. **milley69 heartbeat pulse loader** (Uiverse, `.loading` polyline) — replaces the round 3D sticker (`daily-target.webp`) that sat above "Yuklanmoqda…" in the Suspense fallback screen.
+3. **AKAspidey01 "Go Back" sweep button** (Uiverse Tailwind button) — white pill button with a green rounded pill (back arrow) that expands across the button on hover; added to the two spots the user picked ("both"): the wrong-result screen and the lesson intro slides.
 
 ## Dark mode wiring (context)
 
@@ -20,6 +21,14 @@ Theme switch (session part 1):
 - `src/components/ui/ThemeSwitch.tsx` — controlled `{checked, onCheckedChange, size=20, label, className}`; renders exact original markup; star SVG path verified 77/77 command segments vs user message.
 - `SettingsScreen.tsx` — darkMode row only: `<ThemeSwitch checked={settings.darkMode} onCheckedChange={() => onToggle("darkMode")} size={18} label={r.label} />`; other rows keep `Toggle`.
 - `src/index.css` — imports `theme-switch.css` (after customization.css).
+
+GoBack sweep button (session part 3, user picked "both" spots):
+- `src/components/ui/GoBackButton.tsx` — pure-Tailwind port of the AKAspidey01 widget (no CSS file needed). Original: `button.bg-white.w-48.rounded-2xl.h-14` + `div.bg-green-400.w-1/4.group-hover:w-[184px].duration-500` + back-arrow SVG paths (copied verbatim) + `<p>Go Back</p>`.
+  - Faithful behavior: h-14, rounded-2xl, green-400 pill h-12 top-[4px] left-1, rounded-xl, `group-hover` pill grows `w-[calc(100%-0.5rem)]` (original's 184px = full width minus 8px; % keeps it right at any width), duration-500, arrow SVG 25px.
+  - Structure changed to a reusable component: label is centered in the zone right of the resting pill (`left-[3.75rem]` … `right-3`, `truncate text-center`), so long localized labels stay readable in every state; button `w-full min-w-48` so it stretches in flex stacks; `focus-visible` ring; `dark:bg-surface2 dark:text-ink` (light mode keeps the exact original white/black).
+  - App is LTR-only (uz/en), so the fixed left pill is safe.
+- `ResultWrongScreen.tsx` — bottom stack now: primary `retry` Button + `<GoBackButton label={t.backToTopics}>` (replaces the ghost Button).
+- `LessonScreen.tsx` (`SlideView`) — bottom controls now stacked: primary continue Button on top, `<GoBackButton label={t.backToTopics}>` below (was ghost back + primary side-by-side).
 
 Pulse loader (session part 2):
 - `src/components/ui/PulseLoader.tsx` + `PulseLoader.css` — exact milley69 markup (`<div class="loading">` > svg 64×48 with `#back`/`#front` polylines, `dash_682` keyframes). Added `role="status"`; also static-stroke fallbacks for `html.low-end` and `prefers-reduced-motion` (mirrors CorpusLoader.css conventions).
