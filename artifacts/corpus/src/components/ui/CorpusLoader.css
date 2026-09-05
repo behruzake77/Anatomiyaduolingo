@@ -1,0 +1,101 @@
+/* Adapted from Uiverse.io by SelfMadeSystem. Scoped to the CORPUS wordmark. */
+.corpus-loader {
+  display: block;
+  width: 21rem;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.corpus-loader__track {
+  opacity: 0.16;
+}
+
+.corpus-loader__dash {
+  animation:
+    corpus-loader-dash-array 2s ease-in-out infinite,
+    corpus-loader-dash-offset 2s linear infinite;
+}
+
+.corpus-loader__spin {
+  animation:
+    corpus-loader-spin-array 2s ease-in-out infinite,
+    corpus-loader-spin 8s ease-in-out infinite,
+    corpus-loader-dash-offset 2s linear infinite;
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+@keyframes corpus-loader-dash-array {
+  0% {
+    stroke-dasharray: 0 1 359 0;
+  }
+  50% {
+    stroke-dasharray: 0 359 1 0;
+  }
+  100% {
+    stroke-dasharray: 359 1 0 0;
+  }
+}
+
+@keyframes corpus-loader-spin-array {
+  0%,
+  100% {
+    stroke-dasharray: 270 90;
+  }
+  50% {
+    stroke-dasharray: 0 360;
+  }
+}
+
+@keyframes corpus-loader-dash-offset {
+  from {
+    stroke-dashoffset: 365;
+  }
+  to {
+    stroke-dashoffset: 5;
+  }
+}
+
+/* `transform`, rather than individual `rotate`, also supports older WebViews. */
+@keyframes corpus-loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  12.5%,
+  25% {
+    transform: rotate(270deg);
+  }
+  37.5%,
+  50% {
+    transform: rotate(540deg);
+  }
+  62.5%,
+  75% {
+    transform: rotate(810deg);
+  }
+  87.5%,
+  100% {
+    transform: rotate(1080deg);
+  }
+}
+
+.corpus-loader--static .corpus-loader__dash,
+.corpus-loader--static .corpus-loader__spin,
+html.low-end .corpus-loader__dash,
+html.low-end .corpus-loader__spin {
+  animation: none;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corpus-loader__dash,
+  .corpus-loader__spin {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    transform: none;
+  }
+}
