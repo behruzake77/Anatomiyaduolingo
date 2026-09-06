@@ -14,6 +14,7 @@ export function ThemeSwitch({
   onCheckedChange,
   size = 20,
   label,
+  id,
   className,
 }: {
   checked: boolean;
@@ -22,6 +23,8 @@ export function ThemeSwitch({
   size?: number;
   /** Accessible name announced by screen readers. */
   label?: string;
+  /** Optional input id — lets external `<label htmlFor>` toggle the switch too. */
+  id?: string;
   className?: string;
 }) {
   return (
@@ -31,7 +34,9 @@ export function ThemeSwitch({
     >
       <input
         type="checkbox"
+        role="switch"
         className="theme-switch__checkbox"
+        id={id}
         checked={checked}
         onChange={(e) => onCheckedChange(e.target.checked)}
         aria-label={label}

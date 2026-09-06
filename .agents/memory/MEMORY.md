@@ -1,6 +1,16 @@
 # Arena Session Memory — Uiverse: theme switch + pulse loader + GoBack sweep button
 
-## Task (current)
+## Task (current session)
+
+User feedback on the theme switch: "zor chiqan" (looks great) but (1) make it smaller with a fitting size, (2) make it actually work. Done:
+
+- **Size**: `SettingsScreen.tsx` passes `size={12}` (was 18) → pill is 67.5×30px (was 101×45), height now matches the sibling `Toggle` (h-7 = 28px).
+- **Real "not working" bug found & fixed**: the personalization rules `:root[data-background-style=…]` in `customization.css` (specificity 0,2,0) beat the `.dark` token block (0,1,0), so with ANY background style other than "Toza" selected (Lavanda/Yashil/Tun), toggling dark mode left `--bg` light → app went half-dark (dark cards on light background) → "button doesn't work". Fix: `.dark` → `:root.dark` in `index.css` (0,2,0 + later source order wins the tie); background tints now only affect light mode, dark palette always applies fully when dark mode is on.
+- **Bigger tap target**: darkMode row text is now a `<label htmlFor>` bound to the switch input (`ThemeSwitch` gained an optional `id` prop; `SettingsScreen` passes `useId()`), so tapping "Tungi rejim" also toggles.
+- **Polish**: `role="switch"` on the hidden checkbox; `haptic(10)` via `useHaptics()` on toggle (matches QuestionCard/ProjectStories patterns).
+- Verified end-to-end with a Node vm + happy-dom harness that loads the vite dev server modules for real: click → `input.checked` flips → `html.dark` class → `--bg/--surface/--ink` flip (checked with the real compiled CSS injected) → persisted to `corpus-storage`; toggles back; row-text label tap works; verified with backgroundStyle clean/lavender/midnight. `typecheck` and `build` pass.
+
+## Task (previous)
 
 Three user-supplied Uiverse widgets, integrated into the CORPUS app with minimal edits (no redesign, no new deps):
 

@@ -21,7 +21,10 @@
   --muted: #6B7280;
   --line: #E9ECF2;
 }
-.dark {
+/* `:root.dark` (0,2,0) — ties with the `:root[data-background-style]` rules in
+   customization.css and wins by source order, so the dark palette always applies
+   fully when dark mode is on (background tints only affect light mode). */
+:root.dark {
   --bg: #12131A;
   --surface: #1C1D27;
   --surface-2: #24252F;
