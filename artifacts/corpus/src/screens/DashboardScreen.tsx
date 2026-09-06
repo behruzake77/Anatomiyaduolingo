@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Crown,
   Flame,
-  Pencil,
   Sun,
   Trophy,
   Zap,
@@ -252,7 +251,15 @@ export function DashboardScreen() {
             onClick={() => navigate("exam")}
           />
           <QuickTile
-            icon={<Pencil className="h-5 w-5" aria-hidden />}
+            icon={
+              <img
+                src="/img/icon/test-checklist.png"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-xl object-contain"
+              />
+            }
             color="#22B69B"
             title={t.quickPlayQuiz}
             sub={t.quickPlayQuizSub}

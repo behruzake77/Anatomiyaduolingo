@@ -85,7 +85,8 @@ export function KahootScreen() {
   // Kahootdagi kimlik: maxsus ism (bo'sh bo'lsa — profil ismi) + profil avatar
   const myName = kahootName.trim() || currentUser?.username || t.you;
   const identity = { name: myName, avatar: myAvatar };
-  const poolN = pendingQuiz?.questions.length ?? collectChoiceQuestions(battleScope).length;
+  const poolN =
+    pendingQuiz?.questions.length ?? collectChoiceQuestions(battleScope).length;
 
   const [phase, setPhase] = useState<Phase>("hub");
   const [practice, setPractice] = useState(false);
@@ -118,11 +119,16 @@ export function KahootScreen() {
   itemsRef.current = items;
 
   const me = players.find((p) => p.id === meId);
-  const isHost = Boolean(game && currentUser && game.host_id === currentUser.id) || (practice && Boolean(game));
+  const isHost =
+    Boolean(game && currentUser && game.host_id === currentUser.id) ||
+    (practice && Boolean(game));
   // Jonli o'yinda host = BOSHQARUVCHI: savollarni yechmaydi, reytingga tushmaydi
-  const isModerator = isHost && !practice && Boolean(game && game.id !== "local");
+  const isModerator =
+    isHost && !practice && Boolean(game && game.id !== "local");
   const activePlayers =
-    isModerator && game ? players.filter((p) => p.user_id !== game.host_id) : players;
+    isModerator && game
+      ? players.filter((p) => p.user_id !== game.host_id)
+      : players;
   const status: KahootStatus = game?.status ?? "lobby";
   const qIndex = game?.q_index ?? 0;
   const item = items[qIndex] ?? null;
@@ -163,7 +169,9 @@ export function KahootScreen() {
     fallbackQuiz = pendingQuiz,
   ) => {
     if (g.questions && g.questions.length >= 2) {
-      return applyItems(snapshotToPool(fallbackQuiz?.title || t.quizStudio, g.questions));
+      return applyItems(
+        snapshotToPool(fallbackQuiz?.title || t.quizStudio, g.questions),
+      );
     }
     if (fallbackQuiz && fallbackQuiz.questions.length >= 2) {
       return applyItems(quizToPool(fallbackQuiz));
@@ -171,15 +179,19 @@ export function KahootScreen() {
     const { scope } = parseBattleSeed(g.seed);
     if (scope.startsWith("quiz:")) {
       const quiz = await getQuiz(scope.slice(5));
-      if (quiz && quiz.questions.length >= 2) return applyItems(quizToPool(quiz));
+      if (quiz && quiz.questions.length >= 2)
+        return applyItems(quizToPool(quiz));
     }
     return applyItems(pickKahootQuestions(g.seed, g.q_count));
   };
 
   const startPractice = () => {
     setError("");
-    const custom = pendingQuiz && pendingQuiz.questions.length >= 2 ? pendingQuiz : null;
-    const seed = custom ? `quiz:${custom.id}::practice` : makeBattleSeed(battleScope);
+    const custom =
+      pendingQuiz && pendingQuiz.questions.length >= 2 ? pendingQuiz : null;
+    const seed = custom
+      ? `quiz:${custom.id}::practice`
+      : makeBattleSeed(battleScope);
     const qs = custom
       ? quizToPool(custom)
       : pickKahootQuestions(seed, KAHOOT_Q_COUNT);
@@ -196,18 +208,20 @@ export function KahootScreen() {
       joined_at: new Date().toISOString(),
       avatar: myAvatar,
     };
-    const bots: KahootPlayer[] = KAHOOT_BOT_NAMES.slice(0, 3).map((name, i) => ({
-      id: `bot-${i}`,
-      game_id: "local",
-      user_id: null,
-      name,
-      score: 0,
-      streak: 0,
-      answers: [],
-      is_bot: true,
-      joined_at: new Date().toISOString(),
-      avatar: null,
-    }));
+    const bots: KahootPlayer[] = KAHOOT_BOT_NAMES.slice(0, 3).map(
+      (name, i) => ({
+        id: `bot-${i}`,
+        game_id: "local",
+        user_id: null,
+        name,
+        score: 0,
+        streak: 0,
+        answers: [],
+        is_bot: true,
+        joined_at: new Date().toISOString(),
+        avatar: null,
+      }),
+    );
     const g: KahootGame = {
       id: "local",
       pin: "------",
@@ -242,7 +256,12 @@ export function KahootScreen() {
       return;
     }
     setBusy(true);
-    const created = await createKahootGame(currentUser, battleScope, pendingQuiz, identity);
+    const created = await createKahootGame(
+      currentUser,
+      battleScope,
+      pendingQuiz,
+      identity,
+    );
     setBusy(false);
     if (!created) {
       setError(t.kahootHostFail);
@@ -289,19 +308,22 @@ export function KahootScreen() {
     }
   };
 
-  const patch = useCallback(async (next: Partial<KahootGame>) => {
-    const g = gameRef.current;
-    if (!g) return;
-    const merged = { ...g, ...next };
-    gameRef.current = merged;
-    setGame(merged);
-    if (practice || g.id === "local") return;
-    const saved = await patchKahootGame(g.id, next);
-    if (saved) {
-      gameRef.current = saved;
-      setGame(saved);
-    }
-  }, [practice]);
+  const patch = useCallback(
+    async (next: Partial<KahootGame>) => {
+      const g = gameRef.current;
+      if (!g) return;
+      const merged = { ...g, ...next };
+      gameRef.current = merged;
+      setGame(merged);
+      if (practice || g.id === "local") return;
+      const saved = await patchKahootGame(g.id, next);
+      if (saved) {
+        gameRef.current = saved;
+        setGame(saved);
+      }
+    },
+    [practice],
+  );
 
   const beginPlay = () => {
     resetLocal();
@@ -338,8 +360,11 @@ export function KahootScreen() {
   }, [game?.id, practice]);
 
   // Joriy savolga javob bergan o'yinchilar soni (host-moderator hisobga olinmaydi)
-  const answeredN = activePlayers.filter((p) => p.answers.some((a) => a.i === qIndex)).length;
-  const allAnswered = activePlayers.length > 0 && answeredN >= activePlayers.length;
+  const answeredN = activePlayers.filter((p) =>
+    p.answers.some((a) => a.i === qIndex),
+  ).length;
+  const allAnswered =
+    activePlayers.length > 0 && answeredN >= activePlayers.length;
 
   // Host auto-advance
   useEffect(() => {
@@ -349,7 +374,10 @@ export function KahootScreen() {
     if (status === "countdown") {
       const id = setTimeout(() => {
         if (gameRef.current?.status !== "countdown") return;
-        void patch({ status: "question", q_started_at: new Date().toISOString() });
+        void patch({
+          status: "question",
+          q_started_at: new Date().toISOString(),
+        });
       }, 3200);
       return () => clearTimeout(id);
     }
@@ -376,7 +404,12 @@ export function KahootScreen() {
         if (!cur || cur.status !== "scoreboard") return;
         const last = qIndex + 1 >= (cur.q_count || itemsRef.current.length);
         if (last) void patch({ status: "podium" });
-        else void patch({ status: "countdown", q_index: qIndex + 1, q_started_at: null });
+        else
+          void patch({
+            status: "countdown",
+            q_index: qIndex + 1,
+            q_started_at: null,
+          });
       }, 5200);
       return () => clearTimeout(id);
     }
@@ -396,7 +429,9 @@ export function KahootScreen() {
     if (status !== "question") return;
     setSelected(null);
     setLocked(false);
-    const started = game?.q_started_at ? Date.parse(game.q_started_at) : Date.now();
+    const started = game?.q_started_at
+      ? Date.parse(game.q_started_at)
+      : Date.now();
     qStart.current = started;
     const limit = game?.q_seconds ?? KAHOOT_SECONDS;
     const tick = () => {
@@ -425,30 +460,43 @@ export function KahootScreen() {
     const q = itemsRef.current[qIndex];
     if (!q?.q.options || q.q.answer == null) return;
     const limit = (game?.q_seconds ?? KAHOOT_SECONDS) * 1000;
-    const timers = playersRef.current.filter((p) => p.is_bot).map((bot) => {
-      const delay = 1600 + Math.random() * Math.min(9000, limit * 0.7);
-      return window.setTimeout(() => {
-        const ok = Math.random() < 0.64;
-        let choice = q.q.answer ?? 0;
-        if (!ok) {
-          const wrong = q.q.options!.map((_, i) => i).filter((i) => i !== q.q.answer);
-          choice = wrong[Math.floor(Math.random() * Math.max(1, wrong.length))] ?? 0;
-        }
-        const { pts, nextStreak } = kahootPoints(ok, delay, limit, bot.streak);
-        setPlayers((cur) =>
-          cur.map((p) =>
-            p.id !== bot.id || p.answers.some((a) => a.i === qIndex)
-              ? p
-              : {
-                  ...p,
-                  score: p.score + pts,
-                  streak: nextStreak,
-                  answers: [...p.answers, { i: qIndex, choice, ms: delay, correct: ok, pts }],
-                },
-          ),
-        );
-      }, delay);
-    });
+    const timers = playersRef.current
+      .filter((p) => p.is_bot)
+      .map((bot) => {
+        const delay = 1600 + Math.random() * Math.min(9000, limit * 0.7);
+        return window.setTimeout(() => {
+          const ok = Math.random() < 0.64;
+          let choice = q.q.answer ?? 0;
+          if (!ok) {
+            const wrong = q.q
+              .options!.map((_, i) => i)
+              .filter((i) => i !== q.q.answer);
+            choice =
+              wrong[Math.floor(Math.random() * Math.max(1, wrong.length))] ?? 0;
+          }
+          const { pts, nextStreak } = kahootPoints(
+            ok,
+            delay,
+            limit,
+            bot.streak,
+          );
+          setPlayers((cur) =>
+            cur.map((p) =>
+              p.id !== bot.id || p.answers.some((a) => a.i === qIndex)
+                ? p
+                : {
+                    ...p,
+                    score: p.score + pts,
+                    streak: nextStreak,
+                    answers: [
+                      ...p.answers,
+                      { i: qIndex, choice, ms: delay, correct: ok, pts },
+                    ],
+                  },
+            ),
+          );
+        }, delay);
+      });
     return () => timers.forEach((id) => clearTimeout(id));
   }, [practice, status, qIndex, game?.q_seconds]);
 
@@ -472,11 +520,17 @@ export function KahootScreen() {
   }, [status, recordKahoot]);
 
   const lockIn = async (choice: number) => {
-    if (locked || status !== "question" || !item || item.q.answer == null) return;
+    if (locked || status !== "question" || !item || item.q.answer == null)
+      return;
     const ms = Date.now() - qStart.current;
     const ok = choice === item.q.answer;
     const mine = playersRef.current.find((p) => p.id === meIdRef.current);
-    const { pts, nextStreak } = kahootPoints(ok, ms, (game?.q_seconds ?? KAHOOT_SECONDS) * 1000, mine?.streak ?? 0);
+    const { pts, nextStreak } = kahootPoints(
+      ok,
+      ms,
+      (game?.q_seconds ?? KAHOOT_SECONDS) * 1000,
+      mine?.streak ?? 0,
+    );
     setSelected(choice);
     setLocked(true);
     haptic(ok ? [40, 50, 80] : [50, 40]);
@@ -533,12 +587,20 @@ export function KahootScreen() {
         <div className="mt-6 overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-[#46178F] via-[#6C5CE7] to-[#E21B3C] p-5 text-white shadow-card">
           <div className="flex items-center gap-3">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
-              <Gamepad2 className="h-7 w-7" aria-hidden />
+              <img
+                src="/img/icon/kahoot.svg"
+                alt=""
+                width={48}
+                height={48}
+                className="h-12 w-12 rounded-2xl object-contain"
+              />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-lg font-bold leading-tight">{t.kahootTitle}</p>
               <p className="mt-0.5 text-sm text-white/80">
-                {topicName ? fmt(t.kahootOnTopic, { name: topicName }) : t.kahootSubtitle}
+                {topicName
+                  ? fmt(t.kahootOnTopic, { name: topicName })
+                  : t.kahootSubtitle}
               </p>
             </div>
           </div>
@@ -547,16 +609,26 @@ export function KahootScreen() {
 
         {pendingQuiz ? (
           <div className="mt-4 rounded-2xl border border-primary/30 bg-primary/10 p-4">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.kahootCustom}</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+              {t.kahootCustom}
+            </p>
             <p className="mt-1 text-sm font-semibold">{pendingQuiz.title}</p>
-            <p className="mt-0.5 text-xs text-muted">{fmt(t.quizN, { n: pendingQuiz.questions.length })}</p>
-            <button type="button" className="mt-2 text-xs font-semibold text-primary" onClick={() => setPendingQuiz(null)}>
+            <p className="mt-0.5 text-xs text-muted">
+              {fmt(t.quizN, { n: pendingQuiz.questions.length })}
+            </p>
+            <button
+              type="button"
+              className="mt-2 text-xs font-semibold text-primary"
+              onClick={() => setPendingQuiz(null)}
+            >
               {t.battleScopeAll}
             </button>
           </div>
         ) : (
           <>
-            <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">{t.battlePickTopic}</p>
+            <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">
+              {t.battlePickTopic}
+            </p>
             <KahootScopePicker
               battleScope={battleScope}
               onPick={(scope) => {
@@ -570,7 +642,10 @@ export function KahootScreen() {
         )}
 
         <div className="mt-4 rounded-2xl border border-line bg-surface p-3">
-          <label className="text-xs font-semibold uppercase tracking-widest text-muted" htmlFor="kahoot-name">
+          <label
+            className="text-xs font-semibold uppercase tracking-widest text-muted"
+            htmlFor="kahoot-name"
+          >
             {t.kahootNickname}
           </label>
           <input
@@ -581,7 +656,9 @@ export function KahootScreen() {
             placeholder={currentUser?.username || t.name}
             className="mt-2 w-full rounded-xl border-2 border-line bg-bg px-3 py-2 text-sm font-semibold outline-none focus:border-primary"
           />
-          <p className="mt-1.5 text-[11px] text-muted">{t.kahootNicknameHint}</p>
+          <p className="mt-1.5 text-[11px] text-muted">
+            {t.kahootNicknameHint}
+          </p>
         </div>
 
         {!currentUser && (
@@ -590,7 +667,9 @@ export function KahootScreen() {
           </p>
         )}
 
-        <p className="mt-3 text-center text-xs font-semibold text-muted">{fmt(t.kahootQsReady, { n: poolN })}</p>
+        <p className="mt-3 text-center text-xs font-semibold text-muted">
+          {fmt(t.kahootQsReady, { n: poolN })}
+        </p>
 
         <div className="mt-4 grid grid-cols-2 gap-3">
           <ModeCard
@@ -630,7 +709,11 @@ export function KahootScreen() {
             onClick={() => openQuizStudio()}
           />
         </div>
-        {error && <p className="mt-3 text-center text-sm font-semibold text-danger">{error}</p>}
+        {error && (
+          <p className="mt-3 text-center text-sm font-semibold text-danger">
+            {error}
+          </p>
+        )}
       </Screen>
     );
   }
@@ -669,7 +752,13 @@ export function KahootScreen() {
             {joinHint && <p className="mt-1 text-xs text-muted">{joinHint}</p>}
           </div>
         )}
-        <Button className="mt-6 w-full" size="lg" loading={busy} disabled={pinInput.length < 6} onClick={() => void doJoin()}>
+        <Button
+          className="mt-6 w-full"
+          size="lg"
+          loading={busy}
+          disabled={pinInput.length < 6}
+          onClick={() => void doJoin()}
+        >
           {t.kahootJoinCta}
         </Button>
       </Screen>
@@ -693,11 +782,23 @@ export function KahootScreen() {
           </header>
 
           <div className="mt-5 overflow-hidden rounded-3xl bg-gradient-to-br from-[#46178F] via-[#5A2AA8] to-[#6C5CE7] p-6 text-center text-white shadow-pop">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">{t.kahootPin}</p>
-            <p className="mt-2 font-mono text-6xl font-black tracking-[0.18em]">{practice ? "BOT" : game.pin}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">
+              {t.kahootPin}
+            </p>
+            <p className="mt-2 font-mono text-6xl font-black tracking-[0.18em]">
+              {practice ? "BOT" : game.pin}
+            </p>
             {!practice && (
-              <Button className="mt-4" variant="secondary" onClick={() => void copyPin()}>
-                {copied ? <Check className="h-4 w-4" aria-hidden /> : <Copy className="h-4 w-4" aria-hidden />}
+              <Button
+                className="mt-4"
+                variant="secondary"
+                onClick={() => void copyPin()}
+              >
+                {copied ? (
+                  <Check className="h-4 w-4" aria-hidden />
+                ) : (
+                  <Copy className="h-4 w-4" aria-hidden />
+                )}
                 {copied ? t.battleCopied : t.battleCopy}
               </Button>
             )}
@@ -734,7 +835,9 @@ export function KahootScreen() {
                   </span>
                 )}
                 {p.is_bot && (
-                  <span className="shrink-0 text-[10px] font-semibold uppercase text-muted">{t.battlePractice}</span>
+                  <span className="shrink-0 text-[10px] font-semibold uppercase text-muted">
+                    {t.battlePractice}
+                  </span>
                 )}
               </div>
             ))}
@@ -748,11 +851,19 @@ export function KahootScreen() {
           <StickerBar />
 
           {isHost ? (
-            <Button className="mt-5 w-full" size="lg" onClick={beginPlay} loading={busy} disabled={busy}>
+            <Button
+              className="mt-5 w-full"
+              size="lg"
+              onClick={beginPlay}
+              loading={busy}
+              disabled={busy}
+            >
               <Play className="h-5 w-5" aria-hidden /> {t.kahootStartGame}
             </Button>
           ) : (
-            <p className="mt-6 text-center text-sm font-semibold text-muted">{t.kahootWaitingHost}</p>
+            <p className="mt-6 text-center text-sm font-semibold text-muted">
+              {t.kahootWaitingHost}
+            </p>
           )}
         </Screen>
       </div>
@@ -770,7 +881,12 @@ export function KahootScreen() {
   const myAns = me?.answers.find((a) => a.i === qIndex);
 
   return (
-    <div className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto text-white", playBg)}>
+    <div
+      className={cn(
+        "flex min-h-0 flex-1 flex-col overflow-y-auto text-white",
+        playBg,
+      )}
+    >
       <header className="flex items-center gap-3 px-5 pt-4">
         <button
           onClick={() => void goHub()}
@@ -780,7 +896,12 @@ export function KahootScreen() {
           <X className="h-5 w-5" aria-hidden />
         </button>
         <p className="min-w-0 flex-1 truncate text-sm font-semibold">
-          {status === "podium" ? t.kahootPodium : fmt(t.kahootQuestionOf, { n: qIndex + 1, total: items.length || game?.q_count || KAHOOT_Q_COUNT })}
+          {status === "podium"
+            ? t.kahootPodium
+            : fmt(t.kahootQuestionOf, {
+                n: qIndex + 1,
+                total: items.length || game?.q_count || KAHOOT_Q_COUNT,
+              })}
         </p>
         {item && (status === "question" || status === "reveal") && (
           <ReportFlagButton
@@ -797,7 +918,9 @@ export function KahootScreen() {
           />
         )}
         {status === "question" && (
-          <span className="rounded-full bg-white/20 px-3 py-1 text-sm font-black">{Math.ceil(left)}</span>
+          <span className="rounded-full bg-white/20 px-3 py-1 text-sm font-black">
+            {Math.ceil(left)}
+          </span>
         )}
       </header>
 
@@ -809,10 +932,20 @@ export function KahootScreen() {
 
       {status === "countdown" && (
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-5 text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-white/70">{t.kahootGetReady}</p>
-          {item && <h2 className="max-w-sm text-xl font-bold leading-snug">{item.q.prompt}</h2>}
+          <p className="text-sm font-bold uppercase tracking-widest text-white/70">
+            {t.kahootGetReady}
+          </p>
+          {item && (
+            <h2 className="max-w-sm text-xl font-bold leading-snug">
+              {item.q.prompt}
+            </h2>
+          )}
           {item?.q.image && (
-            <img src={item.q.image} alt="" className="max-h-28 rounded-xl object-contain" />
+            <img
+              src={item.q.image}
+              alt=""
+              className="max-h-28 rounded-xl object-contain"
+            />
           )}
           <motion.p
             key={cd}
@@ -830,15 +963,25 @@ export function KahootScreen() {
           <div className="h-1.5 overflow-hidden rounded-full bg-white/20">
             <motion.div
               className="h-full rounded-full bg-[#F5C04E]"
-              animate={{ width: `${(left / (game?.q_seconds ?? KAHOOT_SECONDS)) * 100}%` }}
+              animate={{
+                width: `${(left / (game?.q_seconds ?? KAHOOT_SECONDS)) * 100}%`,
+              }}
               transition={{ duration: 0.15 }}
             />
           </div>
-          <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/70">{item.lessonTitle}</p>
-          <h1 className="mt-2 text-xl font-bold leading-snug">{item.q.prompt}</h1>
+          <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/70">
+            {item.lessonTitle}
+          </p>
+          <h1 className="mt-2 text-xl font-bold leading-snug">
+            {item.q.prompt}
+          </h1>
           {item.q.image && (
             <div className="mt-3 overflow-hidden rounded-2xl bg-white">
-              <img src={item.q.image} alt="" className="mx-auto max-h-40 object-contain" />
+              <img
+                src={item.q.image}
+                alt=""
+                className="mx-auto max-h-40 object-contain"
+              />
             </div>
           )}
           {!isModerator && (
@@ -846,11 +989,16 @@ export function KahootScreen() {
               <span
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold",
-                  allAnswered ? "bg-[#26890C] text-white" : "bg-white/15 text-white/85",
+                  allAnswered
+                    ? "bg-[#26890C] text-white"
+                    : "bg-white/15 text-white/85",
                 )}
               >
                 <Users className="h-3.5 w-3.5" aria-hidden />
-                {fmt(t.kahootAnsweredCount, { a: answeredN, b: activePlayers.length })}
+                {fmt(t.kahootAnsweredCount, {
+                  a: answeredN,
+                  b: activePlayers.length,
+                })}
                 {allAnswered && <Check className="h-3.5 w-3.5" aria-hidden />}
               </span>
               {isHost && (
@@ -862,7 +1010,8 @@ export function KahootScreen() {
                   }}
                   className="inline-flex items-center gap-1 rounded-full bg-white/25 px-3 py-1 text-xs font-bold text-white active:scale-95"
                 >
-                  <SkipForward className="h-3.5 w-3.5" aria-hidden /> {t.kahootSkip}
+                  <SkipForward className="h-3.5 w-3.5" aria-hidden />{" "}
+                  {t.kahootSkip}
                 </button>
               )}
             </div>
@@ -873,11 +1022,16 @@ export function KahootScreen() {
                 <Crown className="h-8 w-8 text-[#F5C04E]" aria-hidden />
               </span>
               <p className="text-lg font-black">{t.kahootHostMode}</p>
-              <p className="max-w-xs text-center text-sm text-white/70">{t.kahootHostWatching}</p>
+              <p className="max-w-xs text-center text-sm text-white/70">
+                {t.kahootHostWatching}
+              </p>
               <p className="mt-1 text-sm font-bold text-white/90">
                 {allAnswered
                   ? t.kahootAllAnswered
-                  : fmt(t.kahootAnsweredCount, { a: answeredN, b: activePlayers.length })}
+                  : fmt(t.kahootAnsweredCount, {
+                      a: answeredN,
+                      b: activePlayers.length,
+                    })}
               </p>
               <button
                 type="button"
@@ -895,7 +1049,10 @@ export function KahootScreen() {
               <Check className="h-16 w-16" aria-hidden />
               <p className="text-lg font-bold">{t.kahootAnswered}</p>
               <p className="text-sm text-white/70">
-                {fmt(t.kahootAnsweredCount, { a: answeredN, b: activePlayers.length })}
+                {fmt(t.kahootAnsweredCount, {
+                  a: answeredN,
+                  b: activePlayers.length,
+                })}
               </p>
             </div>
           ) : (
@@ -915,7 +1072,11 @@ export function KahootScreen() {
           <h2 className="text-lg font-bold leading-snug">{item.q.prompt}</h2>
           {item.q.image && (
             <div className="mt-2 overflow-hidden rounded-2xl bg-white">
-              <img src={item.q.image} alt="" className="mx-auto max-h-28 object-contain" />
+              <img
+                src={item.q.image}
+                alt=""
+                className="mx-auto max-h-28 object-contain"
+              />
             </div>
           )}
           <KahootOptionsGrid
@@ -930,19 +1091,30 @@ export function KahootScreen() {
               ok={Boolean(myAns?.correct || selected === item.q.answer)}
               seed={`${game?.id ?? "k"}-${qIndex}`}
               size="lg"
-              label={myAns?.correct || selected === item.q.answer ? t.kahootCorrect : t.kahootWrong}
+              label={
+                myAns?.correct || selected === item.q.answer
+                  ? t.kahootCorrect
+                  : t.kahootWrong
+              }
             />
             {myAns?.correct || selected === item.q.answer ? (
-              <p className="mt-1 text-2xl font-black text-[#7CFC98]">{t.kahootCorrect}</p>
+              <p className="mt-1 text-2xl font-black text-[#7CFC98]">
+                {t.kahootCorrect}
+              </p>
             ) : (
-              <p className="mt-1 text-2xl font-black text-[#FF8A8A]">{t.kahootWrong}</p>
+              <p className="mt-1 text-2xl font-black text-[#FF8A8A]">
+                {t.kahootWrong}
+              </p>
             )}
             <p className="mt-1 text-lg font-bold">
               {fmt(t.kahootPts, { n: myAns?.pts ?? 0 })}
-              {(me?.streak ?? 0) >= 2 && ` · ${fmt(t.kahootStreakN, { n: me?.streak ?? 0 })}`}
+              {(me?.streak ?? 0) >= 2 &&
+                ` · ${fmt(t.kahootStreakN, { n: me?.streak ?? 0 })}`}
             </p>
             <p className="mt-1 rounded-full bg-white/15 px-3 py-1 text-sm font-bold text-white/90">
-              {fmt(t.kahootCorrectAns, { n: String.fromCharCode(65 + (item.q.answer ?? 0)) })}
+              {fmt(t.kahootCorrectAns, {
+                n: String.fromCharCode(65 + (item.q.answer ?? 0)),
+              })}
             </p>
           </div>
         </div>
@@ -960,11 +1132,18 @@ export function KahootScreen() {
                   p.id === meId && "bg-white text-[#46178F]",
                 )}
               >
-                <span className="w-6 text-center text-sm font-black">{i + 1}</span>
-                <span className="h-8 w-8 rounded-full text-center text-sm font-bold leading-8 text-white" style={{ backgroundColor: playerColor(p.name) }}>
+                <span className="w-6 text-center text-sm font-black">
+                  {i + 1}
+                </span>
+                <span
+                  className="h-8 w-8 rounded-full text-center text-sm font-bold leading-8 text-white"
+                  style={{ backgroundColor: playerColor(p.name) }}
+                >
                   {p.name.slice(0, 1).toUpperCase()}
                 </span>
-                <span className="min-w-0 flex-1 truncate font-semibold">{p.name}</span>
+                <span className="min-w-0 flex-1 truncate font-semibold">
+                  {p.name}
+                </span>
                 <span className="font-black">{p.score}</span>
               </div>
             ))}
@@ -976,7 +1155,12 @@ export function KahootScreen() {
                 if (gameRef.current?.status !== "scoreboard") return;
                 const last = qIndex + 1 >= (game?.q_count || items.length);
                 if (last) void patch({ status: "podium" });
-                else void patch({ status: "countdown", q_index: qIndex + 1, q_started_at: null });
+                else
+                  void patch({
+                    status: "countdown",
+                    q_index: qIndex + 1,
+                    q_started_at: null,
+                  });
               }}
             >
               {t.kahootNext}
@@ -996,7 +1180,12 @@ export function KahootScreen() {
                 key={p.id}
                 initial={{ opacity: 0, y: 32, scale: 0.85 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.12 + i * 0.18, type: "spring", stiffness: 240, damping: 18 }}
+                transition={{
+                  delay: 0.12 + i * 0.18,
+                  type: "spring",
+                  stiffness: 240,
+                  damping: 18,
+                }}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl px-3 py-2.5 shadow-lg",
                   i === 0
@@ -1018,7 +1207,9 @@ export function KahootScreen() {
               </motion.div>
             ))}
             {board.length === 0 && (
-              <p className="py-6 text-center text-sm text-white/70">{t.kahootNoPlayers}</p>
+              <p className="py-6 text-center text-sm text-white/70">
+                {t.kahootNoPlayers}
+              </p>
             )}
           </div>
           <div className="mt-6 flex flex-col items-center gap-1">
@@ -1026,13 +1217,25 @@ export function KahootScreen() {
               <p className="text-lg font-bold">{t.kahootPodiumHost}</p>
             ) : (
               <p className="text-lg font-bold">
-                {fmt(t.kahootRank, { n: myRank || Math.max(0, board.findIndex((p) => p.id === meId) + 1) })}
+                {fmt(t.kahootRank, {
+                  n:
+                    myRank ||
+                    Math.max(0, board.findIndex((p) => p.id === meId) + 1),
+                })}
               </p>
             )}
-            {myRank > 0 && <p className="text-sm text-white/80">{fmt(t.battleXp, { n: earned })}</p>}
+            {myRank > 0 && (
+              <p className="text-sm text-white/80">
+                {fmt(t.battleXp, { n: earned })}
+              </p>
+            )}
           </div>
           <div className="mt-5 flex w-full gap-3">
-            <Button variant="ghost" className="flex-1 bg-white/15 text-white hover:bg-white/25" onClick={() => navigate("dashboard")}>
+            <Button
+              variant="ghost"
+              className="flex-1 bg-white/15 text-white hover:bg-white/25"
+              onClick={() => navigate("dashboard")}
+            >
               {t.battleHome}
             </Button>
             <Button
@@ -1048,7 +1251,9 @@ export function KahootScreen() {
       )}
 
       {/* Stiker tashlash — o'yin davomida */}
-      {(status === "countdown" || status === "question" || status === "reveal") && (
+      {(status === "countdown" ||
+        status === "question" ||
+        status === "reveal") && (
         <div className="border-t border-white/15 bg-black/10 px-3 py-2">
           <div className="flex items-center justify-center gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {STICKERS.map((e) => (
@@ -1082,20 +1287,24 @@ function KahootScopePicker({
   partsLabel: string;
 }) {
   const selectedSys = (() => {
-    if (battleScope.startsWith("sys:")) return CONTENT_SYSTEMS.find((s) => s.id === battleScope.slice(4));
+    if (battleScope.startsWith("sys:"))
+      return CONTENT_SYSTEMS.find((s) => s.id === battleScope.slice(4));
     if (battleScope.startsWith("unit:")) {
       const id = battleScope.slice(5);
       return CONTENT_SYSTEMS.find((s) => s.units.some((u) => u.id === id));
     }
     if (battleScope.startsWith("lesson:")) {
       const id = battleScope.slice(7);
-      return CONTENT_SYSTEMS.find((s) => s.units.some((u) => u.lessons.some((l) => l.id === id)));
+      return CONTENT_SYSTEMS.find((s) =>
+        s.units.some((u) => u.lessons.some((l) => l.id === id)),
+      );
     }
     return undefined;
   })();
   const selectedUnit = (() => {
     if (!selectedSys) return undefined;
-    if (battleScope.startsWith("unit:")) return selectedSys.units.find((u) => u.id === battleScope.slice(5));
+    if (battleScope.startsWith("unit:"))
+      return selectedSys.units.find((u) => u.id === battleScope.slice(5));
     if (battleScope.startsWith("lesson:")) {
       const id = battleScope.slice(7);
       return selectedSys.units.find((u) => u.lessons.some((l) => l.id === id));
@@ -1106,7 +1315,11 @@ function KahootScopePicker({
   return (
     <div className="mt-2 flex flex-col gap-2">
       <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <Chip active={battleScope === "all"} label={allLabel} onClick={() => onPick("all")} />
+        <Chip
+          active={battleScope === "all"}
+          label={allLabel}
+          onClick={() => onPick("all")}
+        />
         {CONTENT_SYSTEMS.map((s) => (
           <Chip
             key={s.id}
@@ -1119,7 +1332,9 @@ function KahootScopePicker({
       </div>
       {selectedSys && selectedSys.units.length > 0 && (
         <>
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-muted">{partsLabel}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-muted">
+            {partsLabel}
+          </p>
           <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <Chip
               active={battleScope === `sys:${selectedSys.id}`}
@@ -1176,9 +1391,15 @@ function Chip({
       onClick={onClick}
       className={cn(
         "shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold",
-        active ? "border-primary bg-primary text-white" : "border-line bg-surface text-ink",
+        active
+          ? "border-primary bg-primary text-white"
+          : "border-line bg-surface text-ink",
       )}
-      style={active && color ? { backgroundColor: color, borderColor: color, color: "#fff" } : undefined}
+      style={
+        active && color
+          ? { backgroundColor: color, borderColor: color, color: "#fff" }
+          : undefined
+      }
     >
       {label}
     </button>
@@ -1213,7 +1434,9 @@ function ModeCard({
       </span>
       <span className="min-w-0">
         <span className="block text-sm font-bold leading-tight">{title}</span>
-        <span className="mt-0.5 block text-[11px] leading-snug text-white/80">{hint}</span>
+        <span className="mt-0.5 block text-[11px] leading-snug text-white/80">
+          {hint}
+        </span>
       </span>
     </button>
   );
@@ -1249,7 +1472,8 @@ function KahootOptionsGrid({
     options.length === 2 &&
     (options[0]?.length ?? 99) <= 20 &&
     (options[1]?.length ?? 99) <= 20;
-  const cols = hasImgs || options.length >= 3 || shortTwo ? "grid-cols-2" : "grid-cols-1";
+  const cols =
+    hasImgs || options.length >= 3 || shortTwo ? "grid-cols-2" : "grid-cols-1";
   return (
     <div className={cn("mt-3 grid flex-1 content-start gap-3", cols)}>
       {options.map((opt, i) => {
@@ -1258,7 +1482,11 @@ function KahootOptionsGrid({
         const img = optionImages?.[i];
         const imgBlock = hasImgs ? (
           img ? (
-            <img src={img} alt="" className="h-24 w-full rounded-xl bg-white object-contain p-1" />
+            <img
+              src={img}
+              alt=""
+              className="h-24 w-full rounded-xl bg-white object-contain p-1"
+            />
           ) : (
             <span className="flex h-24 w-full items-center justify-center rounded-xl bg-white/25 text-2xl font-black">
               {String.fromCharCode(65 + i)}
@@ -1295,7 +1523,9 @@ function KahootOptionsGrid({
             aria-label={`${tapLabel ?? "Javob"}: ${label}`}
             className={cn(
               "flex rounded-2xl px-3 py-3 text-left text-sm font-bold text-white shadow-lg transition active:scale-[.97] disabled:opacity-70",
-              hasImgs ? "min-h-[140px] flex-col" : "min-h-[96px] items-center gap-2",
+              hasImgs
+                ? "min-h-[140px] flex-col"
+                : "min-h-[96px] items-center gap-2",
             )}
             style={{ backgroundColor: pal.bg }}
           >
@@ -1309,11 +1539,19 @@ function KahootOptionsGrid({
   );
 }
 
-function KahootShape({ kind }: { kind: "triangle" | "diamond" | "circle" | "square" }) {
-  if (kind === "circle") return <span className="h-6 w-6 shrink-0 rounded-full bg-white/90" />;
-  if (kind === "square") return <span className="h-6 w-6 shrink-0 rounded-sm bg-white/90" />;
+function KahootShape({
+  kind,
+}: {
+  kind: "triangle" | "diamond" | "circle" | "square";
+}) {
+  if (kind === "circle")
+    return <span className="h-6 w-6 shrink-0 rounded-full bg-white/90" />;
+  if (kind === "square")
+    return <span className="h-6 w-6 shrink-0 rounded-sm bg-white/90" />;
   if (kind === "diamond") {
-    return <span className="h-6 w-6 shrink-0 rotate-45 rounded-sm bg-white/90" />;
+    return (
+      <span className="h-6 w-6 shrink-0 rotate-45 rounded-sm bg-white/90" />
+    );
   }
   return (
     <svg viewBox="0 0 24 24" className="h-6 w-6 shrink-0" aria-hidden>
@@ -1323,7 +1561,13 @@ function KahootShape({ kind }: { kind: "triangle" | "diamond" | "circle" | "squa
 }
 
 /** O'yinchi avatar — emoji/color/dataURL/URL yoki harf fallback. */
-function PlayerAvatar({ player, size }: { player: KahootPlayer; size: number }) {
+function PlayerAvatar({
+  player,
+  size,
+}: {
+  player: KahootPlayer;
+  size: number;
+}) {
   const av = player.avatar;
   if (av?.startsWith("emoji:")) {
     return (
@@ -1339,7 +1583,12 @@ function PlayerAvatar({ player, size }: { player: KahootPlayer; size: number }) 
     return (
       <span
         className="flex shrink-0 items-center justify-center rounded-full font-bold text-white"
-        style={{ width: size, height: size, backgroundColor: av.slice(6), fontSize: size * 0.42 }}
+        style={{
+          width: size,
+          height: size,
+          backgroundColor: av.slice(6),
+          fontSize: size * 0.42,
+        }}
       >
         {(player.name[0] ?? "?").toUpperCase()}
       </span>
@@ -1358,7 +1607,12 @@ function PlayerAvatar({ player, size }: { player: KahootPlayer; size: number }) 
   return (
     <span
       className="flex shrink-0 items-center justify-center rounded-full font-bold text-white"
-      style={{ width: size, height: size, backgroundColor: playerColor(player.name), fontSize: size * 0.42 }}
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: playerColor(player.name),
+        fontSize: size * 0.42,
+      }}
     >
       {(player.name[0] ?? "?").toUpperCase()}
     </span>
@@ -1385,7 +1639,12 @@ function StickerLayer({ items }: { items: StickerFly[] }) {
             key={s.id}
             style={{ left: `${s.x}%`, top: `${s.y}%` }}
             initial={{ scale: 0, opacity: 0, y: 0, rotate: 0 }}
-            animate={{ scale: [0, 1.6, 1.25], opacity: [0, 1, 0], y: -150, rotate: s.rot }}
+            animate={{
+              scale: [0, 1.6, 1.25],
+              opacity: [0, 1, 0],
+              y: -150,
+              rotate: s.rot,
+            }}
             transition={{ duration: 1.6, ease: "easeOut" }}
             className="absolute select-none text-5xl drop-shadow-lg"
           >
@@ -1403,19 +1662,25 @@ function useStickers() {
   const [flies, setFlies] = useState<StickerFly[]>([]);
   const idRef = useRef(0);
 
-  const throwSticker = useCallback((emoji: string) => {
-    const id = ++idRef.current;
-    const s: StickerFly = {
-      id,
-      emoji,
-      x: 10 + Math.random() * 72,
-      y: 28 + Math.random() * 50,
-      rot: -30 + Math.random() * 60,
-    };
-    setFlies((cur) => [...cur.slice(-14), s]);
-    haptic([25]);
-    window.setTimeout(() => setFlies((cur) => cur.filter((f) => f.id !== id)), 1650);
-  }, [haptic]);
+  const throwSticker = useCallback(
+    (emoji: string) => {
+      const id = ++idRef.current;
+      const s: StickerFly = {
+        id,
+        emoji,
+        x: 10 + Math.random() * 72,
+        y: 28 + Math.random() * 50,
+        rot: -30 + Math.random() * 60,
+      };
+      setFlies((cur) => [...cur.slice(-14), s]);
+      haptic([25]);
+      window.setTimeout(
+        () => setFlies((cur) => cur.filter((f) => f.id !== id)),
+        1650,
+      );
+    },
+    [haptic],
+  );
 
   return { flies, throwSticker };
 }
