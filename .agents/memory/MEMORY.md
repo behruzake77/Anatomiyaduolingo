@@ -1,5 +1,24 @@
 # Arena Session Memory — Uiverse: theme switch + pulse loader + GoBack sweep button
 
+## Task (latest session) — "dark/light mode doesn't work, background stays black"
+
+Same family as the fix below, but the remaining half of it:
+
+- **Cause**: `:root[data-background-style="midnight"]` ("Tun" in Settings → Dizaynni sozlash → Orqa fon) applied a *full dark palette* (`--bg #171827`, `--ink #F8FAFC`, …) with specificity 0,2,0, so it beat `:root` (0,1,0). In light mode the app therefore looked dark, and switching to real dark mode (`:root.dark`) looked identical → "rejim ishlamayapti, fon qora bo'lib qoldi".
+- **Fix (CSS)**: in `src/theme/customization.css` the background presets are now mode-scoped —
+  `:root:not(.dark)[data-background-style="lavender"|"mint"] { --bg: … }` (light only) and
+  `:root.dark[data-background-style="midnight"] { --bg:#171827; … }` (dark-only bluish variant).
+  Light + "midnight" now simply falls back to the default light palette, so nothing can stick dark.
+- **Fix (UX)**: "Tun" *is* dark mode, so the two controls are synced in `SettingsScreen.tsx`:
+  `applyBackground(id)` (used by the Orqa fon chips) also flips `darkMode` when needed, and
+  `toggleDarkMode()` (used by the `ThemeSwitch`) sets `backgroundStyle` to `midnight` when turning
+  dark on and back to `clean` when turning it off from `midnight`. Every tap now produces a visible change.
+- Built CSS verified: `dist/public/assets/index-*.css` contains exactly the five token rules in the
+  intended order/specificity (light tints 0,3,0 → midnight variant 0,3,0 → `:root` 0,1,0 → `:root.dark` 0,2,0).
+- **Verification gotcha**: happy-dom's `getComputedStyle` resolves `:root.dark` even when the class is
+  absent, so it CANNOT be used to verify this cascade — inspect the compiled CSS / reason about
+  specificity instead. (The previous session's happy-dom result for this was misleading.)
+
 ## Task (current session)
 
 User feedback on the theme switch: "zor chiqan" (looks great) but (1) make it smaller with a fitting size, (2) make it actually work. Done:
