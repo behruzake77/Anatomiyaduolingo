@@ -9,31 +9,33 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  Library,
-  Box,
-  BookOpen,
-  GraduationCap,
-  Repeat,
-  Trophy,
-  Medal,
-  Swords,
-  Gamepad2,
-  Flag,
-  ChevronRight,
-  Sparkles,
-  type LucideIcon,
-} from "lucide-react";
+import { ChevronRight, Sparkles } from "lucide-react";
 import { useAppStore, type ScreenId } from "@/store/useAppStore";
 import { useStrings, fmt } from "@/i18n";
 import { NEWS } from "@/data/news";
-import { LEAGUES, boardFor, userRank, userWeekXp, weekKeyOf } from "@/utils/league";
+import {
+  LEAGUES,
+  boardFor,
+  userRank,
+  userWeekXp,
+  weekKeyOf,
+} from "@/utils/league";
 
 interface Promo {
   screen: ScreenId;
-  icon: LucideIcon;
+  icon: string;
   color: string;
-  titleKey: "library" | "models3d" | "glossaryTitle" | "examTitle" | "reviewTitle" | "achievements" | "leaderboardTitle" | "battleTitle" | "kahootTitle" | "feedbackTitle";
+  titleKey:
+    | "library"
+    | "models3d"
+    | "glossaryTitle"
+    | "examTitle"
+    | "reviewTitle"
+    | "achievements"
+    | "leaderboardTitle"
+    | "battleTitle"
+    | "kahootTitle"
+    | "feedbackTitle";
   textKey:
     | "librarySubtitle"
     | "promo3d"
@@ -49,25 +51,113 @@ interface Promo {
 
 /** Qaysi bo'lim bannerlarda reklama qilinadi (ranglar SYSTEMS palitrasidan). */
 const PROMOS: Promo[] = [
-  { screen: "feedback", icon: Flag, color: "#F59E0B", titleKey: "feedbackTitle", textKey: "feedbackSubtitle" },
-  { screen: "kahoot", icon: Gamepad2, color: "#46178F", titleKey: "kahootTitle", textKey: "promoKahoot" },
-  { screen: "battle", icon: Swords, color: "#EF4444", titleKey: "battleTitle", textKey: "promoBattle" },
-  { screen: "leaderboard", icon: Medal, color: "#EC4899", titleKey: "leaderboardTitle", textKey: "promoLeaderboard" },
-  { screen: "library", icon: Library, color: "#6C5CE7", titleKey: "library", textKey: "librarySubtitle" },
-  { screen: "models3d", icon: Box, color: "#06b6d4", titleKey: "models3d", textKey: "promo3d" },
-  { screen: "glossary", icon: BookOpen, color: "#F59E0B", titleKey: "glossaryTitle", textKey: "promoGlossary" },
-  { screen: "exam", icon: GraduationCap, color: "#EF4444", titleKey: "examTitle", textKey: "promoExam" },
-  { screen: "review", icon: Repeat, color: "#22C55E", titleKey: "reviewTitle", textKey: "promoReview" },
-  { screen: "achievements", icon: Trophy, color: "#F5C04E", titleKey: "achievements", textKey: "promoAch" },
+  {
+    screen: "feedback",
+    icon: "/img/icon/feedback-illustration.png",
+    color: "#F59E0B",
+    titleKey: "feedbackTitle",
+    textKey: "feedbackSubtitle",
+  },
+  {
+    screen: "kahoot",
+    icon: "/img/icon/kahoot.svg",
+    color: "#46178F",
+    titleKey: "kahootTitle",
+    textKey: "promoKahoot",
+  },
+  {
+    screen: "battle",
+    icon: "/img/icon/battle-handshake.png",
+    color: "#EF4444",
+    titleKey: "battleTitle",
+    textKey: "promoBattle",
+  },
+  {
+    screen: "leaderboard",
+    icon: "/img/icon/leaderboard-illustration.png",
+    color: "#EC4899",
+    titleKey: "leaderboardTitle",
+    textKey: "promoLeaderboard",
+  },
+  {
+    screen: "library",
+    icon: "/img/icon/library-illustration.png",
+    color: "#6C5CE7",
+    titleKey: "library",
+    textKey: "librarySubtitle",
+  },
+  {
+    screen: "models3d",
+    icon: "/img/icon/models3d-illustration.png",
+    color: "#06b6d4",
+    titleKey: "models3d",
+    textKey: "promo3d",
+  },
+  {
+    screen: "glossary",
+    icon: "/img/icon/glossary-illustration.png",
+    color: "#F59E0B",
+    titleKey: "glossaryTitle",
+    textKey: "promoGlossary",
+  },
+  {
+    screen: "exam",
+    icon: "/img/icon/exam-checklist.png",
+    color: "#EF4444",
+    titleKey: "examTitle",
+    textKey: "promoExam",
+  },
+  {
+    screen: "review",
+    icon: "/img/icon/review-illustration.png",
+    color: "#22C55E",
+    titleKey: "reviewTitle",
+    textKey: "promoReview",
+  },
+  {
+    screen: "achievements",
+    icon: "/img/icon/achievements-illustration.png",
+    color: "#F5C04E",
+    titleKey: "achievements",
+    textKey: "promoAch",
+  },
 ];
 
-const MONTHS_UZ = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"];
-const MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const MONTHS_UZ = [
+  "yanvar",
+  "fevral",
+  "mart",
+  "aprel",
+  "may",
+  "iyun",
+  "iyul",
+  "avgust",
+  "sentabr",
+  "oktabr",
+  "noyabr",
+  "dekabr",
+];
+const MONTHS_EN = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 function formatNewsDate(iso: string, lang: "uz" | "en"): string {
   const [y, m, d] = iso.split("-").map(Number);
   const months = lang === "en" ? MONTHS_EN : MONTHS_UZ;
-  return lang === "en" ? `${months[m - 1]} ${d}, ${y}` : `${d}-${months[m - 1]}, ${y}`;
+  return lang === "en"
+    ? `${months[m - 1]} ${d}, ${y}`
+    : `${d}-${months[m - 1]}, ${y}`;
 }
 
 export function DashboardBanners() {
@@ -93,7 +183,8 @@ export function DashboardBanners() {
       {/* 2) Loyiha yangiliklari — avto-aylanuvchi karussel */}
       <section className="mt-6">
         <h2 className="flex items-center gap-1.5 text-lg font-semibold">
-          <Sparkles className="h-4 w-4 text-accent" aria-hidden /> {t.bannersNewsTitle}
+          <Sparkles className="h-4 w-4 text-accent" aria-hidden />{" "}
+          {t.bannersNewsTitle}
         </h2>
         <NewsCarousel />
       </section>
@@ -105,25 +196,42 @@ export function DashboardBanners() {
 function PromoCard({ promo }: { promo: Promo }) {
   const t = useStrings();
   const navigate = useAppStore((s) => s.navigate);
-  const Icon = promo.icon;
 
   return (
     <button
       onClick={() => navigate(promo.screen)}
       className="group relative w-[190px] shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-transform duration-150 active:scale-[.97]"
-      style={{ backgroundImage: `linear-gradient(160deg, ${promo.color}26 0%, transparent 65%)` }}
+      style={{
+        backgroundImage: `linear-gradient(160deg, ${promo.color}26 0%, transparent 65%)`,
+      }}
     >
       <div
         className="flex h-10 w-10 items-center justify-center rounded-xl"
         style={{ backgroundColor: `${promo.color}2e`, color: promo.color }}
       >
-        <Icon className="h-5 w-5" aria-hidden />
+        <img
+          src={promo.icon}
+          alt=""
+          width={40}
+          height={40}
+          className="h-10 w-10 object-contain"
+        />
       </div>
-      <p className="mt-2.5 text-sm font-semibold leading-tight">{t[promo.titleKey]}</p>
-      <p className="mt-1 text-xs leading-relaxed text-muted">{t[promo.textKey]}</p>
-      <span className="mt-2.5 inline-flex items-center gap-0.5 text-xs font-semibold" style={{ color: promo.color }}>
+      <p className="mt-2.5 text-sm font-semibold leading-tight">
+        {t[promo.titleKey]}
+      </p>
+      <p className="mt-1 text-xs leading-relaxed text-muted">
+        {t[promo.textKey]}
+      </p>
+      <span
+        className="mt-2.5 inline-flex items-center gap-0.5 text-xs font-semibold"
+        style={{ color: promo.color }}
+      >
         {t.promoOpen}
-        <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+        <ChevronRight
+          className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+          aria-hidden
+        />
       </span>
     </button>
   );
@@ -170,7 +278,10 @@ function NewsCarousel() {
         style={{ width: "200%" }}
       />
 
-      <button onClick={() => navigate("info")} className="relative flex w-full items-center gap-3 p-4 text-left">
+      <button
+        onClick={() => navigate("info")}
+        className="relative flex w-full items-center gap-3 p-4 text-left"
+      >
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-xl">
           {item.icon}
         </div>
@@ -185,7 +296,9 @@ function NewsCarousel() {
               transition={{ duration: 0.3 }}
             >
               <p className="text-sm font-semibold leading-tight">{loc.title}</p>
-              <p className="mt-0.5 break-words text-xs leading-relaxed text-muted">{loc.text}</p>
+              <p className="mt-0.5 break-words text-xs leading-relaxed text-muted">
+                {loc.text}
+              </p>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -226,7 +339,12 @@ function WeekRaceCard() {
 
   const weekKey = weekKeyOf(new Date());
   const myXp = userWeekXp(xpHistory, weekKey);
-  const board = boardFor(weekKey, leagueIndex, currentUser?.username ?? "", myXp);
+  const board = boardFor(
+    weekKey,
+    leagueIndex,
+    currentUser?.username ?? "",
+    myXp,
+  );
   const rank = userRank(board);
   const league = LEAGUES[Math.min(leagueIndex, LEAGUES.length - 1)];
 
@@ -235,15 +353,26 @@ function WeekRaceCard() {
       <button
         onClick={() => navigate("leaderboard")}
         className="flex w-full items-center gap-3 rounded-2xl border border-line p-4 text-left shadow-card transition-transform duration-150 active:scale-[.98]"
-        style={{ backgroundImage: `linear-gradient(120deg, ${league.color}30 0%, transparent 60%)` }}
+        style={{
+          backgroundImage: `linear-gradient(120deg, ${league.color}30 0%, transparent 60%)`,
+        }}
       >
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-black/5 text-2xl">
-          {league.emoji}
+          <img
+            src="/img/icon/weekly-race-illustration.png"
+            alt=""
+            width={44}
+            height={44}
+            className="h-11 w-11 object-contain"
+          />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold leading-tight">🏁 {t.weekRaceTitle}</p>
+          <p className="text-sm font-semibold leading-tight">
+            🏁 {t.weekRaceTitle}
+          </p>
           <p className="mt-0.5 text-xs text-muted">
-            {fmt(t.weekRaceRank, { league: t[league.key], n: rank })} · {myXp} XP
+            {fmt(t.weekRaceRank, { league: t[league.key], n: rank })} · {myXp}{" "}
+            XP
           </p>
         </div>
         <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
@@ -263,13 +392,24 @@ function BattleCard() {
       <button
         onClick={() => openBattle("all")}
         className="flex w-full items-center gap-3 rounded-2xl border border-line p-4 text-left shadow-card transition-transform duration-150 active:scale-[.98]"
-        style={{ backgroundImage: "linear-gradient(120deg, #EF444430 0%, transparent 60%)" }}
+        style={{
+          backgroundImage:
+            "linear-gradient(120deg, #EF444430 0%, transparent 60%)",
+        }}
       >
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-danger/15 text-danger">
-          <Swords className="h-6 w-6" aria-hidden />
+          <img
+            src="/img/icon/battle-handshake.png"
+            alt=""
+            width={44}
+            height={44}
+            className="h-11 w-11 object-contain"
+          />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold leading-tight">⚔️ {t.battleTitle}</p>
+          <p className="text-sm font-semibold leading-tight">
+            ⚔️ {t.battleTitle}
+          </p>
           <p className="mt-0.5 text-xs text-muted">
             {t.promoBattle}
             {(wins > 0 || losses > 0) && ` · ${wins}–${losses}`}
@@ -290,13 +430,24 @@ function KahootCard() {
       <button
         onClick={() => openKahoot("all")}
         className="flex w-full items-center gap-3 rounded-2xl border border-line p-4 text-left shadow-card transition-transform duration-150 active:scale-[.98]"
-        style={{ backgroundImage: "linear-gradient(120deg, #46178F40 0%, transparent 60%)" }}
+        style={{
+          backgroundImage:
+            "linear-gradient(120deg, #46178F40 0%, transparent 60%)",
+        }}
       >
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#46178F]/15 text-[#46178F]">
-          <Gamepad2 className="h-6 w-6" aria-hidden />
+          <img
+            src="/img/icon/kahoot.svg"
+            alt=""
+            width={44}
+            height={44}
+            className="h-11 w-11 object-contain"
+          />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold leading-tight">🎯 {t.kahootTitle}</p>
+          <p className="text-sm font-semibold leading-tight">
+            🎯 {t.kahootTitle}
+          </p>
           <p className="mt-0.5 text-xs text-muted">{t.promoKahoot}</p>
         </div>
         <ChevronRight className="h-5 w-5 shrink-0 text-muted" aria-hidden />
