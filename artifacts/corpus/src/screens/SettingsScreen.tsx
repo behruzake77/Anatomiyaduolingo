@@ -79,6 +79,25 @@ export function SettingsScreen() {
     }
   };
 
+  /**
+   * Orqa fon uslubi va tungi rejim bir-biri bilan bog'liq: "Tun" — bu tungi
+   * rejimning o'zi. Shuning uchun ikkala boshqaruv ham sinxron ishlaydi,
+   * aks holda fon qor bo'lib qolib, rejim almashuvi ko'rinmas edi.
+   */
+  const applyBackground = (id: "clean" | "lavender" | "mint" | "midnight") => {
+    haptic(10);
+    setThemeOption("backgroundStyle", id);
+    if ((id === "midnight") !== settings.darkMode) toggleSetting("darkMode");
+  };
+
+  const toggleDarkMode = () => {
+    haptic(10);
+    const next = !settings.darkMode;
+    toggleSetting("darkMode");
+    if (next) setThemeOption("backgroundStyle", "midnight");
+    else if (settings.backgroundStyle === "midnight") setThemeOption("backgroundStyle", "clean");
+  };
+
   const rows = [
     { key: "notifications" as const, label: t.notifications, icon: Bell },
     { key: "darkMode" as const, label: t.darkMode, icon: Moon },
@@ -189,7 +208,7 @@ export function SettingsScreen() {
                 <ThemeSwitch
                   id={themeSwitchId}
                   checked={settings.darkMode}
-                  onCheckedChange={() => onToggle("darkMode")}
+                  onCheckedChange={toggleDarkMode}
                   size={12}
                   label={r.label}
                 />
@@ -230,7 +249,7 @@ export function SettingsScreen() {
           </ThemeChoice>
           <ThemeChoice label="Orqa fon" icon={<Paintbrush className="h-4 w-4" />}>
             {[{ id: "clean", label: "Toza", className: "bg-[#F8F9FA]" }, { id: "lavender", label: "Lavanda", className: "bg-[#F4F1FF]" }, { id: "mint", label: "Yashil", className: "bg-[#EFFBF8]" }, { id: "midnight", label: "Tun", className: "bg-[#202231]" }].map((item) => (
-              <button key={item.id} type="button" onClick={() => setThemeOption("backgroundStyle", item.id as "clean" | "lavender" | "mint" | "midnight")} className={`rounded-xl border px-2 py-1.5 text-[10px] font-semibold transition active:scale-95 ${item.className} ${settings.backgroundStyle === item.id ? "border-primary ring-2 ring-primary/20" : "border-line text-muted"}`}>{item.label}</button>
+              <button key={item.id} type="button" onClick={() => applyBackground(item.id as "clean" | "lavender" | "mint" | "midnight")} className={`rounded-xl border px-2 py-1.5 text-[10px] font-semibold transition active:scale-95 ${item.className} ${settings.backgroundStyle === item.id ? "border-primary ring-2 ring-primary/20" : "border-line text-muted"}`}>{item.label}</button>
             ))}
           </ThemeChoice>
           <ThemeChoice label="Tugmalar" icon={<span className="text-xs font-bold">Aa</span>}>

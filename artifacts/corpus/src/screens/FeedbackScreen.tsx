@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Flag, MessageSquarePlus } from "lucide-react";
+import { Flag } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { TopBar } from "@/components/layout/TopBar";
 import { Card } from "@/components/ui/Card";
+import { MailFastIcon } from "@/components/ui/MailFastIcon";
 import { ReportModal } from "@/components/ReportQuestion";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
@@ -38,10 +39,10 @@ export function FeedbackScreen() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="mt-5 flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-transform active:scale-[.98]"
+          className="group mt-5 flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition-transform active:scale-[.98]"
         >
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <MessageSquarePlus className="h-5 w-5" aria-hidden />
+            <MailFastIcon size={22} />
           </span>
           <span className="min-w-0 flex-1">
             <span className="block text-sm font-semibold">{t.reportSend}</span>

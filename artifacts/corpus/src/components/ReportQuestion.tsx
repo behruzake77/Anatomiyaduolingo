@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Flag, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { MailFastIcon } from "@/components/ui/MailFastIcon";
 import { useAppStore } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
@@ -116,7 +117,10 @@ export function ReportModal(props: { q?: Question; ctx?: ReportContext; onClose:
         )}
 
         {done ? (
-          <p className="mt-5 rounded-2xl bg-success/15 px-4 py-3 text-sm font-medium text-success">{t.reportSent}</p>
+          <div className="mt-5 flex flex-col items-center gap-2 rounded-2xl bg-success/15 px-4 py-5 text-center">
+            <MailFastIcon size={72} mode="always" />
+            <p className="text-sm font-medium text-success">{t.reportSent}</p>
+          </div>
         ) : (
           <>
             <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">{t.reportKind}</p>

@@ -4,9 +4,12 @@
 :root[data-theme-color="coral"] { --theme-primary:#E84393; --theme-primary-soft:#FD79A8; --theme-primary-deep:#C52F78; }
 :root[data-theme-color="emerald"] { --theme-primary:#00B894; --theme-primary-soft:#55EFC4; --theme-primary-deep:#008F73; }
 
-:root[data-background-style="lavender"] { --bg:#F4F1FF; }
-:root[data-background-style="mint"] { --bg:#EFFBF8; }
-:root[data-background-style="midnight"] { --bg:#171827; --surface:#202231; --surface-2:#2A2C3C; --ink:#F8FAFC; --muted:#AEB4C5; --line:#35384A; }
+/* Fon ranglari faqat KUNDUZGI rejimda ishlaydi. Aks holda to'q fon (`Tun`)
+   kunduzgi rejimda ham qo'llanilib, rejim almashuvi ko'rinmay qolardi. */
+:root:not(.dark)[data-background-style="lavender"] { --bg:#F4F1FF; }
+:root:not(.dark)[data-background-style="mint"] { --bg:#EFFBF8; }
+/* "Tun" — tungi rejimning o'zi: sal ko'kimsar to'q palitra. */
+:root.dark[data-background-style="midnight"] { --bg:#171827; --surface:#202231; --surface-2:#2A2C3C; --ink:#F8FAFC; --muted:#AEB4C5; --line:#35384A; }
 :root[data-button-style="pill"] { --button-radius:999px; }
 :root[data-button-style="rounded"] { --button-radius:16px; }
 :root[data-button-style="square"] { --button-radius:8px; }
