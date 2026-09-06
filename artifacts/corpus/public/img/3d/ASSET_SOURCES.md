@@ -26,6 +26,9 @@ are kept under `../stickers/` and are used for success/failure reactions.
 - `../stickers/logo-google-in-reveal.gif` — [Logo Google (wired-lineal #2557)](https://lordicon.com/icons/wired/lineal/2557-logo-google),
   Lordicon FREE icon, "in-reveal" animation. Used by `GoogleMark` on the
   "Continue with Google" button (login/register). Credit: Lordicon.
+- `../stickers/logo-google-in-reveal.svg` — local fallback with the same
+  "in-reveal" effect (wipe + pop, 3s loop) used when the GIF above is absent.
+  The mark itself reuses the Google "G" paths from `react-icons/fc` (FcGoogle).
 
 ## Reference libraries
 
