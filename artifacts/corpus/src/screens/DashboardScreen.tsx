@@ -4,7 +4,6 @@ import {
   BookOpen,
   Check,
   ChevronRight,
-  ClipboardList,
   Crown,
   Flame,
   Pencil,
@@ -231,7 +230,15 @@ export function DashboardScreen() {
             onClick={() => navigate("battle")}
           />
           <QuickTile
-            icon={<ClipboardList className="h-5 w-5" aria-hidden />}
+            icon={
+              <img
+                src="/img/icon/exam-checklist.png"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-xl object-contain"
+              />
+            }
             color="#E4A62D"
             title={t.quickPlayExam}
             sub={t.quickPlayExamSub}
