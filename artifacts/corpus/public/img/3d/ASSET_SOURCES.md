@@ -23,6 +23,9 @@ are kept under `../stickers/` and are used for success/failure reactions.
 - `../stickers/mail-fast-hover-flying.gif` — [Mail Fast (wired-gradient #177)](https://lordicon.com/icons/wired/gradient/177-mail-fast),
   Lordicon FREE icon, "hover-flying" animation. Used by `MailFastIcon` on the
   feedback entry card and on the "sent" confirmation. Credit: Lordicon.
+- `../stickers/logo-google-in-reveal.gif` — [Logo Google (wired-lineal #2557)](https://lordicon.com/icons/wired/lineal/2557-logo-google),
+  Lordicon FREE icon, "in-reveal" animation. Used by `GoogleMark` on the
+  "Continue with Google" button (login/register). Credit: Lordicon.
 
 ## Reference libraries
 

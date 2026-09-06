@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { User, Lock, ArrowRight, Mail, Chrome, ShieldCheck, ArrowLeft } from "lucide-react";
+import { User, Lock, ArrowRight, Mail, ShieldCheck, ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { GoogleMark } from "@/components/auth/GoogleMark";
 import { Button } from "@/components/ui/Button";
 import { OtpInput } from "@/components/auth/OtpInput";
 import { useAppStore } from "@/store/useAppStore";
@@ -358,7 +359,7 @@ export function LoginScreen() {
           onClick={() => void handleGoogleLogin()}
           disabled={loading}
         >
-          <Chrome className="h-5 w-5" aria-hidden />
+          <GoogleMark size={20} />
           {t.googleLogin}
         </Button>
 
