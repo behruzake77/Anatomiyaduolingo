@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Sun, Zap, Crown, Gamepad2, Swords, ClipboardList, Pencil, Flame, Check } from "lucide-react";
 import { InboxBell } from "@/components/InboxBell";
+import { SettingsGearButton } from "@/components/ui/SettingsGearButton";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
@@ -98,12 +99,13 @@ export function DashboardScreen() {
               <Zap className="h-3 w-3" aria-hidden /> {t.level} {level} · {tier}
             </p>
           </div>
-          <div className="flex shrink-0 flex-col items-center gap-1.5">
+          <div className="flex shrink-0 items-center gap-2">
             {isPremium && (
               <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C04E] to-[#E0A030] px-2.5 py-1 text-[11px] font-bold text-[#1a1230]">
                 <Crown className="h-3 w-3" aria-hidden /> PRO
               </span>
             )}
+            <SettingsGearButton />
             <InboxBell className="border-white/30 bg-white/20 text-white" />
           </div>
         </div>

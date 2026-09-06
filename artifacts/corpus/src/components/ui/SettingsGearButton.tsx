@@ -1,0 +1,58 @@
+"use client";
+
+import { useState } from "react";
+import { useAppStore } from "@/store/useAppStore";
+import { useStrings } from "@/i18n";
+
+export function SettingsGearButton({ className = "" }: { className?: string }) {
+  const navigate = useAppStore((s) => s.navigate);
+  const t = useStrings();
+  const [spinning, setSpinning] = useState(false);
+
+  const handleClick = () => {
+    setSpinning(true);
+    // 1 сония айлангандан кейин settings экранга ўтиш
+    setTimeout(() => {
+      setSpinning(false);
+      navigate("settings");
+    }, 700);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      aria-label={t.settings}
+      className={`group relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/30 bg-white/20 text-white transition-colors hover:bg-white/30 active:bg-white/40 ${className}`}
+    >
+      {/* Tooltip */}
+      <span className="pointer-events-none absolute -bottom-9 left-1/2 z-10 w-max -translate-x-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[10px] font-semibold text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+        {t.settings}
+      </span>
+
+      {/* Gear SVG — Material Design settings icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height={22}
+        viewBox="0 -960 960 960"
+        width={22}
+        fill="currentColor"
+        className="transition-transform duration-300 ease-in-out group-hover:rotate-[60deg]"
+        style={
+          spinning
+            ? { animation: "settingsGearSpin 0.7s linear" }
+            : undefined
+        }
+      >
+        <path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
+      </svg>
+
+      {/* Inline keyframes — only rendered once per mount */}
+      <style>{`
+        @keyframes settingsGearSpin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </button>
+  );
+}
