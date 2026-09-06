@@ -20,6 +20,10 @@ The other lightweight files in this folder are app-specific transparent WebP
 stickers created for the CORPUS visual language. Existing animated GIF stickers
 are kept under `../stickers/` and are used for success/failure reactions.
 
+- `../stickers/mail-fast-hover-flying.gif` — [Mail Fast (wired-gradient #177)](https://lordicon.com/icons/wired/gradient/177-mail-fast),
+  Lordicon FREE icon, "hover-flying" animation. Used by `MailFastIcon` on the
+  feedback entry card and on the "sent" confirmation. Credit: Lordicon.
+
 ## Reference libraries
 
 These are design references for future additions, not vendored libraries:

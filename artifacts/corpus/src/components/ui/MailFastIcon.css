@@ -1,0 +1,69 @@
+/*
+ * MailFastIcon — uchib ketayotgan konvert (mail-fast) animatsiyasi.
+ *
+ * Oddiy holatda statik `Send` ikonkasi ko'rinadi; hover / focus paytida
+ * animatsiyali GIF ustiga chiqadi. `mode="always"` bo'lganda GIF doimiy
+ * (masalan, "yuborildi" holatida). Harakat kamaytirilgan va low-end
+ * qurilmalarda faqat statik ikonka qoladi.
+ */
+
+.mail-fast {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  flex: none;
+}
+
+.mail-fast__icon,
+.mail-fast__gif {
+  transition: opacity 0.18s ease;
+}
+
+.mail-fast__gif {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Hover: bevosita ikonka ustida yoki `group` bo'lgan ota-element ustida. */
+.mail-fast:hover .mail-fast__gif,
+.mail-fast:focus-visible .mail-fast__gif,
+.group:hover .mail-fast__gif,
+.mail-fast--always .mail-fast__gif {
+  opacity: 1;
+}
+
+.mail-fast:hover .mail-fast__icon,
+.mail-fast:focus-visible .mail-fast__icon,
+.group:hover .mail-fast__icon,
+.mail-fast--always .mail-fast__icon {
+  opacity: 0;
+}
+
+/* Harakatsiz rejim: faqat statik ikonka. */
+html.low-end .mail-fast__gif,
+html.low-end .mail-fast--always .mail-fast__icon {
+  display: none;
+}
+
+html.low-end .mail-fast--always .mail-fast__icon {
+  display: inline-block;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mail-fast__gif {
+    display: none;
+  }
+
+  .mail-fast--always .mail-fast__icon {
+    opacity: 1;
+  }
+}
