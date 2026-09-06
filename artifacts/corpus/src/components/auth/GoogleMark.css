@@ -1,9 +1,10 @@
 /*
  * GoogleMark — Google belgisi (Lordicon "logo-google", in-reveal animatsiya).
  *
- * Ekranga chiqqanda va sichqoncha olib borilganda animatsiyali GIF bir marta
- * "ochilib" ko'rsatiladi, so'ng statik FcGoogle belgisi qoladi.
- * Harakat kamaytirilgan va low-end qurilmalarda faqat statik belgi.
+ * - `loop`: GIF doimiy ko'rinadi (aylanib turadi).
+ * - `reveal`: GIF faqat ekranga chiqqanda / hover'da bir marta ochiladi.
+ * - GIF bo'lmasa, statik belgi scale+fade bilan "ochiladi".
+ * - Harakat kamaytirilgan va low-end qurilmalarda animatsiya o'chiriladi.
  */
 
 .google-mark {
@@ -31,21 +32,67 @@
   user-select: none;
 }
 
-.google-mark--playing .google-mark__gif {
+/* GIF ko'rinayotganda statik belgi yashirinadi. */
+.google-mark--loop .google-mark__gif {
   opacity: 1;
 }
 
-.google-mark--playing .google-mark__icon {
+.google-mark--loop .google-mark__icon {
   opacity: 0;
 }
 
-/* Harakatsiz rejim: faqat statik belgi. */
+.google-mark--reveal.google-mark--playing .google-mark__gif {
+  opacity: 1;
+}
+
+.google-mark--reveal.google-mark--playing .google-mark__icon {
+  opacity: 0;
+}
+
+/* Statik belgi uchun reveal animatsiyasi (GIF bo'lmaganda). */
+@keyframes google-mark-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.45) rotate(-12deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.12) rotate(3deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.google-mark--playing .google-mark__icon {
+  animation: google-mark-reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Harakatsiz rejim: faqat statik belgi, animatsiyasiz. */
 html.low-end .google-mark__gif {
   display: none;
+}
+
+html.low-end .google-mark--loop .google-mark__icon,
+html.low-end .google-mark--playing .google-mark__icon {
+  opacity: 1;
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .google-mark__gif {
     display: none;
+  }
+
+  .google-mark--loop .google-mark__icon {
+    opacity: 1;
+  }
+
+  .google-mark--playing .google-mark__icon {
+    opacity: 1;
+    animation: none;
   }
 }
