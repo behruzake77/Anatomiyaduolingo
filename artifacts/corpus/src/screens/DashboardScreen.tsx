@@ -7,7 +7,6 @@ import {
   Crown,
   Flame,
   Pencil,
-  Swords,
   Sun,
   Trophy,
   Zap,
@@ -223,7 +222,15 @@ export function DashboardScreen() {
             onClick={() => navigate("kahoot")}
           />
           <QuickTile
-            icon={<Swords className="h-5 w-5" aria-hidden />}
+            icon={
+              <img
+                src="/img/icon/battle-handshake.png"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-xl object-contain"
+              />
+            }
             color="#EF5B73"
             title={t.quickPlayBattle}
             sub={t.quickPlayBattleSub}
