@@ -7,7 +7,6 @@ import {
   ClipboardList,
   Crown,
   Flame,
-  Gamepad2,
   Pencil,
   Swords,
   Sun,
@@ -210,7 +209,15 @@ export function DashboardScreen() {
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <QuickTile
-            icon={<Gamepad2 className="h-5 w-5" aria-hidden />}
+            icon={
+              <img
+                src="/img/icon/kahoot.svg"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-xl"
+              />
+            }
             color="#7759E8"
             title={t.quickPlayKahoot}
             sub={t.quickPlayKahootSub}
