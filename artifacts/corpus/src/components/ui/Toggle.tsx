@@ -13,21 +13,17 @@ export function Toggle({
 }) {
   return (
     <button
+      type="button"
       role="switch"
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={cn(
-        "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200",
-        checked ? "bg-primary" : "bg-line",
-      )}
+      className={cn("ui-toggle", checked && "ui-toggle--checked")}
     >
-      <span
-        className={cn(
-          "absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-transform duration-200",
-          checked ? "translate-x-6" : "translate-x-1",
-        )}
-      />
+      <span className="ui-toggle__button" aria-hidden="true">
+        <span className="ui-toggle__thumb" />
+        <span className="ui-toggle__indicator" />
+      </span>
     </button>
   );
 }
