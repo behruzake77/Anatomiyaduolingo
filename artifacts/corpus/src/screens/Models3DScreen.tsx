@@ -5,7 +5,11 @@ import { Box, RotateCw } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
-import { modelsByCategory, type Model3D, type ModelCategory } from "@/data/models3d";
+import {
+  modelsByCategory,
+  type Model3D,
+  type ModelCategory,
+} from "@/data/models3d";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
 
@@ -34,7 +38,8 @@ export function Models3DScreen() {
       <TopBar title={t.models3d} />
       <div className="px-5 pb-28">
         <p className="text-sm text-muted">
-          Suyak va a'zolarni haqiqiy 3D ko'rinishda aylantirib, kattalashtirib o'rganing.
+          Suyak va a'zolarni haqiqiy 3D ko'rinishda aylantirib, kattalashtirib
+          o'rganing.
         </p>
 
         {/* kategoriya tanlash */}
@@ -45,7 +50,9 @@ export function Models3DScreen() {
               onClick={() => setTab(c.id)}
               className={cn(
                 "flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition",
-                tab === c.id ? "bg-primary text-white shadow-soft" : "text-muted",
+                tab === c.id
+                  ? "bg-primary text-white shadow-soft"
+                  : "text-muted",
               )}
             >
               {t[c.labelKey]}
@@ -62,10 +69,13 @@ export function Models3DScreen() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold leading-tight">
-                    {m.title} <span className="italic text-primary">· {m.latin}</span>
+                    {m.title}{" "}
+                    <span className="italic text-primary">· {m.latin}</span>
                   </p>
                   <p className="mt-0.5 text-xs text-muted">{m.description}</p>
-                  <p className="mt-1 text-[11px] text-muted">Manba: {m.source}</p>
+                  <p className="mt-1 text-[11px] text-muted">
+                    Manba: {m.source}
+                  </p>
                 </div>
                 <RotateCw className="h-5 w-5 shrink-0 text-muted" aria-hidden />
               </div>
@@ -78,7 +88,13 @@ export function Models3DScreen() {
 }
 
 /** Bitta modelning to'liq ekranli 3D ko'ruvchisi. */
-function Model3DViewer({ model, onBack }: { model: Model3D; onBack: () => void }) {
+function Model3DViewer({
+  model,
+  onBack,
+}: {
+  model: Model3D;
+  onBack: () => void;
+}) {
   const t = useStrings();
   const [loaded, setLoaded] = useState(false);
 
@@ -93,12 +109,32 @@ function Model3DViewer({ model, onBack }: { model: Model3D; onBack: () => void }
               onClick={() => setLoaded(true)}
               className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[#B9B4E0]"
             >
-              <Box className="h-12 w-12" aria-hidden />
-              <span className="text-base font-semibold text-white">3D modelni yuklash</span>
-              <span className="text-sm">Aylantirish · Kattalashtirish · Yorliqlar</span>
+              <img
+                src="/img/illustrations/storyset-science-rafiki.png"
+                alt=""
+                width={180}
+                height={150}
+                className="h-32 w-40 object-contain"
+              />
+              <Box className="h-10 w-10" aria-hidden />
+              <span className="text-base font-semibold text-white">
+                3D modelni yuklash
+              </span>
+              <span className="text-sm">
+                Aylantirish · Kattalashtirish · Yorliqlar
+              </span>
               <span className="rounded-2xl bg-primary px-6 py-3 font-bold text-white shadow-pop">
                 3D KO'RISH
               </span>
+              <a
+                href="https://storyset.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[10px] text-white/50 underline underline-offset-2"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Illustration by Storyset
+              </a>
             </button>
           ) : (
             <iframe
@@ -114,11 +150,13 @@ function Model3DViewer({ model, onBack }: { model: Model3D; onBack: () => void }
         {/* ma'lumot */}
         <div className="mt-4">
           <h2 className="text-lg font-semibold">
-            {model.title} <span className="italic text-primary">{model.latin}</span>
+            {model.title}{" "}
+            <span className="italic text-primary">{model.latin}</span>
           </h2>
           <p className="mt-1 text-sm text-muted">{model.description}</p>
           <p className="mt-2 inline-flex items-center gap-2 rounded-xl bg-surface2 px-3 py-1.5 text-xs text-muted">
-            Manba: {model.source} · Sketchfab (ochiq ta'lim litsenziyasi) · Internet kerak
+            Manba: {model.source} · Sketchfab (ochiq ta'lim litsenziyasi) ·
+            Internet kerak
           </p>
         </div>
       </div>

@@ -2,14 +2,26 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { User, Lock, ArrowRight, Mail, ShieldCheck, ArrowLeft } from "lucide-react";
+import {
+  User,
+  Lock,
+  ArrowRight,
+  Mail,
+  ShieldCheck,
+  ArrowLeft,
+} from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { GoogleMark } from "@/components/auth/GoogleMark";
 import { Button } from "@/components/ui/Button";
 import { OtpInput } from "@/components/auth/OtpInput";
 import { useAppStore } from "@/store/useAppStore";
 import { fmt, useStrings } from "@/i18n";
-import { isPasswordRecovery, loginWithGoogle, resetPassword, updatePassword } from "@/lib/auth";
+import {
+  isPasswordRecovery,
+  loginWithGoogle,
+  resetPassword,
+  updatePassword,
+} from "@/lib/auth";
 
 type Mode = "register" | "login";
 type Step = "form" | "otp" | "forgot" | "newpass";
@@ -46,7 +58,10 @@ export function LoginScreen() {
 
   useEffect(() => {
     if (resendIn <= 0) return;
-    const id = window.setInterval(() => setResendIn((s) => Math.max(0, s - 1)), 1000);
+    const id = window.setInterval(
+      () => setResendIn((s) => Math.max(0, s - 1)),
+      1000,
+    );
     return () => window.clearInterval(id);
   }, [resendIn]);
 
@@ -97,10 +112,16 @@ export function LoginScreen() {
       }
 
       if (!result.success) {
-        setError(result.error || (mode === "register" ? t.errExists : t.errLogin));
+        setError(
+          result.error || (mode === "register" ? t.errExists : t.errLogin),
+        );
       }
     } catch {
-      setError(mode === "register" ? "Ro'yxatdan o'tishda xatolik" : "Kirishda xatolik");
+      setError(
+        mode === "register"
+          ? "Ro'yxatdan o'tishda xatolik"
+          : "Kirishda xatolik",
+      );
     } finally {
       setLoading(false);
     }
@@ -225,9 +246,18 @@ export function LoginScreen() {
             className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
           />
         </label>
-        {error && <p className="mt-3 text-sm font-medium text-danger">{error}</p>}
-        {info && <p className="mt-3 text-sm font-medium text-success">{info}</p>}
-        <Button size="lg" className="mt-5 w-full" onClick={() => void sendReset()} disabled={loading}>
+        {error && (
+          <p className="mt-3 text-sm font-medium text-danger">{error}</p>
+        )}
+        {info && (
+          <p className="mt-3 text-sm font-medium text-success">{info}</p>
+        )}
+        <Button
+          size="lg"
+          className="mt-5 w-full"
+          onClick={() => void sendReset()}
+          disabled={loading}
+        >
           {loading ? t.pleaseWait : t.resetSend}
         </Button>
       </div>
@@ -259,8 +289,15 @@ export function LoginScreen() {
             className="w-full bg-transparent text-base outline-none placeholder:text-muted"
           />
         </label>
-        {error && <p className="mt-3 text-sm font-medium text-danger">{error}</p>}
-        <Button size="lg" className="mt-5 w-full" onClick={() => void saveNewPassword()} disabled={loading}>
+        {error && (
+          <p className="mt-3 text-sm font-medium text-danger">{error}</p>
+        )}
+        <Button
+          size="lg"
+          className="mt-5 w-full"
+          onClick={() => void saveNewPassword()}
+          disabled={loading}
+        >
           {loading ? t.pleaseWait : t.savePassword}
         </Button>
       </div>
@@ -303,12 +340,30 @@ export function LoginScreen() {
         </motion.div>
 
         <div className="mt-8 flex flex-col gap-5">
-          <OtpInput value={otp} onChange={setOtp} disabled={loading} error={!!error} />
+          <OtpInput
+            value={otp}
+            onChange={setOtp}
+            disabled={loading}
+            error={!!error}
+          />
 
-          {error && <p className="text-center text-sm font-medium text-danger">{error}</p>}
-          {info && !error && <p className="text-center text-sm font-medium text-success">{info}</p>}
+          {error && (
+            <p className="text-center text-sm font-medium text-danger">
+              {error}
+            </p>
+          )}
+          {info && !error && (
+            <p className="text-center text-sm font-medium text-success">
+              {info}
+            </p>
+          )}
 
-          <Button size="lg" className="w-full" onClick={() => void submitOtp()} disabled={loading || otp.length < 6}>
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={() => void submitOtp()}
+            disabled={loading || otp.length < 6}
+          >
             {loading ? (
               <span className="animate-pulse">{t.otpChecking}</span>
             ) : (
@@ -337,7 +392,7 @@ export function LoginScreen() {
   return (
     <div className="flex flex-1 flex-col justify-center px-6 py-8">
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col items-center gap-3 text-center"
@@ -345,6 +400,13 @@ export function LoginScreen() {
         <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-surface shadow-soft">
           <Logo size={84} />
         </div>
+        <img
+          src="/img/illustrations/storyset-education-rafiki.png"
+          alt=""
+          width={180}
+          height={130}
+          className="mt-1 h-28 w-44 object-contain"
+        />
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{t.brand}</h1>
           <p className="mt-1 text-sm text-muted">{t.tagline}</p>
@@ -427,7 +489,9 @@ export function LoginScreen() {
               />
             </label>
             <label className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3.5">
-              <span className="w-5 text-center text-sm font-bold text-muted">Y</span>
+              <span className="w-5 text-center text-sm font-bold text-muted">
+                Y
+              </span>
               <select
                 value={birthYear}
                 onChange={(e) => setBirthYear(e.target.value)}
@@ -435,7 +499,10 @@ export function LoginScreen() {
                 aria-label={t.birthYear}
               >
                 <option value="">{t.birthYear}</option>
-                {Array.from({ length: thisYear - 10 - 1940 + 1 }, (_, i) => thisYear - 10 - i).map((y) => (
+                {Array.from(
+                  { length: thisYear - 10 - 1940 + 1 },
+                  (_, i) => thisYear - 10 - i,
+                ).map((y) => (
                   <option key={y} value={y}>
                     {y}
                   </option>
@@ -452,14 +519,21 @@ export function LoginScreen() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
-            autoComplete={mode === "register" ? "new-password" : "current-password"}
+            autoComplete={
+              mode === "register" ? "new-password" : "current-password"
+            }
             className="w-full bg-transparent text-base outline-none placeholder:text-muted"
           />
         </label>
 
         {error && <p className="text-sm font-medium text-danger">{error}</p>}
 
-        <Button size="lg" className="w-full" onClick={() => void submit()} disabled={loading}>
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={() => void submit()}
+          disabled={loading}
+        >
           {loading ? (
             <span className="animate-pulse">{t.pleaseWait}</span>
           ) : (
@@ -474,6 +548,17 @@ export function LoginScreen() {
           {mode === "register" ? t.haveAccount : t.noAccount}
         </p>
       </form>
+      <p className="mt-5 text-center text-[10px] text-muted">
+        Illustration by{" "}
+        <a
+          className="underline underline-offset-2"
+          href="https://storyset.com/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Storyset
+        </a>
+      </p>
     </div>
   );
 }
