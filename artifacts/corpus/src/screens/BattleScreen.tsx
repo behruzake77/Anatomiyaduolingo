@@ -22,6 +22,7 @@ import {
   Crown,
 } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
+import { PatternBackground } from "@/components/PatternBackground";
 import { Button } from "@/components/ui/Button";
 import { Confetti } from "@/components/ui/Confetti";
 import { useAppStore } from "@/store/useAppStore";
@@ -55,10 +56,20 @@ import {
   type BattleRow,
 } from "@/lib/competition";
 
-type Phase = "hub" | "matching" | "invite" | "join" | "play" | "wait" | "result";
+type Phase =
+  "hub" | "matching" | "invite" | "join" | "play" | "wait" | "result";
 type Outcome = "win" | "lose" | "draw";
 
-const BOT_NAMES = ["Aziza", "Bekzod", "Dilnoza", "Sardor", "Nilufar", "Jasur", "Madina", "Sherzod"];
+const BOT_NAMES = [
+  "Aziza",
+  "Bekzod",
+  "Dilnoza",
+  "Sardor",
+  "Nilufar",
+  "Jasur",
+  "Madina",
+  "Sherzod",
+];
 
 export function BattleScreen() {
   const t = useStrings();
@@ -190,10 +201,16 @@ export function BattleScreen() {
       setOppName(opp.name);
       setOppScore(opp.score);
       setOppDone(opp.done);
-      if (row.status === "active" && (phase === "matching" || phase === "invite")) {
+      if (
+        row.status === "active" &&
+        (phase === "matching" || phase === "invite")
+      ) {
         startPlay(row.seed, opp.name, false);
       }
-      if (row.status === "cancelled" && (phase === "matching" || phase === "invite")) {
+      if (
+        row.status === "cancelled" &&
+        (phase === "matching" || phase === "invite")
+      ) {
         setPhase("hub");
         battleRef.current = null;
       }
@@ -258,7 +275,10 @@ export function BattleScreen() {
       return;
     }
     setBusy(true);
-    const created = await createBattle(currentUser, { code: true, scope: battleScope });
+    const created = await createBattle(currentUser, {
+      code: true,
+      scope: battleScope,
+    });
     setBusy(false);
     if (!created?.code) {
       setError(t.battleNeedLogin);
@@ -339,7 +359,11 @@ export function BattleScreen() {
     const last = idx + 1 >= items.length;
     if (last) {
       if (!vsBot && battleRef.current && currentUser) {
-        const row = await pushMyBattleProgress(battleRef.current, currentUser.id, { score: nextScore, done: true });
+        const row = await pushMyBattleProgress(
+          battleRef.current,
+          currentUser.id,
+          { score: nextScore, done: true },
+        );
         if (row) {
           battleRef.current = row;
           const opp = opponentOf(row, currentUser.id);
@@ -359,7 +383,11 @@ export function BattleScreen() {
       return;
     }
     if (!vsBot && battleRef.current && currentUser) {
-      const row = await pushMyBattleProgress(battleRef.current, currentUser.id, { score: nextScore, done: false });
+      const row = await pushMyBattleProgress(
+        battleRef.current,
+        currentUser.id,
+        { score: nextScore, done: false },
+      );
       if (row) {
         battleRef.current = row;
         const opp = opponentOf(row, currentUser.id);
@@ -395,27 +423,36 @@ export function BattleScreen() {
           <h1 className="text-xl font-semibold">{t.battleTitle}</h1>
         </header>
 
-        <div className="mt-6 overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-primary/15 via-accent/10 to-success/10 p-5 shadow-card">
-          <div className="flex items-center gap-3">
+        <div className="relative mt-6 overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-primary/30 via-accent/20 to-success/20 p-5 shadow-card">
+          <PatternBackground />
+          <div className="relative z-10 flex items-center gap-3">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-pop">
               <Swords className="h-7 w-7" aria-hidden />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-lg font-bold leading-tight">{t.battleTitle}</p>
               <p className="mt-0.5 text-sm text-muted">
-                {topicName ? fmt(t.battleOnTopic, { name: topicName }) : t.battleSubtitle}
+                {topicName
+                  ? fmt(t.battleOnTopic, { name: topicName })
+                  : t.battleSubtitle}
               </p>
             </div>
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="relative z-10 mt-4 grid grid-cols-2 gap-3">
             <Stat label={t.battleWins} value={String(battlesWon)} />
             <Stat label={t.battleLosses} value={String(battlesLost)} />
           </div>
         </div>
 
-        <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">{t.battlePickTopic}</p>
+        <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted">
+          {t.battlePickTopic}
+        </p>
         <div className="-mx-5 mt-2 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <ScopeChip active={battleScope === "all"} label={t.battleScopeAll} onClick={() => setBattleScope("all")} />
+          <ScopeChip
+            active={battleScope === "all"}
+            label={t.battleScopeAll}
+            onClick={() => setBattleScope("all")}
+          />
           {CONTENT_SYSTEMS.map((s) => (
             <ScopeChip
               key={s.id}
@@ -468,7 +505,9 @@ export function BattleScreen() {
             onClick={() => startPlay(makeBattleSeed(battleScope), "", true)}
           />
         </div>
-        {error && <p className="mt-3 text-center text-sm text-danger">{error}</p>}
+        {error && (
+          <p className="mt-3 text-center text-sm text-danger">{error}</p>
+        )}
       </Screen>
     );
   }
@@ -531,13 +570,27 @@ export function BattleScreen() {
           <h1 className="text-xl font-semibold">{t.battleInvite}</h1>
         </header>
         <div className="mt-10 flex flex-col items-center text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-muted">{t.battleYourCode}</p>
-          <p className="mt-3 font-mono text-4xl font-extrabold tracking-[0.3em] text-primary">{code}</p>
-          <Button className="mt-5" variant="secondary" onClick={() => void copyCode()}>
-            {copied ? <Check className="h-4 w-4" aria-hidden /> : <Copy className="h-4 w-4" aria-hidden />}
+          <p className="text-xs font-bold uppercase tracking-widest text-muted">
+            {t.battleYourCode}
+          </p>
+          <p className="mt-3 font-mono text-4xl font-extrabold tracking-[0.3em] text-primary">
+            {code}
+          </p>
+          <Button
+            className="mt-5"
+            variant="secondary"
+            onClick={() => void copyCode()}
+          >
+            {copied ? (
+              <Check className="h-4 w-4" aria-hidden />
+            ) : (
+              <Copy className="h-4 w-4" aria-hidden />
+            )}
             {copied ? t.battleCopied : t.battleCopy}
           </Button>
-          <p className="mt-6 max-w-xs text-sm text-muted">{t.battleWaitingFriend}</p>
+          <p className="mt-6 max-w-xs text-sm text-muted">
+            {t.battleWaitingFriend}
+          </p>
           <motion.div
             className="mt-4 h-2 w-40 overflow-hidden rounded-full bg-line"
             initial={false}
@@ -577,8 +630,15 @@ export function BattleScreen() {
           className="mt-3 w-full rounded-2xl border-2 border-line bg-surface px-4 py-4 text-center font-mono text-2xl font-bold tracking-[0.35em] outline-none focus:border-primary"
           placeholder="ABC123"
         />
-        {error && <p className="mt-3 text-center text-sm text-danger">{error}</p>}
-        <Button className="mt-6 w-full" size="lg" loading={busy} onClick={() => void doJoin()}>
+        {error && (
+          <p className="mt-3 text-center text-sm text-danger">{error}</p>
+        )}
+        <Button
+          className="mt-6 w-full"
+          size="lg"
+          loading={busy}
+          onClick={() => void doJoin()}
+        >
           {t.battleJoinCta}
         </Button>
       </Screen>
@@ -606,7 +666,12 @@ export function BattleScreen() {
 
   /* ===================== RESULT ===================== */
   if (phase === "result") {
-    const title = outcome === "win" ? t.battleWin : outcome === "lose" ? t.battleLose : t.battleDraw;
+    const title =
+      outcome === "win"
+        ? t.battleWin
+        : outcome === "lose"
+          ? t.battleLose
+          : t.battleDraw;
     return (
       <Screen className="pt-4">
         {outcome === "win" && <Confetti />}
@@ -614,16 +679,30 @@ export function BattleScreen() {
           <div
             className={cn(
               "flex h-24 w-24 items-center justify-center rounded-full",
-              outcome === "win" ? "bg-success/15 text-success" : outcome === "lose" ? "bg-danger/15 text-danger" : "bg-primary/15 text-primary",
+              outcome === "win"
+                ? "bg-success/15 text-success"
+                : outcome === "lose"
+                  ? "bg-danger/15 text-danger"
+                  : "bg-primary/15 text-primary",
             )}
           >
-            {outcome === "win" ? <Crown className="h-12 w-12" aria-hidden /> : <Trophy className="h-12 w-12" aria-hidden />}
+            {outcome === "win" ? (
+              <Crown className="h-12 w-12" aria-hidden />
+            ) : (
+              <Trophy className="h-12 w-12" aria-hidden />
+            )}
           </div>
           <h1 className="text-3xl font-extrabold">{title}</h1>
           <VsBar me={score} them={oppScore} myName={t.you} oppName={oppName} />
-          <p className="text-lg font-bold text-primary">{fmt(t.battleXp, { n: earned })}</p>
+          <p className="text-lg font-bold text-primary">
+            {fmt(t.battleXp, { n: earned })}
+          </p>
           <div className="mt-4 flex w-full gap-3">
-            <Button variant="ghost" className="flex-1" onClick={() => navigate("dashboard")}>
+            <Button
+              variant="ghost"
+              className="flex-1"
+              onClick={() => navigate("dashboard")}
+            >
               {t.battleHome}
             </Button>
             <Button
@@ -660,7 +739,13 @@ export function BattleScreen() {
           <X className="h-5 w-5" aria-hidden />
         </button>
         <div className="min-w-0 flex-1">
-          <VsBar me={score} them={oppScore} myName={t.you} oppName={oppName} compact />
+          <VsBar
+            me={score}
+            them={oppScore}
+            myName={t.you}
+            oppName={oppName}
+            compact
+          />
         </div>
         <ReportFlagButton
           q={item.q}
@@ -680,21 +765,34 @@ export function BattleScreen() {
 
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-line">
         <motion.div
-          className={cn("h-full rounded-full", left <= 4 ? "bg-danger" : "bg-primary")}
+          className={cn(
+            "h-full rounded-full",
+            left <= 4 ? "bg-danger" : "bg-primary",
+          )}
           animate={{ width: `${(left / BATTLE_SECONDS) * 100}%` }}
           transition={{ duration: 0.35 }}
         />
       </div>
-      <p className="mt-2 text-right text-xs text-muted">{fmt(t.battleRound, { n: idx + 1, total: items.length })}</p>
+      <p className="mt-2 text-right text-xs text-muted">
+        {fmt(t.battleRound, { n: idx + 1, total: items.length })}
+      </p>
 
       <div className="mt-3">
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{item.lessonTitle}</p>
-        <h1 className="mt-2 text-2xl font-semibold leading-snug">{item.q.prompt}</h1>
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+          {item.lessonTitle}
+        </p>
+        <h1 className="mt-2 text-2xl font-semibold leading-snug">
+          {item.q.prompt}
+        </h1>
       </div>
 
       {item.q.image && (
         <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-          <img src={item.q.image} alt="" className="mx-auto max-h-44 object-contain" />
+          <img
+            src={item.q.image}
+            alt=""
+            className="mx-auto max-h-44 object-contain"
+          />
         </div>
       )}
 
@@ -725,7 +823,11 @@ export function BattleScreen() {
                       : "border-line text-muted",
                 )}
               >
-                {isCorrect ? <Check className="h-4 w-4" aria-hidden /> : String.fromCharCode(65 + i)}
+                {isCorrect ? (
+                  <Check className="h-4 w-4" aria-hidden />
+                ) : (
+                  String.fromCharCode(65 + i)
+                )}
               </span>
               {opt}
             </button>
@@ -739,7 +841,11 @@ export function BattleScreen() {
             ok={selected !== null && selected === item.q.answer}
             seed={idx}
             size="md"
-            label={selected !== null && selected === item.q.answer ? t.correct : t.wrong}
+            label={
+              selected !== null && selected === item.q.answer
+                ? t.correct
+                : t.wrong
+            }
           />
           <p className="pt-1 text-center text-xs text-muted">
             {isLast ? t.battleWaitOpp : t.next}…
@@ -767,9 +873,15 @@ function ScopeChip({
       onClick={onClick}
       className={cn(
         "shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition",
-        active ? "border-primary bg-primary text-white" : "border-line bg-surface text-ink",
+        active
+          ? "border-primary bg-primary text-white"
+          : "border-line bg-surface text-ink",
       )}
-      style={active && color ? { backgroundColor: color, borderColor: color, color: "#fff" } : undefined}
+      style={
+        active && color
+          ? { backgroundColor: color, borderColor: color, color: "#fff" }
+          : undefined
+      }
     >
       {label}
     </button>
@@ -831,15 +943,30 @@ function VsBar({
   compact?: boolean;
 }) {
   return (
-    <div className={cn("flex items-center gap-2", compact ? "" : "w-full max-w-xs")}>
+    <div
+      className={cn(
+        "flex items-center gap-2",
+        compact ? "" : "w-full max-w-xs",
+      )}
+    >
       <Face name={myName} score={me} mine />
-      <span className="text-[10px] font-black tracking-widest text-muted">VS</span>
+      <span className="text-[10px] font-black tracking-widest text-muted">
+        VS
+      </span>
       <Face name={oppName} score={them} />
     </div>
   );
 }
 
-function Face({ name, score, mine }: { name: string; score: number; mine?: boolean }) {
+function Face({
+  name,
+  score,
+  mine,
+}: {
+  name: string;
+  score: number;
+  mine?: boolean;
+}) {
   return (
     <div className="flex min-w-0 flex-1 items-center gap-2">
       <span
@@ -853,7 +980,12 @@ function Face({ name, score, mine }: { name: string; score: number; mine?: boole
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[11px] font-semibold">{name}</span>
-        <span className={cn("block text-sm font-extrabold leading-none", mine ? "text-primary" : "text-ink")}>
+        <span
+          className={cn(
+            "block text-sm font-extrabold leading-none",
+            mine ? "text-primary" : "text-ink",
+          )}
+        >
           {score}
         </span>
       </span>

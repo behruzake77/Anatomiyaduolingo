@@ -234,3 +234,38 @@ html.low-end *::after {
 .ui-button { box-shadow: 0 6px 16px rgb(45 52 54 / 10%); }
 .ui-button:hover { filter: saturate(1.06) brightness(1.02); }
 .ui-button:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+
+/* Reusable animated pattern for game-focused hero panels. */
+.pattern-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.3;
+  background-color: #09091a;
+  background-image:
+    radial-gradient(ellipse 5px 90px at 12% 18%, #61d5ff 0 30%, transparent 70%),
+    radial-gradient(ellipse 5px 90px at 88% 42%, #a29bfe 0 30%, transparent 70%),
+    radial-gradient(circle at 42% 12%, #fff 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 78%, #fd79a8 0 2px, transparent 3px),
+    radial-gradient(circle at 18% 82%, #00b894 0 2px, transparent 3px);
+  background-size: 220px 360px, 260px 420px, 180px 180px, 220px 220px, 260px 260px;
+  animation: pattern-background-drift 36s linear infinite;
+}
+.pattern-background::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background-image: radial-gradient(circle, rgb(255 255 255 / 52%) 0 1px, transparent 1.5px);
+  background-size: 8px 8px;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+}
+@keyframes pattern-background-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 0 1200px, 0 -900px, 220px 320px, -180px 240px, 260px -180px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pattern-background { animation: none; }
+}

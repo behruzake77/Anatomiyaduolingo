@@ -22,6 +22,7 @@ import {
   SkipForward,
 } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
+import { PatternBackground } from "@/components/PatternBackground";
 import { Button } from "@/components/ui/Button";
 import { Confetti } from "@/components/ui/Confetti";
 import { useAppStore } from "@/store/useAppStore";
@@ -584,8 +585,9 @@ export function KahootScreen() {
           <h1 className="text-xl font-semibold">{t.kahootTitle}</h1>
         </header>
 
-        <div className="mt-6 overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-[#46178F] via-[#6C5CE7] to-[#E21B3C] p-5 text-white shadow-card">
-          <div className="flex items-center gap-3">
+        <div className="relative mt-6 overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-[#46178F] via-[#6C5CE7] to-[#E21B3C] p-5 text-white shadow-card">
+          <PatternBackground />
+          <div className="relative z-10 flex items-center gap-3">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
               <img
                 src="/img/icon/kahoot.svg"
@@ -604,7 +606,9 @@ export function KahootScreen() {
               </p>
             </div>
           </div>
-          <p className="mt-3 text-xs text-white/75">{t.kahootHow}</p>
+          <p className="relative z-10 mt-3 text-xs text-white/75">
+            {t.kahootHow}
+          </p>
         </div>
 
         {pendingQuiz ? (
@@ -781,34 +785,37 @@ export function KahootScreen() {
             <h1 className="text-xl font-semibold">{t.kahootLobby}</h1>
           </header>
 
-          <div className="mt-5 overflow-hidden rounded-3xl bg-gradient-to-br from-[#46178F] via-[#5A2AA8] to-[#6C5CE7] p-6 text-center text-white shadow-pop">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">
-              {t.kahootPin}
-            </p>
-            <p className="mt-2 font-mono text-6xl font-black tracking-[0.18em]">
-              {practice ? "BOT" : game.pin}
-            </p>
-            {!practice && (
-              <Button
-                className="mt-4"
-                variant="secondary"
-                onClick={() => void copyPin()}
-              >
-                {copied ? (
-                  <Check className="h-4 w-4" aria-hidden />
-                ) : (
-                  <Copy className="h-4 w-4" aria-hidden />
-                )}
-                {copied ? t.battleCopied : t.battleCopy}
-              </Button>
-            )}
-            <p className="mt-3 text-sm text-white/80">
-              {pendingQuiz
-                ? pendingQuiz.title
-                : topicName
-                  ? fmt(t.kahootOnTopic, { name: topicName })
-                  : t.kahootSubtitle}
-            </p>
+          <div className="relative mt-5 overflow-hidden rounded-3xl bg-gradient-to-br from-[#46178F] via-[#5A2AA8] to-[#6C5CE7] p-6 text-center text-white shadow-pop">
+            <PatternBackground />
+            <div className="relative z-10">
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">
+                {t.kahootPin}
+              </p>
+              <p className="mt-2 font-mono text-6xl font-black tracking-[0.18em]">
+                {practice ? "BOT" : game.pin}
+              </p>
+              {!practice && (
+                <Button
+                  className="mt-4"
+                  variant="secondary"
+                  onClick={() => void copyPin()}
+                >
+                  {copied ? (
+                    <Check className="h-4 w-4" aria-hidden />
+                  ) : (
+                    <Copy className="h-4 w-4" aria-hidden />
+                  )}
+                  {copied ? t.battleCopied : t.battleCopy}
+                </Button>
+              )}
+              <p className="mt-3 text-sm text-white/80">
+                {pendingQuiz
+                  ? pendingQuiz.title
+                  : topicName
+                    ? fmt(t.kahootOnTopic, { name: topicName })
+                    : t.kahootSubtitle}
+              </p>
+            </div>
           </div>
 
           <div className="mt-5 flex items-center justify-between">
