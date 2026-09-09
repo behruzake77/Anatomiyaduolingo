@@ -1,97 +1,56 @@
-import { ArrowRight, BookOpen, Check, ChevronRight, Flame, Menu, Play, Star, Trophy, X } from "lucide-react";
+import { ArrowRight, BookOpen, Brain, Check, ChevronLeft, ChevronRight, Flame, Menu, Search, Sparkles, Trophy, X } from "lucide-react";
 import { useState } from "react";
 
+const cards = [
+  { title: "Darslar", text: "Anatomiyani qisqa, tushunarli bosqichlarda o‘rganing.", label: "O‘rganish yo‘li", tone: "bg-[#d8f7ff]", image: "/img/stories/screens/lessons.webp", icon: BookOpen },
+  { title: "Aqlli testlar", text: "Bilimingizni savollar bilan mustahkamlang.", label: "Amaliyot", tone: "bg-[#ffe0eb]", image: "/img/stories/screens/exam.webp", icon: Check },
+  { title: "3D anatomiya", text: "Tana tuzilishini ko‘z oldingizda kashf eting.", label: "Tadqiq qilish", tone: "bg-[#e5e0ff]", image: "/img/stories/screens/slide-hl.webp", icon: Brain },
+  { title: "Bellashuv", text: "Do‘stlar bilan raqobatlashing va XP yig‘ing.", label: "O‘yinlashtirish", tone: "bg-[#ffe6cf]", image: "/img/stories/screens/leaderboard.webp", icon: Trophy },
+];
+
 const topics = [
-  { title: "Suyaklar", subtitle: "Skelet tizimi", color: "#58cc02", image: "/img/stories/bg-skeleton.webp" },
-  { title: "Bo‘g‘imlar", subtitle: "Harakat anatomiyasi", color: "#1cb0f6", image: "/img/stories/bg-vertebra.webp" },
-  { title: "Yurak", subtitle: "Qon aylanish tizimi", color: "#ff6b6b", image: "/img/stories/bg-heart.webp" },
-  { title: "Miya", subtitle: "Asab tizimi", color: "#8c6cff", image: "/img/stories/bg-brain.webp" },
+  ["Suyaklar", "Skelet tizimi", "/img/stories/bg-skeleton.webp"],
+  ["Yurak", "Qon aylanish tizimi", "/img/stories/bg-heart.webp"],
+  ["Miya", "Asab tizimi", "/img/stories/bg-brain.webp"],
+  ["Mushaklar", "Harakat tizimi", "/img/stories/bg-muscles.webp"],
 ];
 
 export function WebsiteScreen() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cardIndex, setCardIndex] = useState(0);
+  const visibleCards = cards.length;
 
   return (
-    <div className="site-page min-h-screen overflow-x-hidden bg-white text-[#4b4b4b]">
-      <header className="site-header sticky top-0 z-30 border-b-2 border-[#f0f3eb] bg-white/95 backdrop-blur">
-        <div className="mx-auto flex h-[76px] max-w-[1180px] items-center justify-between px-5 lg:px-8">
-          <a href="/site" className="flex items-center gap-3" aria-label="CORPUS bosh sahifa">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#58cc02] text-2xl text-white shadow-[0_4px_0_#3b9700]">✦</span>
-            <span>
-              <strong className="block text-[21px] font-black leading-none tracking-[-0.05em]">CORPUS</strong>
-              <small className="mt-1 block text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#58cc02]">Anatomiya maktabi</small>
-            </span>
-          </a>
-
-          <nav className="hidden items-center gap-8 text-sm font-bold lg:flex" aria-label="Sayt menyusi">
-            <a className="transition hover:text-[#58cc02]" href="#qanday">Qanday ishlaydi?</a>
-            <a className="transition hover:text-[#58cc02]" href="#mavzular">Mavzular</a>
-            <a className="transition hover:text-[#58cc02]" href="#natijalar">Natijalar</a>
-          </nav>
-
-          <div className="hidden items-center gap-3 sm:flex">
-            <a href="/app?screen=login" className="rounded-xl border-2 border-[#d8ddd2] px-4 py-2.5 text-xs font-extrabold uppercase tracking-[0.05em] text-[#1cb0f6] transition hover:border-[#1cb0f6]">Kirish</a>
-            <a href="/app?screen=dashboard" className="rounded-xl bg-[#58cc02] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.05em] text-white shadow-[0_3px_0_#3b9700] transition hover:bg-[#4fba02] active:translate-y-[2px] active:shadow-none">Boshlash</a>
-          </div>
-
-          <button className="rounded-xl border-2 border-[#d8ddd2] p-2.5 sm:hidden" onClick={() => setMenuOpen((v) => !v)} aria-label="Menyuni ochish">
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+    <div className="site-page min-h-screen overflow-x-hidden bg-[#f6f7fb] font-sans text-[#282e3e]">
+      <style>{`@keyframes site-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}} @keyframes site-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}} .site-float{animation:site-float 4s ease-in-out infinite}.site-pulse{animation:site-pulse 2.5s ease-in-out infinite}.site-card{transition:transform .22s ease,box-shadow .22s ease}.site-card:hover{transform:translateY(-6px);box-shadow:0 12px 26px rgba(40,46,62,.12)} @media(prefers-reduced-motion:reduce){.site-float,.site-pulse{animation:none}.site-card{transition:none}}`}</style>
+      <header className="sticky top-0 z-40 bg-white shadow-[0_4px_16px_rgba(40,46,62,.1)]">
+        <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-5 px-4 sm:px-6">
+          <a href="/" className="flex shrink-0 items-center gap-2.5"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#4255ff] text-xl font-bold text-white">✦</span><span className="text-xl font-bold tracking-[-.04em]">CORPUS</span></a>
+          <nav className="hidden items-center gap-5 text-sm text-[#586380] lg:flex"><a href="#xususiyatlar" className="hover:text-[#4255ff]">O‘rganish vositalari</a><a href="#mavzular" className="hover:text-[#4255ff]">Mavzular</a><a href="#qanday" className="hover:text-[#4255ff]">Qanday ishlaydi?</a></nav>
+          <div className="mx-auto hidden max-w-[330px] flex-1 items-center gap-2 rounded-full bg-[#f6f7fb] px-4 py-2.5 text-sm text-[#939bb4] md:flex"><Search className="h-4 w-4" /> Anatomiya bo‘yicha qidiring</div>
+          <div className="ml-auto hidden items-center gap-3 sm:flex"><a href="/app?screen=login" className="text-sm text-[#4255ff] hover:underline">Kirish</a><a href="/app?screen=dashboard" className="rounded-full bg-[#4255ff] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_2px_4px_rgba(40,46,62,.1)] hover:bg-[#3045ee]">Bepul boshlash</a></div>
+          <button className="ml-auto rounded-lg p-2 sm:hidden" onClick={() => setMenuOpen((v) => !v)} aria-label="Menyu">{menuOpen ? <X /> : <Menu />}</button>
         </div>
-        {menuOpen && (
-          <div className="border-t-2 border-[#f0f3eb] bg-white px-5 pb-5 pt-3 sm:hidden">
-            <div className="grid gap-2 text-center text-sm font-bold">
-              <a className="rounded-xl px-4 py-3 hover:bg-[#f0ffdf]" href="#qanday" onClick={() => setMenuOpen(false)}>Qanday ishlaydi?</a>
-              <a className="rounded-xl px-4 py-3 hover:bg-[#f0ffdf]" href="#mavzular" onClick={() => setMenuOpen(false)}>Mavzular</a>
-              <a className="rounded-xl bg-[#58cc02] px-4 py-3 text-white" href="/app?screen=dashboard">O‘rganishni boshlash</a>
-            </div>
-          </div>
-        )}
+        {menuOpen && <div className="border-t border-[#d9dde8] bg-white px-4 pb-4 pt-2 sm:hidden"><div className="grid gap-1 text-sm"><a className="rounded-lg px-3 py-3 hover:bg-[#f6f7fb]" href="#xususiyatlar">O‘rganish vositalari</a><a className="rounded-lg px-3 py-3 hover:bg-[#f6f7fb]" href="#mavzular">Mavzular</a><a className="rounded-full bg-[#4255ff] px-4 py-3 text-center font-semibold text-white" href="/app?screen=dashboard">Bepul boshlash</a></div></div>}
       </header>
 
       <main>
-        <section className="relative overflow-hidden bg-[#fbfff7]">
-          <div className="mx-auto grid max-w-[1180px] items-center gap-10 px-5 py-16 sm:py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-28">
-            <div className="relative z-10">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-[#d7ffb8] px-3 py-2 text-xs font-extrabold text-[#3b9700]"><Star className="h-4 w-4 fill-current" /> O‘rganish endi qiziqarli</div>
-              <h1 className="max-w-[650px] text-[46px] font-black leading-[1.04] tracking-[-0.055em] text-[#4b4b4b] sm:text-[64px]">Anatomiyani <span className="text-[#58cc02]">o‘yin kabi</span> o‘rganing.</h1>
-              <p className="mt-6 max-w-[540px] text-lg font-medium leading-relaxed text-[#777] sm:text-xl">Suyaklar, mushaklar va ichki a’zolarni qisqa darslar, aqlli testlar va muntazam mashqlar orqali oson eslab qoling.</p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="/app?screen=dashboard" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#58cc02] px-6 py-4 text-sm font-extrabold uppercase tracking-[0.04em] text-white shadow-[0_4px_0_#3b9700] transition hover:bg-[#4fba02] active:translate-y-[3px] active:shadow-none">Bepul boshlash <ArrowRight className="h-5 w-5" /></a>
-                <a href="#qanday" className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#d8ddd2] bg-white px-6 py-4 text-sm font-extrabold text-[#1cb0f6] transition hover:border-[#1cb0f6]"><Play className="h-4 w-4 fill-current" /> Qanday ishlaydi?</a>
-              </div>
-              <div className="mt-7 flex items-center gap-3 text-sm font-semibold text-[#777]"><span className="flex -space-x-2"><span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#a5ed6e]">🧠</span><span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#ffd166]">🫀</span><span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#ff9eb5]">🦴</span></span> 10 000+ o‘quvchi bilan birga</div>
-            </div>
-            <div className="relative mx-auto h-[350px] w-full max-w-[490px] sm:h-[420px]">
-              <div className="absolute inset-x-3 top-4 bottom-4 rotate-2 rounded-[40px] bg-[#d7ffb8]" />
-              <div className="absolute inset-0 overflow-hidden rounded-[40px] border-4 border-[#4b4b4b] bg-[#58cc02] shadow-[0_8px_0_#3b9700]">
-                <img src="/img/stories/bg-skeleton.webp" alt="Anatomiya darsi" className="h-full w-full object-cover opacity-90 mix-blend-multiply" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#000437]/80 via-transparent to-transparent" />
-                <div className="absolute left-6 top-6 rounded-xl bg-white px-3 py-2 text-xs font-extrabold text-[#58cc02] shadow-sm">BUGUNGI DARS</div>
-                <div className="absolute bottom-7 left-7 right-7 text-white"><p className="text-sm font-bold text-white/75">Skelet tizimi</p><p className="mt-1 text-3xl font-black">Suyaklarni tanib oling</p><div className="mt-4 h-3 overflow-hidden rounded-full bg-white/30"><div className="h-full w-[68%] rounded-full bg-white" /></div></div>
-              </div>
-              <div className="absolute -bottom-4 -left-2 flex items-center gap-2 rounded-2xl border-2 border-[#4b4b4b] bg-white px-4 py-3 text-sm font-extrabold shadow-[0_4px_0_#d8ddd2] sm:-left-8"><Flame className="h-5 w-5 fill-[#ff9600] text-[#ff9600]" /> 7 kunlik seriya</div>
-              <div className="absolute -right-2 top-16 rounded-2xl border-2 border-[#4b4b4b] bg-white px-4 py-3 text-sm font-extrabold shadow-[0_4px_0_#d8ddd2] sm:-right-7"><Trophy className="mr-2 inline h-5 w-5 text-[#ffb800]" /> +20 XP</div>
-            </div>
-          </div>
-        </section>
+        <section className="bg-white px-4 pb-12 pt-16 sm:pb-20 sm:pt-24"><div className="mx-auto max-w-[760px] text-center"><div className="site-pulse mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edefff] text-[#4255ff]"><Sparkles /></div><h1 className="text-[38px] font-semibold leading-[1.12] tracking-[-.04em] sm:text-[56px]">Anatomiyani <span className="text-[#4255ff]">osonroq</span> o‘rganing.</h1><p className="mx-auto mt-5 max-w-[600px] text-base leading-7 text-[#586380] sm:text-lg">CORPUS — tibbiyot va biologiya bilimlarini qisqa darslar, kartochkalar va o‘yinlashtirilgan testlar orqali mustahkamlashning yangi usuli.</p><div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"><a href="/app?screen=dashboard" className="rounded-full bg-[#4255ff] px-7 py-3.5 text-base font-semibold text-white shadow-[0_2px_4px_rgba(40,46,62,.1)] hover:bg-[#3045ee]">Bepul ro‘yxatdan o‘ting</a><a href="#xususiyatlar" className="text-base text-[#4255ff] hover:underline">Qanday ishlaydi?</a></div></div></section>
 
-        <section id="qanday" className="mx-auto max-w-[1180px] px-5 py-20 sm:py-28 lg:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-[.8fr_1.2fr]">
-            <div><p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#58cc02]">Oddiy. Qiziqarli. Samarali.</p><h2 className="mt-3 text-4xl font-black tracking-[-0.05em] sm:text-5xl">Har bir dars — kichik g‘alaba.</h2><p className="mt-5 text-lg leading-relaxed text-[#777]">CORPUS sizga kuniga bir necha daqiqada anatomiyani bosqichma-bosqich o‘rgatadi. Natijani ko‘ring, seriyani saqlang va keyingi bosqichga o‘ting.</p><a href="/app?screen=dashboard" className="mt-7 inline-flex items-center gap-2 font-extrabold text-[#1cb0f6]">Darslarni ko‘rish <ChevronRight className="h-5 w-5" /></a></div>
-            <div className="grid gap-4 sm:grid-cols-3"><Feature icon={<BookOpen />} title="Qisqa darslar" text="10 daqiqalik tushunarli mavzular." /><Feature icon={<Check />} title="Aqlli testlar" text="Bilimingizni o‘yin orqali sinang." /><Feature icon={<Flame />} title="Kunlik seriya" text="Har kuni o‘rganishni odatga aylantiring." /></div>
-          </div>
-        </section>
+        <section id="xususiyatlar" className="overflow-hidden px-4 pb-20 sm:px-6"><div className="mx-auto max-w-[1200px]"><div className="mb-6 flex items-end justify-between"><div><p className="text-sm font-semibold text-[#4255ff]">CORPUS bilan o‘rganing</p><h2 className="mt-1 text-2xl font-semibold sm:text-3xl">Sizga mos o‘qish usuli</h2></div><div className="hidden gap-2 sm:flex"><button onClick={() => setCardIndex((cardIndex + visibleCards - 1) % visibleCards)} className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d9dde8] bg-white hover:border-[#4255ff]"><ChevronLeft className="h-5 w-5" /></button><button onClick={() => setCardIndex((cardIndex + 1) % visibleCards)} className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d9dde8] bg-white hover:border-[#4255ff]"><ChevronRight className="h-5 w-5" /></button></div></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{cards.map((card, index) => { const Icon = card.icon; return <a href="/app?screen=dashboard" key={card.title} className={`site-card ${card.tone} rounded-3xl p-3 ${index === cardIndex ? "ring-2 ring-[#4255ff]/20" : ""}`}><div className="overflow-hidden rounded-lg bg-white"><div className="relative h-36 overflow-hidden"><img src={card.image} alt="" className="h-full w-full object-cover" /><div className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold text-[#4255ff]">{card.label}</div></div><div className="p-4"><div className="flex items-center gap-2"><Icon className="h-5 w-5 text-[#4255ff]" /><h3 className="text-lg font-bold">{card.title}</h3></div><p className="mt-2 text-sm leading-6 text-[#586380]">{card.text}</p></div></div></a>; })}</div></div></section>
 
-        <section id="mavzular" className="bg-[#fbfff7] px-5 py-20 sm:py-28 lg:px-8"><div className="mx-auto max-w-[1180px]"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#58cc02]">O‘quv yo‘li</p><h2 className="mt-3 text-4xl font-black tracking-[-0.05em] sm:text-5xl">Qaysi mavzudan boshlaymiz?</h2></div><a href="/app?screen=topics" className="font-extrabold text-[#1cb0f6]">Barcha mavzular <ArrowRight className="ml-1 inline h-4 w-4" /></a></div><div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{topics.map((topic) => <a key={topic.title} href="/app?screen=topics" className="group overflow-hidden rounded-2xl border-2 border-[#e8eee1] bg-white transition hover:-translate-y-1 hover:border-[#58cc02]"><div className="h-36 overflow-hidden" style={{ backgroundColor: `${topic.color}20` }}><img src={topic.image} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /></div><div className="p-4"><p className="text-lg font-black">{topic.title}</p><p className="mt-1 text-sm font-medium text-[#777]">{topic.subtitle}</p><div className="mt-4 flex items-center justify-between text-xs font-extrabold" style={{ color: topic.color }}>Boshlash <ChevronRight className="h-4 w-4" /></div></div></a>)}</div></div></section>
+        <section id="qanday" className="bg-[#edefff] px-4 py-20 sm:px-6"><div className="mx-auto grid max-w-[1200px] items-center gap-10 lg:grid-cols-2"><div className="order-2 lg:order-1"><div className="relative mx-auto max-w-[490px] rounded-3xl bg-[#d8dfff] p-4 site-float"><div className="rounded-lg bg-white p-5 shadow-[0_4px_16px_rgba(40,46,62,.1)]"><div className="flex items-center justify-between border-b border-[#d9dde8] pb-4"><span className="font-semibold">Skelet tizimi</span><span className="rounded-full bg-[#f6f7fb] px-3 py-1 text-xs text-[#586380]">12 ta atama</span></div><div className="mt-5 rounded-lg bg-[#f6f7fb] p-6 text-center"><p className="text-sm text-[#939bb4]">Bu suyakning nomi nima?</p><p className="mt-3 text-2xl font-semibold">Clavicula</p><div className="mt-5 h-2 rounded-full bg-[#d9dde8]"><div className="h-full w-2/3 rounded-full bg-[#4255ff]" /></div></div><div className="mt-4 grid grid-cols-2 gap-2"><button className="rounded-full bg-[#4255ff] py-2 text-sm font-semibold text-white">Bilaman</button><button className="rounded-full border border-[#4255ff] py-2 text-sm font-semibold text-[#4255ff]">Takrorlash</button></div></div><div className="absolute -right-5 -top-5 flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#4255ff] shadow-[0_4px_16px_rgba(40,46,62,.1)]"><Brain /></div></div></div><div className="order-1 lg:order-2"><p className="text-sm font-semibold text-[#4255ff]">O‘qish yo‘li</p><h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">Bilimni kartochkalar bilan yodda saqlang.</h2><p className="mt-5 text-base leading-7 text-[#586380]">Har bir mavzu qisqa savollar va takrorlashlar orqali mustahkamlanadi. Siz qayerda qolganingizni CORPUS eslab qoladi va keyingi qadamni ko‘rsatadi.</p><a href="/app?screen=lessons" className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#4255ff] px-6 py-3 text-sm font-semibold text-white">Darslar yo‘liga o‘tish <ArrowRight className="h-4 w-4" /></a></div></div></section>
 
-        <section id="natijalar" className="mx-auto max-w-[1180px] px-5 py-20 sm:py-24 lg:px-8"><div className="rounded-[32px] bg-[#58cc02] px-6 py-12 text-center text-white sm:px-12"><Trophy className="mx-auto h-10 w-10 text-[#d7ffb8]" /><h2 className="mx-auto mt-4 max-w-[680px] text-4xl font-black tracking-[-0.05em] sm:text-5xl">Bilim yo‘lingizni bugun boshlang.</h2><p className="mx-auto mt-4 max-w-[560px] text-lg font-medium text-white/85">Bepul ro‘yxatdan o‘ting va anatomiyani o‘rganishning yangi usulini sinab ko‘ring.</p><a href="/app?screen=dashboard" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-4 text-sm font-extrabold uppercase tracking-[0.04em] text-[#58cc02] shadow-[0_4px_0_#3b9700] transition hover:bg-[#f0ffdf]">O‘rganishni boshlash <ArrowRight className="h-5 w-5" /></a></div></section>
+        <section id="mavzular" className="px-4 py-20 sm:px-6"><div className="mx-auto max-w-[1200px]"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="text-sm font-semibold text-[#4255ff]">Mavzular</p><h2 className="mt-1 text-3xl font-semibold">Anatomiya olamini kashf qiling.</h2></div><a href="/app?screen=topics" className="text-sm text-[#4255ff] hover:underline">Barcha mavzular <ArrowRight className="ml-1 inline h-4 w-4" /></a></div><div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{topics.map(([title, sub, image]) => <a href="/app?screen=topics" key={title} className="site-card rounded-lg border border-[#d9dde8] bg-white p-3"><img src={image} alt="" className="h-28 w-full rounded-md object-cover" /><p className="mt-3 font-semibold">{title}</p><p className="mt-1 text-sm text-[#586380]">{sub}</p><p className="mt-3 text-xs text-[#939bb4]">Boshlash <ChevronRight className="inline h-3.5 w-3.5" /></p></a>)}</div></div></section>
+
+        <section className="bg-white px-4 py-20 sm:px-6"><div className="mx-auto grid max-w-[1200px] items-center gap-10 lg:grid-cols-2"><div><p className="text-sm font-semibold text-[#4255ff]">Odatga aylantiring</p><h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Har kuni ozgina. Har kuni oldinga.</h2><p className="mt-5 max-w-[520px] text-base leading-7 text-[#586380]">Kunlik maqsadingizni belgilang, seriyangizni saqlang va yangi darajalarni oching. O‘rganish kichik qadamlar bilan katta natijaga aylanadi.</p><div className="mt-6 flex gap-3"><div className="rounded-lg border border-[#d9dde8] bg-[#f6f7fb] p-4"><Flame className="h-6 w-6 text-[#4255ff]" /><p className="mt-2 text-xl font-semibold">7 kun</p><p className="text-xs text-[#586380]">seriya</p></div><div className="rounded-lg border border-[#d9dde8] bg-[#f6f7fb] p-4"><Trophy className="h-6 w-6 text-[#4255ff]" /><p className="mt-2 text-xl font-semibold">240 XP</p><p className="text-xs text-[#586380]">bu hafta</p></div></div></div><div className="rounded-3xl bg-[#d8f7ff] p-4"><img src="/img/stories/screens/dashboard.webp" alt="CORPUS dashboard" className="mx-auto max-h-[420px] w-auto rounded-2xl shadow-[0_4px_16px_rgba(40,46,62,.1)]" /></div></div></section>
+
+        <section className="px-4 py-20 sm:px-6"><div className="mx-auto max-w-[800px] rounded-3xl bg-[#4255ff] px-6 py-12 text-center text-white sm:px-12"><h2 className="text-3xl font-semibold sm:text-4xl">Bugun birinchi darsni boshlaysizmi?</h2><p className="mx-auto mt-4 max-w-[520px] text-base leading-7 text-white/80">CORPUS bilan anatomiyani aniqroq, qiziqarliroq va yodda qoladigan tarzda o‘rganing.</p><a href="/app?screen=dashboard" className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-[#4255ff] shadow-[0_2px_4px_rgba(40,46,62,.1)]">Bepul boshlash <ArrowRight className="h-4 w-4" /></a></div></section>
       </main>
-      <footer className="bg-[#000437] px-5 py-10 text-center text-sm text-white/70"><p className="font-black tracking-[0.14em] text-white">CORPUS</p><p className="mt-2">Anatomiyani o‘rgan. Hayotni boshqar.</p></footer>
+
+      <footer className="border-t border-[#d9dde8] bg-[#f6f7fb] px-4 py-12 sm:px-6"><div className="mx-auto grid max-w-[1200px] gap-8 sm:grid-cols-2 lg:grid-cols-5"><div className="lg:col-span-2"><div className="flex items-center gap-2"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#4255ff] text-xl text-white">✦</span><span className="text-xl font-bold">CORPUS</span></div><p className="mt-4 max-w-[270px] text-sm leading-6 text-[#586380]">Anatomiyani o‘rgan. Hayotni boshqar.</p></div><FooterCol title="O‘quvchilar" items={["Darslar", "Mavzular", "Testlar"]} /><FooterCol title="CORPUS" items={["Biz haqimizda", "Aloqa", "Yordam"]} /><FooterCol title="Ilovani yuklang" items={["App Store", "Google Play", "Web versiya"]} /></div><p className="mx-auto mt-10 max-w-[1200px] border-t border-[#d9dde8] pt-6 text-xs text-[#939bb4]">© 2026 CORPUS. Barcha huquqlar himoyalangan.</p></footer>
     </div>
   );
 }
 
-function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
-  return <div className="rounded-2xl border-2 border-[#e8eee1] bg-white p-5"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#f0ffdf] text-[#58cc02]">{icon}</div><h3 className="mt-5 text-base font-black">{title}</h3><p className="mt-2 text-sm leading-relaxed text-[#777]">{text}</p></div>;
-}
+function FooterCol({ title, items }: { title: string; items: string[] }) { return <div><h3 className="text-sm font-semibold">{title}</h3><div className="mt-3 grid gap-2 text-sm text-[#586380]">{items.map((item) => <a key={item} href="#" className="hover:text-[#4255ff]">{item}</a>)}</div></div>; }
