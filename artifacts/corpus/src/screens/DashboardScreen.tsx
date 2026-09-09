@@ -93,8 +93,8 @@ export function DashboardScreen() {
   const goalPct = Math.min(100, Math.round((todayXp / goal) * 100));
 
   return (
-    <Screen className="pb-8 pt-3 sm:pt-5">
-      <header className="relative overflow-hidden rounded-[30px] bg-[#16213D] px-5 pb-5 pt-4 text-white shadow-[0_18px_45px_rgba(22,33,61,0.20)] sm:px-6 sm:pb-6">
+    <Screen className="cosmos-dashboard pb-8 pt-3 sm:pt-5">
+      <header className="cosmos-hero relative overflow-hidden rounded-2xl border border-white/10 bg-[#16213D] px-5 pb-5 pt-4 text-white sm:px-6 sm:pb-6">
         <div
           className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-[#35D0BA]/20 blur-[2px]"
           aria-hidden
@@ -193,10 +193,10 @@ export function DashboardScreen() {
       <section className="mt-6">
         <div className="mb-3 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-accent">
+            <p className="cosmos-eyebrow text-[10px] font-extrabold uppercase tracking-[0.16em] text-accent">
               {t.todayGoal}
             </p>
-            <h2 className="mt-1 text-xl font-black tracking-[-0.03em]">
+            <h2 className="cosmos-section-title mt-1 text-xl font-black tracking-[-0.03em]">
               {t.quickPlayTitle}
             </h2>
           </div>
@@ -271,10 +271,10 @@ export function DashboardScreen() {
       <section className="mt-6">
         <div className="mb-3 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-accent">
+            <p className="cosmos-eyebrow text-[10px] font-extrabold uppercase tracking-[0.16em] text-accent">
               {t.continueLearning}
             </p>
-            <h2 className="mt-1 text-xl font-black tracking-[-0.03em]">
+            <h2 className="cosmos-section-title mt-1 text-xl font-black tracking-[-0.03em]">
               {nextSystem?.name}
             </h2>
           </div>
@@ -283,7 +283,7 @@ export function DashboardScreen() {
             XP
           </span>
         </div>
-        <Card className="group overflow-hidden rounded-[26px] border-0 bg-surface shadow-[0_12px_32px_rgba(31,42,68,0.10)] ring-1 ring-line/50">
+        <Card className="cosmos-feature-card group overflow-hidden rounded-2xl border border-line bg-surface shadow-none">
           <div className="relative h-40 w-full overflow-hidden sm:h-48">
             <img
               src={nextSystem?.image}
@@ -347,7 +347,7 @@ export function DashboardScreen() {
               onClick={() =>
                 allLessonsDone ? navigate("topics") : openLesson(nextLesson.id)
               }
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#16213D] text-white transition hover:bg-[#27365D] active:scale-95"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-line bg-surface2 text-ink transition hover:bg-surface active:scale-95"
             >
               <ChevronRight className="h-5 w-5" aria-hidden />
             </button>
@@ -426,7 +426,7 @@ function QuickTile({
     <button
       type="button"
       onClick={onClick}
-      className="group relative flex min-h-[108px] min-w-0 flex-col justify-between overflow-hidden rounded-[22px] p-3.5 text-left text-white shadow-[0_10px_24px_rgba(31,42,68,0.12)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(31,42,68,0.16)] active:scale-[.97]"
+      className="cosmos-quick-tile group relative flex min-h-[108px] min-w-0 flex-col justify-between overflow-hidden rounded-2xl border border-white/20 p-3.5 text-left text-white transition duration-200 hover:-translate-y-0.5 active:scale-[.97]"
       style={{
         background: `linear-gradient(145deg, ${color} 0%, ${color}D9 100%)`,
       }}

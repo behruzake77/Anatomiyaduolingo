@@ -6,42 +6,67 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------- Poppins (local, offline) ---------- */
-@font-face { font-family: "Poppins"; font-weight: 400; font-display: swap; src: url("/fonts/poppins-400.woff2") format("woff2"); }
-@font-face { font-family: "Poppins"; font-weight: 500; font-display: swap; src: url("/fonts/poppins-500.woff2") format("woff2"); }
-@font-face { font-family: "Poppins"; font-weight: 600; font-display: swap; src: url("/fonts/poppins-600.woff2") format("woff2"); }
-@font-face { font-family: "Poppins"; font-weight: 700; font-display: swap; src: url("/fonts/poppins-700.woff2") format("woff2"); }
-@font-face { font-family: "Poppins"; font-weight: 800; font-display: swap; src: url("/fonts/poppins-800.woff2") format("woff2"); }
+@font-face {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/poppins-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/poppins-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/poppins-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/poppins-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/poppins-800.woff2") format("woff2");
+}
 
 /* ---------- Semantic surface tokens (light + dark) ---------- */
 :root {
-  --bg: #F8F9FA;
-  --surface: #FFFFFF;
-  --surface-2: #F1F2F7;
-  --ink: #2D3436;
-  --muted: #6B7280;
-  --line: #E9ECF2;
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --surface-2: #f1f2f7;
+  --ink: #2d3436;
+  --muted: #6b7280;
+  --line: #e9ecf2;
 }
 /* `:root.dark` (0,2,0) — ties with the `:root[data-background-style]` rules in
    customization.css and wins by source order, so the dark palette always applies
    fully when dark mode is on (background tints only affect light mode). */
 :root.dark {
-  --bg: #12131A;
-  --surface: #1C1D27;
-  --surface-2: #24252F;
-  --ink: #F8FAFC;
-  --muted: #9CA3AF;
-  --line: #2A2B36;
+  --bg: #12131a;
+  --surface: #1c1d27;
+  --surface-2: #24252f;
+  --ink: #f8fafc;
+  --muted: #9ca3af;
+  --line: #2a2b36;
 }
 
 /* ---------- Design tokens → Tailwind utilities ---------- */
 @theme inline {
-  --color-primary: var(--theme-primary, #6C5CE7);
-  --color-primary-soft: var(--theme-primary-soft, #A29BFE);
-  --color-primary-deep: var(--theme-primary-deep, #5A4BD1);
-  --color-success: #00B894;
-  --color-accent: #FD79A8;
-  --color-danger: #EF4444;
-  --color-warning: #F59E0B;
+  --color-primary: var(--theme-primary, #6c5ce7);
+  --color-primary-soft: var(--theme-primary-soft, #a29bfe);
+  --color-primary-deep: var(--theme-primary-deep, #5a4bd1);
+  --color-success: #00b894;
+  --color-accent: #fd79a8;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface2: var(--surface-2);
@@ -49,12 +74,14 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --shadow-soft: 0 4px 12px rgba(108, 92, 231, 0.10);
+  --shadow-soft: 0 4px 12px rgba(108, 92, 231, 0.1);
   --shadow-card: 0 8px 24px rgba(45, 52, 54, 0.08);
   --shadow-pop: 0 12px 40px -8px rgba(108, 92, 231, 0.35);
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   min-height: 100%;
   min-height: 100vh;
@@ -71,8 +98,8 @@ html, body, #root {
  *   bottom nav is never hidden behind the browser toolbar.
  */
 .app-shell {
-  height: 100vh;                          /* safe fallback (always valid) */
-  height: var(--app-height, 100vh);       /* JS-driven visual viewport height */
+  height: 100vh; /* safe fallback (always valid) */
+  height: var(--app-height, 100vh); /* JS-driven visual viewport height */
 }
 body {
   background: var(--bg);
@@ -82,13 +109,26 @@ body {
   text-rendering: optimizeLegibility;
   overscroll-behavior-y: none;
 }
-* { -webkit-tap-highlight-color: transparent; }
-:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; border-radius: 6px; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -103,42 +143,227 @@ html.low-end *::after {
   transition-duration: 0.08s !important;
 }
 
-.rx-tf { transform-box: fill-box; transform-origin: center; }
-@keyframes rx-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-@keyframes rx-orbit { to { transform: rotate(360deg); } }
-@keyframes rx-blink { 0%, 92%, 100% { transform: scaleY(1); } 95%, 96% { transform: scaleY(0.12); } }
-@keyframes rx-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-@keyframes rx-think { 0%,60%,100% { opacity:.25; transform: translateY(0); } 30% { opacity:1; transform: translateY(-2px); } }
-@keyframes rx-twinkle { 0%,100% { opacity:.2; transform: scale(.7); } 50% { opacity:1; transform: scale(1); } }
-@keyframes rx-wave { 0%,100% { transform: rotate(-14deg); } 50% { transform: rotate(16deg); } }
-@keyframes rx-pop-in { from { opacity:0; transform: translateY(10px) scale(.98); } to { opacity:1; transform: translateY(0) scale(1); } }
-@keyframes rx-overlay-in { from { opacity:0; } to { opacity:1; } }
-@keyframes rx-heartbeat { 0%,100% { transform: scale(1); } 14% { transform: scale(1.09); } 28% { transform: scale(1); } 42% { transform: scale(1.06); } 56% { transform: scale(1); } }
-@keyframes rx-lungs { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
-@keyframes rx-brain-pulse { 0%,100% { transform: scale(1); opacity:.9; } 50% { transform: scale(1.045); opacity:1; } }
-@keyframes rx-sway { 0%,100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
-@keyframes rx-dna { to { transform: rotate(360deg); } }
-@keyframes rx-shimmer { to { transform: translateX(220%); } }
-.rx-breathe { animation: rx-breathe 3.4s ease-in-out infinite; }
-.rx-orbit { animation: rx-orbit 22s linear infinite; }
-.rx-eyes { animation: rx-blink 4.6s infinite; }
-.rx-float { animation: rx-float 4s ease-in-out infinite; }
-.rx-think-dot { animation: rx-think 1.5s ease-in-out infinite; }
-.rx-twinkle { animation: rx-twinkle 2.2s ease-in-out infinite; }
-.rx-wave { animation: rx-wave 1.5s ease-in-out infinite; }
-.rx-pop-in { animation: rx-pop-in .5s cubic-bezier(.22,1,.36,1) both; }
-.rx-overlay-in { animation: rx-overlay-in .25s ease both; }
-.rx-heartbeat { animation: rx-heartbeat 1.6s ease-in-out infinite; }
-.rx-lungs { animation: rx-lungs 4.6s ease-in-out infinite; }
-.rx-brain-pulse { animation: rx-brain-pulse 3.2s ease-in-out infinite; }
-.rx-sway { animation: rx-sway 5s ease-in-out infinite; }
-.rx-dna { animation: rx-dna 7s linear infinite; }
-@keyframes rx-organ-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes rx-organ-counter { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-@keyframes rx-organ-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-.rx-organ-orbit { animation: rx-organ-orbit 26s linear infinite; }
-.rx-organ-counter { animation: rx-organ-counter 26s linear infinite; }
-.rx-organ-bob { animation: rx-organ-bob 3.6s ease-in-out infinite; }
+.rx-tf {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes rx-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+@keyframes rx-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rx-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95%,
+  96% {
+    transform: scaleY(0.12);
+  }
+}
+@keyframes rx-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes rx-think {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+@keyframes rx-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes rx-wave {
+  0%,
+  100% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(16deg);
+  }
+}
+@keyframes rx-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes rx-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rx-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.09);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.06);
+  }
+  56% {
+    transform: scale(1);
+  }
+}
+@keyframes rx-lungs {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+@keyframes rx-brain-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.045);
+    opacity: 1;
+  }
+}
+@keyframes rx-sway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+@keyframes rx-dna {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rx-shimmer {
+  to {
+    transform: translateX(220%);
+  }
+}
+.rx-breathe {
+  animation: rx-breathe 3.4s ease-in-out infinite;
+}
+.rx-orbit {
+  animation: rx-orbit 22s linear infinite;
+}
+.rx-eyes {
+  animation: rx-blink 4.6s infinite;
+}
+.rx-float {
+  animation: rx-float 4s ease-in-out infinite;
+}
+.rx-think-dot {
+  animation: rx-think 1.5s ease-in-out infinite;
+}
+.rx-twinkle {
+  animation: rx-twinkle 2.2s ease-in-out infinite;
+}
+.rx-wave {
+  animation: rx-wave 1.5s ease-in-out infinite;
+}
+.rx-pop-in {
+  animation: rx-pop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rx-overlay-in {
+  animation: rx-overlay-in 0.25s ease both;
+}
+.rx-heartbeat {
+  animation: rx-heartbeat 1.6s ease-in-out infinite;
+}
+.rx-lungs {
+  animation: rx-lungs 4.6s ease-in-out infinite;
+}
+.rx-brain-pulse {
+  animation: rx-brain-pulse 3.2s ease-in-out infinite;
+}
+.rx-sway {
+  animation: rx-sway 5s ease-in-out infinite;
+}
+.rx-dna {
+  animation: rx-dna 7s linear infinite;
+}
+@keyframes rx-organ-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rx-organ-counter {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes rx-organ-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.rx-organ-orbit {
+  animation: rx-organ-orbit 26s linear infinite;
+}
+.rx-organ-counter {
+  animation: rx-organ-counter 26s linear infinite;
+}
+.rx-organ-bob {
+  animation: rx-organ-bob 3.6s ease-in-out infinite;
+}
 
 /* Notification bell button: compact animated control inspired by the supplied design. */
 .notification-bell {
@@ -155,12 +380,24 @@ html.low-end *::after {
   color: #fff;
   cursor: pointer;
   box-shadow: 2px 2px 10px rgb(0 0 0 / 13%);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
-.notification-bell:hover { background-color: rgb(56 56 56); }
-.notification-bell:active { transform: scale(0.8); }
-.notification-bell__icon { width: 18px; height: 18px; fill: currentColor; }
-.notification-bell:hover .notification-bell__icon { animation: notification-bell-ring 0.9s both; }
+.notification-bell:hover {
+  background-color: rgb(56 56 56);
+}
+.notification-bell:active {
+  transform: scale(0.8);
+}
+.notification-bell__icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.notification-bell:hover .notification-bell__icon {
+  animation: notification-bell-ring 0.9s both;
+}
 .notification-bell__badge {
   position: absolute;
   top: -4px;
@@ -180,12 +417,25 @@ html.low-end *::after {
   line-height: 1;
 }
 @keyframes notification-bell-ring {
-  0%, 100% { transform-origin: top; }
-  15% { transform: rotateZ(10deg); }
-  30% { transform: rotateZ(-10deg); }
-  45% { transform: rotateZ(5deg); }
-  60% { transform: rotateZ(-5deg); }
-  75% { transform: rotateZ(2deg); }
+  0%,
+  100% {
+    transform-origin: top;
+  }
+  15% {
+    transform: rotateZ(10deg);
+  }
+  30% {
+    transform: rotateZ(-10deg);
+  }
+  45% {
+    transform: rotateZ(5deg);
+  }
+  60% {
+    transform: rotateZ(-5deg);
+  }
+  75% {
+    transform: rotateZ(2deg);
+  }
 }
 
 /* Shared controls: the supplied switch language is used for non-theme toggles. */
@@ -200,15 +450,36 @@ html.low-end *::after {
   border-radius: 9999px;
   background: #252532;
   padding: 4px;
-  box-shadow: inset 0 5px 10px 0 #16151c, 0 3px 6px -2px #403f4e;
+  box-shadow:
+    inset 0 5px 10px 0 #16151c,
+    0 3px 6px -2px #403f4e;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
-.ui-toggle:hover { box-shadow: inset 0 5px 10px 0 #16151c, 0 4px 10px -2px #403f4e; }
-.ui-toggle:active { transform: scale(0.94); }
-.ui-toggle:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
-.ui-toggle__button { position: relative; display: flex; width: 100%; height: 100%; align-items: center; justify-content: space-between; }
+.ui-toggle:hover {
+  box-shadow:
+    inset 0 5px 10px 0 #16151c,
+    0 4px 10px -2px #403f4e;
+}
+.ui-toggle:active {
+  transform: scale(0.94);
+}
+.ui-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+.ui-toggle__button {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
 .ui-toggle__thumb {
   position: absolute;
   z-index: 2;
@@ -217,10 +488,14 @@ html.low-end *::after {
   height: 28px;
   border-radius: 9999px;
   background: linear-gradient(#3b3a4e, #272733);
-  box-shadow: inset 0 5px 4px 0 #424151, 0 4px 15px 0 #0f0e17;
+  box-shadow:
+    inset 0 5px 4px 0 #424151,
+    0 4px 15px 0 #0f0e17;
   transition: transform 0.3s ease;
 }
-.ui-toggle--checked .ui-toggle__thumb { transform: translateX(34px); }
+.ui-toggle--checked .ui-toggle__thumb {
+  transform: translateX(34px);
+}
 .ui-toggle__indicator {
   position: absolute;
   right: 6px;
@@ -228,12 +503,26 @@ html.low-end *::after {
   height: 14px;
   border: 2px solid #ef565f;
   border-radius: 50%;
-  transition: right 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+  transition:
+    right 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.3s ease;
 }
-.ui-toggle--checked .ui-toggle__indicator { right: auto; left: 6px; border-color: #60d480; }
-.ui-button { box-shadow: 0 6px 16px rgb(45 52 54 / 10%); }
-.ui-button:hover { filter: saturate(1.06) brightness(1.02); }
-.ui-button:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+.ui-toggle--checked .ui-toggle__indicator {
+  right: auto;
+  left: 6px;
+  border-color: #60d480;
+}
+.ui-button {
+  box-shadow: 0 6px 16px rgb(45 52 54 / 10%);
+}
+.ui-button:hover {
+  filter: saturate(1.06) brightness(1.02);
+}
+.ui-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
 
 /* Reusable animated pattern for game-focused hero panels. */
 .pattern-background {
@@ -245,27 +534,128 @@ html.low-end *::after {
   opacity: 0.3;
   background-color: #09091a;
   background-image:
-    radial-gradient(ellipse 5px 90px at 12% 18%, #61d5ff 0 30%, transparent 70%),
-    radial-gradient(ellipse 5px 90px at 88% 42%, #a29bfe 0 30%, transparent 70%),
+    radial-gradient(
+      ellipse 5px 90px at 12% 18%,
+      #61d5ff 0 30%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 5px 90px at 88% 42%,
+      #a29bfe 0 30%,
+      transparent 70%
+    ),
     radial-gradient(circle at 42% 12%, #fff 0 2px, transparent 3px),
     radial-gradient(circle at 72% 78%, #fd79a8 0 2px, transparent 3px),
     radial-gradient(circle at 18% 82%, #00b894 0 2px, transparent 3px);
-  background-size: 220px 360px, 260px 420px, 180px 180px, 220px 220px, 260px 260px;
+  background-size:
+    220px 360px,
+    260px 420px,
+    180px 180px,
+    220px 220px,
+    260px 260px;
   animation: pattern-background-drift 36s linear infinite;
 }
 .pattern-background::after {
   position: absolute;
   inset: 0;
   content: "";
-  background-image: radial-gradient(circle, rgb(255 255 255 / 52%) 0 1px, transparent 1.5px);
+  background-image: radial-gradient(
+    circle,
+    rgb(255 255 255 / 52%) 0 1px,
+    transparent 1.5px
+  );
   background-size: 8px 8px;
   opacity: 0.16;
   mix-blend-mode: screen;
 }
 @keyframes pattern-background-drift {
-  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
-  to { background-position: 0 1200px, 0 -900px, 220px 320px, -180px 240px, 260px -180px; }
+  from {
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      0 1200px,
+      0 -900px,
+      220px 320px,
+      -180px 240px,
+      260px -180px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pattern-background { animation: none; }
+  .pattern-background {
+    animation: none;
+  }
+}
+
+/* Cosmos-inspired dashboard layer: editorial type, linen canvas, and restrained surfaces. */
+.cosmos-dashboard {
+  background: color-mix(in srgb, var(--bg) 88%, #f7f5f3 12%);
+}
+.cosmos-dashboard .cosmos-section-title,
+.cosmos-dashboard > header h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.cosmos-dashboard .cosmos-eyebrow {
+  letter-spacing: 0.12em;
+}
+.cosmos-dashboard .cosmos-feature-card {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+.cosmos-dashboard .cosmos-feature-card:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 32%, var(--line));
+  background-color: color-mix(in srgb, var(--surface) 94%, #f7f5f3 6%);
+}
+.cosmos-dashboard .cosmos-quick-tile {
+  box-shadow: none;
+}
+.cosmos-dashboard .cosmos-quick-tile:hover {
+  border-color: rgb(255 255 255 / 55%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cosmos-dashboard .cosmos-feature-card,
+  .cosmos-dashboard .cosmos-quick-tile {
+    transition: none;
+  }
+}
+@media (min-width: 640px) {
+  .cosmos-dashboard {
+    background: color-mix(in srgb, var(--bg) 82%, #f7f5f3 18%);
+  }
+}
+
+/* Storyset attribution link remains visually quiet while staying readable. */
+.storyset-credit {
+  color: var(--muted);
+  font-size: 0.625rem;
+}
+.storyset-credit a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Responsive navigation and cards keep the signature 16px radius. */
+.cosmos-dashboard [data-ui-card="true"] {
+  border-radius: 1rem;
+}
+.cosmos-dashboard [data-ui-button="true"] {
+  border-radius: 1rem;
+}
+@media (max-width: 420px) {
+  .cosmos-dashboard .cosmos-quick-tile {
+    min-height: 102px;
+    padding: 0.75rem;
+  }
+  .cosmos-dashboard > header h1 {
+    font-size: 1.65rem;
+  }
 }
