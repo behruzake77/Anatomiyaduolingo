@@ -162,9 +162,11 @@ export function AppNavigator() {
   const initAuth = useAppStore((s) => s.initAuth);
   const lowEnd = isLowEndDevice();
 
-  // Public website is intentionally isolated from the existing app shell.
-  // The mobile app continues to use the original navigator at `/`.
-  if (typeof window !== "undefined" && window.location.pathname === "/site") {
+  // Public website owns the root URL. The existing app shell stays isolated at /app.
+  if (
+    typeof window !== "undefined" &&
+    (window.location.pathname === "/" || window.location.pathname === "/site")
+  ) {
     return <WebsiteScreen />;
   }
 
