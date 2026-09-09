@@ -8,6 +8,7 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { applyDeviceClass, isLowEndDevice } from "@/lib/device";
 import { SplashScreen } from "@/screens/SplashScreen";
 import { PulseLoader } from "@/components/ui/PulseLoader";
+import { WebsiteScreen } from "@/screens/WebsiteScreen";
 
 function screen(loader: () => Promise<{ default: ComponentType }>) {
   return lazy(loader);
@@ -160,6 +161,12 @@ export function AppNavigator() {
   const darkMode = settings.darkMode;
   const initAuth = useAppStore((s) => s.initAuth);
   const lowEnd = isLowEndDevice();
+
+  // Public website is intentionally isolated from the existing app shell.
+  // The mobile app continues to use the original navigator at `/`.
+  if (typeof window !== "undefined" && window.location.pathname === "/site") {
+    return <WebsiteScreen />;
+  }
 
   useEffect(() => {
     try {
