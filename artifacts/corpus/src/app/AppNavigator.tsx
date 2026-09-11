@@ -283,7 +283,7 @@ export function AppNavigator() {
 
   return (
     <div className="app-shell relative mx-auto flex w-full max-w-md flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">
-      <DesktopNav />
+      {screenId !== "splash" && <DesktopNav />}
       <div className="desktop-main min-h-0 flex-1">
         {lowEnd ? (
           <div key={screenId} className="flex min-h-0 flex-1 flex-col">
