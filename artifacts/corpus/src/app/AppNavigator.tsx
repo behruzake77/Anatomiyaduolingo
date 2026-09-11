@@ -8,7 +8,7 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { applyDeviceClass, isLowEndDevice } from "@/lib/device";
 import { SplashScreen } from "@/screens/SplashScreen";
 import { PulseLoader } from "@/components/ui/PulseLoader";
-import { WebsiteScreen } from "@/screens/WebsiteScreen";
+import { NewWebsiteScreen } from "@/screens/NewWebsiteScreen";
 
 function screen(loader: () => Promise<{ default: ComponentType }>) {
   return lazy(loader);
@@ -167,7 +167,7 @@ export function AppNavigator() {
     typeof window !== "undefined" &&
     (window.location.pathname === "/" || window.location.pathname === "/site")
   ) {
-    return <WebsiteScreen />;
+    return <NewWebsiteScreen />;
   }
 
   useEffect(() => {
