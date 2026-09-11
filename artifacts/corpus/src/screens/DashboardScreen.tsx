@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   ArrowUpRight,
   BookOpen,
+  Bot,
   Check,
   ChevronRight,
   Crown,
@@ -264,6 +265,13 @@ export function DashboardScreen() {
             title={t.quickPlayQuiz}
             sub={t.quickPlayQuizSub}
             onClick={() => navigate("quiz-studio")}
+          />
+          <QuickTile
+            icon={<Bot className="h-8 w-8 rounded-xl p-1.5 text-white" style={{ background: "#35D0BA" }} />}
+            color="#35D0BA"
+            title="AI Tutor"
+            sub="Anatomiya bilan suhbat"
+            onClick={() => navigate("tutor")}
           />
         </div>
       </section>

@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Home, Library, Settings, Trophy, User, type LucideIcon } from "lucide-react";
+import { BookOpen, Bot, Home, Library, Settings, Trophy, User, type LucideIcon } from "lucide-react";
 import { useAppStore, type ScreenId } from "@/store/useAppStore";
 import { useStrings } from "@/i18n";
 import { cn } from "@/utils/cn";
@@ -14,6 +14,7 @@ export function DesktopNav() {
     { id: "topics", label: t.learn, icon: BookOpen },
     { id: "library", label: t.library, icon: Library },
     { id: "leaderboard", label: "Reyting", icon: Trophy },
+    { id: "tutor", label: "AI Tutor", icon: Bot },
     { id: "profile", label: t.profile, icon: User },
   ];
 

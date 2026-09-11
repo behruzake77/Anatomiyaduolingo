@@ -64,7 +64,8 @@ export type ScreenId =
   | "feedback"
   | "inbox"
   | "quiz-studio"
-  | "user-profile";
+  | "user-profile"
+  | "tutor";
 
 export type Tab = "home" | "learn" | "library" | "profile";
 
