@@ -659,3 +659,102 @@ html.low-end *::after {
     font-size: 1.65rem;
   }
 }
+
+
+/* Desktop workspace shell: mobile navigation remains unchanged below 1024px. */
+.desktop-sidebar { display: none; }
+.desktop-main { min-width: 0; }
+
+@media (min-width: 1024px) {
+  body { background: #eef1f7; }
+  .app-shell {
+    max-width: 1440px;
+    width: min(100%, 1440px);
+    height: var(--app-height, 100vh);
+    min-height: 720px;
+    margin: 0 auto;
+    flex-direction: row;
+    border: 1px solid rgba(108, 92, 231, 0.08);
+    border-radius: 0;
+    box-shadow: 0 0 80px rgba(45, 52, 54, 0.08);
+  }
+  .desktop-sidebar {
+    display: flex;
+    width: 248px;
+    flex: 0 0 248px;
+    flex-direction: column;
+    gap: 0;
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+    padding: 30px 18px 24px;
+  }
+  .desktop-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px 34px;
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .desktop-brand-mark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 6px 18px rgba(108, 92, 231, 0.24);
+  }
+  .desktop-nav-caption {
+    padding: 0 13px 10px;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+  .desktop-nav-list { display: grid; gap: 5px; }
+  .desktop-nav-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 13px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--muted);
+    padding: 12px 13px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 180ms, color 180ms, transform 180ms;
+  }
+  .desktop-nav-item:hover { background: color-mix(in srgb, var(--color-primary) 8%, transparent); color: var(--color-primary); }
+  .desktop-nav-item:active { transform: scale(0.98); }
+  .desktop-nav-item.is-active { background: color-mix(in srgb, var(--color-primary) 12%, transparent); color: var(--color-primary); box-shadow: inset 3px 0 0 var(--color-primary); }
+  .desktop-nav-spacer { flex: 1; }
+  .desktop-settings { margin-bottom: 16px; }
+  .desktop-nav-footer { display: flex; align-items: center; gap: 8px; padding: 20px 13px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+  .desktop-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #00b894; box-shadow: 0 0 0 4px rgba(0, 184, 148, 0.12); }
+  .desktop-main { display: flex; min-width: 0; flex: 1; flex-direction: column; overflow: hidden; background: var(--bg); }
+  .desktop-main > .flex { min-height: 0; }
+  .desktop-main main { width: 100%; max-width: 1180px; margin: 0 auto; }
+  .desktop-main main > header { padding-left: 34px; padding-right: 34px; }
+  .desktop-main main.cosmos-dashboard { padding-left: 34px; padding-right: 34px; }
+  .desktop-main .cosmos-dashboard { max-width: 1180px; }
+  .desktop-main .cosmos-dashboard > .cosmos-hero { border-radius: 24px; }
+  .desktop-main .cosmos-dashboard > section { max-width: 1120px; }
+  .desktop-main .cosmos-dashboard .cosmos-feature-card { border-radius: 22px; }
+  .desktop-main .cosmos-dashboard .cosmos-feature-card > div:first-child { height: 230px; }
+  .desktop-main .cosmos-dashboard .project-stories { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .app-shell > nav[aria-label="Primary"] { display: none; }
+}
+
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .desktop-sidebar { width: 220px; flex-basis: 220px; }
+  .desktop-main main.cosmos-dashboard { padding-left: 24px; padding-right: 24px; }
+  .desktop-main .cosmos-dashboard .project-stories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

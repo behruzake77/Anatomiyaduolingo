@@ -4,6 +4,7 @@ import { lazy, Suspense, useEffect, type ComponentType } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useAppStore, type ScreenId, type Tab } from "@/store/useAppStore";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { DesktopNav } from "@/components/layout/DesktopNav";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { applyDeviceClass, isLowEndDevice } from "@/lib/device";
 import { SplashScreen } from "@/screens/SplashScreen";
@@ -282,24 +283,27 @@ export function AppNavigator() {
 
   return (
     <div className="app-shell relative mx-auto flex w-full max-w-md flex-col overflow-hidden bg-bg shadow-[0_0_60px_rgba(0,0,0,0.06)]">
-      {lowEnd ? (
-        <div key={screenId} className="flex min-h-0 flex-1 flex-col">
-          {body}
-        </div>
-      ) : (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={screenId}
-            className="flex min-h-0 flex-1 flex-col"
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -16 }}
-            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-          >
+      <DesktopNav />
+      <div className="desktop-main min-h-0 flex-1">
+        {lowEnd ? (
+          <div key={screenId} className="flex min-h-0 flex-1 flex-col">
             {body}
-          </motion.div>
-        </AnimatePresence>
-      )}
+          </div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={screenId}
+              className="flex min-h-0 flex-1 flex-col"
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {body}
+            </motion.div>
+          </AnimatePresence>
+        )}
+      </div>
 
       {showNav && <BottomNav />}
     </div>
