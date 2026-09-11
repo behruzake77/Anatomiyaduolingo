@@ -89,7 +89,7 @@ The pipeline detects PDFs under `artifacts/corpus/public/books` and `.migration-
 
 The selected embedding model is **`Xenova/all-MiniLM-L6-v2`**, executed through `@huggingface/transformers`. It is free to run locally and produces **384-dimensional normalized vectors**. The Supabase `embedding` column and `match_anatomy_chunks` RPC use `vector(384)`.
 
-The source roots currently contain real repository PDFs. A dry-run on 2026-09-11 detected **3,871 semantic chunks** across the available textbook and atlas files. Several atlas PDFs are image-only and produced zero text chunks; they require OCR/image-caption ingestion in a later pass rather than invented prose. This dry-run did not write to Supabase, so **the textbook and atlas have not yet been actually ingested into the remote database**. Actual ingestion requires `SUPABASE_URL` and the server-only `SUPABASE_SERVICE_ROLE_KEY`.
+The source roots currently contain real repository PDFs. A deduplicated dry-run on 2026-09-11 detected **1,683 semantic chunks**: 1,653 textbook chunks from 12 unique PDFs and 30 atlas text chunks from 7 unique PDFs. The pipeline intentionally ignores byte-identical duplicate copies across the public and migration-backup folders. Several atlas PDFs are image-only and produced zero text chunks; they require OCR/image-caption ingestion in a later pass rather than invented prose. This dry-run did not write to Supabase, so **the textbook and atlas have not yet been actually ingested into the remote database**. Actual ingestion requires `SUPABASE_URL` and the server-only `SUPABASE_SERVICE_ROLE_KEY`.
 
 ### Retrieval
 

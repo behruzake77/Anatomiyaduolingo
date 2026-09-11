@@ -22,6 +22,7 @@ function filesIn(directory: string): string[] {
 }
 function sourceType(file: string): SourceType { return /atlas|columna|vertebralis/i.test(file) ? "atlas" : "textbook"; }
 function title(file: string): string { return relative(ROOT, file).replace(/\.pdf$/i, "").replace(/[\\/_-]+/g, " ").trim(); }
+function fileHash(file: string): string { return createHash("sha256").update(readFileSync(file)).digest("hex").slice(0, 20); }
 function clean(text: string): string { return text.replace(/\u00ad/g, "").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim(); }
 function looksLikeHeading(line: string): boolean { const value = line.trim(); return value.length >= 4 && value.length < 150 && (/^(\d+(\.\d+)*[.)]?\s+|[IVXLC]+\.\s+)/.test(value) || (value === value.toUpperCase() && /[A-ZА-ЯЎҚҒҲ]/.test(value))); }
 function chunksForPage(text: string, page: number, file: string): Chunk[] {
@@ -68,7 +69,11 @@ async function upsert(rows: unknown[]) {
 }
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
-  const files = PDF_ROOTS.flatMap(filesIn).filter((file, index, all) => all.indexOf(file) === index);
+  const detectedFiles = PDF_ROOTS.flatMap(filesIn).filter((file, index, all) => all.indexOf(file) === index);
+  const hashes = new Map<string, string>();
+  for (const file of detectedFiles) hashes.set(file, fileHash(file));
+  const seenHashes = new Set<string>();
+  const files = detectedFiles.filter((file) => { const hash = hashes.get(file)!; if (seenHashes.has(hash)) return false; seenHashes.add(hash); return true; });
   if (!files.length) throw new Error("No anatomy PDFs found in configured roots");
   console.log(`CORPUS Anatomy Ingestion${dryRun ? " (dry-run)" : ""}`);
   console.log(`Embedding model: ${MODEL} (384 dimensions)`);
