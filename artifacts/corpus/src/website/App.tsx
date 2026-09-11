@@ -150,6 +150,10 @@ export default function App() {
   const [profile, setProfile] = useState<LocalProfile | null>(readProfile);
   const { progress, completeLesson } = useLearningProgress();
 
+  function startRegistration() {
+    window.location.assign('/app?screen=login');
+  }
+
   function openLesson(organ: OrganId = selectedOrgan, mode: LearningMode = 'learn') { setModal({ type: 'lesson', organ, mode }); }
 
   function exploreOrgan(id: OrganId) {
@@ -166,12 +170,12 @@ export default function App() {
   }
 
   return <MotionConfig reducedMotion="user"><a className="skip-link" href="#learn">Asosiy mazmunga o'tish</a><main>
-    <Hero onStart={() => openLesson()} onProfile={() => setModal({ type: 'profile' })} onExplore={exploreOrgan} profile={profile} />
+    <Hero onStart={startRegistration} onProfile={() => setModal({ type: 'profile' })} onExplore={exploreOrgan} profile={profile} />
     <Method />
-    <Explorer selected={selectedOrgan} onSelect={setSelectedOrgan} onStart={(id) => openLesson(id)} />
-    <HowItWorks onStart={openLesson} />
-    <Progress progress={progress} onMetric={(metric) => setModal({ type: 'progress', metric })} onStart={(id) => openLesson(id)} />
-    <Closing onStart={() => openLesson()} />
+    <Explorer selected={selectedOrgan} onSelect={setSelectedOrgan} onStart={() => startRegistration()} />
+    <HowItWorks onStart={() => startRegistration()} />
+    <Progress progress={progress} onMetric={(metric) => setModal({ type: 'progress', metric })} onStart={() => startRegistration()} />
+    <Closing onStart={startRegistration} />
   </main><Footer /><AnimatePresence mode="wait">
     {modal?.type === 'lesson' && <LearningDialog key={`lesson-${modal.organ}-${modal.mode}`} organ={getOrgan(modal.organ)} mode={modal.mode} onClose={() => setModal(null)} onComplete={(xp, correct, total) => completeLesson(modal.organ, xp, correct, total)} />}
     {modal?.type === 'profile' && <ProfileDialog key="profile" profile={profile} onChange={updateProfile} onClose={() => setModal(null)} />}

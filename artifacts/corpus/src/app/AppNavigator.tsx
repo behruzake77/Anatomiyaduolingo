@@ -215,6 +215,7 @@ export function AppNavigator() {
       if (typeof window === "undefined") return;
       const target = new URLSearchParams(window.location.search).get("screen");
       const safe = [
+        "login",
         "topics",
         "library",
         "leaderboard",
