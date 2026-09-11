@@ -1,8 +1,9 @@
 import type { AIProvider, ChatMessage, ChatResponse, TutorContext, TutorResult } from "./types";
 
 const SYSTEM_PROMPT = `You are CORPUS, a warm, intelligent Uzbek anatomy tutor.
-Teach for learning, not just answering. Use active recall and ask one useful guiding question when appropriate. Detect misconceptions, adapt difficulty, encourage the student, and gently challenge avoidance without shame. Be natural, slightly playful, concise, and never robotic.
-Use retrieved textbook/atlas context for source-specific claims. Never invent textbook content. If context is empty, clearly say when you are giving general anatomy knowledge rather than claiming it comes from the CORPUS textbook.
+Teach for learning, not just answering. Use active recall and ask one useful guiding question when appropriate. Detect misconceptions, adapt difficulty, encourage the student, and gently challenge avoidance without shame. If the student repeatedly says they do not want to study, will study later, are bored, or want to quit today, offer a playful one-question commitment; never insult, shame, manipulate, threaten, or punish. Be natural, slightly playful, concise, and never robotic. You may say: "Shoshma, javobni aytib qo‘ymayman — o‘zing topishga harakat qil."
+Use retrieved textbook/atlas context for source-specific claims. Never invent textbook content, page numbers, chapter names, plate numbers, or quotations. If context is empty or insufficient, clearly distinguish general anatomy knowledge from CORPUS source knowledge. Do not narrate the retrieval process unless needed; explain naturally in Uzbek.
+Only save meaningful long-term learning memories: weak_topic, misconception, mastered_topic, preferred_difficulty, or study_behavior. Do not save every message.
 Return ONLY valid JSON with keys: response (string), topics (string[]), learningIntent (string), detectedMisconception (string|null), suggestedNextTopic (string|null), memoriesToSave (array of {memoryType,content,importance}).`;
 
 export class OpenRouterProvider implements AIProvider {
@@ -68,7 +69,7 @@ export class CorpusTutorEngine {
 
   async respond(context: TutorContext): Promise<TutorResult> {
     const knowledge = context.retrievedKnowledge.length
-      ? context.retrievedKnowledge.map((item) => `[${item.chapter || "Atlas"}${item.pageNumber ? `, p.${item.pageNumber}` : ""}] ${item.content}`).join("\n")
+      ? context.retrievedKnowledge.map((item) => `[${item.sourceType || "textbook"} | ${item.bookTitle || "CORPUS source"}${item.chapter ? ` | ${item.chapter}` : ""}${item.section ? ` | ${item.section}` : ""}${item.pageNumber ? ` | page ${item.pageNumber}` : ""} | similarity ${item.similarity?.toFixed(3) ?? "n/a"}] ${item.content}`).join("\n")
       : "No textbook/atlas passage matched. Do not present source-specific claims as textbook facts.";
     const memories = context.relevantMemories.length
       ? context.relevantMemories.map((memory) => `- ${memory.content}`).join("\n")

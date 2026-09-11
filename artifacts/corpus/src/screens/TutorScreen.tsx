@@ -7,8 +7,8 @@ import { TopBar } from "@/components/layout/TopBar";
 import { Button } from "@/components/ui/Button";
 import { supabase } from "@/lib/supabase";
 
-interface Message { role: "user" | "assistant"; content: string; }
-interface ChatResponse { response?: string; sessionId?: string; sources?: Array<{ chapter?: string; pageNumber?: number }> }
+interface Message { role: "user" | "assistant"; content: string; sources?: Array<{ title: string; chapter?: string; pageNumber?: number; sourceType?: string }> }
+interface ChatResponse { response?: string; sessionId?: string; sources?: Array<{ title: string; chapter?: string; section?: string; pageNumber?: number; sourceType?: "textbook" | "atlas" }> }
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
@@ -36,7 +36,7 @@ export function TutorScreen() {
       const json = await response.json() as ChatResponse & { error?: string };
       if (!response.ok) throw new Error(json.error || "Tutor javob bera olmadi.");
       setSessionId(json.sessionId);
-      setMessages((current) => [...current, { role: "assistant", content: json.response || "Savolni boshqacha ifodalab ko‘ramizmi?" }]);
+      setMessages((current) => [...current, { role: "assistant", content: json.response || "Savolni boshqacha ifodalab ko‘ramizmi?", sources: json.sources?.map((source) => ({ title: source.chapter ? `${source.title} — ${source.chapter}` : source.title, chapter: source.section, pageNumber: source.pageNumber, sourceType: source.sourceType })) }]);
     } catch (err) { setError(err instanceof Error ? err.message : "Tutor bilan ulanishda xatolik."); }
     finally { setLoading(false); }
   }
@@ -49,7 +49,7 @@ export function TutorScreen() {
       </div>
       <div className="flex flex-1 flex-col gap-3 rounded-3xl border border-line bg-surface p-3 shadow-card sm:p-5">
         <div className="flex-1 space-y-4 overflow-y-auto pr-1" aria-live="polite">
-          {messages.map((message, index) => <div key={`${message.role}-${index}`} className={`flex gap-2.5 ${message.role === "user" ? "justify-end" : "justify-start"}`}><div className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "rounded-br-md bg-primary text-white" : "rounded-bl-md bg-surface2 text-ink"}`}>{message.role === "assistant" && <div className="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary"><Bot className="h-3 w-3" /> CORPUS Tutor</div>}{message.content}</div></div>)}
+          {messages.map((message, index) => <div key={`${message.role}-${index}`} className={`flex gap-2.5 ${message.role === "user" ? "justify-end" : "justify-start"}`}><div className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "rounded-br-md bg-primary text-white" : "rounded-bl-md bg-surface2 text-ink"}`}>{message.role === "assistant" && <div className="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary"><Bot className="h-3 w-3" /> CORPUS Tutor</div>}{message.content}{message.sources?.length ? <div className="mt-3 border-t border-line/60 pt-2 text-[10px] text-muted"><span className="font-bold">Manbalar:</span> {message.sources.slice(0, 3).map((source, sourceIndex) => <span key={`${source.title}-${sourceIndex}`}>{sourceIndex ? " · " : " "}{source.sourceType === "atlas" ? "Atlas" : "Darslik"} — {source.title}{source.pageNumber ? `, p.${source.pageNumber}` : ""}</span>)}</div> : null}</div></div>)}
           {loading && <div className="flex items-center gap-2 text-sm text-muted"><Brain className="h-4 w-4 animate-pulse text-primary" /> Tutor o‘ylayapti…</div>}
           <div ref={endRef} />
         </div>

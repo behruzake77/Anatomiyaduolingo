@@ -47,7 +47,7 @@ router.post("/ai/chat", async (req: Request, res: Response) => {
     await sessions.saveMessage(sessionId, user.id, "assistant", result.response);
     await Promise.all(result.memoriesToSave.map((memory) => memories.saveMemory(user.id, memory)));
     await sessions.update(sessionId, user.id, { topics: result.topics, suggestedNextTopic: result.suggestedNextTopic });
-    return res.json({ response: result.response, sessionId, topics: result.topics, sources: knowledge.map((item) => ({ chapter: item.chapter, section: item.section, pageNumber: item.pageNumber })) });
+    return res.json({ response: result.response, sessionId, topics: result.topics, sources: knowledge.map((item) => ({ id: item.id, title: item.bookTitle || "CORPUS source", chapter: item.chapter, section: item.section, pageNumber: item.pageNumber, sourceType: item.sourceType || "textbook", similarity: item.similarity })) });
   } catch (error) {
     return errorResponse(res, error);
   }

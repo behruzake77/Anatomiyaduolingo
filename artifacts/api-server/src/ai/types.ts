@@ -36,10 +36,13 @@ export interface TutorContext {
 
 export interface RetrievedKnowledge {
   id: string;
+  bookTitle?: string;
   chapter?: string;
   section?: string;
   content: string;
   pageNumber?: number;
+  sourceType?: "textbook" | "atlas";
+  similarity?: number;
 }
 
 export interface TutorMemory {
