@@ -77,7 +77,8 @@ async function main() {
   if (!files.length) throw new Error("No anatomy PDFs found in configured roots");
   console.log(`CORPUS Anatomy Ingestion${dryRun ? " (dry-run)" : ""}`);
   console.log(`Embedding model: ${MODEL} (384 dimensions)`);
-  console.log(`PDF files detected: ${files.length}`);
+  console.log(`Source PDFs discovered: ${detectedFiles.length}`);
+  console.log(`Unique PDFs selected: ${files.length}`);
   const all: Chunk[] = [];
   for (const file of files) { const chunks = extract(file); all.push(...chunks); console.log(`${sourceType(file).padEnd(8)} ${relative(ROOT, file)} → ${chunks.length} semantic chunks`); }
   console.log(`Total chunks: ${all.length}`);
@@ -92,6 +93,7 @@ async function main() {
     done += rows.length;
     if (done % 128 < rows.length || done === all.length) console.log(`Embedded and upserted ${done}/${all.length}`);
   }
+  console.log(`Chunks successfully inserted/upserted: ${done}`);
   console.log("RAG knowledge base ready.");
 }
 main().catch((error) => { console.error(error instanceof Error ? error.message : error); process.exitCode = 1; });

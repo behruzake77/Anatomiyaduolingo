@@ -1,0 +1,69 @@
+name: Ingest CORPUS Anatomy RAG
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: corpus-anatomy-ingestion
+  cancel-in-progress: false
+
+jobs:
+  ingest-anatomy:
+    name: Extract, embed, and upsert anatomy knowledge
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      NODE_OPTIONS: --max-old-space-size=6144
+      HF_HOME: ${{ github.workspace }}/.cache/huggingface
+      TRANSFORMERS_CACHE: ${{ github.workspace }}/.cache/huggingface
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.1
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: pnpm
+
+      - name: Install PDF extraction dependency
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends poppler-utils
+          pdftotext -v
+
+      - name: Install repository dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate ingestion configuration
+        shell: bash
+        run: |
+          test -n "$SUPABASE_URL" || { echo "SUPABASE_URL secret is missing" >&2; exit 1; }
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "SUPABASE_SERVICE_ROLE_KEY secret is missing" >&2; exit 1; }
+          echo "Embedding model: Xenova/all-MiniLM-L6-v2"
+          echo "Embedding dimension: 384"
+          echo "Vector writes: server-side Supabase upsert"
+
+      - name: Run anatomy ingestion
+        run: pnpm --filter @workspace/scripts run ingest:anatomy
+
+      - name: Report successful completion
+        if: success()
+        run: echo "CORPUS anatomy RAG ingestion completed successfully."
+
+      - name: Report failure
+        if: failure()
+        run: echo "CORPUS anatomy RAG ingestion failed. Review the failed step logs without exposing secret values." >&2
