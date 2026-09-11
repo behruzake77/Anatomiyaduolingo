@@ -26,7 +26,8 @@ begin
     raise notice 'Existing anatomy_chunks rows detected; migrate embedding vectors to 384 dimensions before enabling Phase 1.5 RPC.';
   end if;
 end $$;
-create unique index if not exists anatomy_chunks_chunk_key_idx on public.anatomy_chunks(chunk_key) where chunk_key is not null;
+drop index if exists public.anatomy_chunks_chunk_key_idx;
+create unique index anatomy_chunks_chunk_key_idx on public.anatomy_chunks(chunk_key);
 create index if not exists anatomy_chunks_book_idx on public.anatomy_chunks(book_id);
 create index if not exists anatomy_chunks_content_idx on public.anatomy_chunks using gin(to_tsvector('simple', content));
 
