@@ -15,7 +15,6 @@ create table if not exists public.anatomy_chunks (
 );
 -- Safe upgrades for installations created with the Phase 1 migration.
 alter table public.anatomy_chunks add column if not exists chunk_key text;
-alter table public.anatomy_chunks alter column chunk_key set default md5(content || coalesce(page_number::text, ''));
 do $$
 declare existing_rows bigint;
 begin
