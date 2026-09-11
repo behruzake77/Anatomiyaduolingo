@@ -33,7 +33,13 @@ export function TutorScreen() {
       const token = data.session?.access_token;
       if (!token) throw new Error("Tizimga kirish kerak.");
       const response = await fetch(`${API_BASE}/api/ai/chat`, { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify({ message, sessionId }) });
-      const json = await response.json() as ChatResponse & { error?: string };
+      const raw = await response.text();
+      let json: ChatResponse & { error?: string };
+      try {
+        json = raw ? JSON.parse(raw) as ChatResponse & { error?: string } : {};
+      } catch {
+        throw new Error(`AI server JSON javob qaytarmadi (${response.status}). VITE_API_URL va API serverni tekshiring.`);
+      }
       if (!response.ok) throw new Error(json.error || "Tutor javob bera olmadi.");
       setSessionId(json.sessionId);
       setMessages((current) => [...current, { role: "assistant", content: json.response || "Savolni boshqacha ifodalab ko‘ramizmi?", sources: json.sources?.map((source) => ({ title: source.chapter ? `${source.title} — ${source.chapter}` : source.title, chapter: source.section, pageNumber: source.pageNumber, sourceType: source.sourceType })) }]);
