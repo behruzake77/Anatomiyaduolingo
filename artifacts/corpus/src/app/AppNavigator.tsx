@@ -102,9 +102,6 @@ const QuizStudioScreen = screen(() =>
 const UserProfileScreen = screen(() =>
   import("@/screens/UserProfileScreen").then((m) => ({ default: m.UserProfileScreen })),
 );
-const TutorScreen = screen(() =>
-  import("@/screens/TutorScreen").then((m) => ({ default: m.TutorScreen })),
-);
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   splash: SplashScreen,
@@ -137,7 +134,6 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   inbox: InboxScreen,
   "quiz-studio": QuizStudioScreen,
   "user-profile": UserProfileScreen,
-  tutor: TutorScreen,
 };
 
 const TABS: ScreenId[] = ["dashboard", "topics", "library", "profile"];
@@ -221,7 +217,6 @@ export function AppNavigator() {
       const target = new URLSearchParams(window.location.search).get("screen");
       const safe = [
         "login",
-        "tutor",
         "topics",
         "library",
         "leaderboard",
