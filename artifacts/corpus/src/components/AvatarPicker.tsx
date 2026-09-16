@@ -10,44 +10,37 @@ const EMOJIS = ["🦴", "🧠", "🫀", "🫁", "👁️", "🦷", "💪", "👨
 
 const COLORS = ["#6C5CE7", "#00B894", "#FD79A8", "#0984E3", "#E17055", "#FDCB6E"];
 
-/**
- * Internet avatarlar — DiceBear ochiq xizmatidan (har biri yagona URL).
- * Tanlanganda profil avatar sifatida shu URL saqlanadi.
- */
-const DB = (style: string, seed: string) =>
-  `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(seed)}&radius=22`;
-
 const WEB_AVATARS = [
-  DB("thumbs", "corpus-1"),
-  DB("thumbs", "corpus-2"),
-  DB("thumbs", "corpus-3"),
-  DB("fun-emoji", "anatomia-1"),
-  DB("fun-emoji", "anatomia-2"),
-  DB("fun-emoji", "anatomia-3"),
-  DB("big-smile", "cell-1"),
-  DB("big-smile", "cell-2"),
-  DB("big-smile", "cell-3"),
-  DB("pixel-art", "medic-1"),
-  DB("pixel-art", "medic-2"),
-  DB("pixel-art", "medic-3"),
-  DB("squares", "nerve-1"),
-  DB("squares", "nerve-2"),
-  DB("squares", "nerve-3"),
-  DB("adventurer", "student-1"),
-  DB("adventurer", "student-2"),
-  DB("adventurer", "student-3"),
-  DB("joltavataars", "brain-1"),
-  DB("joltavataars", "brain-2"),
-  DB("joltavataars", "brain-3"),
-  DB("notionists", "heart-1"),
-  DB("notionists", "heart-2"),
-  DB("notionists", "heart-3"),
-  DB("micah", "lung-1"),
-  DB("micah", "lung-2"),
-  DB("micah", "lung-3"),
-  DB("bottts", "bone-1"),
-  DB("bottts", "bone-2"),
-  DB("bottts", "bone-3"),
+  "/img/avatars/thumbs-corpus-1.svg",
+  "/img/avatars/thumbs-corpus-2.svg",
+  "/img/avatars/thumbs-corpus-3.svg",
+  "/img/avatars/fun-emoji-anatomia-1.svg",
+  "/img/avatars/fun-emoji-anatomia-2.svg",
+  "/img/avatars/fun-emoji-anatomia-3.svg",
+  "/img/avatars/big-smile-cell-1.svg",
+  "/img/avatars/big-smile-cell-2.svg",
+  "/img/avatars/big-smile-cell-3.svg",
+  "/img/avatars/pixel-art-medic-1.svg",
+  "/img/avatars/pixel-art-medic-2.svg",
+  "/img/avatars/pixel-art-medic-3.svg",
+  "/img/avatars/avataaars-nerve-1.svg",
+  "/img/avatars/avataaars-nerve-2.svg",
+  "/img/avatars/avataaars-nerve-3.svg",
+  "/img/avatars/adventurer-student-1.svg",
+  "/img/avatars/adventurer-student-2.svg",
+  "/img/avatars/adventurer-student-3.svg",
+  "/img/avatars/lorelei-brain-1.svg",
+  "/img/avatars/lorelei-brain-2.svg",
+  "/img/avatars/lorelei-brain-3.svg",
+  "/img/avatars/notionists-heart-1.svg",
+  "/img/avatars/notionists-heart-2.svg",
+  "/img/avatars/notionists-heart-3.svg",
+  "/img/avatars/micah-lung-1.svg",
+  "/img/avatars/micah-lung-2.svg",
+  "/img/avatars/micah-lung-3.svg",
+  "/img/avatars/bottts-bone-1.svg",
+  "/img/avatars/bottts-bone-2.svg",
+  "/img/avatars/bottts-bone-3.svg",
 ];
 
 /** Rasmni kvadrat qilib 256×256 hajmgacha siqib data URL qaytaradi. */
