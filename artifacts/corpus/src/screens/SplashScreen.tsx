@@ -49,7 +49,7 @@ export function SplashScreen() {
         const latest = useAppStore.getState();
         if (latest.screen !== "splash") return;
         if (!latest.currentUser) navigate("login");
-        else navigate(latest.onboardingDone ? "dashboard" : "onboarding");
+        else navigate("dashboard");
       }, lite ? 0 : 450);
     };
 

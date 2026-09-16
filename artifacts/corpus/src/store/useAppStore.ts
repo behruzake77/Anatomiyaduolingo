@@ -372,14 +372,13 @@ export const useAppStore = create<AppState>()(
             const dbProgress = wasLoggedOut ? await loadProgressFromSupabase(user.id) : null;
             const flag = Boolean(dbProgress?.isAdmin) || isAdminAccount(user) || (await fetchIsAdmin(user.id));
             const s = get();
-            const enterApp = s.screen === "login" && !isPasswordRecovery();
-            const nextScreen = s.onboardingDone ? "dashboard" : "onboarding";
+            const enterApp = (s.screen === "login" || s.screen === "splash" || s.screen === "onboarding") && !isPasswordRecovery();
             const progress = dbProgress ? { ...dbProgress, isAdmin: flag } : { isAdmin: flag };
             set({
               currentUser: user,
               isLoading: false,
               ...progress,
-              ...(enterApp ? { screen: nextScreen, tab: "home" as const, history: [] } : {}),
+              ...(enterApp ? { screen: "dashboard" as const, tab: "home" as const, history: [] } : {}),
             });
           } else {
             const s = get();
