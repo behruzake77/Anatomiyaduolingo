@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, ExternalLink, RotateCw, Search } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
@@ -144,6 +144,16 @@ function Model3DViewer({
 }) {
   const t = useStrings();
   const [loaded, setLoaded] = useState(false);
+  const [slow, setSlow] = useState(false);
+
+  useEffect(() => {
+    if (!loaded) {
+      setSlow(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setSlow(true), 10000);
+    return () => window.clearTimeout(timer);
+  }, [loaded, model.id]);
 
   return (
     <Screen padded={false}>
@@ -189,11 +199,29 @@ function Model3DViewer({
               className="absolute inset-0 h-full w-full"
               allow="autoplay; fullscreen; xr-spatial-tracking"
               allowFullScreen
+              loading="lazy"
               src={
                 model.viewerUrl ??
                 `https://sketchfab.com/models/${model.uid}/embed?autostart=1&ui_theme=dark&ui_watermark=0&ui_hint=1`
               }
             />
+          )}
+          {loaded && slow && (
+            <div className="absolute inset-x-3 bottom-3 rounded-2xl border border-white/10 bg-[#151329]/95 p-3 text-center shadow-lg">
+              <p className="text-xs leading-relaxed text-[#D8D3F5]">
+                Model telefon ichida uzoq yuklanmoqda. Uni Chrome’da to‘liq ochish tavsiya qilinadi.
+              </p>
+              {model.viewerUrl && (
+                <a
+                  href={model.viewerUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-flex rounded-xl bg-primary px-4 py-2 text-xs font-bold text-white"
+                >
+                  Chrome’da 3D modelni ochish
+                </a>
+              )}
+            </div>
           )}
         </div>
 
