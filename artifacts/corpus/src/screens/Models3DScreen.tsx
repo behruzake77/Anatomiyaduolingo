@@ -142,7 +142,10 @@ function Model3DViewer({
               className="absolute inset-0 h-full w-full"
               allow="autoplay; fullscreen; xr-spatial-tracking"
               allowFullScreen
-              src={`https://sketchfab.com/models/${model.uid}/embed?autostart=1&ui_theme=dark&ui_watermark=0&ui_hint=1`}
+              src={
+                model.viewerUrl ??
+                `https://sketchfab.com/models/${model.uid}/embed?autostart=1&ui_theme=dark&ui_watermark=0&ui_hint=1`
+              }
             />
           )}
         </div>
@@ -155,8 +158,7 @@ function Model3DViewer({
           </h2>
           <p className="mt-1 text-sm text-muted">{model.description}</p>
           <p className="mt-2 inline-flex items-center gap-2 rounded-xl bg-surface2 px-3 py-1.5 text-xs text-muted">
-            Manba: {model.source} · Sketchfab (ochiq ta'lim litsenziyasi) ·
-            Internet kerak
+            Manba: {model.source} · Interaktiv viewer · Internet kerak
           </p>
         </div>
       </div>

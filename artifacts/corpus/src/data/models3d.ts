@@ -12,6 +12,7 @@ export interface Model3D {
   title: string;
   latin: string;
   uid: string; // Sketchfab model UID
+  viewerUrl?: string; // Open3DModel web viewer URL (interactive, no download)
   source: string;
   unitId: string; // qaysi osteologiya bo'limiga tegishli (suyaklar uchun)
   category: ModelCategory;
@@ -181,6 +182,85 @@ export const MODELS_3D: Model3D[] = [
     unitId: "u11",
     category: "organs",
     description: "Tana mushaklari — ochiq manbali 3D atlas.",
+  },
+  // Open3DModel/LUMC — kengroq, bosib tanlanadigan va qatlamlarni yashirish
+  // mumkin bo‘lgan bepul ta’lim modellar. Viewer brauzerda lazy yuklanadi.
+  {
+    id: "open-overview-demo",
+    title: "To‘liq tana — 3D atlas demo",
+    latin: "Corpus humanum",
+    uid: "",
+    viewerUrl: "https://caskanatomy.info/open3dviewer/?model=overview_demo",
+    source: "Open 3D Model / LUMC (CC BY-SA)",
+    unitId: "atlas",
+    category: "organs",
+    description: "Tana qismlarini bosib tanlang, aylantiring, yashiring va kattalashtiring.",
+  },
+  {
+    id: "open-overview-skeleton",
+    title: "To‘liq skelet",
+    latin: "Systema skeletale",
+    uid: "",
+    viewerUrl: "https://caskanatomy.info/open3dviewer/?model=overview-skeleton",
+    source: "Open 3D Model / LUMC (CC BY-SA)",
+    unitId: "atlas",
+    category: "bones",
+    description: "Skelet suyaklarini bosib tanlash va alohida yashirish mumkin.",
+  },
+  {
+    id: "open-upper-limb",
+    title: "Yuqori qo‘l — to‘liq model",
+    latin: "Membrum superius",
+    uid: "",
+    viewerUrl: "https://caskanatomy.info/open3dviewer/?model=upper-limb",
+    source: "Open 3D Model / LUMC (CC BY-SA)",
+    unitId: "u8",
+    category: "bones",
+    description: "Yelka, qo‘l, tirsak va bilak tuzilmalarini ko‘ring.",
+  },
+  {
+    id: "open-lower-limb",
+    title: "Pastki oyoq — to‘liq model",
+    latin: "Membrum inferius",
+    uid: "",
+    viewerUrl: "https://caskanatomy.info/open3dviewer/?model=lower-limb",
+    source: "Open 3D Model / LUMC (CC BY-SA)",
+    unitId: "u9",
+    category: "bones",
+    description: "Son, tizza, boldir, to‘piq va oyoq panjasini o‘rganing.",
+  },
+  {
+    id: "open-upper-limb-muscles",
+    title: "Qo‘l mushaklari",
+    latin: "Musculi membri superioris",
+    uid: "",
+    viewerUrl: "https://caskanatomy.info/open3dviewer/?model=upper-limb-arm-muscles&subset=ligament-parts-hidden",
+    source: "Open 3D Model / LUMC (CC BY-SA)",
+    unitId: "u11",
+    category: "organs",
+    description: "Qo‘l mushaklarini alohida bosib tanlang va qatlamlarni yashiring.",
+  },
+  {
+    id: "open-thorax-muscles",
+    title: "Ko‘krak, qorin va orqa mushaklari",
+    latin: "Musculi thoracis et dorsi",
+    uid: "",
+    viewerUrl: "https://caskanatomy.info/open3dviewer/?model=muscles-thorax-abdomen-and-back",
+    source: "Open 3D Model / LUMC (CC BY-SA)",
+    unitId: "u11",
+    category: "organs",
+    description: "Mushaklarni bosib tanlash, aylantirish va kattalashtirish mumkin.",
+  },
+  {
+    id: "open-spinal-cord",
+    title: "Orqa miya va atrof tuzilmalar",
+    latin: "Medulla spinalis",
+    uid: "",
+    viewerUrl: "https://caskanatomy.info/open3dviewer/?model=spinal-cord-and-surroundings-section",
+    source: "Open 3D Model / LUMC (CC BY-SA)",
+    unitId: "ne-1",
+    category: "organs",
+    description: "Orqa miya va uning atrofidagi anatomik qismlarni ko‘ring.",
   },
 ];
 
