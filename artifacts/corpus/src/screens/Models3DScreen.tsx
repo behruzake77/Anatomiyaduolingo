@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Box, RotateCw } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Box, ExternalLink, RotateCw, Search } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";
 import { Screen } from "@/components/layout/Screen";
 import { Card } from "@/components/ui/Card";
 import {
   modelsByCategory,
+  modelSystems,
   type Model3D,
   type ModelCategory,
 } from "@/data/models3d";
@@ -26,12 +27,22 @@ export function Models3DScreen() {
   const t = useStrings();
   const [active, setActive] = useState<Model3D | null>(null);
   const [tab, setTab] = useState<ModelCategory>("bones");
+  const [query, setQuery] = useState("");
+  const [system, setSystem] = useState("all");
+
+  const systems = modelSystems(tab);
+  const models = useMemo(() => {
+    const needle = query.trim().toLocaleLowerCase();
+    return modelsByCategory(tab).filter((m) => {
+      const matchesSystem = system === "all" || (m.system ?? (tab === "bones" ? "Suyaklar" : "A’zolar")) === system;
+      const text = `${m.title} ${m.latin} ${m.description} ${m.source}`.toLocaleLowerCase();
+      return matchesSystem && (!needle || text.includes(needle));
+    });
+  }, [query, system, tab]);
 
   if (active) {
     return <Model3DViewer model={active} onBack={() => setActive(null)} />;
   }
-
-  const models = modelsByCategory(tab);
 
   return (
     <Screen padded={false}>
@@ -47,7 +58,10 @@ export function Models3DScreen() {
           {TABS.map((c) => (
             <button
               key={c.id}
-              onClick={() => setTab(c.id)}
+              onClick={() => {
+                setTab(c.id);
+                setSystem("all");
+              }}
               className={cn(
                 "flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition",
                 tab === c.id
@@ -60,7 +74,40 @@ export function Models3DScreen() {
           ))}
         </div>
 
+        <label className="relative mt-4 block">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Model yoki a’zo qidirish..."
+            className="w-full rounded-2xl border border-line bg-surface py-3 pl-10 pr-3 text-sm outline-none focus:border-primary"
+          />
+        </label>
+
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+          <button
+            onClick={() => setSystem("all")}
+            className={cn("shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold", system === "all" ? "bg-primary text-white" : "bg-surface2 text-muted")}
+          >
+            Barchasi
+          </button>
+          {systems.map((item) => (
+            <button
+              key={item}
+              onClick={() => setSystem(item)}
+              className={cn("shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold", system === item ? "bg-primary text-white" : "bg-surface2 text-muted")}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
         <div className="mt-4 flex flex-col gap-3">
+          {models.length === 0 && (
+            <p className="rounded-2xl border border-dashed border-line p-6 text-center text-sm text-muted">
+              Bu qidiruv bo‘yicha model topilmadi.
+            </p>
+          )}
           {models.map((m) => (
             <Card key={m.id} onClick={() => setActive(m)} className="p-4">
               <div className="flex items-center gap-3">
@@ -74,7 +121,7 @@ export function Models3DScreen() {
                   </p>
                   <p className="mt-0.5 text-xs text-muted">{m.description}</p>
                   <p className="mt-1 text-[11px] text-muted">
-                    Manba: {m.source}
+                    {m.system ?? (tab === "bones" ? "Suyaklar" : "A’zolar")} · {m.source}
                   </p>
                 </div>
                 <RotateCw className="h-5 w-5 shrink-0 text-muted" aria-hidden />
@@ -149,6 +196,18 @@ function Model3DViewer({
             />
           )}
         </div>
+
+        {model.viewerUrl && (
+          <a
+            href={model.viewerUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-flex items-center justify-center gap-2 rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-semibold text-primary"
+          >
+            <ExternalLink className="h-4 w-4" aria-hidden />
+            Viewer’ni alohida oynada ochish
+          </a>
+        )}
 
         {/* ma'lumot */}
         <div className="mt-4">

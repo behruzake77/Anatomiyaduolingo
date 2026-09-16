@@ -16,6 +16,7 @@ export interface Model3D {
   source: string;
   unitId: string; // qaysi osteologiya bo'limiga tegishli (suyaklar uchun)
   category: ModelCategory;
+  system?: string;
   description: string;
 }
 
@@ -270,4 +271,12 @@ export function modelsForUnit(unitId: string): Model3D[] {
 
 export function modelsByCategory(category: ModelCategory): Model3D[] {
   return MODELS_3D.filter((m) => m.category === category);
+}
+
+export function modelSystems(category: ModelCategory): string[] {
+  return Array.from(
+    new Set(
+      modelsByCategory(category).map((m) => m.system ?? (category === "bones" ? "Suyaklar" : "A’zolar")),
+    ),
+  );
 }
