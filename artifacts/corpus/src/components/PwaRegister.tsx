@@ -23,7 +23,9 @@ export function PwaRegister() {
     const register = () => {
       const base = import.meta.env.BASE_URL || "/";
       const swUrl = `${base.replace(/\/$/, "")}/sw.js` || "/sw.js";
-      navigator.serviceWorker.register(swUrl).catch(() => {
+      navigator.serviceWorker.register(swUrl, { updateViaCache: "none" }).then((registration) => {
+        registration.update().catch(() => {});
+      }).catch(() => {
         /* offline rejim ishlamay qolsa ham ilova ishlayveradi */
       });
     };

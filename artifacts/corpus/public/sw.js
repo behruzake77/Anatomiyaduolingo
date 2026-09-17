@@ -7,7 +7,7 @@
  */
 // Increment whenever the app shell changes so installed PWAs do not stay on an
 // old build (which made new profile menu items appear to disappear).
-const CACHE = "corpus-v6";
+const CACHE = "corpus-v7";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -50,7 +50,20 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Statik (rasm/font) → cache-first
+  // CSS/JS → avval tarmoqdan. Eski hashed assetlar cache'da qolib,
+  // yangi HTML bilan mos kelmasa sahifa xom matn ko‘rinishida chiqishi mumkin.
+  if (/\.(css|js|mjs)$/.test(pathname)) {
+    event.respondWith(
+      fetch(req).then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+        return res;
+      }).catch(() => caches.match(req)),
+    );
+    return;
+  }
+
+  // Rasm/font → cache-first, chunki ular buildlar orasida odatda o‘zgarmaydi.
   if (/\.(png|jpg|jpeg|svg|webp|woff2?|ico)$/.test(pathname)) {
     event.respondWith(
       caches.match(req).then(
