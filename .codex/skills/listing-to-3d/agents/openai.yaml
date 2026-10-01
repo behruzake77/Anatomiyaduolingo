@@ -1,0 +1,6 @@
+interface:
+  display_name: "Listing to 3D"
+  short_description: "Turn a property listing into a walkable 3D scene"
+  default_prompt: "Use $listing-to-3d to reconstruct the property at this listing URL as an accurate, walkable 3D scene."
+policy:
+  allow_implicit_invocation: true
